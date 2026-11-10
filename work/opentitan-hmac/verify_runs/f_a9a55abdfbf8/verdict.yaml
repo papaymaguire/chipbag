@@ -1,0 +1,95 @@
+finding_hash: e88fb0399768f614
+started_at: '2026-11-10T20:57:13Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The scoreboard models the fifo_empty interrupt conditions (FIFO empty, previously full, cleared
+    on process/start/stop) and predicts intr_state, which smoke-based tests check. The pin is also checked
+    low at check_phase. hmac_tl_intg_err is imported via tl_access_tests and mapped to sec_cm_bus_integrity.
+    All five items are covered by tests with checks, although the plan text is vague.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 690
+    line_end: 697
+    quote: "      if (fifo_full_detected && hmac_fifo_empty) begin\n        pre_fifo_empty_intr = 1;\n\
+      \      end else begin\n        pre_fifo_empty_intr = 0;\n      end"
+    role: refutes
+    note: Scoreboard predicts fifo_empty interrupt only when the FIFO was previously full and is empty.
+      It clears the full flag on process/start/stop.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 391
+    line_end: 392
+    quote: '      bit intr_state_empty = fifo_empty_intr | last_intr_test_wr[HmacMsgFifoEmpty];'
+    role: refutes
+    note: The predicted value is used for intr_state reads, which are compared against the DUT.
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 20
+    line_end: 23
+    quote: '      name: "{name}_tl_intg_err"'
+    role: refutes
+    note: The generic TL integrity error test is imported by hmac_sim_cfg and runs as hmac_tl_intg_err.
+  - path: hw/ip/hmac/data/hmac_sec_cm_testplan.hjson
+    line_start: 30
+    line_end: 30
+    quote: '      tests: ["hmac_tl_intg_err"]'
+    role: refutes
+    note: BUS.INTEGRITY is mapped to this test.
+  searches:
+  - what: fifo_empty interrupt modelling and checking
+    where: hw/ip/hmac/dv
+    found: Scoreboard models the conditions and predicts intr_state. Smoke tests enable the interrupt
+      and read intr_state.
+  - what: TL integrity test
+    where: hmac_sim_cfg.hjson, tl_access_tests.hjson
+    found: tl_access_tests is imported, so hmac_tl_intg_err exists.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 209
+    line_end: 217
+    why_not: The smoke sequence skips checking intr_state in some corner cases because of one-cycle misalignment.
+      This does not remove the checking in general.
+  items:
+  - id: cr_67e76dbb8ac1
+    outcome: withdrawn
+    reason: The scoreboard requires fifo_full_detected before predicting the interrupt.
+    evidence:
+    - 0
+    - 1
+  - id: cr_999bc3c78db5
+    outcome: withdrawn
+    reason: The scoreboard clears fifo_full_detected on process/start/stop/continue, which suppresses
+      the interrupt.
+    evidence:
+    - 0
+  - id: cr_a1a298bba0a5
+    outcome: withdrawn
+    reason: The conditions are modelled in the scoreboard comment and logic, and intr_state is checked
+      against them.
+    evidence:
+    - 0
+    - 1
+  - id: cr_d16dbd9e0ca7
+    outcome: withdrawn
+    reason: The predicted interrupt requires hmac_fifo_empty, and intr_state reads are compared.
+    evidence:
+    - 0
+    - 1
+  - id: cr_b406ffbaa86a
+    outcome: withdrawn
+    reason: hmac_tl_intg_err is imported and mapped to the sec_cm testplan.
+    evidence:
+    - 2
+    - 3
+  new_sources:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    reason: Models and checks the fifo_empty interrupt.
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    reason: Defines the tl_intg_err test.
+  resolution: Link the sec_cm and fifo_empty plan items to the scoreboard checks and the tl_intg_err test,
+    and expand the plan text to list the suppression conditions.
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.1196819
+error: null

@@ -1,0 +1,93 @@
+finding_hash: cb39e6047dfcdd6c
+started_at: '2026-11-10T20:38:21Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that drives any of the five interrupt event counters to its maximum value and
+    checks that it holds there. The existing tests only trigger interrupts a few times, or check register
+    reset values and access, so none reaches the 'incrsaturate' behavior.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 62
+    line_end: 62
+    quote: mci_error_intr_count++; __asm__ volatile ("wfi") /* "Wait for interrupt" */; mcu_sleep(100);
+    role: context
+    note: The interrupt handler test triggers each interrupt once and counts it. It never gets near the
+      counter's saturation point.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 588
+    line_end: 588
+    quote: '{ SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_MBOX1_ECC_COR_INTR_COUNT_R, "NOTIF_MBOX1_ECC_COR_INTR_COUNT_R",
+      "Notification MBOX1 ECC Correctable Intrpt Count", REG_NOT_STICKY, false },'
+    role: context
+    note: This is a register reset and access table entry. It does not exercise saturation.
+  searches:
+  - what: saturat/overflow in the integration tests
+    where: src/integration (c, sv, svh, h, py, yml files)
+    found: Only I3C FIFO overflow defines in the address map. No test of interrupt counter saturation.
+  - what: intr_count and saturation in tests and libraries
+    where: mcu_intr_handler.c, libs/mci/mci.c, and the files that matched across the repository
+    found: Only per-interrupt trigger counting and register reset/access tables. The matches in uart_core.sv,
+      tools/scripts and the coverage interface are not tests of saturation.
+  - what: notif_mbox1_target_done_intr_count_r saturation
+    where: whole repository, by register name and saturation terms
+    found: Only the mci.c reset/access table entry (line 583). No saturation stimulus.
+  - what: notif_mbox0_cmd_avail_intr_count_r saturation
+    where: whole repository, by register name and saturation terms
+    found: Only the mci.c reset/access table entry (line 584). No saturation stimulus.
+  - what: notif_mbox1_cmd_avail_intr_count_r saturation
+    where: whole repository, by register name and saturation terms
+    found: Only the mci.c reset/access table entry (line 585). No saturation stimulus.
+  - what: notif_mbox0_soc_req_lock_intr_count_r saturation
+    where: whole repository, by register name and saturation terms
+    found: Only the mci.c reset/access table entry (line 591). No saturation stimulus.
+  - what: notif_mbox1_ecc_cor_intr_count_r saturation
+    where: whole repository, by register name and saturation terms
+    found: Only the mci.c reset/access table entry (line 588). No saturation stimulus.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 62
+    line_end: 85
+    why_not: It triggers each interrupt once and checks counts of a few events. It never approaches 0xFFFFFFFF.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 579
+    line_end: 593
+    why_not: It checks register reset and access behavior only. It does not check counter saturation.
+  items:
+  - id: cr_c263d751c70e
+    outcome: verified
+    reason: No test drives notif_mbox1_target_done_intr_count_r to saturation and checks it.
+    evidence:
+    - 0
+    - 1
+  - id: cr_db7951777429
+    outcome: verified
+    reason: No test drives notif_mbox0_cmd_avail_intr_count_r to saturation and checks it.
+    evidence:
+    - 0
+    - 1
+  - id: cr_ecafe675afa3
+    outcome: verified
+    reason: No test drives notif_mbox1_cmd_avail_intr_count_r to saturation and checks it.
+    evidence:
+    - 0
+    - 1
+  - id: cr_eea6fa2277a6
+    outcome: verified
+    reason: No test drives notif_mbox0_soc_req_lock_intr_count_r to saturation and checks it.
+    evidence:
+    - 0
+    - 1
+  - id: cr_f255266393b7
+    outcome: verified
+    reason: No test drives notif_mbox1_ecc_cor_intr_count_r to saturation and checks it.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 7
+cost_usd: 0.09513569999999999
+error: null

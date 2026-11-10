@@ -1,0 +1,64 @@
+finding_hash: 07d215b92aee4643
+started_at: '2026-11-10T19:43:12Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Items 1, 4 and 5 (error code values and ERR_CODE storing details) are checked: the DV scoreboard
+    predicts ERR_CODE and compares CSR reads against the mirror, and the hmac_error test stimulates it.
+    Items 2 and 3 have only stimulus, with no check that fails if violated. Overall the finding is partly
+    wrong, but items 2 and 3 stand.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 148
+    line_end: 148
+    quote: update_err_intr_code(SwPushMsgWhenDisallowed);
+    role: refutes
+    note: Predicts ERR_CODE 5.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 324
+    line_end: 324
+    quote: update_err_intr_code(SwUpdateSecretKeyInProcess);
+    role: refutes
+    note: Predicts ERR_CODE 3.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1055
+    line_end: 1055
+    quote: void'(ral.err_code.predict(.value(err_code_val), .kind(UVM_PREDICT_DIRECT)));
+    role: refutes
+    note: ERR_CODE mirror is updated with the details, so reads of ERR_CODE are compared to it.
+  searches:
+  - what: error codes in DV
+    where: hw/ip/hmac/dv
+    found: Scoreboard predictions; hmac_error test.
+  near_misses: []
+  items:
+  - id: cr_a71769314b98
+    outcome: withdrawn
+    reason: Predicted and compared by the scoreboard.
+    evidence:
+    - 1
+  - id: cr_2bd1d3abeeee
+    outcome: verified
+    reason: Stimulus only.
+    evidence: []
+  - id: cr_9b457cf2a7cd
+    outcome: verified
+    reason: Stimulus only.
+    evidence: []
+  - id: cr_0cde0256c24c
+    outcome: withdrawn
+    reason: ERR_CODE mirror is predicted and compared.
+    evidence:
+    - 2
+  - id: cr_3ab6d4cdb03f
+    outcome: withdrawn
+    reason: Predicted and compared by the scoreboard.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.08140990000000001
+error: null

@@ -1,0 +1,18 @@
+{"t": "2026-11-10T20:39:45Z", "event": "  \u2192 Grep: intr_count_incr_r|intr_count_r"}
+{"t": "2026-11-10T20:39:46Z", "event": "  \u2192 Grep: mbox1_cmd_avail_intr_count|mbox1_ecc_cor_intr_count|soc_req_lock_intr_count"}
+{"t": "2026-11-10T20:39:48Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:39:50Z", "event": "Mostly generic bringup (probably clears). Check mcu_intr_handler and mcu_isr."}
+{"t": "2026-11-10T20:39:51Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:39:51Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:39:54Z", "event": "  \u2192 Grep: INTR_COUNT_R|COUNT_INCR_R"}
+{"t": "2026-11-10T20:39:55Z", "event": "  \u2192 Grep: INTR_COUNT_R|COUNT_INCR_R|incrsaturate"}
+{"t": "2026-11-10T20:39:58Z", "event": "  \u2192 Grep: INTR_COUNT_R|COUNT_INCR_R"}
+{"t": "2026-11-10T20:39:58Z", "event": "  \u2192 Grep: INTR_COUNT_R|COUNT_INCR_R"}
+{"t": "2026-11-10T20:40:01Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T20:40:02Z", "event": "  \u2192 Grep: NOTIF_MBOX1_CMD_AVAIL|NOTIF_SOC_REQ_LOCK|NOTIF_MBOX1_ECC_COR"}
+{"t": "2026-11-10T20:40:05Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T20:40:14Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:40:16Z", "event": "I'm submitting the verdict now. My last call used the wrong tool name and was rejected, so I'm resubmitting with the correct one and proper evidence."}
+{"t": "2026-11-10T20:40:24Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:40:28Z", "event": "I submitted the verdict as **verified**, and it was accepted. Four of the five items stand as untested. The fifth, `cr_8e37e686e23b`, I marked inconclusive.\n\n- **Saturation** (`cr_8c05acc52333`, `cr_8f7eafce5cc8`): no test drives a counter to its maximum.\n- **Pulse field** (`cr_909044a1f8f3`): nothing checks the 1-bit down-counter pulse.\n- **`soc_req_lock`** (`cr_92e293d86fd1`): the only counter test, `mcu_intr_handler.c`, never triggers it.\n- **`cmd_avail` rising edge** (`cr_8e37e686e23b`): that test triggers `cmd_avail` through software `INTR_TRIG` writes and then compares one summed hardware count against a software tally. I couldn't tell whether that path exercises the hardware-input edge, so I left it inconclusive.\n\nMy first submission attempt used the wrong tool name and was rejected. The second went through with the full evidence."}
+{"t": "2026-11-10T20:40:28Z", "event": "[15 turns, $0.1444]"}

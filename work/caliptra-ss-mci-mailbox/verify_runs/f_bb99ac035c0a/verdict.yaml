@@ -1,0 +1,92 @@
+finding_hash: 3e46a29dddc60a2a
+started_at: '2026-11-10T20:41:44Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four of five items stand. Only item cr_7a8284f75705 (increment by 1 per event) is partly covered.
+    `mcu_intr_handler.c` fires one interrupt per software trigger and compares a firmware count with the
+    sum of the hardware count registers, failing the sim on mismatch. That exercises the counter through
+    the software-trigger path only. I found no test that drives the real hardware event input, checks
+    the 1-cycle pulse, or pushes a counter to saturation.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: context
+    note: 'Aggregate check: firmware count must equal the sum of hardware counts. Software-trigger stimulus
+      only, one event at a time.'
+  - path: src/mci/rtl/mci_reg.sv
+    line_start: 17016
+    line_end: 17017
+    quote: field_combo.intr_block_rf.error_mbox0_ecc_unc_intr_count_r.cnt.incrthreshold = (field_storage.intr_block_rf.error_mbox0_ecc_unc_intr_count_r.cnt.value
+      >= 32'hffffffff);
+    role: context
+    note: RTL implements saturation, but no test checks it.
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1565
+    line_end: 1565
+    quote: Will not overflow ('incrsaturate').
+    role: supports
+    note: Saturation requirement. No test drives a counter to 0xffffffff.
+  searches:
+  - what: Tests that read or check the intr_count and intr_count_incr registers
+    where: whole repo, including src/integration/test_suites
+    found: Only mcu_intr_handler.c compares counts. libs/mci/mci.c only lists the registers (register
+      reset/access table). mci_top_cov_if.sv has coverpoints only.
+  - what: Saturation or overflow test (counter at 0xffffffff)
+    where: whole repo
+    found: None.
+  - what: Check of the incr pulse width, or of a hardware-input rising edge
+    where: whole repo
+    found: None. The only stimulus is the software trigger register.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 162
+    line_end: 204
+    why_not: It does check +1 per event, but only in aggregate and only via the software trigger register.
+      It does not exercise the hardware rising-edge input or the 1-cycle pulse, and it never saturates
+      a counter.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 3970
+    line_end: 3970
+    why_not: Coverage coverpoint only, with no check.
+  items:
+  - id: cr_77c7ae0b431e
+    outcome: verified
+    reason: No test drives the hardware event input. The only stimulus is the software trigger register.
+    evidence:
+    - 0
+  - id: cr_7a8284f75705
+    outcome: inconclusive
+    reason: '`mcu_intr_handler` checks that firmware and hardware counts match after one trigger per event,
+      so +1 per event is partly checked. It does this through the software trigger path and in aggregate.
+      The trigger-to-increment path in the RTL was only partly read.'
+    evidence:
+    - 0
+  - id: cr_81ffd1fa635f
+    outcome: verified
+    reason: No test checks the incr pulse width. Searches found no such test.
+    evidence:
+    - 0
+  - id: cr_84e8df210e83
+    outcome: verified
+    reason: No test drives a counter to saturation.
+    evidence:
+    - 1
+    - 2
+  - id: cr_8a0bed11bd11
+    outcome: verified
+    reason: No test drives a counter to saturation.
+    evidence:
+    - 1
+    - 2
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Only test that compares firmware interrupt counts with the hardware count registers.
+submissions: 1
+rejections: []
+turns: 17
+cost_usd: 0.12893860000000001
+error: null

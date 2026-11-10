@@ -1,0 +1,89 @@
+finding_hash: f047631c41c2bef4
+started_at: '2026-11-10T20:54:00Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The hmac DV environment covers all five items. Smoke-style sequences randomize illegal key_length
+    and digest_size values, including zero. They also write MSG_FIFO with random contiguous byte masks.
+    The scoreboard predicts the Key_None and SHA2_None mapping, applies the endian swap per word according
+    to the byte mask, and checks digests and CFG reads. The covering tests were not run, and I did not
+    check which tests the smoke sequence is reached from.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 114
+    line_end: 125
+    quote: "  $countones(key_length) == 1 dist {\n    1 :/ 4,  // Key_128/Key_256/Key_384/Key_512/Key_1024/Key_None\n\
+      \    0 :/ 1   // Illegal -> should get cast to Key_None in HW\n  };"
+    role: supports
+    note: Stimulus randomizes illegal and zero key_length. An analogous constraint covers digest_size.
+      Illegal values include all-zero.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 359
+    line_end: 373
+    quote: void'(ral.cfg.key_length.predict(.value(Key_None), .kind(UVM_PREDICT_WRITE)));
+    role: refutes
+    note: Scoreboard predicts the Key_None and SHA2_None mapping for invalid values, so CFG read-back
+      is checked against the mirror.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 157
+    line_end: 163
+    quote: msg = (ral.cfg.endian_swap.get_mirrored_value()) ?
+    role: refutes
+    note: The model swaps per word according to the byte mask. The digest is compared against the model,
+      so sub-word writes with endian_swap are checked.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 358
+    line_end: 358
+    quote: '`DV_CHECK_FATAL(randomize(wr_addr, wr_mask) with {$countones(wr_mask) <= msg_q.size();})'
+    role: supports
+    note: Stimulus writes MSG_FIFO with random sub-word masks and addresses.
+  searches:
+  - what: key_length and digest_size randomization and prediction
+    where: hw/ip/hmac/dv
+    found: Constraints generate illegal values; the scoreboard predicts None for invalid values.
+  - what: sub-word MSG_FIFO writes and endian swap model
+    where: hmac_base_vseq.sv and hmac_scoreboard.sv
+    found: Random wr_mask writes; the scoreboard swaps per word according to a_mask.
+  near_misses: []
+  items:
+  - id: cr_7e35a14afdc5
+    outcome: withdrawn
+    reason: Illegal and zero key_length are randomized and the Key_None mapping is predicted and checked
+      on read.
+    evidence:
+    - 0
+    - 1
+  - id: cr_8550a9f5fdd3
+    outcome: withdrawn
+    reason: Random key_length includes Key_256 (the default is 6'b000010). Digest checks and the CFG mirror
+      check would catch an error.
+    evidence:
+    - 0
+    - 1
+  - id: cr_91b535d49737
+    outcome: withdrawn
+    reason: Random sub-word writes with endian_swap are checked against a per-word swap model.
+    evidence:
+    - 2
+    - 3
+  - id: cr_b99a398deb96
+    outcome: withdrawn
+    reason: Illegal digest_size is randomized and the SHA2_None mapping is predicted. The scoreboard also
+      flags an invalid config at start.
+    evidence:
+    - 0
+    - 1
+  - id: cr_d8c0f0f46351
+    outcome: withdrawn
+    reason: Unaligned and sub-word writes are randomized and the scoreboard models big-endian order for
+      them.
+    evidence:
+    - 2
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0759541
+error: null

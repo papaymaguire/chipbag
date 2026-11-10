@@ -1,0 +1,440 @@
+topic: hmac
+repo_root: targets/opentitan
+repo_commit: b84154c71810e853c0b37c00e96bb830804dd9f4
+generated_at: '2026-11-10T16:33:57Z'
+model: claude-sonnet-5-5
+confirmed: false
+sources:
+- path: hw/ip/hmac/README.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: HMAC IP overview
+  units: 1
+  sha256: 17c33f012ad558c1a5957c2c01cacfa02a647d09ab1252442c6162c7eb4ddac6
+- path: hw/ip/hmac/data/hmac.hjson
+  role: spec
+  scope:
+    kind: whole_file
+  reason: HMAC register definitions
+  units: 1
+  sha256: ae8990c1658d612ef1f8b97bf0d53e01ae1ac87e81f9a9f263bb49b6b3c73b72
+- path: hw/ip/hmac/doc/interfaces.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: HMAC interfaces
+  units: 1
+  sha256: 1829c5e44d6c04f2ebe18bd94e9200ce6713cc9ba2bb3f74496f19ad1cac4f98
+- path: hw/ip/hmac/doc/programmers_guide.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: HMAC programmer's guide
+  units: 1
+  sha256: 317fbd62a48556d0d97ce1f36c9723fcf8ed1f0c4e3bee822ce989aea8247636
+- path: hw/ip/hmac/doc/theory_of_operation.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: HMAC theory of operation
+  units: 1
+  sha256: 5f5ced8f7c7d3d41de5833e38bf11204317fb6791ea242b9381602b216f865f3
+- path: hw/dv/sv/test_vectors/vectors/hmac/HMAC_RFC4868.rsp
+  role: verification
+  scope:
+    kind: whole_file
+  reason: KAT vectors
+  units: 1
+  sha256: 9a639d8a2bdb067128e56fb9dd58016956a0d701d85b1433a2ac76ca4df5f5f7
+- path: hw/dv/sv/test_vectors/vectors/hmac/HMAC_SHA256.rsp
+  role: verification
+  scope:
+    kind: whole_file
+  reason: KAT vectors
+  units: 1
+  sha256: 3ad4ecb535d37617488adbcfe8634a6783707605eca268bcd8c9fe1a061413ab
+- path: hw/dv/sv/test_vectors/vectors/hmac/HMAC_SHA384.rsp
+  role: verification
+  scope:
+    kind: whole_file
+  reason: KAT vectors
+  units: 1
+  sha256: 860e7f1d1f18ac2988a6dcb5f377537d73846f2250e0dd48d2d037463e618d53
+- path: hw/dv/sv/test_vectors/vectors/hmac/HMAC_SHA512.rsp
+  role: verification
+  scope:
+    kind: whole_file
+  reason: KAT vectors
+  units: 1
+  sha256: 291d28895821958a080f7b0334ab9d3abc539944e14f602dcae1b6725802af34
+- path: hw/dv/tools/dvsim/testplans/alert_test_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared alert test plan imported by hmac
+  units: 1
+  sha256: d528544ca88a548a3de099fcfeddb832c0e016214d865e83f5c2368c1fc45500
+- path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared CSR testplan imported by hmac
+  units: 1
+  sha256: 017ecfde886312665da88ac9f4b31e7e640ef3ca3d656ae24f57d300348f538f
+- path: hw/dv/tools/dvsim/testplans/intr_test_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared interrupt plan imported by hmac
+  units: 1
+  sha256: be7ba0d65e58a8a9cc94eb30b4b5acb20a9716f0a5967abbf52ee10739e4eed7
+- path: hw/dv/tools/dvsim/testplans/stress_all_with_reset_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared stress/reset plan imported by hmac
+  units: 1
+  sha256: aab1d8b00b2816514dc8cc40c3b3050fbff7b2a6392aa6be06c73ffdf35b6fea
+- path: hw/dv/tools/dvsim/testplans/tl_device_access_types_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared TL access plan imported by hmac
+  units: 1
+  sha256: a24dad965c7b7c5eaa591acc1ed8bb1e02be1dd0181cdac84d048c5217e61db1
+- path: hw/ip/hmac/data/hmac_sec_cm_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC security countermeasure testplan
+  units: 1
+  sha256: 3b39a089725e03b0c3d67f1fc5a7bcf3f1321dfb854041a045936fe1a52e10b4
+- path: hw/ip/hmac/data/hmac_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC block testplan
+  units: 1
+  sha256: 0e5ea90ed7a75cb18dc5c573588275322e1a5fda36b1ab6309281007f54ec602
+- path: hw/ip/hmac/doc/checklist.md
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC development/verification checklist
+  units: 1
+  sha256: 4226adbdb31a112d92d265a0cf94acb5ae553aac15da997776c55e86aae2fe11
+- path: hw/ip/hmac/dv/README.md
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC DV document
+  units: 1
+  sha256: 13c2dcb01adead04b4bfce7bfd4e3c6b246e20e33dad8e56ed906b88ceff3e39
+- path: hw/ip/hmac/dv/cov/hmac_cov_excl.el
+  role: verification
+  scope:
+    kind: whole_file
+  reason: coverage exclusions
+  units: 1
+  sha256: a7f9f2f17574084fe75ce213d5c1b4141d762860476c26c30b2cc2f0241c921f
+- path: hw/ip/hmac/dv/cov/hmac_unr_excl.el
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UNR exclusions
+  units: 1
+  sha256: 1bb782e1327531bd7e0b659118cfbb0e29a6944d7f7d74bc9e3ed2a50d1d4e21
+- path: hw/ip/hmac/dv/cryptoc_dpi/hmac_wrap.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: DPI reference model wrapper for HMAC
+  units: 1
+  sha256: d1f2b87fa8f323c6b508147dc910bd474e704c8963dfb7a9aa07e910d411c3fd
+- path: hw/ip/hmac/dv/env/hmac_env.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: env connecting scoreboard/cov
+  units: 1
+  sha256: 45e7cf45b806b654401782ee7b5bcfb9b6902167e1e9da7fa395be0b4faa7d5e
+- path: hw/ip/hmac/dv/env/hmac_env_cfg.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: env configuration class
+  units: 1
+  sha256: 0bbaec7ec0ed5754fbf9964a6cd547d5b44c5a8655f68a7606d2650274c50a11
+- path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: functional coverage model
+  units: 1
+  sha256: 449b37dab8324e21a1aceb43352b0f2c060b1cd9f74038f92bbc380946856fc5
+- path: hw/ip/hmac/dv/env/hmac_if.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC interface used for checks/coverage signals
+  units: 1
+  sha256: 45f162a7dad15837f88e9714b0dfae9e39884a913adebd261fea80f5c51420ef
+- path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: scoreboard
+  units: 1
+  sha256: 7f0c0b8361cadb76a7c43128c94621e9c8b30f0ca52e089b4dc788dab2973e1b
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_back_pressure_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 0a22d638a09dd169a22c8e557a81a442dd0570433ba3c6eba9efbeaf90b60c16
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: base vseq
+  units: 1
+  sha256: c9fd73078d795ecb9f76659a93b1fc60201bf311186348acff0a7a07c0a17991
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_burst_wr_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: c43d7c7386c2ac23ec2956d8c519ef31516ee621ed0d86b99afbc6866770ab7d
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_common_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: common vseq
+  units: 1
+  sha256: a103599465e85a89051877d5c4161734c7d207119f5b02681466506a1e8a6f5f
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_datapath_stress_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: c24adeaba68a3a6a8403a820f0cabc0701209b85cf05f6a8d404bab0078fd9b3
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_directed_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 737243a532b3296fc8c41eedc9409504716f5aad7ff14b07e69fbb6ca9741608
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_error_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 92a5f8b503acfcfea5611aaa12d8e9792c7792cac44970d610f9a5f50bc577f7
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_long_msg_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 53f069f1e5ad14036f99e8f9fdaf6e76d921510a5ee28007d90215757ba5935d
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 23d0ee2f29f19580e8c68b448977bb077806c0779ab8a600909d834e56a9a89e
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_stress_all_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 1318317ab6a8cf73a00244c1f3270b063026a0471ad49e4b360ab3e6561dc6dc
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_stress_reset_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 71afaf21b82a7c96346454cea97e2252ff408ff63023c78ca12dbad32cd55234
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_test_vectors_hmac_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC test-vector vseq
+  units: 1
+  sha256: c42bf8866d3f6532e8940a171917b51e6b818a1538c616af7ec6f1309e1dd044
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_test_vectors_sha_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SHA test-vector vseq
+  units: 1
+  sha256: b95e914c293810d9f28f6a1d0d0d61edb994ab7fd8fab804c780c7a9d99379fc
+- path: hw/ip/hmac/dv/env/seq_lib/hmac_wipe_secret_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 31e716f81eb1b1064e6c08e093490a81fc0dd5994f0ee1cf547f455697cbbab8
+- path: hw/ip/hmac/dv/hmac_sim_cfg.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC dvsim config and test list
+  units: 1
+  sha256: d7406cf68af96496fb8923388a0a68670e1bb8118f9f51ef85ed525521feba06
+- path: hw/ip/hmac/dv/sva/hmac_bind.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: assertion bind
+  units: 1
+  sha256: 0b95e49112a52013a4686148d2dbab5cfd42e0b240d8122301e608e0181735d1
+- path: hw/ip/hmac/dv/tests/hmac_base_test.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UVM test
+  units: 1
+  sha256: c4d14398bc97eb62d292b860482ec9111189b5cc8e2fa9aabcdbc865c520d5e7
+- path: hw/ip/hmac/model/hmac_model.py
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Python HMAC reference model
+  units: 1
+  sha256: 08205a8e34bbcfe860141a8faa890da4770193f6d18b7c175c0af575c439fbeb
+- path: hw/top_earlgrey/data/ip/chip_hmac_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: chip-level HMAC testplan
+  units: 1
+  sha256: f3ca1124c712963de2a973282e6d73e1622160f1a8f4ee7cd94ff72dfec5a67f
+- path: hw/top_earlgrey/dv/chip_sim_cfg.hjson
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - chip_sw_clkmgr_off_hmac_trans
+    - chip_sw_hmac*
+    - chip_sw_keymgr_dpe_sideload_hmac
+  reason: chip-level HMAC test entries
+  units: 11
+  sha256: da85d0e434186e663ef16daea0c32cab1dccb7b6d03b235ca65ff2b294de51eb
+- path: hw/top_earlgrey/dv/chip_smoketests.hjson
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - chip_sw_hmac_smoketest
+  reason: chip smoke HMAC test
+  units: 2
+  sha256: a593c3a7a209889f8eaafeafd2df129887011b5826a3a0d364dd5e5e62de2c64
+- path: hw/top_earlgrey/dv/env/seq_lib/chip_sw_keymgr_dpe_sideload_hmac_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: chip vseq for keymgr_dpe sideload HMAC
+  units: 1
+  sha256: bfd58cb1f27c0438b209ea59c2f7f39c1a77ba1642ffd6d0d2337b40d24c31b6
+- path: sw/device/lib/dif/dif_hmac_unittest.cc
+  role: verification
+  scope:
+    kind: whole_file
+  reason: DIF HMAC unit test
+  units: 1
+  sha256: f4a0663d24c1d6903a30e4fa566e3bc59c473f998856c2cebffbb226bb3b4044
+- path: sw/device/tests/clkmgr_off_hmac_trans_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: clock-off HMAC transaction test
+  units: 1
+  sha256: f924a1931aacdc9f476c6ff936749586addc91db88e68ac7bf2a5bcd97120439
+- path: sw/device/tests/crypto/hmac_functest.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC oneshot functest
+  units: 1
+  sha256: 9ec839f6ee8fc7a80adba718ce2f385d6bb9f8ffad767c47ba63959f1c12b88d
+- path: sw/device/tests/crypto/hmac_multistream_functest.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC multistream functest
+  units: 1
+  sha256: 6cd795cbb64149af34ce80164980a690c1e9b506909a4b8ebe43289cfd0e0b38
+- path: sw/device/tests/hmac_enc_idle_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC idle test
+  units: 1
+  sha256: 25f874be652d1c285ac1320ae5e1de1f77160328d893839879e9fd11acfa3be1
+- path: sw/device/tests/hmac_enc_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC enc test
+  units: 1
+  sha256: 3358a87e2725df61cd8b381f0e521ccea1d3a64489acf9d8f7b0027e48dd2168
+- path: sw/device/tests/hmac_endianness_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC endianness test
+  units: 1
+  sha256: f35fc45d65dc5d0e0c96f8ae9ecd372e207126537d3b6140db8e5b565dbed789
+- path: sw/device/tests/hmac_error_conditions_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC error test
+  units: 1
+  sha256: 9c3c7d91538763eea593f97e215c89da4604c0012536552c4c4cd18883c6bf8d
+- path: sw/device/tests/hmac_secure_wipe_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC wipe test
+  units: 1
+  sha256: 7fa239a16f65592ad958d36c4b123cc313cde6c56d1945a8b90c006d29621da0
+- path: sw/device/tests/hmac_smoketest.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: HMAC smoke test
+  units: 1
+  sha256: 40bb6cd2d102432d39c1dd2156058e44405be4817ec01fb75e5f456b41ff23da
+- path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: keymgr sideload to HMAC test
+  units: 1
+  sha256: b84116bb1214976cecff01a0f5bede3cbd774a3776f8bd4f4c79c424686015b6
+excluded_notable:
+- path: hw/ip/hmac/doc/registers.md
+  reason: generated register docs
+- path: hw/ip/hmac/rtl
+  reason: RTL implementation
+- path: sw/device/silicon_creator/lib/drivers/hmac_functest.c
+  reason: driver functest, borderline
+- path: sw/device/tests/crypto/hmac_sha256_functest.c
+  reason: crypto library HMAC functest, not the IP; borderline
+- path: sw/vendor/cryptoc/hmac.c
+  reason: vendored
+incomplete: false
+notes: No standalone formal/FPV files found for hmac. Crypto-library HMAC tests (hmac_sha*_functest, hmac_drbg,
+  cryptotest, pentest SCA) not included. dv/sva only has bind file listed.

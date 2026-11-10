@@ -1,0 +1,13 @@
+{"t": "2026-11-10T19:41:29Z", "event": "  \u2192 Grep: msg_length_upper|MSG_LENGTH_UPPER"}
+{"t": "2026-11-10T19:41:30Z", "event": "  \u2192 Grep: msg_fifo|MSG_FIFO|byte_en|\\[1:0\\]"}
+{"t": "2026-11-10T19:41:33Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T19:41:33Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:41:36Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T19:41:37Z", "event": "  \u2192 Grep: wr_addr|a_mask|sar_skip_ctxt"}
+{"t": "2026-11-10T19:41:43Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T19:41:43Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T19:41:55Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:57Z", "event": "Resubmitting my verdict with the item 2 evidence marked as refutes. The earlier submission was rejected because that item had none."}
+{"t": "2026-11-10T19:42:02Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:42:06Z", "event": "I submitted an overall verdict of inconclusive: item 2 is withdrawn, and item 1 is inconclusive.\n\n- **Item 2 (write offset from address bits [1:0]): withdrawn.** The message-write sequence randomizes the full address within the FIFO window, so bits [1:0] vary, along with a random byte mask (`hmac_base_vseq.sv:358`). The scoreboard builds its expected message from the byte mask only (`hmac_scoreboard.sv:157`), and it compares digests. A design that wrongly used the low address bits would produce a digest mismatch. I did not confirm that the TL driver passes unaligned addresses through unchanged.\n- **Item 1 (128-bit length with upper 64 bits zero-padded): inconclusive.** The case that loads a huge `MSG_LENGTH_UPPER` only checks the length register readback (`hmac_base_vseq.sv:726`). The scoreboard skips its checks there, so the digest is not checked. Ordinary SHA-2 384/512 runs implicitly check the zero upper 64 bits through their digest comparison. The repository does not settle whether that counts as a test of this requirement."}
+{"t": "2026-11-10T19:42:06Z", "event": "[11 turns, $0.1096]"}

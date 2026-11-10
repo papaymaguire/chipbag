@@ -1,0 +1,36 @@
+finding_hash: c41c873809d78213
+started_at: '2026-11-10T22:08:54Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The shared dvsim csr_tests.hjson defines generic csr_rw and csr_bit_bash tests, and many IP
+    sim configs import it, including aes, hmac and kmac. These tests run over every register and check
+    read-back values, so the "planned only" status looks wrong. The finding does not name the block, so
+    I could not confirm which sim config it maps to. I did not read the csr_rw or csr_bit_bash sequence
+    code, so I did not confirm the checks themselves.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 29
+    line_end: 33
+    quote: "name: \"{name}_csr_rw\"\n      build_mode: \"cover_reg_top\"\n      run_opts: [\"+csr_rw\"\
+      ]\n      en_run_modes: [\"csr_tests_mode\"]\n      reseed: 5"
+    role: refutes
+    note: Generic CSR RW test is defined in the shared test library and is enabled per block.
+  searches:
+  - what: sim configs importing csr_tests.hjson
+    where: hw/ip/**/*sim_cfg.hjson
+    found: 28 IP configs including aes, hmac and kmac
+  - what: csr_mem_rw_with_rand_reset in aes/hmac/kmac
+    where: hw/ip/{aes,hmac,kmac}
+    found: no direct matches, so the test is defined only in the shared library
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    reason: Shared generic CSR test definitions (csr_rw, csr_bit_bash) imported by block sim configs.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.033450400000000005
+error: null

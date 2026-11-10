@@ -1,0 +1,16 @@
+{"t": "2026-11-10T20:40:40Z", "event": "  \u2192 Grep: MBOX1_VALID_AXI_USER|MBOX1_AXI_USER_LOCK|mbox1_axi_user_lock|mbox1_valid_axi_user"}
+{"t": "2026-11-10T20:40:41Z", "event": "  \u2192 Grep: MBOX1_VALID_AXI_USER|MBOX1_AXI_USER_LOCK"}
+{"t": "2026-11-10T20:40:44Z", "event": "  \u2192 Grep: MBOX1_(VALID_AXI_USER|AXI_USER_LOCK)"}
+{"t": "2026-11-10T20:40:44Z", "event": "  \u2192 Grep: MBOX1_(VALID_AXI_USER|AXI_USER_LOCK)"}
+{"t": "2026-11-10T20:40:46Z", "event": "Need to see whether a test uses these tasks with mbox 1 and checks lock behavior."}
+{"t": "2026-11-10T20:40:47Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_common_tasks.svh"}
+{"t": "2026-11-10T20:40:48Z", "event": "  \u2192 Grep: MCU_MBOX_AXI_CFG_STRIDE|AXI_USER_LOCK"}
+{"t": "2026-11-10T20:40:51Z", "event": "  \u2192 Grep: get_mcu_mbox_(valid_axi_user|axi_user_lock)_address"}
+{"t": "2026-11-10T20:40:51Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/libs/mci/mci.c"}
+{"t": "2026-11-10T20:40:54Z", "event": "  \u2192 Grep: mcu_mbox_config_axi_user|mbox_num|axi_user.*lock|lock.*axi_user"}
+{"t": "2026-11-10T20:40:55Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/libs/mci/mci.c"}
+{"t": "2026-11-10T20:40:58Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/libs/caliptra_ss_lib/caliptra_ss_lib.c"}
+{"t": "2026-11-10T20:40:59Z", "event": "  \u2192 Grep: add_mask_entry\\(|mask_table|reg_mask"}
+{"t": "2026-11-10T20:41:09Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:41:12Z", "event": "I submitted the verdict as verified: none of the five items has a test that checks it.\n\nThe only stimulus that reaches these registers is the configure helper in `caliptra_ss_lib.c` (`mcu_mbox_configure_valid_axi`). It writes the five valid-user slots and then sets each lock bit. It never writes after the lock or reads anything back. This applies to all five items.\n\nEverything else I found only touches the registers without testing them:\n- **Address helpers:** their only caller is `mcu_mbox_soc_agent_write_fw_image.svh`, and it uses the default mailbox 0.\n- **Reset-value and mask tables in `mci.c`:** these list the MBOX1 registers but don't check lock-then-write behaviour.\n\nI did not search outside `src` for formal or assertion property files."}
+{"t": "2026-11-10T20:41:12Z", "event": "[14 turns, $0.1170]"}

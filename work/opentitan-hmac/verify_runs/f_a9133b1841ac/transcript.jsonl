@@ -1,0 +1,13 @@
+{"t": "2026-11-10T20:57:05Z", "event": "  \u2192 Grep: sideload|key_valid|key_swap"}
+{"t": "2026-11-10T20:57:06Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/doc/theory_of_operation.md"}
+{"t": "2026-11-10T20:57:09Z", "event": "  \u2192 Grep: sideload|key_valid|key_swap"}
+{"t": "2026-11-10T20:57:09Z", "event": "  \u2192 Grep: sideload|key_valid"}
+{"t": "2026-11-10T20:57:10Z", "event": "Sideloading is disabled in DV."}
+{"t": "2026-11-10T20:57:10Z", "event": "  \u2192 Submit_verdict: "}
+{"t": "2026-11-10T20:57:16Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:57:21Z", "event": "  \u2192 Grep: sideload"}
+{"t": "2026-11-10T20:57:21Z", "event": "  \u2192 Grep: hmac.*sideload|sideload.*hmac"}
+{"t": "2026-11-10T20:57:24Z", "event": "  \u2192 Grep: key_swap|valid|abort|SwInvalid|new key|regenerat"}
+{"t": "2026-11-10T20:57:34Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:57:39Z", "event": "I submitted the verdict as verified: I found no test that checks any of the five key-sideloading items, and the submission was accepted.\n\n- **DV:** the HMAC verification environment forces `CFG.sideload` to 0 in randomized configs, with a `TODO(#31634)` at `hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv:211`. The scoreboard applies `key_swap` only to register keys. A key sideload agent and testbench interface exist, but they are never used to drive sideloaded operations.\n- **Firmware test:** `sw/device/tests/keymgr_dpe_sideload_hmac_test.c` is the only HMAC sideload test. It checks that starting HMAC with an invalid sideload key is blocked and reports `SwInvalidConfig`. That is not one of the five items. In particular, it does not check that the digest or SHA-2 state is cleared on an abort.\n\nNone of the five items is covered:\n- Key replaced without deasserting valid.\n- SHA-2 cleared on abort.\n- Valid held for a whole operation.\n- `key_swap` having no effect on a sideloaded key.\n- No copy of the key kept inside HMAC.\n\nThe first submission was rejected because one quote did not match the file text and I had recorded too few searches. I corrected both and resubmitted. I only read the cited spec section, the DV scoreboard and base sequence, and grep hits for the firmware test, so I did not read the full firmware test or the RTL."}
+{"t": "2026-11-10T20:57:39Z", "event": "[11 turns, $0.0765]"}

@@ -1,0 +1,60 @@
+finding_hash: 08d721731d01a5d7
+started_at: '2026-11-10T20:35:53Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The register description in mcu_mbox_csr.rdl defines terminal as any non-BUSY TARGET_STATUS
+    value. The spec's encoding table (BUSY, DATA_READY, COMPLETE, FAILURE) lists the values. A terminal
+    write returns ownership to Root, clears TARGET_USER and TARGET_USER_VALID, and notifies Root. The
+    RTL matches this.
+  evidence:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 106
+    line_end: 106
+    quote: Writing any terminal (non-BUSY) value ends the target's SRAM ownership, clears TARGET_USER
+      and TARGET_USER_VALID, and notifies Root.
+    role: refutes
+    note: Register description defines terminal as non-BUSY and states the consequences.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1421
+    line_end: 1426
+    quote: '| 0 | BUSY |
+
+      | 1 | DATA_READY |
+
+      | 2 | COMPLETE |
+
+      | 3 | FAILURE |'
+    role: refutes
+    note: Encoding table; BUSY=0 is the only non-terminal value.
+  - path: src/mci/rtl/mcu_mbox.sv
+    line_start: 279
+    line_end: 279
+    quote: assign target_terminal_write = target_status_busy_q && !target_status_busy;
+    role: context
+    note: RTL treats a transition away from BUSY as the terminal write.
+  searches:
+  - what: terminal / TARGET_STATUS in docs
+    where: docs/
+    found: Hardware spec only says 'terminal' without a definition; the encoding table is at 1421.
+  - what: TARGET_STATUS description
+    where: src/mci/rtl/mcu_mbox_csr.rdl
+    found: Defines terminal as non-BUSY, with the ownership and clearing effects.
+  near_misses:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1413
+    line_end: 1414
+    why_not: The cited sentence is vague on its own, but the register description in the RDL resolves
+      it.
+  items: []
+  new_sources:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    reason: Register description defining terminal TARGET_STATUS as non-BUSY.
+  resolution: Terminal means any non-BUSY value (1, 2 or 3). The spec section could add this definition
+    to the ownership text. The RTL treats a BUSY to non-BUSY transition as the terminal write.
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.0724958
+error: null

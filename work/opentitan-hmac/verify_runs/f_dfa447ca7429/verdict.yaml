@@ -1,0 +1,40 @@
+finding_hash: 864a9860af95fa17
+started_at: '2026-11-10T19:38:28Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No other spec text says whether bits [2:0] of MSG_LENGTH_LOWER read back as written or as zero.
+    Nothing says whether hardware-updated values always have them clear, or whether the padding computation
+    excludes them. The only related text is "Message is byte granularity", which implies the bits carry
+    no information but doesn't settle the readback behavior.
+  evidence:
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 528
+    line_end: 529
+    quote: Message is byte granularity.
+    role: supports
+    note: The only statement about bits [2:0], next to 'Lower 3 bits [2:0] are ignored.' It gives no readback
+      or write semantics.
+  searches:
+  - what: message length, msg_length, MSG_LENGTH in the HMAC markdown docs
+    where: hw/ip/hmac/**/*.md
+    found: registers.md only repeats the hjson text. theory_of_operation.md covers padding and the length
+      in general terms but says nothing about bits [2:0]. programmers_guide.md covers context save and
+      restore without mentioning the ignored bits.
+  near_misses:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 59
+    line_end: 77
+    why_not: Describes padding and length computation generally. It doesn't say what happens to bits [2:0]
+      on write or readback.
+  items: []
+  new_sources: []
+  resolution: Add spec text stating whether writes to bits [2:0] are stored and read back, or read as
+    zero. It should also say whether the hardware length and padding computation ignore those bits. The
+    RTL was not checked.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0409384
+error: null

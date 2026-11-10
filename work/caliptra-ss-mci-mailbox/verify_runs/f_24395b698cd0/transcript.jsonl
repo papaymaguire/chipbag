@@ -1,0 +1,11 @@
+{"t": "2026-11-10T20:37:15Z", "event": "  \u2192 Grep: CMD_FAILURE"}
+{"t": "2026-11-10T20:37:17Z", "event": "Check the smoke tests, which write CMD_FAILURE."}
+{"t": "2026-11-10T20:37:17Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration; sed -n 195,240p testbench/sv_tests/mci/mci_mbox_ownership_flow.svh; grep -n -i \"status\" test_suites/smoke_test_mcu_mbox_valid_us"}
+{"t": "2026-11-10T20:37:19Z", "event": "Smoke tests write CMD_FAILURE as a payload attempt that must fail. Check the transaction task for status checks."}
+{"t": "2026-11-10T20:37:20Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci; grep -n -i \"status\" mci_mbox_ownership_flow.svh | head -40"}
+{"t": "2026-11-10T20:37:21Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci; sed -n 125,160p mci_mbox_ownership_flow.svh"}
+{"t": "2026-11-10T20:37:23Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci; sed -n 55,100p mci_mbox_ownership_flow.svh"}
+{"t": "2026-11-10T20:37:30Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:37:35Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:37:37Z", "event": "I verified the finding: no test checks that the status read back equals CMD_FAILURE.\n\nThe ownership-flow test in `mci_mbox_ownership_flow.svh` runs a CMD_FAILURE transaction. It writes the status at line 138 and then checks SRAM ownership and reads, not the CMD_STATUS value. Its final pass/fail check is only the error counter and the fatal-error output.\n\nThe smoke tests write CMD_FAILURE as a payload that must be rejected, so they don't check a real CMD_FAILURE outcome either. The verdict was accepted on the second submission, after the first was rejected over a mis-quoted line."}
+{"t": "2026-11-10T20:37:37Z", "event": "[8 turns, $0.0666]"}

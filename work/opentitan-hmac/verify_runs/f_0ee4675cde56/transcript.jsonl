@@ -1,0 +1,5 @@
+{"t": "2026-11-10T20:52:20Z", "event": "  \u2192 Grep: wipe|WIPE_SECRET"}
+{"t": "2026-11-10T20:52:22Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/data/hmac_testplan.hjson"}
+{"t": "2026-11-10T20:52:28Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:52:32Z", "event": "I verified the finding: no spec text in the repository answers what a `WIPE_SECRET` write clears.\n\n- **What the spec says:** `hmac.hjson` line 455 and `README.md` line 61 both use the open-ended \"such as\" wording. Neither lists the exact wiped state or says what values it takes. Neither says what happens to an in-progress hash.\n- **One partial answer:** `README.md` line 60 says the message FIFO is not wiped. That settles only the FIFO item.\n- **Testplan:** it only says the scoreboard checks that digest data are corrupted, so it gives no expected post-wipe values.\n\nI did not read the RTL or the DV scoreboard, so the resolution (list the wiped state, the values written, and the in-progress effect) comes from the spec text alone."}
+{"t": "2026-11-10T20:52:32Z", "event": "[4 turns, $0.0306]"}

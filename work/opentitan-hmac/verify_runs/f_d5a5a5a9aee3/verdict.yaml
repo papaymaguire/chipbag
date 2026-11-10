@@ -1,0 +1,82 @@
+finding_hash: 4461b3ade8a4f471
+started_at: '2026-11-10T19:43:55Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The HMAC DV env drives CMD.hash_start, hash_process, hash_stop and hash_continue in its vseqs,
+    and the scoreboard predicts and checks digest, done interrupt, idle status and error codes from those
+    writes. hwext and hwqe are implementation attributes of the register. They are exercised implicitly,
+    because the hardware only starts, stops or continues hashing if it sees the qualified write, and any
+    failure shows up as a digest or interrupt mismatch.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 233
+    line_end: 235
+    quote: "task hmac_base_vseq::trigger_hash_continue();\n  `uvm_info(`gfn, \"triggering hash to continue\"\
+      , UVM_LOW)\n  csr_wr(.ptr(ral.cmd), .value(1'b1 << HashContinue));"
+    role: refutes
+    note: Stimulus writing hash_continue (a CMD write).
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 248
+    line_end: 250
+    quote: "task hmac_base_vseq::trigger_hash_stop();\n  `uvm_info(`gfn, \"triggering hash to stop\",\
+      \ UVM_LOW)\n  csr_wr(.ptr(ral.cmd), .value(1'b1 << HashStop));"
+    role: refutes
+    note: Stimulus writing hash_stop.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 182
+    line_end: 188
+    quote: if (item.a_data[HashProcess] && (hmac_start || hmac_continue)) begin
+    role: refutes
+    note: Scoreboard predicts the digest from CMD writes. The digest is then compared against the DUT,
+      so a missing write pulse would fail the check.
+  searches:
+  - what: hash_start, hash_process, hash_stop and hash_continue use in the DV tree
+    where: hw/ip/hmac/dv
+    found: Vseqs drive all four. The scoreboard models CMD writes and checks the digest, the done interrupt,
+      idle status and error codes.
+  near_misses:
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 378
+    line_end: 380
+    why_not: The CMD register is excluded from generic CSR write tests (CsrExclWrite). Functional tests
+      still cover the writes.
+  items:
+  - id: cr_050d2960d9a1
+    outcome: withdrawn
+    reason: hash_stop is written by trigger_hash_stop, and the scoreboard checks the resulting stop and
+      digest behaviour. This only works if the hardware receives the write pulse.
+    evidence:
+    - 1
+    - 2
+  - id: cr_1517fff9b261
+    outcome: withdrawn
+    reason: hash_process is written and its effect is checked through the digest and the done interrupt.
+      The external register implementation is exercised and checked this way.
+    evidence:
+    - 2
+  - id: cr_322bd3d61e3a
+    outcome: withdrawn
+    reason: hash_continue is written by trigger_hash_continue and its effect is checked in the scoreboard.
+    evidence:
+    - 0
+    - 2
+  - id: cr_6ffabed85358
+    outcome: withdrawn
+    reason: hash_start is written in every hash test, and the digest is checked for each.
+    evidence:
+    - 2
+  - id: cr_8c35dbd4c060
+    outcome: withdrawn
+    reason: hash_continue only takes effect in hardware through the write-qualifier pulse. The save-and-restore
+      tests check the resulting digest.
+    evidence:
+    - 0
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 10
+cost_usd: 0.0882442
+error: null

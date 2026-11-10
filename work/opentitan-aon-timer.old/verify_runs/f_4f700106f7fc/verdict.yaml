@@ -1,0 +1,47 @@
+finding_hash: f4959b8c6618f80a
+started_at: '2026-11-10T22:06:23Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The aon_timer README states the bark condition: a bark fires on every AON clock tick when
+    the count is at least the threshold. That settles the main ambiguity, equality versus >=, including
+    a count written above the threshold. The exact cycle latency including CDC is not given, but the finding''s
+    core question is answered.'
+  evidence:
+  - path: hw/ip/aon_timer/README.md
+    line_start: 55
+    line_end: 55
+    quote: If the timer is enabled, there is a "bark" on every AON clock tick when the count is at least
+      [`WDOG_BARK_THOLD`](doc/registers.md#wdog_bark_thold).
+    role: refutes
+    note: Specifies >= semantics, evaluated every AON tick while enabled.
+  - path: hw/ip/aon_timer/rtl/aon_timer_core.sv
+    line_start: 83
+    line_end: 83
+    quote: assign wdog_intr_o = wdog_incr & (reg2hw_i.wdog_count.q >= reg2hw_i.wdog_bark_thold.q);
+    role: context
+    note: RTL implements >=.
+  searches:
+  - what: bark in aon_timer docs
+    where: hw/ip/aon_timer/**/*.md
+    found: README.md line 55 says bark when count is at least threshold
+  - what: RTL comparison
+    where: aon_timer_core.sv
+    found: uses >=
+  near_misses:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 8
+    line_end: 8
+    why_not: It gives the clock domain but no cycle latency, so the latency part stays unspecified.
+  items: []
+  new_sources:
+  - path: hw/ip/aon_timer/README.md
+    reason: Defines the bark condition as count >= threshold.
+  resolution: The design uses >=. The README already specifies this. A spec change could add the exact
+    latency, including CDC, from the condition to the interrupt assert.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0359807
+error: null

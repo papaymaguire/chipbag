@@ -1,0 +1,14 @@
+{"t": "2026-11-10T19:41:40Z", "event": "  \u2192 Grep: notif_mbox[01]_(ecc_cor|target_done)_intr_count|notif_mbox0_cmd_avail_intr_count_incr|intr_count_incr"}
+{"t": "2026-11-10T19:41:41Z", "event": "  \u2192 Grep: intr_count|intr_block_rf"}
+{"t": "2026-11-10T19:41:43Z", "event": "  \u2192 Grep: notif_mbox\\w*_intr_count|notif_mbox\\w*count_incr"}
+{"t": "2026-11-10T19:41:44Z", "event": "  \u2192 Grep: intr_count|count_incr"}
+{"t": "2026-11-10T19:41:45Z", "event": "Those are probably generic register address defines. Check for mbox-specific counter use."}
+{"t": "2026-11-10T19:41:47Z", "event": "  \u2192 Grep: NOTIF_MBOX[01]_\\w*(INTR_COUNT|COUNT_INCR)"}
+{"t": "2026-11-10T19:41:47Z", "event": "  \u2192 Grep: notif_mbox[01]_\\w*(intr_count|count_incr)"}
+{"t": "2026-11-10T19:41:49Z", "event": "  \u2192 Grep: notif_mbox[01]_\\w*(intr_count|count_incr)"}
+{"t": "2026-11-10T19:41:51Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:41:55Z", "event": "  \u2192 Grep: mbox|MBOX"}
+{"t": "2026-11-10T19:42:08Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:42:17Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:42:20Z", "event": "I submitted the verdict on f_23e032bcfedb as **verified**, but two of the five items are withdrawn.\n\n- **Items 4 and 5 (`notif_mbox1_ecc_cor` and `notif_mbox1_target_done` count fields are counters): withdrawn.** `mcu_intr_handler.c` triggers each mbox notification through the software trigger register. It then sums the hardware count registers and compares the sum to a firmware count, and it kills the simulation on a mismatch. The check is aggregate, so it is weak. It would still fail if one of these counters did not increment.\n- **Items 1\u20133 (hardware rising-edge increment, the pulse field mirroring the event, the 1-cycle pulse): untested.** No test reads or checks the `count_incr` registers. The only references to them are address defines, coverage points, a register-list table and the register RTL. The `mcu_intr_handler.c` test drives the software trigger register, not the hardware event input.\n\nThe submission did not break the verdict out per item, because the tool accepted one outcome plus per-item entries."}
+{"t": "2026-11-10T19:42:20Z", "event": "[12 turns, $0.1294]"}

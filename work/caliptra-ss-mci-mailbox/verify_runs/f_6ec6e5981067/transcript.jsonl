@@ -1,0 +1,12 @@
+{"t": "2026-11-10T19:44:02Z", "event": "  \u2192 Grep: intr_count_incr|incrsaturate|count_incr_r"}
+{"t": "2026-11-10T19:44:02Z", "event": "  \u2192 Grep: notif_mbox[01]_(soc_req_lock|target_done|cmd_avail)_intr_count"}
+{"t": "2026-11-10T19:44:05Z", "event": "  \u2192 Grep: intr_count|count_incr"}
+{"t": "2026-11-10T19:44:05Z", "event": "  \u2192 Grep: intr_count|count_incr"}
+{"t": "2026-11-10T19:44:07Z", "event": "Coverage only, no checks. Quick check for tests touching interrupt counters."}
+{"t": "2026-11-10T19:44:08Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T19:44:10Z", "event": "  \u2192 Grep: incr_r|INCR_R|saturat"}
+{"t": "2026-11-10T19:44:12Z", "event": "Only address defines; no test uses them."}
+{"t": "2026-11-10T19:44:19Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:44:25Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:44:30Z", "event": "I verified the finding: I found no test that checks any of the five items.\n\n- **What exists:** outside the RDL and the generated register RTL, the interrupt count and increment registers appear only in address defines (`soc_address_map_defines.svh`) and in coverpoints (`mci_top_cov_if.sv`). Coverpoints sample values and cannot fail a test.\n- **What's missing:** no test drives a counter to its maximum to check saturation, writes the `pulse` increment registers to check `swwel = false`, or checks the one-clock-cycle pulse. A search for the `notif_mbox*_intr_count` names outside the RDL, SV and header files found nothing.\n- **Coverage of the search:** I ran four searches, and some were limited. For example, the integration-test search was capped at 10 files and 15 lines. `smoke_test_wdt.c` also matched the broad `intr_count` search, and I never opened it. The finding names only the `notif_mbox` and `ecc_unc` counters, so that file would matter only if it also writes the `notif_mbox` or `ecc_unc` increment registers. So the \"no test\" conclusion is strong but not exhaustive.\n\nThe submission initially failed because the first tool name was wrong. I resubmitted through `mcp__verify__submit_verdict` and it was accepted."}
+{"t": "2026-11-10T19:44:30Z", "event": "[9 turns, $0.0682]"}

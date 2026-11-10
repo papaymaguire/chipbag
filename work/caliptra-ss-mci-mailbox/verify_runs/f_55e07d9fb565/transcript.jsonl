@@ -1,0 +1,9 @@
+{"t": "2026-11-10T20:38:25Z", "event": "  \u2192 Grep: intr_count_r|incrsaturate|saturat"}
+{"t": "2026-11-10T20:38:27Z", "event": "  \u2192 Grep: intr_count|0xFFFFFFFF|saturat"}
+{"t": "2026-11-10T20:38:28Z", "event": "  \u2192 Grep: saturat|intr_count"}
+{"t": "2026-11-10T20:38:29Z", "event": "Check for any test driving counts to saturation (0xFFFFFFFF)."}
+{"t": "2026-11-10T20:38:30Z", "event": "  \u2192 Grep: saturat|overflow"}
+{"t": "2026-11-10T20:38:40Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:38:50Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:38:53Z", "event": "I submitted the verdict as verified: all five items stand as untested. No test drives any of these interrupt event counters to its maximum value and checks that it holds there.\n\nI searched the repository for saturation and overflow terms and for the counters' register names. The only relevant hits were these two:\n- **`mcu_intr_handler.c`:** it triggers each interrupt once and counts it, so it never gets near saturation.\n- **`libs/mci/mci.c`:** it lists the counters in a register reset and access table, with no saturation stimulus.\n\nI searched each of the five counters by name as well, and every one came back with only its `mci.c` table entry.\n\nThe verifier first rejected my submission because I had recorded too few searches. I resubmitted with one search per item, and that was accepted."}
+{"t": "2026-11-10T20:38:53Z", "event": "[7 turns, $0.0951]"}

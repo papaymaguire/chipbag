@@ -1,0 +1,8 @@
+{"t": "2026-11-10T20:52:36Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/data/hmac.hjson"}
+{"t": "2026-11-10T20:52:37Z", "event": "  \u2192 Grep: key_swap|zero.?pad|padding"}
+{"t": "2026-11-10T20:52:39Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/doc/theory_of_operation.md"}
+{"t": "2026-11-10T20:52:39Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/doc/registers.md"}
+{"t": "2026-11-10T20:52:45Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:52:49Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:52:52Z", "event": "I submitted the verdict as verified: no specification text in the repository says where the padding zeros go for each `key_swap` value.\n\n- **What I found:** `theory_of_operation.md:125` and `registers.md:197` repeat the same sentence as `hmac.hjson:311`. The 80-bit example gives the lengths (a 128-bit key length, the 80-bit key and 48 zero bits) but not where the zeros sit.\n- **Nearest text:** `registers.md:234` and `theory_of_operation.md:123` say the key registers are big-endian by default and that `key_swap` swaps the byte order of each `KEY_*` register. Neither says how that moves the zeros in a partial word.\n- **What I didn't check:** I did not read the RTL or the DV tests, so I have no view of what the design actually does. The verdict is based on the HMAC docs only."}
+{"t": "2026-11-10T20:52:52Z", "event": "[7 turns, $0.0467]"}

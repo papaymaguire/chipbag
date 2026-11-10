@@ -1,0 +1,20 @@
+{"t": "2026-11-10T20:41:47Z", "event": "  \u2192 Grep: intr_count_incr|incrsaturate|intr_count_r"}
+{"t": "2026-11-10T20:41:48Z", "event": "  \u2192 Grep: notif_mbox0_ecc_cor_intr_count|error_mbox0_ecc_unc_intr_count"}
+{"t": "2026-11-10T20:41:50Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:41:52Z", "event": "Check mcu_intr_handler and the others for counter increments checks."}
+{"t": "2026-11-10T20:41:53Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:41:53Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:41:56Z", "event": "  \u2192 Grep: INTR_COUNT_R|INTR_COUNT_INCR|intr_count_r"}
+{"t": "2026-11-10T20:41:57Z", "event": "  \u2192 Grep: intr_count_r|intr_count_incr"}
+{"t": "2026-11-10T20:42:00Z", "event": "  \u2192 Grep: INTR_COUNT_R"}
+{"t": "2026-11-10T20:42:00Z", "event": "  \u2192 Grep: INTR_COUNT_R"}
+{"t": "2026-11-10T20:42:03Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T20:42:04Z", "event": "  \u2192 Grep: error_mbox0_ecc_unc_intr_count_r.*incr|intr_count_incr_r|incrvalue|incrsaturate"}
+{"t": "2026-11-10T20:42:08Z", "event": "  \u2192 Grep: error_mbox0_ecc_unc_intr_count_r\\.count|error_mbox0_ecc_unc_intr_count_r.*incr|error_mbox0_ecc_unc_intr_count_r.*saturat"}
+{"t": "2026-11-10T20:42:11Z", "event": "  \u2192 Grep: error_mbox0_ecc_unc_intr_count_r\\.cnt\\.(incr|next)|error_mbox0_ecc_unc_intr_count_incr_r\\.pulse\\."}
+{"t": "2026-11-10T20:42:16Z", "event": "Checking whether the software trigger drives the count-increment pulse, which decides whether `mcu_intr_handler` exercises item 2."}
+{"t": "2026-11-10T20:42:17Z", "event": "  \u2192 Grep: error_mbox0_ecc_unc_intr_count_incr_r\\.pulse\\.value\\s*<=|error_mbox0_ecc_unc_intr_count_incr_r\\.pulse\\.(next|load_next)\\s*=|error_mbox0_ecc_unc_intr_count_incr_r\\.pulse\\.we|hwif_in.*error_mbox0_ecc_un"}
+{"t": "2026-11-10T20:42:19Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.sv"}
+{"t": "2026-11-10T20:42:33Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:42:38Z", "event": "I submitted the verdict as verified. Four of the five items stand as untested; the \"increments by 1 per event\" item (`cr_7a8284f75705`) is only partly covered, so I marked it inconclusive.\n\n- **`cr_7a8284f75705`, increments by 1 per event (inconclusive):** `mcu_intr_handler.c` fires one interrupt per software trigger. It compares a firmware count with the sum of the hardware count registers and fails the sim on mismatch. That is a real check of +1 per event, but it is aggregate and goes only through the software trigger path. I read only part of the RTL path from trigger to increment, so I couldn't settle it.\n- **`cr_77c7ae0b431e`, rising edge of the hardware event input (verified):** no test drives the hardware event input. The only stimulus is the software trigger register.\n- **`cr_81ffd1fa635f`, 1-cycle pulse (verified):** no test checks the pulse width.\n- **`cr_84e8df210e83` and `cr_8a0bed11bd11`, saturation (verified):** no test drives a counter to `0xffffffff`. The RTL does implement the saturation.\n\nI found no other test that reads or checks these counters. The coverage file and `libs/mci/mci.c` only list the registers."}
+{"t": "2026-11-10T20:42:38Z", "event": "[17 turns, $0.1289]"}

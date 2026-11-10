@@ -1,0 +1,54 @@
+finding_hash: 837a4d740b4aa0e7
+started_at: '2026-11-10T19:37:53Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The same sentence appears in registers.md (CFG.key_length) and in hmac.hjson. No document gives
+    the KEY_n word or byte positions of the zero padding for either key_swap value. The only other text
+    says key_swap swaps the endianness of each KEY_* register and that the default is big endian. That
+    does not say which KEY words hold the key bits and which hold zeros.
+  evidence:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 125
+    line_end: 126
+    quote: The position of these zeros depends on the endianness, thus on the programmed [`CFG.key_swap`](registers.md#cfg--key_swap).
+    role: supports
+    note: Says the position depends on key_swap, but gives no positions.
+  - path: hw/ip/hmac/doc/registers.md
+    line_start: 234
+    line_end: 234
+    quote: If 1 the endianness of each KEY_* register is swapped. Default value (value 0) is big endian
+      representation of the KEY_* CSRs.
+    role: context
+    note: Describes only the per-register byte swap. It does not say which KEY words hold the key bits
+      and which hold the zeros.
+  - path: hw/ip/hmac/doc/registers.md
+    line_start: 197
+    line_end: 198
+    quote: The position of these zeros depends on the endianness, thus on the programmed [`CFG.key_swap`](registers.md#cfg--key_swap).
+    role: supports
+    note: Repeats the same vague sentence in the register description. The 80-bit example gives no register
+      layout.
+  searches:
+  - what: key_swap, zero padding, endianness in the HMAC docs and hjson
+    where: hw/ip/hmac
+    found: Only the same vague sentence (theory_of_operation.md, registers.md, hmac.hjson) and the generic
+      key_swap description. The programmer's guide only mentions key_swap being ignored for sideloaded
+      keys.
+  near_misses:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 107
+    line_end: 107
+    why_not: Shows a big-endian key[255:0] with the zeros after the key, but only for the padding to block
+      size. It does not cover padding a short key up to the next supported key length, nor key_swap=1.
+  items: []
+  new_sources: []
+  resolution: The spec should list the exact KEY_0..KEY_n contents for key_swap=0 and key_swap=1. For
+    an 80-bit key with key_length=128, that means saying whether the zero padding goes in the trailing
+    KEY words or in the low bytes of the last used word. I did not check the RTL for what the design does.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0489397
+error: null

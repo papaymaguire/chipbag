@@ -1,0 +1,9 @@
+{"t": "2026-11-10T20:54:46Z", "event": "  \u2192 Grep: fifo_full|hmac_idle|wipe_secret|WIPE_SECRET"}
+{"t": "2026-11-10T20:54:46Z", "event": "  \u2192 Grep: wipe_secret|hmac_idle|fifo_full"}
+{"t": "2026-11-10T20:54:48Z", "event": "  \u2192 Grep: hmac_idle|fifo_full|wipe|key"}
+{"t": "2026-11-10T20:54:51Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:54:52Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:54:52Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/rtl/hmac.sv"}
+{"t": "2026-11-10T20:55:02Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:55:06Z", "event": "I withdrew all five items: each has a check that would fail the test if the behaviour were wrong. I did not read the sequences that read STATUS or trigger wipe, so that part rests on the testplan and sim config.\n\n- **STATUS.fifo_full and STATUS.hmac_idle:** the HMAC scoreboard predicts both bits on every STATUS read and compares them with what the DUT returns (`hw/ip/hmac/dv/env/hmac_scoreboard.sv:383`).\n- **WIPE_SECRET replication:** the assertion `WipeSecretKeyAssert` in `hw/ip/hmac/rtl/hmac.sv:1054` requires the secret key to equal the 32-bit wipe value repeated across its full width. The `hmac_wipe_secret` test (in `hmac_sim_cfg.hjson`) supplies the stimulus.\n- **KEY.key (both items):** the scoreboard models every key write (`hmac_scoreboard.sv:328`), and the expected digest depends on the key. A missing write pulse or a wrongly implemented external register would corrupt the digest and fail the comparison.\n\nThe scoreboard treats a `wipe_secret` write as \"do nothing\", but the assertion and the digest-corruption check still cover it. I recorded that as a near miss."}
+{"t": "2026-11-10T20:55:06Z", "event": "[8 turns, $0.0667]"}

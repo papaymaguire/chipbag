@@ -1,0 +1,96 @@
+finding_hash: 08fd7d019087a96f
+started_at: '2026-11-10T20:56:02Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks the 80/96-cycle block times, the 240-cycle HMAC overhead or the 20% throughput.
+    The scoreboard explicitly defers cycle-accurate checks ("future throughput test should check the accurate
+    cycles"). It only models the key-padding delay (80/112 cycles) and the FIFO-full/empty flags. Those
+    are near misses. They do not check the stated per-block or total latency, nor that software cannot
+    push data while the FIFO is full.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 414
+    line_end: 414
+    quote: // future throughput test should check the accurate cycles
+    role: supports
+    note: Scoreboard admits no throughput or cycle-accurate check exists.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 773
+    line_end: 778
+    quote: key_process_cycles = HMAC_KEY_PROCESS_CYCLES_256;
+    role: context
+    note: Models only the key-padding delay as a prediction for FIFO reads. It is not a check of the per-block
+      latency or the 240-cycle total.
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 190
+    line_end: 190
+    quote: This adds an extra 240 cycles (80 for the inner key, 80 for the outer key, and 80 for the result
+      of the first round)
+    role: supports
+    note: The spec claim has no corresponding check.
+  searches:
+  - what: SHA-2 256 80-cycle block time check
+    where: hw/ip/hmac dv, rtl, doc (grep 80 cycles, cycle count, ROUNDS)
+    found: Only the HMAC_KEY_PROCESS_CYCLES_256 = 80 constant for key padding and a scoreboard comment
+      deferring the throughput test. No assertion on block latency.
+  - what: SHA-2 384/512 96-cycle block time check
+    where: hw/ip/hmac dv (grep 96, HMAC_KEY_PROCESS_CYCLES_512, cycles)
+    found: No 96-cycle check. Only the 112-cycle key-padding constant for 384/512.
+  - what: FIFO full blocks software pushes
+    where: hw/ip/hmac/dv (grep fifo_full, FIFO_FULL)
+    found: Scoreboard predicts the fifo_full status flag and the FIFO-empty interrupt (lines 664-720).
+      There is no check that software writes are blocked or stalled while the FIFO is full.
+  - what: 240-cycle HMAC overhead
+    where: hw/ip/hmac/dv (grep 240, key_process_cycles, hmac_smoke_vseq, hmac_base_vseq)
+    found: Only the inner key-padding delay is modeled to predict FIFO reads. The outer key and first-round-result
+      cycles are not modeled or checked.
+  - what: 20% / 64 bytes per 80 clk throughput
+    where: hw/ip/hmac/dv (grep throughput)
+    found: Only a scoreboard comment saying a future throughput test should check it, and a comment in
+      hmac_test_vectors_sha_vseq about speeding up the test.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 763
+    line_end: 795
+    why_not: Models only the key padding delay (80 cycles) to predict FIFO reads. It does not check the
+      total 240-cycle overhead or the block latency.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 664
+    line_end: 720
+    why_not: Predicts the FIFO full/empty flags and the interrupt. It does not check that software cannot
+      push more data while the FIFO is full.
+  items:
+  - id: cr_aeb18e72aa7a
+    outcome: verified
+    reason: No check of the 80-cycle block time.
+    evidence:
+    - 0
+  - id: cr_ba453872049c
+    outcome: verified
+    reason: No check of the 96-cycle block time for SHA-2 384/512.
+    evidence:
+    - 0
+  - id: cr_c8b49e8b7b1f
+    outcome: verified
+    reason: FIFO-full flags are modeled, but there is no check of the push-blocking behavior.
+    evidence:
+    - 0
+  - id: cr_ed89d1bd86c3
+    outcome: verified
+    reason: Only the key padding delay is modeled; the 240-cycle overhead is not checked.
+    evidence:
+    - 1
+    - 2
+  - id: cr_f6528a1e1fc7
+    outcome: verified
+    reason: The throughput test is explicitly deferred.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.0903222
+error: null

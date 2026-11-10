@@ -1,0 +1,7 @@
+{"t": "2026-11-10T21:04:35Z", "event": "  \u2192 Grep: key_length|digest_size"}
+{"t": "2026-11-10T21:04:37Z", "event": "  \u2192 Grep: key_length|digest_size|hmac_done|hash_stop"}
+{"t": "2026-11-10T21:04:40Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:04:40Z", "event": "  \u2192 Grep: hash_stop"}
+{"t": "2026-11-10T21:04:52Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:04:55Z", "event": "I submitted the verdict as verified, but only item 5 (hash_stop) actually stands. Items 1\u20134 are withdrawn.\n\n- **Items 1\u20134 (key_length, 384-bit key, digest_size, 1024-bit key):** these are checked. The DV sequences randomise one-hot `key_length` and `digest_size` values. The scoreboard computes the expected digest with a DPI model for every digest-size and key-length combination, including `Key_384` and `Key_1024`, and compares it with the DUT digest.\n- **Item 5 (hash_stop \u2192 hmac_done):** this has only indirect checking. The scoreboard checks that `hmac_done` is not spurious, and the stop-and-continue tests would time out if it never arrived. Nothing checks the timing \"as soon as the current block has been hashed\"."}
+{"t": "2026-11-10T21:04:55Z", "event": "[6 turns, $0.0684]"}

@@ -1,0 +1,12 @@
+{"t": "2026-11-10T20:41:03Z", "event": "  \u2192 Grep: mcu_mbox|MCU_MBOX"}
+{"t": "2026-11-10T20:41:03Z", "event": "  \u2192 Grep: intr_count|unaligned|misaligned"}
+{"t": "2026-11-10T20:41:06Z", "event": "  \u2192 Grep: unalign|misalign|not.*aligned|mbox.*intr_count|MBOX[01]?_.*INTR_COUNT|CMD_STATUS"}
+{"t": "2026-11-10T20:41:10Z", "event": "  \u2192 Grep: MCU_MBOX[01]?_(AXI_USER|INTR|SRAM_BASE)|mcu_mbox[01]?_(sram|intr)|MBOX[01]_SRAM|MBOX_SRAM_BASE"}
+{"t": "2026-11-10T20:41:11Z", "event": "  \u2192 Grep: mbox.*(notif|intr)|MCU_MBOX.*(notif|intr)"}
+{"t": "2026-11-10T20:41:13Z", "event": "  \u2192 Grep: mbox.*(notif|intr)"}
+{"t": "2026-11-10T20:41:14Z", "event": "  \u2192 Grep: unalign|misalign"}
+{"t": "2026-11-10T20:41:16Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T20:41:19Z", "event": "I'm checking the five items now. The search found a test that covers the interrupt item, and nothing for the other four, so I'm submitting the verdict."}
+{"t": "2026-11-10T20:41:26Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:41:30Z", "event": "I submitted the verdict: the finding stands for four of the five items, and I withdrew the interrupt item.\n\n- **Withdrawn, interrupt registers (cr_8797911c07bc):** `mcu_intr_handler.c` triggers each MBOX interrupt through its `_TRIG` register. It then compares the firmware count with the sum of the hardware `_INTR_COUNT_R` registers and kills the simulation on a mismatch. That covers the trig and count suffixes. I did not find a check of the `_en` and `_sts` fields for these interrupts.\n- **Verified untested:**\n  - DWORD-aligned SRAM access (cr_a3dd90e3ad99): there is no unaligned or misaligned access test in the mbox or MCI sources.\n  - CMD_STATUS unused when MCU holds the lock (cr_0d49e75f5219): the tests use CMD_STATUS as an ordinary register and never check the MCU-lock case.\n  - MBOX CSR range (cr_22b98fe21dde) and MBOX SRAM range (cr_488fae088122): tests reach these addresses through the base macros but never check the boundaries."}
+{"t": "2026-11-10T20:41:30Z", "event": "[10 turns, $0.1141]"}

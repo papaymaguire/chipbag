@@ -1,0 +1,93 @@
+finding_hash: fe3094235f8bb524
+started_at: '2026-11-10T19:41:37Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Items 4 and 5 (the mbox ecc_cor and target_done count fields are counters) are covered by mcu_intr_handler.c.
+    It fires each trigger and compares the summed hardware counts against a firmware count, and the test
+    is killed on mismatch. Items 1–3 (incr_r pulse and hardware rising-edge semantics) have no test or
+    check that reaches them. The only references to those registers are address defines, coverage points
+    and a register-list table.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 107
+    line_end: 107
+    quote: lsu_write_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF0_INTR_TRIG_R, MCI_REG_INTR_BLOCK_RF_NOTIF0_INTR_TRIG_R_NOTIF_MBOX0_TARGET_DONE_TRIG_MASK   );
+      mci_notif_intr_count++;
+    role: refutes
+    note: 'Stimulus: software-triggers the mbox0 target-done notification and increments the firmware
+      expected count.'
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 217
+    line_end: 217
+    quote: lsu_read_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_MBOX1_ECC_COR_INTR_COUNT_R        ) +
+    role: refutes
+    note: Hardware count register read and summed with the other notification counters.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 203
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: context
+    note: Equivalent check for the error counters. The notification sum is checked the same way, and the
+      test kills the sim on mismatch. This is an aggregate check.
+  searches:
+  - what: Any test reference to notif_mbox*_intr_count / count_incr
+    where: whole repo (src)
+    found: Only address defines, UVM and RTL register files, coverage points, the mci.c register-list
+      table, and mcu_intr_handler.c. No test references any count_incr register.
+  - what: mbox counter checks in the mcu_intr_handler test
+    where: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    found: Each mbox notification is triggered and the counters are compared in aggregate with the firmware
+      count.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 5530
+    line_end: 5540
+    why_not: These coverpoints only sample the incr_r field storage. They have no check.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 582
+    line_end: 592
+    why_not: This is a register-list table for reset or access checks. It does not test increment behavior.
+  items:
+  - id: cr_f0d7f62c747a
+    outcome: verified
+    reason: No test drives the hardware event input and checks the incr_r rising-edge behavior. The only
+      stimulus is the software trigger register.
+    evidence:
+    - 2
+  - id: cr_fb753857ed6c
+    outcome: verified
+    reason: No test reads or checks the incr_r pulse field.
+    evidence:
+    - 2
+  - id: cr_fd7b0222641a
+    outcome: verified
+    reason: No check of the 1-cycle incr pulse alongside the sticky event.
+    evidence:
+    - 2
+  - id: cr_01d650d8691a
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers MBOX1_ECC_COR and checks that the hardware counters sum to the firmware
+      count, so a counter that did not count would fail. The check is aggregate.
+    evidence:
+    - 0
+    - 1
+    - 2
+  - id: cr_0b89e28cd650
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers MBOX1_TARGET_DONE and checks that the hardware counters sum to the
+      firmware count, so a counter that did not count would fail. The check is aggregate.
+    evidence:
+    - 0
+    - 1
+    - 2
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Triggers notification interrupts and compares the hardware interrupt counters with the firmware
+      count.
+submissions: 2
+rejections: []
+turns: 12
+cost_usd: 0.1293779
+error: null

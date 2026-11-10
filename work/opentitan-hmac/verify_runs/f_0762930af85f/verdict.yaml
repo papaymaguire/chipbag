@@ -1,0 +1,94 @@
+finding_hash: 47a5704b2a7cb9bd
+started_at: '2026-11-10T20:53:06Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Items 1, 3 and 5 stay partially tested. Item 2 (five key lengths) is withdrawn: the repository
+    randomizes all lengths, covers each one, and checks digests against a DPI reference model. Item 4
+    (hmac_idle) is inconclusive: the scoreboard predicts the STATUS register, including the idle bit,
+    on reads, but I did not confirm that a test checks it against the idle conditions.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 71
+    line_end: 77
+    quote: "key_length: coverpoint cfg[KeyLengthMsb:KeyLengthLsb] {\n      bins key_128     = {6'h01};"
+    role: refutes
+    note: Per-key-length coverage bins exist, along with a cross against digest size at line 87.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 114
+    line_end: 116
+    quote: "constraint hmac_base_vseq::key_length_c {\n  $countones(key_length) == 1 dist {\n    1 :/\
+      \ 4,  // Key_128/Key_256/Key_384/Key_512/Key_1024/Key_None"
+    role: refutes
+    note: Stimulus randomizes all legal key lengths.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 877
+    line_end: 879
+    quote: if (key_length == Key_128) begin
+    role: refutes
+    note: The scoreboard computes the expected digest for each key length with the DPI reference model
+      and compares it.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1065
+    line_end: 1065
+    quote: void'(ral.status.hmac_idle.predict(.value(hmac_idle), .kind(UVM_PREDICT_READ)));
+    role: context
+    note: The scoreboard predicts STATUS.hmac_idle. This may give an indirect idle check, but I did not
+      confirm that it fails a test.
+  searches:
+  - what: key_length, Key_None, hmac_en in hmac dv env and base vseq
+    where: hw/ip/hmac/dv/env
+    found: Random key lengths with coverage bins. The scoreboard models the blocked-start condition for
+      hmac_en together with Key_None. No directed test for hmac_en=0 with Key_None.
+  - what: fifo_full and FIFO stall checks
+    where: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    found: The scoreboard tracks fifo_full and its coverage, but I found no check that bus writes are
+      stalled while the FIFO is full.
+  - what: status.hmac_idle and the idle pin
+    where: hw/ip/hmac/dv/env and sw/device/tests
+    found: The scoreboard predicts STATUS on reads. I found no SW test and no targeted idle-condition
+      test.
+  - what: WIPE_SECRET and UINT32_MAX in dv env
+    where: hw/ip/hmac/dv/env
+    found: The wipe check is only that the digest differs from the expected one. No check of internal
+      key, state or schedule.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 174
+    line_end: 176
+    why_not: The scoreboard models the blocked-start condition, but nothing explicitly targets hmac_en=0
+      with Key_None.
+  items:
+  - id: cr_db590d70ed32
+    outcome: verified
+    reason: No directed or explicit check; only incidental random coverage.
+    evidence: []
+  - id: cr_e5d424432a1f
+    outcome: withdrawn
+    reason: Random stimulus covers all five key lengths, there are coverage bins and a cross, and the
+      scoreboard checks the digest against the DPI model.
+    evidence:
+    - 0
+    - 1
+    - 2
+  - id: cr_1089c5d4e1c7
+    outcome: verified
+    reason: The scoreboard tracks fifo_full, but nothing checks that writes are stalled until space is
+      available.
+    evidence: []
+  - id: cr_c486e3895381
+    outcome: inconclusive
+    reason: STATUS is predicted and read, so an indirect idle check may exist. I did not confirm it.
+    evidence:
+    - 3
+  - id: cr_b0906404bd67
+    outcome: verified
+    reason: Only digest-level checks after a wipe; internal state is not checked.
+    evidence: []
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 10
+cost_usd: 0.1273608
+error: null

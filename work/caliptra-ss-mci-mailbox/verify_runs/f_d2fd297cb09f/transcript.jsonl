@@ -1,0 +1,6 @@
+{"t": "2026-11-10T21:08:50Z", "event": "  \u2192 Grep: not instantiated|MCU_MBOX[01]?_(SRAM|DMI).*SIZE|MBOX[01]_SIZE"}
+{"t": "2026-11-10T21:08:51Z", "event": "The integration spec says each parameter removes its own mailbox. The response for accesses to a removed mailbox is not specified, though. I'll check that."}
+{"t": "2026-11-10T21:08:52Z", "event": "  \u2192 Grep: removed from MCI|MBOX[01] is removed|mailbox.*(removed|not present)"}
+{"t": "2026-11-10T21:08:59Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:09:01Z", "event": "I withdrew the finding, and the verdict was accepted.\n\nThe integration spec's parameter table answers the \"each mailbox or both together\" question. `MCU_MBOX0_SIZE_KB` and `MCU_MBOX1_SIZE_KB` each say that setting the value to 0 removes that mailbox from MCI (`docs/CaliptraSSIntegrationSpecification.md:1806` and `:1809`). So only the zero-sized mailbox is removed, and the other keeps working.\n\nThe spec still doesn't say what accesses to a removed mailbox's CSRs or SRAM return (an error or reads of zero). That is a separate gap from the ambiguous \"they\" wording the finding named. I noted it in the verdict's resolution, along with the spec change that would close it."}
+{"t": "2026-11-10T21:09:01Z", "event": "[4 turns, $0.0291]"}

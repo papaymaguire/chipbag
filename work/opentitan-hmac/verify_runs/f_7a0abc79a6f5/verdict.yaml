@@ -1,0 +1,60 @@
+finding_hash: ecf550c8378f5d99
+started_at: '2026-11-10T21:04:55Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The scoreboard only copies the spec condition into a comment. It models fifo_empty as "FIFO
+    was full and is now empty". It has no explicit check for the HMAC second round, and no check distinguishes
+    Status from Event interrupt types. No other test targets these three items.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 683
+    line_end: 685
+    quote: // The FIFO empty interrupt is raised only if the message FIFO is actually writable by
+    role: context
+    note: Condition 1 appears only in a comment.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 693
+    line_end: 693
+    quote: if (fifo_full_detected && hmac_fifo_empty) begin
+    role: supports
+    note: The prediction has no second-round term.
+  searches:
+  - what: second-round / HMAC-mode exclusion of fifo_empty
+    where: hw/ip/hmac/dv/env (scoreboard, vseqs)
+    found: Only a comment in the scoreboard. No code term and no directed stimulus.
+  - what: hmac_err interrupt type (Event) checks
+    where: hw/ip/hmac/dv
+    found: Only generic intr_state prediction. No check on the interrupt type.
+  - what: fifo_empty interrupt type (Status) checks
+    where: hw/ip/hmac/dv
+    found: Scoreboard predicts a sticky bit from the FIFO-full-then-empty condition. No Status-type check.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 389
+    line_end: 392
+    why_not: Predicts intr_state.fifo_empty generically. It does not model the second-round exclusion
+      or the interrupt type.
+  items:
+  - id: cr_8532dccc2de0
+    outcome: verified
+    reason: The second-round exclusion exists only as a comment.
+    evidence:
+    - 0
+    - 1
+  - id: cr_eb1d91a4dabf
+    outcome: verified
+    reason: No test checks that hmac_err is Event-type.
+    evidence: []
+  - id: cr_ec58bab546a9
+    outcome: verified
+    reason: No test checks that fifo_empty is Status-type.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 6
+cost_usd: 0.07409270000000001
+error: null

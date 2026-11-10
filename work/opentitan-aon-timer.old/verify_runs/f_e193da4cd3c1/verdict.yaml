@@ -1,0 +1,82 @@
+finding_hash: 6b54ded6a9986f71
+started_at: '2026-11-10T22:08:24Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: All five items are implemented through shared CIP infrastructure that aon_timer imports. aon_timer_alert_test
+    runs the common alert_test vseq. The coverage groups are sampled in the shared scoreboard during the
+    tl_access and csr tests. The regwen item is covered by the generic CSR tests, but I only confirmed
+    that last one indirectly.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/alert_test.hjson
+    line_start: 14
+    line_end: 19
+    quote: '      name: "{name}_alert_test"'
+    role: refutes
+    note: Common alert_test test is imported by aon_timer_sim_cfg.hjson and instantiated as aon_timer_alert_test.
+  - path: hw/dv/sv/cip_lib/seq_lib/cip_base_vseq.sv
+    line_start: 960
+    line_end: 960
+    quote: task cip_base_vseq::run_alert_test_vseq(int num_times = 1);
+    role: refutes
+    note: Stimulus writes alert_test and checks the alert and the regwen readback.
+  - path: hw/dv/sv/cip_lib/cip_base_scoreboard.sv
+    line_start: 59
+    line_end: 60
+    quote: '  tl_errors_cg_wrap   tl_errors_cgs_wrap[string];'
+    role: refutes
+    note: TL error and integrity coverage groups are instantiated in the shared scoreboard that runs with
+      the tl_access tests.
+  searches:
+  - what: alert_test test and implementation
+    where: hw/dv/tools/dvsim/tests, cip_base_vseq
+    found: Imported by aon_timer_sim_cfg.hjson; run_alert_test_vseq has checks.
+  - what: tl_intg_err_cg, tl_errors_cg_wrap, tl_a_chan_cov_cg
+    where: hw/dv
+    found: Defined and sampled in cip_lib and tl_agent_cov.
+  - what: regwen in aon_timer
+    where: aon_timer.hjson
+    found: WDOG_REGWEN locks the watchdog registers; the generic csr_rw tests from csr_tests.hjson exercise
+      it.
+  near_misses:
+  - path: hw/ip/aon_timer/data/aon_timer_testplan.hjson
+    line_start: 7
+    line_end: 7
+    why_not: This only imports the testplan. The implementing tests come from the imported cfg lists,
+      which is why the plan items have no aon_timer-specific test.
+  items:
+  - id: cp_2623de2c01c3
+    outcome: withdrawn
+    reason: Coverage is collected by the tl_agent_cov coverage group during the tl_access tests, so it
+      is not a test that must exist.
+    evidence:
+    - 2
+  - id: cp_3ed6c77060c8
+    outcome: withdrawn
+    reason: tl_errors_cg_wrap is instantiated in the shared scoreboard.
+    evidence:
+    - 2
+  - id: cp_420ab5b39641
+    outcome: withdrawn
+    reason: aon_timer_alert_test runs the common vseq, which has checks.
+    evidence:
+    - 0
+    - 1
+  - id: cp_5cecb30c1587
+    outcome: withdrawn
+    reason: tl_intg_err_cg is sampled by the shared scoreboard.
+    evidence:
+    - 2
+  - id: cp_5fafd9ef0011
+    outcome: withdrawn
+    reason: WDOG_REGWEN is covered by the generic csr_rw tests; I did not trace the lockable-CSR check
+      in detail.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.06378850000000001
+error: null

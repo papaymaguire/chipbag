@@ -1,0 +1,6 @@
+{"t": "2026-11-10T20:35:02Z", "event": "  \u2192 Grep: TARGET_USER_VALID|target_user_valid"}
+{"t": "2026-11-10T20:35:02Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mcu_mbox_csr.rdl"}
+{"t": "2026-11-10T20:35:04Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mcu_mbox_csr.rdl"}
+{"t": "2026-11-10T20:35:09Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:35:12Z", "event": "I withdrew the finding. The TARGET_STATUS field description in the same register file (`src/mci/rtl/mcu_mbox_csr.rdl:106`) already says what \"terminal\" means: \"Writing any terminal (non-BUSY) value ends the target's SRAM ownership, clears TARGET_USER and TARGET_USER_VALID, and notifies Root.\"\n\nSo a write of DATA_READY, CMD_COMPLETE or CMD_FAILURE clears both registers, and a write of CMD_BUSY does not. The enum at lines 109\u2013120 gives those four encodings (0 to 3).\n\nOne gap remains: the spec does not say whether a write of a reserved encoding (4 to 15) counts as terminal. I put this in the verdict as the suggested fix: cross-reference the field description from the TARGET_USER_VALID text, or restate \"terminal = any non-BUSY value\"."}
+{"t": "2026-11-10T20:35:12Z", "event": "[5 turns, $0.0381]"}

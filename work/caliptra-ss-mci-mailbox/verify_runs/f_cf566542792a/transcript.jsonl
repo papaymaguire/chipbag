@@ -1,0 +1,15 @@
+{"t": "2026-11-10T19:47:29Z", "event": "  \u2192 Grep: intr_count_r"}
+{"t": "2026-11-10T19:47:29Z", "event": "  \u2192 Grep: (mbox[01]_ecc_(unc|cor)|cmd_avail)_intr_count"}
+{"t": "2026-11-10T19:47:32Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:47:32Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T19:47:36Z", "event": "  \u2192 Grep: (MBOX[01]_ECC_(UNC|COR)|CMD_AVAIL)_INTR_COUNT|mbox[01]_ecc_(unc|cor)_intr_count|cmd_avail_intr_count"}
+{"t": "2026-11-10T19:47:36Z", "event": "  \u2192 Grep: INTR_COUNT_R"}
+{"t": "2026-11-10T19:47:39Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:47:41Z", "event": "  \u2192 Grep: MBOX[01]_ECC|CMD_AVAIL"}
+{"t": "2026-11-10T19:47:45Z", "event": "Checking that the test is in a regression list."}
+{"t": "2026-11-10T19:47:46Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T19:48:00Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:48:02Z", "event": "Resubmitting with the supporting evidence marked as refutes for the four covered items."}
+{"t": "2026-11-10T19:48:11Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:48:16Z", "event": "I submitted the verdict, and it was accepted. Four of the five items are covered by an existing test, so only the saturation item (cr_71500986cef1) stands as untested.\n\nThe test is `mcu_intr_handler`, which is in both the nightly directed regressions. It triggers each interrupt once, sums the hardware counters, and fails the simulation if the sum doesn't match the firmware count. That sum is an aggregate check, so it is weak, but it would fail on a wrong increment.\n\n| Item | Outcome | Why |\n|---|---|---|\n| cr_7044caee061c (`error_mbox1_ecc_unc` increments by 1) | withdrawn | The test triggers it once and the summed check covers it. |\n| cr_71500986cef1 (saturates, does not overflow) | verified | No test drives a counter to saturation, and I found none anywhere in the repo. |\n| cr_7d0a9813c471 (`notif_mbox1_ecc_cor` increments by 1) | withdrawn | It is triggered once and included in the checked sum. |\n| cr_82024f287341 (`notif_cptra_mbox_cmd_avail` is a counter) | withdrawn | It is triggered once and included in the checked sum. |\n| cr_872d51fa5bf2 (`notif_mbox0_cmd_avail` is a counter) | withdrawn | It is triggered once and included in the checked sum. |\n\nThe submit tool only accepts \"withdrawn\" with refutes evidence, so I marked the `mcu_intr_handler` citations as refutes for the four covered items.\n\nI didn't find a saturation test, but I only searched for one by name and in the places listed above. I didn't try to work out whether such a test could be built."}
+{"t": "2026-11-10T19:48:16Z", "event": "[12 turns, $0.1576]"}

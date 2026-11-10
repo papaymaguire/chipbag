@@ -1,0 +1,60 @@
+finding_hash: 7a7c067e2b864a95
+started_at: '2026-11-10T22:06:45Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Searched the aon_timer DV environment. The regwen write in the base vseq is commented out,
+    so hardware lock enforcement is never exercised. WKUP_CAUSE is only written and never read after expiry
+    in the timer sequences. The smoke thold tests use only the min and max thresholds, so mid-range thresholds
+    are never exercised. All three gaps stand.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 176
+    line_end: 177
+    quote: //  csr_utils_pkg::csr_wr(ral.wdog_regwen, wdog_regwen);
+    role: supports
+    note: WDOG_REGWEN is never written by the timer sequences; the write is commented out.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 131
+    line_end: 131
+    quote: csr_utils_pkg::csr_wr(ral.wkup_cause, 1'b0);
+    role: supports
+    note: wkup_cause is only cleared by the sequences; no read after expiry was found.
+  searches:
+  - what: wkup_cause and wdog_regwen usage in the DV env
+    where: hw/ip/aon_timer/dv
+    found: The regwen write is commented out; wkup_cause is only written, with no read check after expiry
+      in the sequences.
+  - what: csr_rd or regwen in seq_lib
+    where: hw/ip/aon_timer/dv/env/seq_lib
+    found: Only intr_state is read; no WKUP_CAUSE read and no regwen lock test.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 764
+    line_end: 771
+    why_not: The wkup_cause readback check exists in the scoreboard, but no timer sequence reads the register
+      after the wakeup request.
+  items:
+  - id: cr_5bd774f15d44
+    outcome: verified
+    reason: Only min (zero) and max thresholds are constrained; no mid-range threshold test was found.
+    evidence: []
+  - id: cr_7f62f6f22c9d
+    outcome: verified
+    reason: The regwen write is commented out in the base vseq, so no DV test locks the watchdog and checks
+      that writes are blocked.
+    evidence:
+    - 0
+  - id: cr_4f0006fef572
+    outcome: verified
+    reason: The sequences only write wkup_cause; they never read it after expiry, and the watchdog-bark
+      source is not explicitly checked.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0515529
+error: null

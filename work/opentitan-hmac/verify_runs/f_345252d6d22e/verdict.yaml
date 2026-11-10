@@ -1,0 +1,37 @@
+finding_hash: 1ec3ac6b9def913a
+started_at: '2026-11-10T19:36:17Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The row describes the nominal condition for 0x1 and then says the code is not used in the current
+    IP, and that SwPushMsgWhenDisallowed (0x5) is reported instead. That is a consistent statement, not
+    a contradiction. The RTL only ever assigns 0x5.
+  evidence:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 179
+    line_end: 179
+    quote: This error code is not used in the current version of the IP. Instead `SwPushMsgWhenDisallowed`
+      is reported.
+    role: refutes
+    note: The same row explicitly says 0x1 is unused and 0x5 is reported instead.
+  - path: hw/ip/hmac/rtl/hmac.sv
+    line_start: 966
+    line_end: 966
+    quote: err_code = SwPushMsgWhenDisallowed;
+    role: context
+    note: The RTL only emits 0x5 for a push while disallowed; SwPushMsgWhenShaDisabled is never assigned.
+  searches:
+  - what: Uses of SwPushMsgWhenShaDisabled and SwPushMsgWhenDisallowed
+    where: hw/ip/hmac/rtl, hw/ip/hmac/data
+    found: Only SwPushMsgWhenDisallowed is assigned (hmac.sv:966).
+  near_misses: []
+  items: []
+  new_sources: []
+  resolution: The RTL matches the "not used; 0x5 is reported instead" statement. Optionally the doc could
+    mark 0x1 as reserved or legacy to avoid the apparent tension.
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.0299342
+error: null

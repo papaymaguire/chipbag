@@ -1,0 +1,50 @@
+finding_hash: 55c970144b988f63
+started_at: '2026-11-10T22:06:14Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The aon_timer README states that wkup_req_o is raised by the wakeup timer or a watchdog bark,
+    and that it stays high until software writes 0 to WKUP_CAUSE. Together with the programmer's guide,
+    this answers which threshold asserts it and how it is cleared. Only the clear-to-deassert latency
+    is not given.
+  evidence:
+  - path: hw/ip/aon_timer/README.md
+    line_start: 75
+    line_end: 76
+    quote: The level wakeup signal (`wkup_req_o`) stays high until software explicitly acknowledges it
+      by software writing 0 to [`WKUP_CAUSE`](doc/registers.md#wkup_cause).
+    role: refutes
+    note: Says wkup_req is sticky and gives the clear mechanism, a write of 0 to WKUP_CAUSE. It appears
+      in the watchdog bark section, so bark asserts it.
+  - path: hw/ip/aon_timer/README.md
+    line_start: 41
+    line_end: 42
+    quote: Note that this signal is also asserted by a watchdog bark event.
+    role: refutes
+    note: Says bark, not bite, asserts wkup_req.
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    line_start: 91
+    line_end: 91
+    quote: then clear the wakeup request by writing 0 to
+    role: refutes
+    note: Programmer's guide confirms the clear procedure.
+  searches:
+  - what: wkup_req / WKUP_CAUSE in aon_timer docs
+    where: hw/ip/aon_timer
+    found: README, programmer's guide and registers.md describe the sticky behaviour, the bark source
+      and the clear mechanism
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/ip/aon_timer/README.md
+    reason: Specifies the wkup_req source (wakeup timer or bark) and that it stays high until software
+      clears WKUP_CAUSE.
+  resolution: The spec already answers the question. Bark, not bite, asserts wkup_req. It is sticky until
+    software writes 0 to WKUP_CAUSE. The hjson description could link to the README text. The clear-to-deassert
+    latency is still unspecified.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0329615
+error: null

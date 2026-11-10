@@ -1,0 +1,43 @@
+finding_hash: ceb9f027757b859d
+started_at: '2026-11-10T20:52:08Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The README and the WIPE_SECRET register description say what is wiped and with what value.
+    This answers most of the finding's question. The one gap is the effect on an in-progress operation.
+  evidence:
+  - path: hw/ip/hmac/README.md
+    line_start: 59
+    line_end: 63
+    quote: The internal variables and secret key will be reset to the written value.
+    role: refutes
+    note: Lists what is wiped (secret key, intermediate hash results, digest, message scheduling array),
+      says the message FIFO is not wiped, and gives the 32-bit value replicated to 64 bits for SHA-2 384/512.
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 455
+    line_end: 457
+    quote: The clear secret operation overwrites the internal variables with the provided 32-bit value.
+    role: refutes
+    note: The register description repeats the same scope, the 32-bit width and the replication rule.
+  searches:
+  - what: wipe in hmac md/hjson docs
+    where: hw/ip/hmac
+    found: README.md lines 59-64, registers.md and the hmac.hjson WIPE_SECRET description
+  near_misses:
+  - path: hw/ip/hmac/data/hmac_testplan.hjson
+    line_start: 81
+    line_end: 97
+    why_not: The test plan is not specification. It is context only.
+  items: []
+  new_sources:
+  - path: hw/ip/hmac/README.md
+    reason: Describes the wipe scope and the replication of the 32-bit value.
+  resolution: The spec already says the key, intermediate hash, digest and message schedule are overwritten
+    with the 32-bit value, replicated for 64-bit modes. It could still add a sentence on whether the wipe
+    aborts an in-progress operation.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.030008499999999997
+error: null

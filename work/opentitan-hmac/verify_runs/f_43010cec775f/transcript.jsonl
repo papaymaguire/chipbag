@@ -1,0 +1,12 @@
+{"t": "2026-11-10T20:55:37Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/data/hmac.hjson"}
+{"t": "2026-11-10T20:55:38Z", "event": "  \u2192 Grep: sideload|digest_swap|digest_size"}
+{"t": "2026-11-10T20:55:42Z", "event": "  \u2192 Grep: sideload|sha_en"}
+{"t": "2026-11-10T20:55:45Z", "event": "  \u2192 Grep: sideload|cfg\\.sha_en|sha_en"}
+{"t": "2026-11-10T20:55:45Z", "event": "  \u2192 Grep: sideload"}
+{"t": "2026-11-10T20:55:47Z", "event": "  \u2192 Grep: sideload"}
+{"t": "2026-11-10T20:55:48Z", "event": "  \u2192 Grep: sha_en"}
+{"t": "2026-11-10T20:55:57Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:55:59Z", "event": "Checking the CFG findings. The submit tool failed under its short name, so I'm retrying with the full tool name."}
+{"t": "2026-11-10T20:56:04Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:56:08Z", "event": "I submitted the verdict as inconclusive overall. Only one of the five items is confirmed untested.\n\n- **`CFG.sideload` hwqe (`cr_5a80d0a89e9e`): verified.** The DV base sequence forces the sideload bit to 0 in random configurations (`hmac_base_vseq.sv:211-212`, \"Disable sideloading for now\", TODO #31634). Software writes of 1 to it never happen.\n- **`CFG.sha_en` hwext and hwqe, `CFG.digest_swap` hwext, `CFG.digest_size` hwext: inconclusive.** The scoreboard models sha_en writes (including the digest clear), digest_swap and digest_size in the functional tests, and it compares the digest. That checks the fields' behaviour. No test checks the hwext or hwqe attributes themselves, and I couldn't settle from the repository whether that behavioural coverage counts.\n\nI never read the register wrapper RTL (`hmac_reg_wrap.sv`), so I did not trace how the hwext/hwqe attributes are used there."}
+{"t": "2026-11-10T20:56:08Z", "event": "[10 turns, $0.1051]"}

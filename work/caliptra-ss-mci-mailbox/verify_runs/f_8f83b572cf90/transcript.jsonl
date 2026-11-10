@@ -1,0 +1,10 @@
+{"t": "2026-11-10T19:45:34Z", "event": "  \u2192 Grep: data_avail"}
+{"t": "2026-11-10T19:45:35Z", "event": "  \u2192 Grep: MBOX_SRAM_SIZE|MCU_MBOX.*SIZE|mcu_mbox.*sram.*size"}
+{"t": "2026-11-10T19:45:37Z", "event": "  \u2192 Grep: data_avail"}
+{"t": "2026-11-10T19:45:38Z", "event": "  \u2192 Grep: data_avail"}
+{"t": "2026-11-10T19:45:40Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c"}
+{"t": "2026-11-10T19:45:41Z", "event": "  \u2192 Grep: byte access|BYTE access|strb|MBOX_SRAM_SIZE.*0|SRAM_SIZE_KB.*0"}
+{"t": "2026-11-10T19:45:51Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:46:00Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:46:02Z", "event": "I submitted the verdict as verified. All 5 items stand: I found no test that both creates the condition and fails if the behavior is wrong.\n\n- **SRAM size 0, minimum 0 and maximum 2MB:** no test sweeps or sets the mailbox SRAM size. The tests only read `sram_size_kb` to bound their loops.\n- **SRAM byte access:** `smoke_test_mcu_mbox_strb_wr_csr.c` checks byte-strobe writes to CSRs only, not to the SRAM.\n- **`cptra_ss_soc_mcu_mbox*_data_avail`:** `smoke_test_mcu_hitless.c` polls the interrupt status register, not the output signal, and does not check the MCU-lock and EXECUTE condition. The only other mention of the signal is a coverpoint that samples it.\n\nThe first submission was rejected because it recorded too few searches, so I resubmitted with one search per item."}
+{"t": "2026-11-10T19:46:02Z", "event": "[9 turns, $0.0857]"}

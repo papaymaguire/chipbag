@@ -1,0 +1,78 @@
+finding_hash: 8ba598375cfb8bf4
+started_at: '2026-11-10T19:44:30Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test observes the incr pulse fields, tests saturation, or checks a per-register hardware-edge
+    increment. The closest check is mcu_intr_handler.c. It compares the firmware trigger count with the
+    SUM of all NOTIF and ERROR interrupt counters. That is only an aggregate check. It only indirectly
+    exercises the pulse-to-count path. It uses software TRIG writes, not a hardware rising edge. Item
+    3 is left inconclusive because I did not read the later BFM-driven section of that test.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 259
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: context
+    note: Aggregate sum compare of all notif counters against a firmware count; does not check individual
+      pulse, decrement, or saturation behavior.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2093
+    line_end: 2094
+    quote: add_mask_entry(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR_MBOX0_ECC_UNC_INTR_COUNT_INCR_R,
+    role: context
+    note: The incr registers appear in the library only as register-mask entries, not as functional checks
+      of pulse behavior.
+  searches:
+  - what: references to *_intr_count_incr_r across the repo
+    where: whole repo
+    found: Only the register mask entries in libs/mci/mci.c and coverage points in mci_top_cov_if.sv;
+      the generated RTL and UVM register files also match.
+  - what: saturation or overflow tests of interrupt counters
+    where: src/integration/test_suites
+    found: None
+  - what: reads of the notif counters
+    where: src/integration/test_suites
+    found: Only the aggregate sum in mcu_intr_handler.c
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 208
+    line_end: 259
+    why_not: Checks only the summed count against the firmware trigger count. It does not observe the
+      pulse, does not test saturation, and uses software triggers rather than a hardware edge.
+  items:
+  - id: cr_c89b47159e50
+    outcome: verified
+    reason: The decrement-by-1 behavior of the pulse field is not checked directly, only indirectly through
+      the aggregate count.
+    evidence:
+    - 0
+  - id: cr_cbc0fcd7c65d
+    outcome: verified
+    reason: The pulse field is never read or asserted on by any test.
+    evidence:
+    - 0
+    - 1
+  - id: cr_d349c789c93e
+    outcome: inconclusive
+    reason: The aggregate count is checked after software triggers. The later BFM-driven external interrupt
+      section of mcu_intr_handler.c was not read, so a hardware rising-edge test there cannot be ruled
+      out.
+    evidence:
+    - 0
+  - id: cr_db5c35819d83
+    outcome: verified
+    reason: No test drives a counter to saturation.
+    evidence: []
+  - id: cr_dd69e103328e
+    outcome: verified
+    reason: The 1-bit pulse and its immediate self-decrement are never observed or asserted on.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 12
+cost_usd: 0.11316090000000001
+error: null

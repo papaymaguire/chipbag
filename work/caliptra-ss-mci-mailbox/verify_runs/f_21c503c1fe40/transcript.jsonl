@@ -1,0 +1,11 @@
+{"t": "2026-11-10T19:41:28Z", "event": "  \u2192 Grep: notif_mbox1_ecc_cor_intr_count|mbox1_ecc_cor"}
+{"t": "2026-11-10T19:41:28Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T19:41:30Z", "event": "Check tests for the counter generally."}
+{"t": "2026-11-10T19:41:31Z", "event": "  \u2192 Grep: ecc_cor_intr_count|intr_count_r.*(sat|0xffffffff)|saturat"}
+{"t": "2026-11-10T19:41:31Z", "event": "  \u2192 Grep: mbox1_ecc_cor"}
+{"t": "2026-11-10T19:41:33Z", "event": "  \u2192 Grep: saturat|intr_count"}
+{"t": "2026-11-10T19:41:35Z", "event": "Those only trigger a few events; saturation (reaching 0xFFFFFFFF) is unlikely to be tested. Quick check of mci.c."}
+{"t": "2026-11-10T19:41:36Z", "event": "  \u2192 Grep: saturat|0xffffffff"}
+{"t": "2026-11-10T19:41:42Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:45Z", "event": "I submitted the verdict as verified: nothing in the repository tests that `notif_mbox1_ecc_cor_intr_count_r` saturates instead of overflowing.\n\n- **Spec:** `src/mci/rtl/mci_reg.rdl:1565` states \"Will not overflow ('incrsaturate')\".\n- **Tests:**\n  - `mcu_intr_handler.c` triggers each interrupt only a few times, so it never gets near the maximum count.\n  - `libs/mci/mci.c` only uses 0xFFFFFFFF as reset and mask values.\n  - The counter name appears nowhere else in the integration test suites.\n- **Coverage:** `src/mci/coverage/mci_top_cov_if.sv:4750` has a coverpoint on the counter. It only samples the value and cannot fail a test.\n\nI did not search further than the integration test suites, the MCI coverage file and the files that mention the counter name."}
+{"t": "2026-11-10T19:41:45Z", "event": "[8 turns, $0.0483]"}

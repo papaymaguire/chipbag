@@ -1,0 +1,64 @@
+finding_hash: d0f59c4ef7c810d7
+started_at: '2026-11-10T21:10:57Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: 'Only item 3 is clearly untested: the code is documented as unused and its coverage bin is
+    commented out. For SwPushMsgWhenDisallowed the scoreboard predicts the error when SHA is disabled
+    or no start/continue is set. I found no sequence that pushes words after CMD.process, but I did not
+    search exhaustively. The other items had no dedicated check in the files I read, but the search was
+    not complete.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 147
+    line_end: 148
+    quote: "if ((!sha_en) || (!hmac_start && !hmac_continue)) begin\n          update_err_intr_code(SwPushMsgWhenDisallowed);"
+    role: context
+    note: Scoreboard predicts the disallowed-push error, so item 4 may be partly covered by random stimulus.
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 109
+    line_end: 109
+    quote: // bins push_msg_when_sha_disabled   = {SwPushMsgWhenShaDisabled};
+    role: supports
+    note: Code 0x1 coverage is commented out, so it is not tested.
+  searches:
+  - what: error code names
+    where: hw/ip/hmac
+    found: Scoreboard handles SwPushMsgWhenDisallowed and SwHashStartWhenShaDisabled; SwPushMsgWhenShaDisabled
+      has no check.
+  - what: fifo_empty in dv
+    where: hw/ip/hmac/dv
+    found: Only a scoreboard prediction of status and interrupt, with a smoke vseq comment that cycle-level
+      alignment is skipped.
+  near_misses: []
+  items:
+  - id: cr_d2c659d4c60b
+    outcome: inconclusive
+    reason: Not settled by the search.
+    evidence: []
+  - id: cr_fc9c477b91bc
+    outcome: inconclusive
+    reason: No key-read check seen, but the search was incomplete.
+    evidence: []
+  - id: cr_4eab539dc535
+    outcome: verified
+    reason: Code is unused and its coverage bin is commented out.
+    evidence:
+    - 1
+  - id: cr_73862a20f460
+    outcome: inconclusive
+    reason: Scoreboard predicts the error; whether stimulus pushes words after process is unconfirmed.
+    evidence:
+    - 0
+  - id: cr_9287ecbc9b5d
+    outcome: inconclusive
+    reason: The smoke vseq comment says the check is skipped around the empty transition, but this was
+      not confirmed.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 13
+cost_usd: 0.0976976
+error: null

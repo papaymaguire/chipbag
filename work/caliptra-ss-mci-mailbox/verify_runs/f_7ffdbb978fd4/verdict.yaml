@@ -1,0 +1,85 @@
+finding_hash: 029f431b0795af94
+started_at: '2026-11-10T21:01:20Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four of the five items have no test with a failing check. cr_12dbdc943d69 (cmd_avail) is the
+    exception, because the nightly mci_mbox_ownership_flow tests do check it. I did not find a test or
+    assertion for byte access, SRAM min/max size or the data_avail pin level. The verdict is "verified"
+    for the finding as a whole, with cmd_avail withdrawn at the item level.
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_common_tasks.svh
+    line_start: 490
+    line_end: 491
+    quote: "        if (poll == max_polls)\n            $fatal(1, \"mcu_mbox_wait_clear_notif: mbox=%0d\
+      \ %s never set, NOTIF0=%08x\", mbox_num, notif.name(), data);"
+    role: refutes
+    note: 'Check for cmd_avail: the test fatals if the CMD_AVAIL status never sets after the SOC requester
+      writes EXECUTE.'
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 116
+    line_end: 117
+    quote: "    mcu_mbox_write(mci_comm_flow_execute_addr, mci_comm_flow_requester, 1);\n    mcu_mbox_wait_clear_notif(mci_comm_flow_mbox,\
+      \ MCU_MBOX_NOTIF_CMD_AVAIL);"
+    role: refutes
+    note: 'Stimulus for cmd_avail: a SOC requester sets EXECUTE, then the test waits for the notification.
+      The test is in the nightly regression lists.'
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 175
+    line_end: 176
+    quote: "        soc_mcu_mbox0_data_avail_cp: coverpoint  soc_mcu_mbox0_data_avail;\n        soc_mcu_mbox1_data_avail_cp:\
+      \ coverpoint  soc_mcu_mbox1_data_avail;"
+    role: context
+    note: The data_avail pin is only sampled by coverpoints, with no check on its value.
+  searches:
+  - what: data_avail/cmd_avail in tests, tb, assertions
+    where: src
+    found: The data_avail pin is only wired up in the tb and sampled by coverage. smoke_test_mcu_hitless
+      polls the MCI data-avail interrupt status but does not check the pin against lock and EXECUTE. cmd_avail
+      is checked by the ownership flow.
+  - what: MCU mailbox SRAM size and byte access tests
+    where: src/integration/testbench and test_suites
+    found: Only mci_mbox_dlen_wrap reads the SRAM size from HW_CONFIG0. No test sweeps size 0 to 2MB or
+      checks byte accesses to the SRAM.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c
+    line_start: 152
+    line_end: 152
+    why_not: Waits for the SOC data-avail interrupt in the MCI. It does not check the pin level or the
+      lock and EXECUTE condition.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_dlen_wrap.svh
+    line_start: 103
+    line_end: 104
+    why_not: Reads the configured SRAM size but does not check min or max size behaviour.
+  items:
+  - id: cr_6e68d4291d35
+    outcome: verified
+    reason: No test or assertion exercises or checks byte accesses to the mailbox SRAM.
+    evidence: []
+  - id: cr_8ea60cdfbb2b
+    outcome: verified
+    reason: No test configures or checks a 2MB mailbox SRAM.
+    evidence: []
+  - id: cr_e0684916d838
+    outcome: verified
+    reason: No test configures or checks a 0-size mailbox SRAM.
+    evidence: []
+  - id: cr_12dbdc943d69
+    outcome: withdrawn
+    reason: The ownership-flow test has a SOC requester set EXECUTE and then fatals if CMD_AVAIL never
+      sets. The test is in the nightly regression.
+    evidence:
+    - 0
+    - 1
+  - id: cr_4620abd4f768
+    outcome: verified
+    reason: The data_avail pin is only covered by coverpoints. No check ties it to MCU lock and EXECUTE.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 15
+cost_usd: 0.1196135
+error: null

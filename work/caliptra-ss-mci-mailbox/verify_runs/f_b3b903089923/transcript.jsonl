@@ -1,0 +1,7 @@
+{"t": "2026-11-10T20:35:44Z", "event": "  \u2192 Grep: valid_sram_owner_req|sram_owner"}
+{"t": "2026-11-10T20:35:44Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mcu_mbox_csr.rdl"}
+{"t": "2026-11-10T20:35:47Z", "event": "  \u2192 Grep: non-owner|not the (current )?(SRAM )?owner|dropped|silently|error response|AXI error|SLVERR"}
+{"t": "2026-11-10T20:35:49Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/docs/CaliptraSSHardwareSpecification.md"}
+{"t": "2026-11-10T20:35:56Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:35:59Z", "event": "I withdrew the finding: the hardware spec does answer the question.\n\n- **What \"gates\" means:** `docs/CaliptraSSHardwareSpecification.md:1406-1407` says CMD, DLEN and EXECUTE write access follows SRAM ownership. Only the current owner may write them, and writes from any other agent are dropped.\n- **Reads:** the RDL declares these fields `sw=rw` and ties only `swwe` to `valid_sram_owner_req`, so the signal enables writes and does not gate reads.\n- **Response to a dropped write:** line 1503 lists \"Write: Data dropped\" for a trusted user's illegal access, with no AXI error. The error response is listed only for untrusted users (line 1502).\n\nThe RDL signal description at `src/mci/rtl/mcu_mbox_csr.rdl:30` could say \"gates write access\" to match the hardware spec."}
+{"t": "2026-11-10T20:35:59Z", "event": "[6 turns, $0.0567]"}

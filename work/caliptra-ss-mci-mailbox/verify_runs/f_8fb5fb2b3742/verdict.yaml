@@ -1,0 +1,61 @@
+finding_hash: 7f159faa3b27cd52
+started_at: '2026-11-10T20:40:03Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks either item. The hitless test and the mailbox tests touch the area,
+    but they don't check the data_avail output signal or vary the SRAM size.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c
+    line_start: 152
+    line_end: 152
+    quote: if(!mcu_mbox_wait_for_soc_data_avail_interrupt(mbox_num, 100000)) {
+    role: context
+    note: This only polls an interrupt status register. It does not sample the cptra_ss_soc_mcu_mbox*_data_avail
+      output, and it does not check the MCU-held-lock-and-EXECUTE condition.
+  - path: src/integration/test_suites/mcu_mbox_rand_rdwr/cptra_mcu_mbox_rand_rdwr.c
+    line_start: 58
+    line_end: 58
+    quote: uint32_t sram_size_kb = cptra_mcu_mbox_get_sram_size_kb(mbox_num);
+    role: context
+    note: The test reads whatever size is configured and adapts to it. It does not vary the size or check
+      that the size is configurable.
+  searches:
+  - what: data_avail in tests, sequences and the testbench
+    where: src/integration (c, h, svh)
+    found: Only the SoC data-avail interrupt helper functions and their use in the hitless test. No checker
+      or assertion on the output signal.
+  - what: SRAM size usage in tests
+    where: src/integration/test_suites
+    found: Tests read the configured size at run time with get_sram_size_kb. I found no test that sweeps
+      or changes the size.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c
+    line_start: 152
+    line_end: 156
+    why_not: It checks an interrupt status bit, not the data_avail output signal.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+    line_start: 126
+    line_end: 130
+    why_not: It probes addresses beyond the configured size, but only for the one build-time size. It
+      does not show that the size is configurable.
+  items:
+  - id: cr_4620abd4f768
+    outcome: verified
+    reason: No test or assertion samples the data_avail output signal while MCU holds the lock and EXECUTE
+      is 1. Only the interrupt status is polled, in the hitless test.
+    evidence:
+    - 0
+  - id: cr_1fd84d60bc97
+    outcome: verified
+    reason: The tests adapt to the single configured SRAM size. None exercises several sizes or checks
+      the configurability.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.0948071
+error: null

@@ -1,0 +1,6 @@
+{"t": "2026-11-10T20:51:59Z", "event": "  \u2192 Grep: segment_count|hmac_multistream"}
+{"t": "2026-11-10T20:52:01Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/sw/device/tests/crypto/hmac_multistream_functest.c"}
+{"t": "2026-11-10T20:52:03Z", "event": "Range is likely [1,4) or inclusive; either way not fixed at 2."}
+{"t": "2026-11-10T20:52:05Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:52:08Z", "event": "I verified the finding: the plan says each operation is streamed in two chunks, but the test picks a random segment count for each streaming vector.\n\n- **Test code:** `sw/device/tests/crypto/hmac_multistream_functest.c:109` sets `segment_count = rand_testutils_gen32_range(1, 4)`. A vector can therefore be streamed in a single segment or in more than two, so the fixed two-chunk scenario is not guaranteed.\n- **Plan link:** `chip_hmac_testplan.hjson` lists `//sw/device/tests/crypto:hmac_multistream_functest` as the test for the multistream item, so the link is stated in the repository, not inferred.\n- **Not checked:** I did not read the implementation of `rand_testutils_gen32_range`, so I don't know whether 4 is a possible value. Either way the count is not fixed at two.\n\nThe verdict has been submitted."}
+{"t": "2026-11-10T20:52:08Z", "event": "[4 turns, $0.0464]"}

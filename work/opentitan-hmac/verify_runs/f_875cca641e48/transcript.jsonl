@@ -1,0 +1,13 @@
+{"t": "2026-11-10T21:10:33Z", "event": "  \u2192 Grep: tl_intg_err|hmac_tl_intg_err"}
+{"t": "2026-11-10T21:10:35Z", "event": "  \u2192 Grep: tl_intg_err"}
+{"t": "2026-11-10T21:10:35Z", "event": "  \u2192 Grep: tl_intg_err|csr_tests_mode|tl_errors"}
+{"t": "2026-11-10T21:10:38Z", "event": "  \u2192 Bash: cd hw/ip/hmac/dv; cat hmac_sim_cfg.hjson | head -80; ls; grep -rn \"intg\" . | head; grep -n \"intg\" ../../../dv/tools/dvsim/tests/tl_access_tests.hjson"}
+{"t": "2026-11-10T21:10:42Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/dv; sed -n 10,30p tools/dvsim/tests/tl_access_tests.hjson; grep -rn \"fatal_fault\\|alert.*fatal\\|check_tl_intg\" sv/cip_lib/seq_lib/cip_base_vseq."}
+{"t": "2026-11-10T21:10:44Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/dv/sv/cip_lib; grep -rn \"run_tl_intg_err\" . | head; grep -n \"task run_tl_intg_err_vseq_sub\" -A45 seq_lib/cip_base_vseq.sv | grep -n \"alert\\|chec"}
+{"t": "2026-11-10T21:10:45Z", "event": "Checking the common integrity-error sequence for an alert check."}
+{"t": "2026-11-10T21:10:46Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/dv/sv/cip_lib; sed -n 421,500p seq_lib/cip_base_vseq__tl_errors.svh"}
+{"t": "2026-11-10T21:10:53Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:10:55Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/dv/sv/cip_lib; grep -n \"Check both alert and CSR status update\" seq_lib/cip_base_vseq__tl_errors.svh"}
+{"t": "2026-11-10T21:11:01Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:11:04Z", "event": "I withdrew the finding, and the verdict was accepted. The `fatal_fault` requirement is tested, not planned only.\n\nHMAC's sim config imports the shared `tl_access_tests.hjson`, which defines `hmac_tl_intg_err`. That is why a search of the HMAC directory finds the test only in the security-countermeasure testplan.\n\nThe test injects TL-UL integrity errors and runs `check_tl_intg_error_response`. That check waits for the fatal alert to fire several times in a row, and it checks the status CSR field. It fails if the alert doesn't fire.\n\nI did not confirm that the HMAC testbench sets the alert name the check uses to `fatal_fault`. The check itself is generic."}
+{"t": "2026-11-10T21:11:04Z", "event": "[11 turns, $0.0724]"}

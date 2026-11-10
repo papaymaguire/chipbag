@@ -1,0 +1,60 @@
+finding_hash: 54e03568eb3a1670
+started_at: '2026-11-10T21:01:29Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Items 1 and 2 stand. The testbench fixes both MCU mailbox SRAM sizes at 256 KB, and no test
+    sweeps the size or instantiates a size of 0. Item 3 is withdrawn: smoke_test_mcu_mbox_valid_user checks
+    that the MBOX CMD_AVAIL interrupt status is set after Caliptra sets EXECUTE, and the test fails if
+    it isn''t.'
+  evidence:
+  - path: src/integration/testbench/tb_top_pkg.sv
+    line_start: 47
+    line_end: 47
+    quote: localparam MCU_MBOX0_SIZE_KB = 256;
+    role: context
+    note: The mailbox size is fixed at 256 KB. There is no sweep over sizes and no size of 0.
+  - path: src/integration/test_suites/libs/caliptra_ss_lib/caliptra_ss_lib.c
+    line_start: 348
+    line_end: 354
+    quote: // Check that Mailbox cmd available from SOC interrupt has been set
+    role: refutes
+    note: After EXECUTE is set, the code checks the CMD_AVAIL status. A missing interrupt prints FATAL
+      and fails the test. smoke_test_mcu_mbox_valid_user.c calls this at line 206.
+  searches:
+  - what: MCU_MBOX*_SIZE_KB use in tests and testbench
+    where: repo
+    found: Only a fixed 256 KB localparam in tb_top_pkg.sv. No size sweep and no size of 0.
+  - what: cmd_avail / CMD_AVAIL checks in test suites
+    where: src/integration/test_suites
+    found: Checks in caliptra_ss_lib.c, used by smoke_test_mcu_mbox_valid_user. The test fails if the
+      status is not set.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 109
+    line_end: 111
+    why_not: Uses software-triggered interrupts, so it doesn't test a mailbox-generated notification.
+  items:
+  - id: cr_3877f33b1448
+    outcome: verified
+    reason: No test varies or checks MCU_MBOX1_SIZE_KB. It is fixed at 256 KB.
+    evidence:
+    - 0
+  - id: cr_52fe20427e16
+    outcome: verified
+    reason: No test configures a size of 0 or checks that the mailbox is not instantiated.
+    evidence:
+    - 0
+  - id: cr_920e089bc5fb
+    outcome: withdrawn
+    reason: smoke_test_mcu_mbox_valid_user creates the condition (Caliptra sets EXECUTE). The status check
+      at caliptra_ss_lib.c:348-354 then fails the test if the interrupt is not set.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.08503580000000001
+error: null

@@ -1,0 +1,11 @@
+{"t": "2026-11-10T20:58:06Z", "event": "  \u2192 Grep: key_invalid|invalid_key|SwInvalidConfig|sideload|ERR_CODE|err_code"}
+{"t": "2026-11-10T20:58:07Z", "event": "  \u2192 Grep: hash_process|DIGEST"}
+{"t": "2026-11-10T20:58:10Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:58:10Z", "event": "  \u2192 Grep: digest.*(write|wr)|wipe_secret|hmac_wipe"}
+{"t": "2026-11-10T20:58:14Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env; sed -n 20,60p seq_lib/hmac_smoke_vseq.sv | head -5; grep -rn \"digest\" seq_lib/*.sv | grep -i \"wr\\|write\\|random\" | head -20; gre"}
+{"t": "2026-11-10T20:58:24Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:58:31Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:58:33Z", "event": "Resubmitting the verdict with a search record for each item, since the first attempt was rejected."}
+{"t": "2026-11-10T20:58:41Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:58:45Z", "event": "I submitted the verdict as **verified**: no test in the HMAC DV covers any of the five items.\n\n- **Items 1 and 2 (key invalid after completion):** The random config forces sideloading off (`hmac_base_vseq.sv:211`, \"Disable sideloading for now\"). Nothing makes a key invalid, so digest clearing and the absence of an error are never exercised.\n- **Item 3 (no further `ERR_CODE` while `hmac_err` is pending):** The scoreboard predicts `ERR_CODE` but has no check of this behavior.\n- **Item 4 (digest writes locked when `sha_en` is set):** The sequences only write the digest after disabling SHA (`hmac_base_vseq.sv:618`). The scoreboard models the lock (`hmac_scoreboard.sv:339`) but no sequence drives a write while `sha_en` is set. I treated that as a near miss, not a test.\n- **Item 5 (finalized once via `CMD.hash_process`):** `hash_process` only appears as a trigger flag, with no check of \"finalized once\".\n\nI did not search the generic CSR tests or firmware tests, so a check there could still exist.\n\nThe first two submissions were rejected, once because the tool wasn't available and once because the search record didn't cover each item. The third was accepted."}
+{"t": "2026-11-10T20:58:45Z", "event": "[9 turns, $0.1053]"}

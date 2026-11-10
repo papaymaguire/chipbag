@@ -1,0 +1,82 @@
+finding_hash: 399ab5196005f003
+started_at: '2026-11-10T20:35:59Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that closes the missing part of any of the 5 items. The ECC test never compares
+    the SRAM data it reads back. No test writes DLEN=0 and checks the whole SRAM is cleared. Nothing observes
+    the clearing-start and clearing-end phases. TARGET_STATUS write-blocking is only exercised for Root.
+    The assertion file has no mailbox clearing or ordering checks.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_ecc/smoke_test_mcu_mbox_ecc.c
+    line_start: 102
+    line_end: 102
+    quote: '        rand_data = mcu_mbox_read_sram_dword(mbox_num, rand_dword_addr);'
+    role: supports
+    note: Read-back data is assigned but never compared to the written or expected data. Only the interrupt
+      and status are checked.
+  - path: src/integration/test_suites/mcu_mbox_lock_return_one_during_zeroize/mcu_mbox_lock_return_one_during_zeroize.c
+    line_start: 39
+    line_end: 39
+    quote: const uint32_t mbox_dlen = 10000;
+    role: context
+    note: This test uses a large non-zero DLEN and checks only that the lock reads 1 during zeroize. It
+      does not cover DLEN=0 or the clearing phases.
+  searches:
+  - what: TARGET_STATUS writes by non-target agents
+    where: src/integration/test_suites (12 files reference it)
+    found: The cited tests only cover Root and the target. The invalid_axi test only lists the register
+      among CSRs it exercises with invalid AXI accesses. No non-target SoC user or Requester write-block
+      check was found.
+  - what: DLEN=0 followed by an SRAM clear check
+    where: src/integration/test_suites
+    found: No test writes DLEN=0 and then reads back the whole SRAM.
+  - what: Clearing-phase ordering checks (start, end, unlock) via assertions
+    where: src/integration/asserts/caliptra_ss_top_sva.sv and RTL files that mention zeroize/clearing
+    found: No mcu_mbox clearing assertions in the SVA file. Only functional lock-reads-1 tests exist.
+  - what: Single-bit and double-bit ECC read-data checks
+    where: src/integration/test_suites/smoke_test_mcu_mbox_ecc
+    found: No data comparison. Only interrupt, status and HW_ERROR_NON_FATAL are checked.
+  - what: Corrected/invalid data checks for ECC in other tests
+    where: src/integration/test_suites
+    found: Nothing found beyond the ECC smoke test.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mbox_csr_zeros_after_release/smoke_test_mbox_csr_zeros_after_release.c
+    line_start: 107
+    line_end: 111
+    why_not: It checks the DLEN register reads 0 after release. It does not write DLEN=0 or check that
+      the SRAM is cleared.
+  items:
+  - id: cr_62191b6deb64
+    outcome: verified
+    reason: No non-target, non-Root write-block check found; the existing tests cover only Root and the
+      target.
+    evidence: []
+  - id: cr_ccc86edf401d
+    outcome: verified
+    reason: No DLEN=0 whole-SRAM clear test found.
+    evidence:
+    - 1
+  - id: cr_fadd412c3094
+    outcome: verified
+    reason: Only the end state and 'lock reads 1 during zeroize' are checked. No assertion or test observes
+      clearing start and end.
+    evidence:
+    - 1
+  - id: cr_20362a1989f1
+    outcome: verified
+    reason: The data read after a single-bit error injection is not compared.
+    evidence:
+    - 0
+  - id: cr_feb29b2f4853
+    outcome: verified
+    reason: The data returned on a double-bit error read is not checked.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 13
+cost_usd: 0.12332200000000001
+error: null

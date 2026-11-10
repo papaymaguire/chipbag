@@ -1,0 +1,84 @@
+finding_hash: 14b337829848e284
+started_at: '2026-11-10T19:40:53Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Four of the five items stand: they are register-implementation attributes (hwext/hwqe), and
+    I found no test that checks them as such. I withdraw cr_10e98e4908dc. The scoreboard models the digest
+    being cleared when sha_en is disabled, and the smoke sequence reads the digest back afterwards, which
+    compares it against that prediction. I did not confirm that the smoke sequence actually writes sha_en=0
+    on every path, only that it reads the digest after its disable branch.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 306
+    line_end: 309
+    quote: exp_digest   = '{default:0};  // Digest gets cleared on disabling.
+    role: refutes
+    note: Scoreboard predicts the digest is cleared when sha_en goes 1->0.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 496
+    line_end: 496
+    quote: '`DV_CHECK_EQ(real_digest_val, exp_digest[digest_idx])'
+    role: refutes
+    note: Digest reads are checked against the expected (cleared) value.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 256
+    line_end: 264
+    quote: // if disable sha, digest should be cleared
+    role: refutes
+    note: Smoke sequence reads the digest after the sha-disable branch, which triggers the scoreboard
+      check.
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 202
+    line_end: 203
+    quote: 'hwext:    "true",'
+    role: supports
+    note: hwext/hwqe are implementation attributes with no dedicated check.
+  searches:
+  - what: digest_swap/key_length/digest_size/sideload in hmac dv
+    where: hw/ip/hmac/dv
+    found: Functional use in the scoreboard and sequences. No test checks hwext or hwqe behavior as such.
+  - what: digest clear on sha_en disable
+    where: hw/ip/hmac/dv
+    found: Scoreboard prediction at lines 306-309 and smoke vseq digest read at lines 256-264.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 619
+    line_end: 628
+    why_not: The save-and-restore sequences disable sha_en but rewrite the digest without reading it in
+      between, so they do not check the clear.
+  items:
+  - id: cr_10e98e4908dc
+    outcome: withdrawn
+    reason: The scoreboard predicts a cleared digest and the smoke sequence reads it back and compares.
+    evidence:
+    - 0
+    - 1
+    - 2
+  - id: cr_01eaae6544c4
+    outcome: verified
+    reason: sideload is not a field of CFG. The hwext attribute is structural and no test checks it.
+    evidence:
+    - 3
+  - id: cr_030b1d53349f
+    outcome: verified
+    reason: No test checks the hwqe pulse for digest_swap; it is only exercised implicitly.
+    evidence:
+    - 3
+  - id: cr_1046bc3a01de
+    outcome: verified
+    reason: No test checks the hwqe pulse for key_length; it is only exercised implicitly.
+    evidence:
+    - 3
+  - id: cr_2d1b1f596874
+    outcome: verified
+    reason: The hwext attribute for digest_size is not checked by any test.
+    evidence:
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 13
+cost_usd: 0.102629
+error: null

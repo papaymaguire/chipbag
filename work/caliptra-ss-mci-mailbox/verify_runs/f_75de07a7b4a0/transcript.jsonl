@@ -1,0 +1,13 @@
+{"t": "2026-11-10T20:39:12Z", "event": "  \u2192 Grep: MBOX0_VALID_AXI_USER|mbox0_valid_axi_user|MBOX_VALID_AXI_USER"}
+{"t": "2026-11-10T20:39:13Z", "event": "  \u2192 Grep: VALID_AXI_USER"}
+{"t": "2026-11-10T20:39:15Z", "event": "  \u2192 Grep: VALID_AXI_USER|AXI_USER_LOCK"}
+{"t": "2026-11-10T20:39:16Z", "event": "Check other tests using lock."}
+{"t": "2026-11-10T20:39:18Z", "event": "  \u2192 Grep: MBOX[01]?_AXI_USER_LOCK|MBOX_AXI_USER_LOCK|mbox.*axi_user_lock"}
+{"t": "2026-11-10T20:39:19Z", "event": "Look in test suites only."}
+{"t": "2026-11-10T20:39:20Z", "event": "  \u2192 Grep: AXI_USER_LOCK"}
+{"t": "2026-11-10T20:39:20Z", "event": "  \u2192 Grep: VALID_AXI_USER"}
+{"t": "2026-11-10T20:39:23Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites; sed -n 105,117p libs/mci/mci.c; sed -n 30,60p smoke_test_mcu_hitless/smoke_test_mcu_hitless.c; grep -n \"lock\\|LOCK\" "}
+{"t": "2026-11-10T20:39:32Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:39:37Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:39:41Z", "event": "I verified the finding: neither item has a test that checks it.\n\n- **Software writes take effect only when the lock is deasserted:** no test writes `MBOX*_VALID_AXI_USER` while it is locked or unlocked and then checks the result.\n- **Read-only once locked by `AXI_USER_LOCK`:** no test attempts a write after the lock is set and checks that the value is unchanged.\n\nWhat the tests do touch:\n- **Setup writes:** `caliptra_ss_lib.c` writes the valid users and then the locks as configuration, with no check afterwards.\n- **Read only:** `smoke_test_mcu_hitless.c` reads the lock and the user value, with no failing check.\n- **Register tables:** `libs/mci/mci.c` lists these registers in generic register tables, but nothing there writes after lock.\n- **Mailbox param test:** `smoke_test_mcu_mbox_axi_param.c` mentions the user values only in a comment.\n\nThe verdict was accepted on the second attempt. The first submit failed because that tool wasn't available at that point."}
+{"t": "2026-11-10T20:39:41Z", "event": "[10 turns, $0.0985]"}

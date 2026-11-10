@@ -1,0 +1,6 @@
+{"t": "2026-11-10T19:37:37Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss; python3 -I -c \" import openpyxl wb=openpyxl.load_workbook('docs/Caliptra_Gen2_SS_TestPlan.xlsx') ws=wb['Subsystem Test Plan'] for r in ws.iter_r"}
+{"t": "2026-11-10T19:37:39Z", "event": "The plan item says \"STRBW to CSRs (not supported to SRAM)\". That is a scoping note, not a requirement to test SRAM. Next I'll check whether the test itself touches SRAM."}
+{"t": "2026-11-10T19:37:40Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss; grep -n -i \"sram\" src/integration/test_suites/smoke_test_mcu_mbox_strb_wr_csr/*.c | head"}
+{"t": "2026-11-10T19:37:45Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:37:47Z", "event": "I withdrew the finding, and the verdict was accepted.\n\nThe plan row (row 129) reads \"MCU MBOX - STRBW to CSRs (not supported to SRAM)\". The parenthetical only says SRAM is out of scope, so the plan item doesn't ask for any SRAM check. The test's 8-bit strobe writes to the CSRs cover what the row does ask for. The test source has no mention of SRAM.\n\nI did not run the test."}
+{"t": "2026-11-10T19:37:47Z", "event": "[4 turns, $0.0286]"}

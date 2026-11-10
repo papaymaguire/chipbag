@@ -1,0 +1,82 @@
+finding_hash: 8a08dd1c35c4cd15
+started_at: '2026-11-10T20:54:30Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'I found no HMAC DV test, assertion or scoreboard check that targets any of these five internal-structure
+    statements. The DV environment checks end-to-end digests and a few FIFO-level behaviors. My search
+    was shallow: a grep of the hmac dv and data directories, with no read of the scoreboard or sequences
+    in context.'
+  evidence:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 17
+    line_end: 17
+    quote: The message scheduling FIFO is not software accessible
+    role: supports
+    note: Spec statement with no direct check found in DV.
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 56
+    line_end: 56
+    quote: Small writes to [`MSG_FIFO`](registers.md#msg_fifo) are coalesced into 32-bit words
+    role: supports
+    note: Packer coalescing is only exercised indirectly by end-to-end digest comparison.
+  - path: hw/ip/hmac/dv/cov/hmac_unr_excl.el
+    line_start: 13
+    line_end: 13
+    quote: 'INSTANCE: tb.dut.u_prim_sha2_512.gen_multimode_logic.u_prim_sha2_multimode.u_pad'
+    role: context
+    note: Multi-mode primitive appears only in coverage exclusions, not in checks.
+  searches:
+  - what: software access to the scheduling FIFO
+    where: hw/ip/hmac/dv
+    found: No test or check for it.
+  - what: multimode instantiation checks
+    where: hw/ip/hmac/dv
+    found: Only coverage exclusion entries, no assertion or check.
+  - what: packer to scheduling FIFO feeding
+    where: hw/ip/hmac/dv
+    found: Only the scoreboard's MSG_FIFO modelling. No check on the internal path.
+  - what: packer coalescing into 32-bit words
+    where: hw/ip/hmac/dv
+    found: Only end-to-end digest comparison.
+  - what: per-round 64-bit word fetch in the compression function
+    where: hw/ip/hmac/dv
+    found: No reference.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 211
+    line_end: 211
+    why_not: A comment about the sha2_pad state transition. It does not check packer coalescing or the
+      scheduling FIFO.
+  items:
+  - id: cr_b09d206cb6b3
+    outcome: verified
+    reason: No test attempts or checks software access to the scheduling FIFO.
+    evidence:
+    - 0
+  - id: cr_fd137b45d0d9
+    outcome: verified
+    reason: Multi-mode instantiation appears only in coverage exclusions, with no check.
+    evidence:
+    - 2
+  - id: cr_6241cc5595f4
+    outcome: verified
+    reason: No check on the packer-to-scheduling-FIFO path beyond end-to-end digest comparison.
+    evidence:
+    - 1
+  - id: cr_e937e36d780f
+    outcome: verified
+    reason: Coalescing into 32-bit words is not checked directly. Only digests are compared.
+    evidence:
+    - 1
+  - id: cr_236bbacf0c98
+    outcome: verified
+    reason: No check on the per-round 64-bit word fetch in the compression function.
+    evidence: []
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 6
+cost_usd: 0.0663167
+error: null

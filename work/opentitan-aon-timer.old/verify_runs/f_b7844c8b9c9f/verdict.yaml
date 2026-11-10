@@ -1,0 +1,62 @@
+finding_hash: 5831c8bd8a422074
+started_at: '2026-11-10T22:08:01Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The DV sequences never toggle intr_enable around threshold writes, so the two programmer's-guide
+    ordering items (disable before, enable after) have no test. The retrigger item is less clear. The
+    scoreboard predicts an immediate interrupt when count > threshold (wkup_num = 0). I did not find a
+    test that clears the interrupt while the count stays above the threshold and then checks for a retrigger
+    at the next tick. I'm leaving that item inconclusive.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 933
+    line_end: 939
+    quote: "          if (wkup_count <= wkup_thold) begin\n            wkup_num = ((wkup_thold - wkup_count)\
+      \ * (prescaler + 1));\n          end\n          else begin\n            wkup_num = 0;\n        \
+      \  end"
+    role: context
+    note: Scoreboard models the count-above-threshold case as immediate expiry, but this is not an explicit
+      retrigger-after-clear check.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 181
+    line_end: 183
+    quote: '  csr_utils_pkg::csr_wr(ral.intr_state, 2''b01);'
+    role: context
+    note: wkup_init clears intr_state and then writes the thresholds. It never disables or enables intr_enable
+      around the threshold writes.
+  searches:
+  - what: intr_enable used in aon_timer DV sequences
+    where: hw/ip/aon_timer/dv/env/seq_lib
+    found: no matches
+  - what: retrigger / remains above threshold in scoreboard
+    where: aon_timer_scoreboard.sv
+    found: no explicit retrigger check
+  near_misses: []
+  items:
+  - id: cr_ab0d74b3889d
+    outcome: verified
+    reason: No test enables the wakeup interrupt after a threshold update; intr_enable does not appear
+      in the DV sequences.
+    evidence:
+    - 1
+  - id: cr_cd988f27543a
+    outcome: verified
+    reason: No test disables the wakeup interrupt before writing the threshold registers; wkup_init writes
+      them directly.
+    evidence:
+    - 1
+  - id: cr_bb10680d5ea9
+    outcome: inconclusive
+    reason: The scoreboard models count above threshold as immediate expiry, but I did not find a test
+      that clears the interrupt while the count stays above the threshold and then checks for a retrigger
+      at the next tick.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.08112
+error: null

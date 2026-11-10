@@ -1,0 +1,14 @@
+{"t": "2026-11-10T20:43:25Z", "event": "  \u2192 Grep: intr_count_incr|notif_mbox0_soc_req_lock_intr_count"}
+{"t": "2026-11-10T20:43:28Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:43:29Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T20:43:32Z", "event": "  \u2192 Grep: INTR_COUNT_INCR|intr_count_incr"}
+{"t": "2026-11-10T20:43:32Z", "event": "  \u2192 Grep: notif_.*intr_count|NOTIF_.*INTR_COUNT"}
+{"t": "2026-11-10T20:43:35Z", "event": "  \u2192 Grep: INTR_COUNT"}
+{"t": "2026-11-10T20:43:36Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T20:43:39Z", "event": "  \u2192 Grep: _hw|NOTIF_MBOX._SOC_REQ_LOCK|NOTIF_MBOX._TARGET_DONE|CMD_AVAIL"}
+{"t": "2026-11-10T20:43:43Z", "event": "I'm checking whether the `mcu_intr_handler` test is in a regression list. It looks like it covers the \"increments by 1 per event\" item through the TRIG path."}
+{"t": "2026-11-10T20:43:43Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T20:43:54Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:44:02Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:44:07Z", "event": "I submitted the verdict as verified: all five items stay untested, though one is partly covered.\n\nThe `mcu_intr_handler` test is the only one that touches these counters, and it is in the nightly directed regressions. It writes the interrupt TRIG registers, then adds up the notification counter registers and compares that sum with the number of events it triggered. It never reads the `*_INCR_R` pulse registers, and it never fills a counter to its limit.\n\n- **Incrementor pulses for 1 clock cycle (`cr_3d4f68eca3da`):** no test checks it.\n- **1-bit down-counter decrements immediately (`cr_3e59aca31cd9`):** no test checks it.\n- **Counter saturates and does not overflow (`cr_3ecbe358fb05`):** no test checks it.\n- **Field is a counter (`cr_416033921743`):** no test checks it. The `INCR_R` pulse entries in `src/integration/test_suites/libs/mci/mci.c` only feed a generic register access test.\n- **Counter increments by 1 per event (`cr_4400c784ffb0`):** this is the partly covered item. The sum check in `mcu_intr_handler` would catch a wrong total. It would not catch a wrong individual counter, because only the sum is compared. It also does not exercise real input events, because events come from the TRIG registers. I kept it as verified rather than withdrawing it.\n\nThe coverage file `src/mci/coverage/mci_top_cov_if.sv` only samples counter values and has no pass/fail check, so I did not count it."}
+{"t": "2026-11-10T20:44:07Z", "event": "[12 turns, $0.1417]"}

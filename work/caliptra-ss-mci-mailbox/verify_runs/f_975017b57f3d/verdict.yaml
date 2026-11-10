@@ -1,0 +1,78 @@
+finding_hash: 08166de263e1a235
+started_at: '2026-11-10T20:40:22Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The saturation item (cr_4e89639f30e9) has no test at all, so it stands. The other four items
+    are covered by mcu_intr_handler, which triggers each interrupt once (including MBOX0_CMD_AVAIL, MBOX0_ECC_COR,
+    MBOX1_ECC_UNC and MBOX1_SOC_REQ_LOCK). It then sums all the HW counters and kills the sim on a mismatch
+    against the SW count. That check is aggregate and weak, but it can fail if a counter doesn't count
+    or doesn't increment by 1, so I withdrew those four.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 259
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: refutes
+    note: Compares the sum of notif HW counters (including MBOX0_CMD_AVAIL, MBOX0_ECC_COR, MBOX1_SOC_REQ_LOCK)
+      with the SW trigger count; kills the sim on a mismatch.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: refutes
+    note: Same aggregate check for error counters, including MBOX1_ECC_UNC.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 65
+    line_end: 65
+    quote: ERROR_MBOX1_ECC_UNC_TRIG_MASK             ); mci_error_intr_count++;
+    role: context
+    note: 'Stimulus: triggers MBOX1_ECC_UNC once.'
+  searches:
+  - what: tests of intr_count registers and saturation
+    where: src/integration, src/mci coverage
+    found: mci.c only checks reset and sticky behaviour; mcu_intr_handler.c has an aggregate count check;
+      no saturation test (grep 'saturat' found nothing); mci_top_cov_if.sv has only coverpoints.
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 568
+    line_end: 593
+    why_not: Reset-value and sticky register checks only; does not exercise counting.
+  items:
+  - id: cr_477eab914e6b
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers MBOX1_SOC_REQ_LOCK once and checks that the summed counters match
+      the SW count.
+    evidence:
+    - 0
+  - id: cr_4e89639f30e9
+    outcome: verified
+    reason: No test drives a counter to its maximum value to check saturation.
+    evidence: []
+  - id: cr_62bc300d529d
+    outcome: withdrawn
+    reason: The test triggers MBOX0_CMD_AVAIL once; the summed-count check would fail if the increment
+      were not 1.
+    evidence:
+    - 0
+  - id: cr_647ed59beb3f
+    outcome: withdrawn
+    reason: The test triggers MBOX0_ECC_COR once and the summed counters are checked.
+    evidence:
+    - 0
+  - id: cr_7044caee061c
+    outcome: withdrawn
+    reason: The test triggers MBOX1_ECC_UNC once; the summed-count check would fail if the increment were
+      not 1.
+    evidence:
+    - 1
+    - 2
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Test that triggers every MCI interrupt and checks the HW counters against a SW count.
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.15438310000000002
+error: null

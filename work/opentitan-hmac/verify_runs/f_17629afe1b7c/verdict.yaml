@@ -1,0 +1,82 @@
+finding_hash: 3f1678e8210f1f4e
+started_at: '2026-11-10T21:04:04Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: All five items are covered by implemented checks. The TL-UL interface is checked by the bound
+    tlul_assert and by the common csr tests. The fifo_empty interrupt conditions are modelled and checked
+    by the scoreboard. I did not read the scoreboard's full conditions for the interrupt, so condition
+    1 (second HMAC round) is not confirmed.
+  evidence:
+  - path: hw/ip/hmac/dv/sva/hmac_bind.sv
+    line_start: 7
+    line_end: 9
+    quote: 'bind hmac tlul_assert #('
+    role: refutes
+    note: tlul_assert is bound to the hmac tl_i/tl_o port, so the TL-UL protocol checker runs in every
+      simulation.
+  - path: hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    line_start: 30
+    line_end: 30
+    quote: '"{proj_root}/hw/dv/tools/dvsim/tests/csr_tests.hjson",'
+    role: refutes
+    note: The common CSR tests are imported, so CSRs are exercised over the tl interface.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 693
+    line_end: 693
+    quote: if (fifo_full_detected && hmac_fifo_empty) begin
+    role: refutes
+    note: The scoreboard predicts the fifo_empty interrupt only if the FIFO was previously full. The prediction
+      is compared against the intr_state read.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 678
+    line_end: 680
+    quote: if (hmac_process_posedge || hmac_start_posedge || hmac_stopped_posedge ||
+    role: refutes
+    note: A Process or Stop command clears the fifo_full_detected flag, which suppresses the interrupt.
+  searches:
+  - what: fifo_empty interrupt modelling in the dv env
+    where: hw/ip/hmac/dv
+    found: The scoreboard models the conditions and checks intr_state on reads.
+  - what: tlul_assert bind and csr tests
+    where: hw/ip/hmac/dv
+    found: tlul_assert_device is bound in sva/hmac_bind.sv, and csr_tests.hjson is imported in hmac_sim_cfg.hjson.
+  near_misses: []
+  items:
+  - id: cr_3514ec92d204
+    outcome: withdrawn
+    reason: The bound tlul_assert and the csr tests run on the tl port.
+    evidence:
+    - 0
+    - 1
+  - id: cr_ceb521c08f4e
+    outcome: withdrawn
+    reason: The bound tlul_assert checks the device-side tl_i/tl_o req_rsp port.
+    evidence:
+    - 0
+  - id: cr_67e76dbb8ac1
+    outcome: withdrawn
+    reason: The scoreboard requires fifo_full_detected and an empty FIFO before predicting the interrupt,
+      and compares it with intr_state.
+    evidence:
+    - 2
+  - id: cr_999bc3c78db5
+    outcome: withdrawn
+    reason: The scoreboard clears fifo_full_detected on a Process or Stop command, so no interrupt is
+      predicted afterwards.
+    evidence:
+    - 3
+  - id: cr_a1a298bba0a5
+    outcome: withdrawn
+    reason: The scoreboard's prediction logic implements the writability conditions and its predicted
+      intr_state is checked on reads.
+    evidence:
+    - 2
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.07912580000000001
+error: null

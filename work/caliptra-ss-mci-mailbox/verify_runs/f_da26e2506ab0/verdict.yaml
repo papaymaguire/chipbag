@@ -1,0 +1,74 @@
+finding_hash: 7b06f3bd03b9477a
+started_at: '2026-11-10T20:43:06Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks the count_incr pulse behavior. The only references outside the RTL and RDL are
+    coverage points, generated address-map headers, and mask entries in the mci.c register access library.
+  evidence:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2088
+    line_end: 2090
+    quote: "    // ERROR_INTERNAL_INTR_COUNT_INCR_R\n    add_mask_entry(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR_INTERNAL_INTR_COUNT_INCR_R,"
+    role: context
+    note: These are register mask entries, used to exclude the field from generic register checks. They
+      are not a check of the pulse behavior.
+  searches:
+  - what: count_incr / INTR_COUNT_INCR across the repository
+    where: whole repo
+    found: Only mci_reg.rdl, mci_reg.sv, mci_reg_uvm.sv, mci_top_cov_if.sv, a covergroup generator script,
+      address-map headers and libs/mci/mci.c. No test body references it.
+  - what: rising-edge increment of the event counter (cr_156d1497e96f)
+    where: C tests, SV tests, assertions
+    found: No test or assertion checks it.
+  - what: decrvalue = 1 decrement (cr_15934effe86a)
+    where: C tests, SV tests, assertions
+    found: No test or assertion checks it.
+  - what: pulse mirrors the interrupt event (cr_17b3f2ee3de1)
+    where: C tests, SV tests, assertions
+    found: No test or assertion checks it.
+  - what: 1-bit down-counter producing a pulse (cr_19033470337c)
+    where: C tests, SV tests, assertions
+    found: No test or assertion checks it.
+  - what: 1-clock-cycle pulse from the same input as the interrupt event (cr_193c2e86ca72)
+    where: C tests, SV tests, assertions
+    found: No test or assertion checks it.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4800
+    line_end: 4810
+    why_not: Coverpoints only sample the field value. They contain no check that can fail.
+  items:
+  - id: cr_156d1497e96f
+    outcome: verified
+    reason: No test checks the counter increment on a rising edge of an interrupt event input.
+    evidence:
+    - 0
+  - id: cr_15934effe86a
+    outcome: verified
+    reason: No test checks that the counter decrements by 1.
+    evidence:
+    - 0
+  - id: cr_17b3f2ee3de1
+    outcome: verified
+    reason: No test checks that the pulse mirrors the interrupt event.
+    evidence:
+    - 0
+  - id: cr_19033470337c
+    outcome: verified
+    reason: No test checks the 1-bit down-counter pulse behavior.
+    evidence:
+    - 0
+  - id: cr_193c2e86ca72
+    outcome: verified
+    reason: No test checks that the same input that sets the event makes the pulse assert for 1 clock
+      cycle.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 11
+cost_usd: 0.0830384
+error: null

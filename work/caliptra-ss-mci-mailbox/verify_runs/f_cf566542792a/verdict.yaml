@@ -1,0 +1,96 @@
+finding_hash: 1912dea582332906
+started_at: '2026-11-10T19:47:26Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four items are covered by the directed test mcu_intr_handler, which is in the nightly regression.
+    It triggers each interrupt once and checks that the sum of the HW counters equals the firmware count.
+    The saturation item (cr_71500986) has no test, and reaching it would take about 2^32 events. So the
+    finding stands only for that item.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: refutes
+    note: Check on the summed HW counters, which include the ERROR_MBOX1_ECC_UNC counter. Fails the test
+      (SEND_STDOUT_CTRL(0x1)) on a mismatch.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 65
+    line_end: 65
+    quote: ERROR_MBOX1_ECC_UNC_TRIG_MASK             ); mci_error_intr_count++;
+    role: refutes
+    note: 'Stimulus: triggers the MBOX1 ECC UNC interrupt once and increments the firmware count by 1.'
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 215
+    line_end: 217
+    quote: lsu_read_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_CPTRA_MBOX_CMD_AVAIL_INTR_COUNT_R ) +
+    role: refutes
+    note: The notification counters (CPTRA_MBOX cmd_avail, ECC_COR) are read and summed against the firmware
+      count.
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1565
+    line_end: 1565
+    quote: Will not overflow ('incrsaturate').
+    role: supports
+    note: The saturation requirement. No test drives a counter to saturation.
+  searches:
+  - what: Tests referencing the five counters
+    where: src/integration/test_suites
+    found: mcu_intr_handler.c triggers each interrupt once and compares the sum of HW counters with the
+      firmware count. libs/mci/mci.c only has a register reset/sticky table.
+  - what: Regression inclusion of mcu_intr_handler
+    where: src/integration/stimulus
+    found: Listed in the L1_Nightly_Directed and L1_Nightly_Directed_Strict regressions.
+  - what: Saturation test for the counters
+    where: whole repo
+    found: None found. The only places the counters appear are the RTL, the coverage interface and the
+      mci.c register table.
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 569
+    line_end: 588
+    why_not: Register table for reset and sticky checks only. It does not check incrementing or saturation.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 3980
+    line_end: 3980
+    why_not: Coverage coverpoint only, with no check.
+  items:
+  - id: cr_7044caee061c
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers MBOX1_ECC_UNC once and the summed counter check fails the test if
+      the count is not 1. The check is aggregate, so it is weak, but it is a real check.
+    evidence:
+    - 0
+    - 1
+  - id: cr_71500986cef1
+    outcome: verified
+    reason: No test drives a counter to saturation, and none checks that it does not overflow.
+    evidence:
+    - 3
+  - id: cr_7d0a9813c471
+    outcome: withdrawn
+    reason: NOTIF_MBOX1_ECC_COR is triggered once (line 113) and its counter is included in the checked
+      sum.
+    evidence:
+    - 2
+  - id: cr_82024f287341
+    outcome: withdrawn
+    reason: The CPTRA_MBOX cmd_avail counter is triggered (line 111) and its counter is checked in the
+      sum, so counting behavior is exercised.
+    evidence:
+    - 2
+  - id: cr_872d51fa5bf2
+    outcome: withdrawn
+    reason: MBOX0 cmd_avail is triggered (line 109) and its counter is included in the checked sum.
+    evidence:
+    - 2
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Directed test that checks the interrupt counters against a firmware count.
+submissions: 2
+rejections: []
+turns: 12
+cost_usd: 0.15759810000000002
+error: null

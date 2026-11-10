@@ -1,0 +1,18 @@
+{"t": "2026-11-10T19:40:49Z", "event": "  \u2192 Grep: count_incr_r|intr_count_incr"}
+{"t": "2026-11-10T19:40:50Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T19:40:51Z", "event": "Check tests referencing counters (e.g., \"_intr_count\" in tests)."}
+{"t": "2026-11-10T19:40:52Z", "event": "  \u2192 Grep: intr_count|_count_r\\b"}
+{"t": "2026-11-10T19:40:53Z", "event": "  \u2192 Grep: count_incr_r"}
+{"t": "2026-11-10T19:40:54Z", "event": "Those C tests likely match \"intr_count\" loosely. Narrow."}
+{"t": "2026-11-10T19:40:55Z", "event": "  \u2192 Grep: (notif|error)_\\w*_intr_count(_r)?\\b|INTR_COUNT"}
+{"t": "2026-11-10T19:40:56Z", "event": "Search tests (excluding address map) for the counter addresses/names."}
+{"t": "2026-11-10T19:40:57Z", "event": "  \u2192 Grep: INTR_COUNT_R|intr_count_r|INTR_COUNT_INCR"}
+{"t": "2026-11-10T19:40:59Z", "event": "  \u2192 Grep: INTR_COUNT"}
+{"t": "2026-11-10T19:41:01Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:41:05Z", "event": "  \u2192 Grep: mci_notif_intr_count\\b|notif_intr_trig|NOTIF_INTR_TRIG|mcu_intr_handler"}
+{"t": "2026-11-10T19:41:17Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:41:26Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:27Z", "event": "Resubmitting the verdict with the supporting evidence marked as refutes for the two withdrawn items."}
+{"t": "2026-11-10T19:41:35Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:38Z", "event": "I submitted the verdict as verified overall, with a different outcome for each of the five items.\n\n- **cr_4400c784ffb0 and cr_49c8b388dda9 (increment by 1 for mbox1_soc_req_lock and mbox1_ecc_cor): withdrawn.** `mcu_intr_handler` triggers each notif interrupt once. It then sums all the hardware counters and kills the sim if the sum differs from the firmware's count (`mcu_intr_handler.c:256`). The check is aggregate, so errors in two different counters could cancel out.\n- **cr_4868f6c38d1f and cr_48e9dbdcfdb2 (saturation instead of overflow): verified.** No test drives a counter to saturation. The only other hits are coverpoints in `mci_top_cov_if.sv`, which check nothing.\n- **cr_4706175d6d92 (the pulse decrements by 1): inconclusive.** No test checks the decrement directly. A wrong pulse would only show up indirectly through the counter total.\n\nThe test is in the nightly directed regression and the master test list."}
+{"t": "2026-11-10T19:41:38Z", "event": "[13 turns, $0.1710]"}

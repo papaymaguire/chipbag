@@ -1,0 +1,44 @@
+finding_hash: 6c8c9a41249f3db3
+started_at: '2026-11-10T19:41:31Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Both items are project-governance checklist rows (code quality and integration process), not
+    design behaviors. No test could implement them. One is marked Done with a note and the other is N/A.
+  evidence:
+  - path: hw/ip/hmac/doc/checklist.md
+    line_start: 251
+    line_end: 251
+    quote: Code Quality  | [ALL_TODOS_RESOLVED][]            | Done        | Remaining TODOs have a linked
+      issue and are not required for verification completion
+    role: refutes
+    note: Process sign-off item, not a testable behavior.
+  - path: hw/ip/hmac/doc/checklist.md
+    line_start: 254
+    line_end: 254
+    quote: Integration   | [PRE_VERIFIED_SUB_MODULES_V3][]   | N/A         |
+    role: refutes
+    note: Marked N/A, so no test is expected.
+  searches:
+  - what: the two checklist item names
+    where: hw/ip/hmac
+    found: Only checklist.md rows and link definitions; no tests.
+  near_misses: []
+  items:
+  - id: cp_ec276fc249d6
+    outcome: withdrawn
+    reason: Process item about code TODOs. It is signed off as Done and no test applies.
+    evidence:
+    - 0
+  - id: cp_f7ad110ca489
+    outcome: withdrawn
+    reason: Marked N/A in the checklist, so no test is expected.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.022613199999999996
+error: null

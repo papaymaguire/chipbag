@@ -1,0 +1,98 @@
+finding_hash: 109a79620c2a5468
+started_at: '2026-11-10T20:43:14Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Items 1-4 are not verified by any check that can fail. Item 5, "no software owner when MBOX_LOCK
+    is not set", is checked by the ownership-flow testbench, so I withdrew that item. The target-user
+    smoke test and the flow test cover the TARGET_USER_VALID clear and re-grant, but they never read EXECUTE
+    after the terminal status. They also cannot check the Target's own access ordering, and no test exercises
+    recovery from a non-responsive Target by MCI reset.
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 94
+    line_end: 95
+    quote: "    mcu_mbox_write(mci_comm_flow_execute_addr, user, 0);\n    mci_comm_flow_check_phase(\"\
+      released\", MCU_MBOX_OWNER_NONE);"
+    role: refutes
+    note: After EXECUTE=0 the lock is free and the checker asserts HW_STATUS SRAM owner is NONE (item
+      5).
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 130
+    line_end: 131
+    quote: "    mci_comm_flow_write_data(mci_comm_flow_target);\n    mcu_mbox_write(mci_comm_flow_target_status_addr,\
+      \ mci_comm_flow_target, status);"
+    role: context
+    note: The Target terminal write is checked only through the resulting owner (Root); EXECUTE is never
+      read back.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 250
+    line_end: 250
+    quote: '    // Hardware clears both target configuration registers on terminal status.'
+    role: context
+    note: The test checks that TARGET_USER_VALID is cleared, but does not check EXECUTE and does not exercise
+      any MCI reset recovery.
+  searches:
+  - what: 'item cr_12643f17b618: re-programming the next Target user after the clear'
+    where: smoke_test_mcu_mbox_target_user.c and mci_mbox_ownership_flow.svh
+    found: The smoke test runs a single transaction. The flow re-programs TARGET_USER in later transactions
+      but only after a lock release. No direct check of clear-then-reprogram.
+  - what: 'item cr_eb54be3afc42: Target finishing SRAM/DMA accesses before the terminal write'
+    where: cptra_smoke_test_mcu_mbox_target_user.c and the flow
+    found: No check on the Target's own access ordering.
+  - what: 'item cr_f484f55cbce1: EXECUTE read after the terminal TARGET_STATUS write'
+    where: grep for mcu_mbox_read_execute/EXECUTE in smoke_test_mcu_mbox_target_user
+    found: Only a non-owner EXECUTE check in the Caliptra-side test. No EXECUTE read after the terminal
+      status.
+  - what: 'item cr_3437364f9e35: non-responsive Target recovered only by MCI reset'
+    where: grep for non-responsive/unresponsive across src
+    found: Hits only in pwrmgr, tlul and USB docs; nothing for the MCU mailbox.
+  - what: 'item cr_51f02e52744d: no SRAM owner when lock is free'
+    where: mci_mbox_ownership_flow.svh
+    found: mci_comm_flow_end calls check_phase("released", MCU_MBOX_OWNER_NONE), which asserts the SRAM
+      owner is NONE after EXECUTE=0 with the lock free.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 207
+    line_end: 216
+    why_not: Covers the terminal status and the TARGET_USER_VALID clear, but not EXECUTE staying 1 or
+      re-programming the next Target user.
+  items:
+  - id: cr_12643f17b618
+    outcome: verified
+    reason: The flow re-programs TARGET_USER in later transactions only after a lock release, and no check
+      covers the clear-then-reprogram sequence directly.
+    evidence:
+    - 2
+  - id: cr_eb54be3afc42
+    outcome: verified
+    reason: This is a Target-side behaviour. No check detects a Target finishing its accesses after a
+      terminal write.
+    evidence:
+    - 1
+  - id: cr_f484f55cbce1
+    outcome: verified
+    reason: No test reads EXECUTE after the terminal TARGET_STATUS write. The checks look only at the
+      SRAM owner and the cleared target registers.
+    evidence:
+    - 1
+    - 2
+  - id: cr_3437364f9e35
+    outcome: verified
+    reason: I found no test for a non-responsive Target or for MCI-reset-only recovery.
+    evidence: []
+  - id: cr_51f02e52744d
+    outcome: withdrawn
+    reason: The ownership flow checks that the SRAM owner is NONE in the released phase, where the lock
+      is free, and stimulus drives EXECUTE=0 to reach it.
+    evidence:
+    - 0
+  new_sources:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    reason: Testbench flow that checks SRAM owner at each phase.
+submissions: 2
+rejections: []
+turns: 11
+cost_usd: 0.14475039999999997
+error: null

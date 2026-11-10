@@ -1,0 +1,7 @@
+{"t": "2026-11-10T19:37:01Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/asserts/caliptra_ss_top_sva.sv"}
+{"t": "2026-11-10T19:37:01Z", "event": "  \u2192 Grep: all_error_non_fatal_check|SVA ERROR"}
+{"t": "2026-11-10T19:37:04Z", "event": "  \u2192 Grep: SVA ERROR|assertion.*fail|Assertion.*failed"}
+{"t": "2026-11-10T19:37:07Z", "event": "  \u2192 Grep: grep.*(SVA|ERROR)|TESTCASE (PASSED|FAILED)"}
+{"t": "2026-11-10T19:37:13Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:37:16Z", "event": "I submitted the verdict as verified: the finding stands.\n\nThe `all_error_non_fatal_check` assertion (`caliptra_ss_top_sva.sv:247-252`) has only `else $display(\"SVA ERROR: all_error_non_fatal is asserted unexpectedly\")` as its failure action. It has no `$error`, `$fatal` or error counter, so a violation prints a message and doesn't fail the test.\n\nI found no log scanner or testbench hook in the repository that turns \"SVA ERROR\" into a failure. The other SVA files use the same `$display` pattern. The simulator's own assertion-failure count might still be flagged somewhere outside the repository, and I couldn't check that."}
+{"t": "2026-11-10T19:37:16Z", "event": "[6 turns, $0.0437]"}

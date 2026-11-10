@@ -1,0 +1,12 @@
+{"t": "2026-11-10T19:44:37Z", "event": "  \u2192 Grep: tl_intg_err|tlul_assert|TLUL assertions"}
+{"t": "2026-11-10T19:44:38Z", "event": "  \u2192 Grep: FPV_ASSERTIONS_PROVEN_AT_V3|DESIGN_DELTAS_CAPTURED_V3|SIM_NIGHTLY_REGRESSION_AT_V3"}
+{"t": "2026-11-10T19:44:41Z", "event": "  \u2192 Grep: tl_intg_err"}
+{"t": "2026-11-10T19:44:41Z", "event": "  \u2192 Grep: tl_intg_err|common_sim_cfg"}
+{"t": "2026-11-10T19:44:43Z", "event": "  \u2192 Grep: tl_intg_err"}
+{"t": "2026-11-10T19:44:44Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/sva/hmac_bind.sv"}
+{"t": "2026-11-10T19:44:46Z", "event": "  \u2192 Grep: tl_access_tests|hmac_bind|tl_device_access_types"}
+{"t": "2026-11-10T19:44:58Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:45:00Z", "event": "Resubmitting the verdict. The checklist evidence needs the \"refutes\" role."}
+{"t": "2026-11-10T19:45:08Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:45:13Z", "event": "I withdrew the finding: all five items are false positives, and the verdict was accepted.\n\n- **TLUL assertions (`cp_1bd460af41bb`):** `hw/ip/hmac/dv/sva/hmac_bind.sv` binds `tlul_assert` to the HMAC DUT. `hmac_bind` is listed in `sim_tops` in `hmac_sim_cfg.hjson`, so the protocol checker runs with every simulation test.\n- **`sec_cm_bus_integrity` (`cp_26bbdb5d691d`):** the shared `hw/dv/tools/dvsim/tests/tl_access_tests.hjson` defines `{name}_tl_intg_err`. `hmac_sim_cfg.hjson` imports it, so `hmac_tl_intg_err` exists. I did not open that test's sequence to confirm it checks anything; I only confirmed it is defined and imported.\n- **`FPV_ASSERTIONS_PROVEN_AT_V3`, `DESIGN_DELTAS_CAPTURED_V3` and `SIM_NIGHTLY_REGRESSION_AT_V3`:** these are entries in `hw/ip/hmac/doc/checklist.md`, marked N/A, Done and Done. They are project-governance status lines, not test plan items, so no test could implement them."}
+{"t": "2026-11-10T19:45:13Z", "event": "[10 turns, $0.0762]"}

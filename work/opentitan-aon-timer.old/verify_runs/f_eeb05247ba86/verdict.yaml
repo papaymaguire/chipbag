@@ -1,0 +1,43 @@
+finding_hash: f03ce56fd09c4a17
+started_at: '2026-11-10T22:05:57Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The AON timer branch of ottf_handle_irq only calls LOG_ERROR and returns true. It has no CHECK
+    or other failure path. The test can still pass through the escalation reset path (second boot returns
+    true) even if a bark interrupt fired. This contradicts the plan's "fail the test in the interrupt
+    handler" and the comment's "should not get aon timer interrupts". I did not search for an external
+    harness that fails on ERROR log lines.
+  evidence:
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    line_start: 89
+    line_end: 90
+    quote: "    LOG_ERROR(\"Unexpected aon timer interrupt %d\", irq);\n    return true;"
+    role: supports
+    note: Handler only logs and returns true; no test failure.
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    line_start: 283
+    line_end: 286
+    quote: '  } else if (rst_info == kDifRstmgrResetInfoEscalation) {'
+    role: context
+    note: The second boot after escalation returns true with no check that an aon timer interrupt occurred.
+  searches:
+  - what: Read the full test source for any CHECK or flag set on AON timer interrupts
+    where: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    found: None. The only AON timer handling is LOG_ERROR, and there is no counter or flag that is checked
+      later.
+  near_misses:
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    line_start: 103
+    line_end: 117
+    why_not: These CHECKs are in the alert handler branch, not the AON timer branch.
+  items: []
+  new_sources: []
+  resolution: Replace LOG_ERROR with CHECK(false, ...), or set a flag in the handler and check it after
+    the reset.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.05129099999999999
+error: null

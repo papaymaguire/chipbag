@@ -1,0 +1,17 @@
+{"t": "2026-11-10T19:42:36Z", "event": "  \u2192 Grep: count_incr_r|intr_count_incr"}
+{"t": "2026-11-10T19:42:37Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T19:42:39Z", "event": "  \u2192 Grep: intr_count_r|_intr_count|INTR_COUNT"}
+{"t": "2026-11-10T19:42:40Z", "event": "Likely matches on a generic name. Narrow down."}
+{"t": "2026-11-10T19:42:41Z", "event": "  \u2192 Grep: intr_count_r|intr_count_incr|INTR_COUNT_INCR"}
+{"t": "2026-11-10T19:42:43Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:42:45Z", "event": "  \u2192 Grep: INTR_COUNT"}
+{"t": "2026-11-10T19:42:47Z", "event": "  \u2192 Grep: INTR_COUNT_R\\b|intr_count_r\\b"}
+{"t": "2026-11-10T19:42:49Z", "event": "  \u2192 Grep: COUNT_R|count"}
+{"t": "2026-11-10T19:42:52Z", "event": "  \u2192 Grep: _hw|INTR_COUNT_R|cptra_mbox_cmd_avail|mbox1_soc_req_lock|mbox0_target_done"}
+{"t": "2026-11-10T19:42:56Z", "event": "Checking whether this test is in a regression list."}
+{"t": "2026-11-10T19:42:57Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T19:43:09Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:43:10Z", "event": "Resubmitting with the evidence roles set to refutes."}
+{"t": "2026-11-10T19:43:18Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:43:21Z", "event": "I withdrew all five items, and the verdict was accepted. A nightly directed test, `mcu_intr_handler`, does check these counters.\n\n- **What the test does:** it triggers each MCI error and notification interrupt once and counts the expected events. It then reads every `*_INTR_COUNT_R` counter and fails if the sum of the hardware counters differs from the expected count. The checks are at `mcu_intr_handler.c:201` (errors) and `:256` (notifications).\n- **The five items:** the test triggers `error_mbox1_ecc_unc`, `notif_cptra_mbox_cmd_avail`, `notif_mbox0_target_done` and `notif_mbox1_soc_req_lock`. That covers the three increment-by-1 items. The `counter` and `decrvalue = 1` attributes are implementation properties of the same counters, and a failure of either would show up as a wrong sum.\n- **Regression:** the test is in the nightly directed regression lists, including `caliptra_ss_master_test_list.csv`.\n- **Weakness:** the check is on the sum, not per counter. Two counters with offsetting errors could cancel out and go unnoticed."}
+{"t": "2026-11-10T19:43:21Z", "event": "[13 turns, $0.1574]"}

@@ -1,0 +1,85 @@
+finding_hash: fc2d151d3106b6fc
+started_at: '2026-11-10T19:44:29Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'I found no test that checks any of the 5 items. The DV environment forces sideload off (TODO
+    #31634), so no sideload-abort scenario is ever stimulated. The RTL has the abort logic and two assertions,
+    but the DV never drives a key-invalid condition. The two "Triggering" items are software-procedure
+    rules that the DV does not check as such.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: "// TODO(#31634): Disable sideloading for now.\n  rand_config_value[ral.cfg.sideload.get_lsb_pos()]\
+      \ = 1'b0;"
+    role: supports
+    note: Random configs force sideload off, so no sideload test runs. This covers items 3, 4 and 5.
+  - path: hw/ip/hmac/rtl/hmac.sv
+    line_start: 1061
+    line_end: 1062
+    quote: "`ASSERT(SideloadKeyInvalidBlocksStart_A, sideload_key_invalid |-> !hash_start_or_continue)\n\
+      \  `ASSERT(SideloadKeyInvalidAborts_A, sideload_key_invalid |-> !sha_en_engine)"
+    role: context
+    note: RTL assertions exist, but nothing in the DV makes the key invalid mid-operation. They do not
+      check that the message and intermediate hash are discarded, or that a key change is handled.
+  searches:
+  - what: 'item cr_09387e293565: FIFO-full waiting (fifo_full, wait_fifo) in the DV'
+    where: hw/ip/hmac/dv/env
+    found: The scoreboard tracks the FIFO-full status bit and the coverage samples it. Nothing checks
+      that software waits before writing.
+  - what: 'item cr_6fdc529bb101: sha_en ordering (sha_en) in the DV sequences'
+    where: hw/ip/hmac/dv/env/seq_lib
+    found: hmac_init writes CFG in one go. Other sequences toggle sha_en for stop/continue and invalid-config
+      cases, not for configuration ordering.
+  - what: 'item cr_03c30ada2ff4: key_valid, revoke and key_invalid in the DV'
+    where: hw/ip/hmac
+    found: Only RTL matches (hmac.sv abort logic and assertions). No DV stimulus drives the key invalid,
+      and the sideload agent has start_default_seq=0.
+  - what: 'item cr_2afcaa91c549: abort and restart, message discarded'
+    where: hw/ip/hmac/dv
+    found: Nothing found. The scoreboard's SwInvalidConfig handling relates only to invalid CFG.
+  - what: 'item cr_371670d7ec74: key unchanged during an operation, sideload sequences'
+    where: hw/ip/hmac/dv/env/seq_lib
+    found: Sideload is forced to 0 in hmac_base_vseq.sv. No test changes the key mid-operation.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 96
+    line_end: 101
+    why_not: Covers the FIFO-full status bit only. It does not check that software waits for the FIFO
+      to drain before writing.
+  items:
+  - id: cr_09387e293565
+    outcome: verified
+    reason: This is a software rule. The DV checks the FIFO-full status bit but nothing enforces or checks
+      the wait-before-write behavior.
+    evidence: []
+  - id: cr_6fdc529bb101
+    outcome: verified
+    reason: hmac_init writes all of CFG in a single write, and nothing checks the ordering of sha_en against
+      the other configuration.
+    evidence: []
+  - id: cr_03c30ada2ff4
+    outcome: verified
+    reason: Sideload is disabled in the DV and no test revokes the key during an operation. Only RTL assertions
+      exist.
+    evidence:
+    - 0
+    - 1
+  - id: cr_2afcaa91c549
+    outcome: verified
+    reason: No abort and restart scenario is tested.
+    evidence:
+    - 0
+  - id: cr_371670d7ec74
+    outcome: verified
+    reason: No test changes the sideloaded key during an operation.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.0918986
+error: null

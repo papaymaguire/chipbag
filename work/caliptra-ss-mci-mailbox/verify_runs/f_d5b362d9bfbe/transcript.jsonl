@@ -1,0 +1,15 @@
+{"t": "2026-11-10T20:42:38Z", "event": "  \u2192 Grep: intr_count_r|mbox[01]_ecc_unc_intr|mbox[01]_cmd_avail_intr|mbox[01]_target_done_intr"}
+{"t": "2026-11-10T20:42:40Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T20:42:41Z", "event": "Probably generic. Check for mbox-specific counters in tests."}
+{"t": "2026-11-10T20:42:42Z", "event": "  \u2192 Grep: (mbox[01]_(ecc_unc|cmd_avail|target_done)_intr_count|mbox[01]_(ecc_unc|cmd_avail|target_done)_intr_count_r)"}
+{"t": "2026-11-10T20:42:43Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:42:44Z", "event": "Only address maps. Check tests using these addresses and coverage file."}
+{"t": "2026-11-10T20:42:45Z", "event": "  \u2192 Grep: MBOX[01]_(ECC_UNC|CMD_AVAIL|TARGET_DONE)_INTR_COUNT"}
+{"t": "2026-11-10T20:42:47Z", "event": "  \u2192 Grep: MBOX[01]_(ECC_UNC|CMD_AVAIL|TARGET_DONE)_INTR_COUNT"}
+{"t": "2026-11-10T20:42:49Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T20:42:52Z", "event": "  \u2192 Grep: MBOX[01]_(ECC_UNC|CMD_AVAIL|TARGET_DONE)_TRIG"}
+{"t": "2026-11-10T20:42:53Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T20:43:04Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:43:11Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:43:14Z", "event": "I submitted the verdict as inconclusive, so the finding is only partly right.\n\n- **Four items withdrawn:** `mcu_intr_handler.c` triggers each of these interrupts once and fails the test if the sum of the hardware counters differs from the firmware count. That covers \"increments by 1\" for the three counters (`cr_93f442797b66`, `cr_98b85c82cd7e`, `cr_a4e88fd170e5`) and \"is a counter\" for `cr_99a664f7c3be`.\n- **Saturation item stands:** I found no test that drives a counter to its maximum, so `cr_a0511df283f8` is verified as untested.\n\nThe check is an aggregate sum, so it would catch a missed or doubled increment but not say which counter was wrong."}
+{"t": "2026-11-10T20:43:14Z", "event": "[12 turns, $0.1325]"}

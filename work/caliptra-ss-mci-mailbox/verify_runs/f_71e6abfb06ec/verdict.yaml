@@ -1,0 +1,38 @@
+finding_hash: 06680b2e8a7af889
+started_at: '2026-11-10T20:35:39Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The TARGET_STATUS field description in the same RDL file defines terminal as any non-BUSY value.
+    That covers DATA_READY, CMD_COMPLETE and CMD_FAILURE, so a test writer knows what to check. The hardware
+    spec adds that the write ends SRAM ownership.
+  evidence:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 106
+    line_end: 106
+    quote: Writing any terminal (non-BUSY) value ends the target's SRAM ownership, clears TARGET_USER
+      and TARGET_USER_VALID, and notifies Root.
+    role: refutes
+    note: Defines terminal as any non-BUSY value.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1350
+    line_end: 1351
+    quote: publish a terminal `TARGET_STATUS` during normal operation. Hardware clears
+    role: context
+    note: Hardware spec says the clear happens on the terminal write.
+  searches:
+  - what: TARGET_USER and terminal definitions
+    where: docs and src/mci/rtl rdl
+    found: The TARGET_STATUS field description defines terminal as non-BUSY.
+  near_misses: []
+  items: []
+  new_sources: []
+  resolution: Any non-BUSY write (DATA_READY, CMD_COMPLETE or CMD_FAILURE) clears both registers. A CMD_BUSY
+    write is non-terminal; its handling is implied but not stated. The spec could say explicitly that
+    CMD_BUSY leaves both registers unchanged.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0382189
+error: null

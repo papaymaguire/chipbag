@@ -1,0 +1,11 @@
+{"t": "2026-11-10T19:41:42Z", "event": "  \u2192 Grep: intr_count_incr"}
+{"t": "2026-11-10T19:41:42Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T19:41:45Z", "event": "  \u2192 Grep: notif_mbox[01]_(ecc_cor|soc_req_lock|target_done)_intr_count|mbox0_ecc_unc_intr_count"}
+{"t": "2026-11-10T19:41:47Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:41:50Z", "event": "  \u2192 Grep: mbox[01]_(ecc_cor|ecc_unc|soc_req_lock|target_done)_intr_count|mbox[01]_.*intr_count_incr"}
+{"t": "2026-11-10T19:41:50Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:41:53Z", "event": "Only coverpoints; no checks on the count registers. Submitting."}
+{"t": "2026-11-10T19:41:59Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:42:07Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:42:11Z", "event": "I submitted the verdict as verified: all five items stand as untested. I found no test or checker for the mailbox interrupt count-increment pulse fields or the counters they drive.\n\n- **What I found:** Outside the generated register files, the only references are coverpoints in `src/mci/coverage/mci_top_cov_if.sv`. A coverpoint samples a value but cannot fail a test.\n- **What I ruled out:** The `intr_count` matches in the C tests are unrelated. For example, `cptra_ss_mcu_mbox_test.c` only declares a local variable of that name.\n- **Limits of the search:** I ran grep searches across `src/` and the repository. I read only `mci_reg.rdl` and the test file above. I did not open every test, so a test using different register names could have slipped through.\n- **Per-item note:** The record has a short search entry for each of the five items. Most of them are grep-only checks."}
+{"t": "2026-11-10T19:42:11Z", "event": "[9 turns, $0.0902]"}

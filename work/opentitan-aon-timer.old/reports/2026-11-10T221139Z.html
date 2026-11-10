@@ -1,0 +1,839 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Spec and test gaps: AON timer</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font: 10.5pt/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; color: #1a1a1a; max-width: 100%; }
+h1 { font-size: 20pt; margin: 0 0 6pt; }
+h2 { font-size: 14pt; margin: 18pt 0 6pt; border-bottom: 1px solid #ccc; padding-bottom: 2pt; }
+h3 { font-size: 11.5pt; margin: 12pt 0 4pt; break-after: avoid; }
+code { font: 9pt/1.35 "DejaVu Sans Mono", Menlo, Consolas, monospace; background: #f3f3f3; padding: 0 2px; }
+pre { background: #f6f6f6; border-left: 3px solid #bbb; padding: 4pt 6pt; margin: 3pt 0 6pt;
+      white-space: pre-wrap; word-break: break-word; break-inside: avoid; }
+pre code { background: none; padding: 0; }
+table { border-collapse: collapse; margin: 6pt 0; }
+th, td { border: 1px solid #ccc; padding: 3pt 6pt; text-align: left; }
+hr { border: 0; border-top: 1px solid #ddd; margin: 10pt 0; }
+a { color: #0b57d0; text-decoration: none; }
+ul, ol { padding-left: 18pt; } li { margin: 2pt 0; }
+</style></head><body><h1>Spec and test gaps: AON timer</h1>
+<p>Repository <code>targets/opentitan</code> at commit <code>b84154c71810</code>. Report generated 2026-11-10 22:11 UTC by chipbag.</p>
+<p>Each finding below gives the gap, the evidence for it as exact quotes at their file and line, and how it was verified: an agent searched the repository to refute the finding, and the finding was kept only if that failed. Every quote was checked against the file at the cited lines. The report does not recommend a fix.</p>
+<h2 id="summary">Summary</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Category</th>
+<th style="text-align:right">Verified</th>
+<th style="text-align:right">Withdrawn</th>
+<th style="text-align:right">Inconclusive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="#1-spec-too-ambiguous-to-test">Spec too ambiguous to test</a></td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">5</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="#2-spec-contradicts-itself">Spec contradicts itself</a></td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="#3-test-contradicts-its-own-description">Test contradicts its own description</a></td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="#4-spec-and-test-disagree">Spec and test disagree</a></td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="#5-spec-not-tested">Spec not tested</a></td>
+<td style="text-align:right">12 (26 items)</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">4</td>
+</tr>
+</tbody>
+</table>
+<p>2 verified findings with the same subject as another are shown together with it and counted once.</p>
+<h2 id="scope">Scope</h2>
+<p><strong>Spec sources (4):</strong> <code>hw/ip/aon_timer/data/aon_timer.hjson</code>, <code>hw/ip/aon_timer/doc/interfaces.md</code>, <code>hw/ip/aon_timer/doc/programmers_guide.md</code>, <code>hw/ip/aon_timer/doc/theory_of_operation.md</code></p>
+<p><strong>Verification sources (41 files):</strong> <code>hw/ip/aon_timer/dv/env/seq_lib/</code> (11), <code>hw/dv/tools/dvsim/testplans/</code> (6), <code>sw/device/tests/</code> (5), <code>hw/ip/aon_timer/dv/cov/</code> (4), <code>hw/ip/aon_timer/dv/env/</code> (4), <code>hw/ip/aon_timer/data/</code> (2), <code>hw/ip/aon_timer/dv/</code> (2), <code>hw/top_earlgrey/dv/</code> (2), <code>hw/ip/aon_timer/dv/sva/</code> (1), <code>hw/ip/aon_timer/dv/tests/</code> (1), <code>hw/top_earlgrey/data/ip/</code> (1), <code>hw/top_earlgrey/formal/conn_csvs/</code> (1), <code>sw/device/lib/dif/</code> (1). The full list is in the manifest.</p>
+<p>143 requirements after merging duplicates; 87 need a test (the rest hold by construction). 86 tests (70 with source), 50 test plan items. 47 requirements are matched to a test.</p>
+<p>Files the verifier used as evidence that are not in the manifest: <code>hw/dv/sv/tl_agent/tl_agent_cov.sv</code>, <code>hw/dv/tools/dvsim/tests/csr_tests.hjson</code>, <code>hw/ip/aon_timer/README.md</code>.</p>
+<h2 id="1-spec-too-ambiguous-to-test">1. Spec too ambiguous to test</h2>
+<h3 id="11-a-watchdog-bite-reset-is-generated-when-the-watchdog-count-reaches-the-threshold-value">1.1 A watchdog bite reset is generated when the watchdog count reaches the threshold value.</h3>
+<p><code>f_f2608a62b470</code> · weak modal · severity medium · section: hw/ip/aon_timer/data/aon_timer.hjson &gt; aon_timer &gt; WDOG_BITE_THOLD</p>
+<p><strong>Gap:</strong> The text uses 'should be generated' and does not say whether the reset triggers on equality or on greater-or-equal.</p>
+<p><strong>Spec says:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/data/aon_timer.hjson#L303"><code>hw/ip/aon_timer/data/aon_timer.hjson:303</code></a>: <code>The count at which a watchdog bite reset should be generated.</code></li>
+</ul>
+<p><strong>Not answered by the spec:</strong> Is the watchdog bite condition count &gt;= WDOG_BITE_THOLD.threshold or count == threshold? If the count is already above a newly programmed threshold, or software writes the count above it, does a bite assert immediately? Also, in which clk_aon cycle does the bite request assert relative to the count reaching the threshold?</p>
+<p><strong>Verified:</strong> No spec text states whether the watchdog bite condition is &gt;= or ==, or the cycle at which the bite asserts. The only supporting text is the programmer's guide, which covers the wakeup timer only. The RTL uses &gt;= gated by an increment pulse.</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>bite, threshold, &gt;= wording in the aon_timer docs in <code>hw/ip/aon_timer/doc</code>: Only generic 'reaches the programmed threshold' text. The wakeup 'remains above' sentence is the only &gt;= hint, and it does not cover the watchdog.</li>
+<li>comparison operators in the RTL in <code>hw/ip/aon_timer/rtl</code>: The RTL uses &gt;= for the bite request, gated by wdog_incr.</li>
+</ul>
+<p><strong>Looked at and ruled out:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L93"><code>hw/ip/aon_timer/doc/programmers_guide.md:93</code></a>: It covers only the wakeup timer, not the watchdog bite, and does not give the cycle timing.</li>
+</ul>
+<hr />
+<h3 id="12-the-interrupt-retriggers-at-the-next-clock-tick-if-the-count-remains-above-the-threshold-after-clearing-and-the-timer-remains-enabled">1.2 The interrupt retriggers at the next clock tick if the count remains above the threshold after clearing and the timer remains enabled.</h3>
+<p><code>f_604ea5c51516</code> · unclear referent · severity medium · section: hw/ip/aon_timer/doc/programmers_guide.md &gt; Programmer's Guide &gt; Interrupt Handling</p>
+<p><strong>Gap:</strong> It is unclear which clock's tick is meant for retriggering.</p>
+<p><strong>Spec says:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L93"><code>hw/ip/aon_timer/doc/programmers_guide.md:93</code></a><pre><code>If {[`WKUP_COUNT_HI`](registers.md#wkup_count_hi), [`WKUP_COUNT_LO`](registers.md#wkup_count_lo)} remains above the threshold after clearing the interrupt or wakeup event and the timer remains enabled, the interrupt and wakeup event will trigger again at the next clock tick.
+</code></pre>
+</li>
+</ul>
+<p><strong>Not answered by the spec:</strong> After INTR_STATE/WKUP_CAUSE is cleared while the timer is enabled and {WKUP_COUNT_HI, WKUP_COUNT_LO} is still at or above WKUP_THOLD, is the next clock tick the next AON clock cycle or the next prescaled counter increment? How many AON and bus clock cycles of latency, including CDC synchronization, should a test allow before the interrupt and wakeup request re-assert? Is the retrigger condition count &gt;= threshold or strictly count &gt; threshold?</p>
+<p><strong>Verified:</strong> No other spec text in aon_timer docs specifies which clock tick causes retriggering, the CDC latency, or whether the comparison is &gt;= or &gt;. The theory of operation only mentions the ~200KHz AON clock and async register sync.</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>tick/prescal/threshold in aon_timer docs in <code>hw/ip/aon_timer/doc</code>: No definition of retrigger timing or comparison semantics</li>
+<li>clock/cycle/&gt;=/reaches in theory_of_operation.md in <code>hw/ip/aon_timer/doc/theory_of_operation.md</code>: Only general clock and CDC remarks</li>
+</ul>
+<p><strong>Looked at and ruled out:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/registers.md#L74"><code>hw/ip/aon_timer/doc/registers.md:74</code></a>: 'The count at which a wakeup interrupt should be generated' does not define retrigger timing or the clock tick.</li>
+</ul>
+<hr />
+<h3 id="13-a-register-write-can-complete-on-the-bus-before-the-data-has-reached-the-underlying-register-in-the-aon-domain">1.3 A register write can complete on the bus before the data has reached the underlying register in the AON domain.</h3>
+<p><code>f_bfbfd9b86252</code> · missing detail · severity medium · section: hw/ip/aon_timer/doc/theory_of_operation.md &gt; Theory of Operation &gt; Design Details</p>
+<p><strong>Gap:</strong> No bound on the delay before the write reaches the AON register is given.</p>
+<p><strong>Spec says:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L26"><code>hw/ip/aon_timer/doc/theory_of_operation.md:26</code></a>: <code>This means that writes can complete before the data has reached its underlying register in the slow clock domain.</code></li>
+</ul>
+<p><strong>Not answered by the spec:</strong> What is the maximum number of AON (and SYS) clock cycles between a TL-UL write completing and the value taking effect in the AON-domain register? Is any bound guaranteed beyond read-back ordering?</p>
+<p><strong>Verified:</strong> No spec text in the aon_timer docs or register descriptions bounds the delay. The only guarantee is that a read-back completes all earlier writes. The spec gives no cycle count.</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>slow clock, cycles, synchron in <code>hw/ip/aon_timer md/hjson</code>: Only the cited lines and generic DV README mentions. No bound.</li>
+<li>read-back, take effect, latency in <code>hw/ip/aon_timer md/hjson</code>: Only the cited read-back sentence.</li>
+</ul>
+<p><strong>Looked at and ruled out:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/README.md#L36"><code>hw/ip/aon_timer/dv/README.md:36</code></a>: Only says there is synchronisation logic between the clock domains. It is a verification doc and gives no bound.</li>
+</ul>
+<hr />
+<h2 id="2-spec-contradicts-itself">2. Spec contradicts itself</h2>
+<h3 id="21-wakeup-threshold-bits-310-are-in-the-low-threshold-register">2.1 Wakeup threshold bits [31:0] are in the low threshold register.</h3>
+<p><code>f_9cdb47e2d305</code> · description vs. definition · severity high</p>
+<p><strong>Gap:</strong> The text names WKUP_THOLD_HI for bits [31:0] while the link target is wkup_thold_lo, so the register is unclear.</p>
+<p><strong>Spec says:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L32"><code>hw/ip/aon_timer/doc/theory_of_operation.md:32</code></a>: <code>Bits[31:0] in registers</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L32"><code>hw/ip/aon_timer/doc/theory_of_operation.md:32</code></a>: <code>WKUP_THOLD_HI</code></li>
+</ul>
+<p><strong>Not answered by the spec:</strong> Is the register holding wakeup threshold bits [31:0] WKUP_THOLD_LO?</p>
+<p><strong>Verified:</strong> Line 32 of the doc lists WKUP_THOLD_HI as the register for bits [31:0], but its link target is registers.md#wkup_thold_lo. Line 31 already assigns WKUP_THOLD_HI to bits [63:32]. The two readings are incompatible, and the link target and the 64-bit split point to LO being intended. It is a doc typo. I did not check the register definitions or RTL.</p>
+<p><strong>Further evidence found by the verifier:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L31"><code>hw/ip/aon_timer/doc/theory_of_operation.md:31</code></a>: <code>Bits[63:32] in registers [`WKUP_COUNT_HI`](registers.md#wkup_count_hi) and [`WKUP_THOLD_HI`](registers.md#wkup_thold_hi).</code> — HI is already used for bits [63:32].</li>
+</ul>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>context of the cited line in <code>hw/ip/aon_timer/doc/theory_of_operation.md:25-40</code>: Line 32 names WKUP_THOLD_HI with a link to wkup_thold_lo; line 31 uses HI for bits [63:32].</li>
+</ul>
+<p><strong>Same subject, also found as spec contradicts itself</strong> (<code>f_d086aa20d344</code>, cross_document):</p>
+<p><strong>Spec says:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/data/aon_timer.hjson#L206"><code>hw/ip/aon_timer/data/aon_timer.hjson:206</code></a>: <code>bits: &quot;31:0&quot;</code></li>
+</ul>
+<p><strong>Verified:</strong> The theory_of_operation.md line 32 says bits[31:0] are in WKUP_THOLD_HI, although its link target is wkup_thold_lo. Line 31 of the same file and the hjson say HI holds bits 63:32. This is a documentation typo, not a real ambiguity, but the text does contradict itself.</p>
+<hr />
+<h2 id="3-test-contradicts-its-own-description">3. Test contradicts its own description</h2>
+<h3 id="31-aontimerprescaler-plan-vs-test">3.1 aon_timer_prescaler: plan vs. test</h3>
+<p><code>f_39e92ca16bb1</code> · plan vs. test · severity medium</p>
+<p><strong>Gap:</strong> Plan item p2 says the test switches the WKUP prescaler at random times and checks that WKUP_COUNT still reflects the passing of real time (p2.k1). The test writes the prescaler once, before enabling the timer, and never changes it while the timer runs. It never reads or compares WKUP_COUNT. The only check is a backdoor spinwait that the prescaler field was written, and the test otherwise just waits for the interrupt. Both the &quot;switch at random times&quot; stimulus and the WKUP_COUNT real-time check are missing.</p>
+<p>Labels in this finding: p2 = <a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/data/aon_timer_testplan.hjson"><code>hw/ip/aon_timer/data/aon_timer_testplan.hjson</code></a>; p2.k1 = <a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/data/aon_timer_testplan.hjson#L44-L45"><code>hw/ip/aon_timer/data/aon_timer_testplan.hjson:44-45</code></a></p>
+<p><strong>Test description says:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/data/aon_timer_testplan.hjson#L44-L45"><code>hw/ip/aon_timer/data/aon_timer_testplan.hjson:44-45</code></a>: <code>WKUP_COUNT should reflect expected -and changed- passing of real time regardless of its changing prescaler value.</code> — WKUP_COUNT reflects the expected, changed, passing of real time regardless of the changing prescaler value.</li>
+</ul>
+<p><strong>Test does:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv#L57"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv:57</code></a>: <code>csr_utils_pkg::csr_wr(ral.wkup_ctrl.prescaler, prescaler);</code> — stimulus; Write the random prescaler value to WKUP_CTRL.</li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv#L46"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv:46</code></a>: <code>wait_for_interrupt();</code> — stimulus; Wait for the interrupt.</li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv#L58"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv:58</code></a>: <code>csr_utils_pkg::csr_spinwait(.ptr(ral.wkup_ctrl.prescaler), .exp_data(prescaler), .backdoor(1));</code> — check; Spin-wait until the backdoor value of the prescaler field equals the written prescaler, confirming it propagated through the CDC. Failure handling (e.g., timeout) is not visible here.</li>
+</ul>
+<p><strong>Verified:</strong> The plan ties the prescaler item to aon_timer_prescaler. It promises prescaler switches at random times while the timer runs, with WKUP_COUNT checked. The vseq writes the prescaler once before enabling the timer and never changes it afterwards. It never reads WKUP_COUNT. The scoreboard does model wakeup timing with the prescaler, so the interrupt timing is checked indirectly. That does not supply the &quot;switch while running&quot; stimulus.</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>prescaler in the testplan in <code>aon_timer_testplan.hjson</code>: The prescaler item links to the test aon_timer_prescaler.</li>
+<li>prescaler in the scoreboard in <code>aon_timer_scoreboard.sv</code>: The scoreboard uses the prescaler in its wakeup timing model, so the interrupt timing is checked.</li>
+</ul>
+<p><strong>Looked at and ruled out:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L934"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:934</code></a>: The scoreboard checks wakeup timing generically. It does not give the test the missing stimulus of changing the prescaler at random times while the timer runs.</li>
+</ul>
+<hr />
+<h3 id="32-aontimerwdoglcescalatetest-check-cannot-fail">3.2 aon_timer_wdog_lc_escalate_test: check cannot fail</h3>
+<p><code>f_eeb05247ba86</code> · check cannot fail · severity medium</p>
+<p><strong>Gap:</strong> The plan says the test fails if the bark interrupt fires in the interrupt handler, and the comment says no AON timer interrupts should occur. The handler only logs an error (LOG_ERROR) and does not fail the test, so an unexpected bark interrupt cannot fail the test.</p>
+<p><strong>Test description says:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson#L122-L123"><code>hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson:122-123</code></a>: <code>fail the test in the interrupt handler in case the bark interrupt is fired.</code> — The test fails if the bark interrupt fires in the interrupt handler.</li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/sw/device/tests/aon_timer_wdog_lc_escalate_test.c#L86"><code>sw/device/tests/aon_timer_wdog_lc_escalate_test.c:86</code></a>: <code>We should not get aon timer interrupts since escalation suppresses them.</code></li>
+</ul>
+<p><strong>Test does:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/sw/device/tests/aon_timer_wdog_lc_escalate_test.c#L89"><code>sw/device/tests/aon_timer_wdog_lc_escalate_test.c:89</code></a>: <code>LOG_ERROR(&quot;Unexpected aon timer interrupt %d&quot;, irq);</code> — check; does not fail the test; An AON timer interrupt is unexpected. It is only logged as an error and not otherwise checked.</li>
+</ul>
+<p><strong>Verified:</strong> The AON timer branch of ottf_handle_irq only calls LOG_ERROR and returns true. It has no CHECK or other failure path. The test can still pass through the escalation reset path (second boot returns true) even if a bark interrupt fired. This contradicts the plan's &quot;fail the test in the interrupt handler&quot; and the comment's &quot;should not get aon timer interrupts&quot;. I did not search for an external harness that fails on ERROR log lines.</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>Read the full test source for any CHECK or flag set on AON timer interrupts in <code>sw/device/tests/aon_timer_wdog_lc_escalate_test.c</code>: None. The only AON timer handling is LOG_ERROR, and there is no counter or flag that is checked later.</li>
+</ul>
+<p><strong>Looked at and ruled out:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/sw/device/tests/aon_timer_wdog_lc_escalate_test.c#L103-L117"><code>sw/device/tests/aon_timer_wdog_lc_escalate_test.c:103-117</code></a>: These CHECKs are in the alert handler branch, not the AON timer branch.</li>
+</ul>
+<p><strong>Same subject, also found as test contradicts its own description</strong> (<code>f_add4ac125a10</code>, plan vs. test): The plan says the test checks that the bark interrupt does not fire during escalation, and that the reset reason proves the wdog was disabled. The test never fails on a bark IRQ (only logs), so the plan's wdog-disabled claim is not enforced; the escalation reset alone does not show the wdog was suppressed.</p>
+<p><strong>Test description says:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson#L128-L129"><code>hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson:128-129</code></a>: <code>After the reset ensure that the reset cause was due to the escalation to prove that the wdog was disabled.</code> — After reset, the reset cause is due to the escalation, proving the wdog was disabled.</li>
+</ul>
+<p><strong>Test does:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/sw/device/tests/aon_timer_wdog_lc_escalate_test.c#L283"><code>sw/device/tests/aon_timer_wdog_lc_escalate_test.c:283</code></a>: <code>} else if (rst_info == kDifRstmgrResetInfoEscalation) {</code> — check; After the second boot the reset reason must be escalation. The test returns true on it and false for any other reason.</li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/sw/device/tests/aon_timer_wdog_lc_escalate_test.c#L90"><code>sw/device/tests/aon_timer_wdog_lc_escalate_test.c:90</code></a>: <code>return true;</code> — check; After the second boot the reset reason must be escalation. The test returns true on it and false for any other reason.</li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/sw/device/tests/aon_timer_wdog_lc_escalate_test.c#L288"><code>sw/device/tests/aon_timer_wdog_lc_escalate_test.c:288</code></a>: <code>LOG_ERROR(&quot;Unexpected rst_info=0x%x&quot;, rst_info);</code> — check; After the second boot the reset reason must be escalation. The test returns true on it and false for any other reason.</li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/sw/device/tests/aon_timer_wdog_lc_escalate_test.c#L123"><code>sw/device/tests/aon_timer_wdog_lc_escalate_test.c:123</code></a>: <code>return false;</code> — check; After the second boot the reset reason must be escalation. The test returns true on it and false for any other reason.</li>
+</ul>
+<p><strong>Verified:</strong> The ISR for an AON timer interrupt only calls LOG_ERROR and returns true. It never fails the test, so the plan's &quot;fail the test in the interrupt handler&quot; is not implemented. The reset-reason check does exist, but a wdog bite would also produce a wrong reset reason. A bark alone is not enforced. The finding is low severity: an unhandled, uncleared bark would likely cause a hang or timeout, and a later bite would be caught by the reset-reason CHECK.</p>
+<hr />
+<h3 id="33-runwdogbarktimer-comment-vs-code">3.3 run_wdog_bark_timer: comment vs. code</h3>
+<p><code>f_6b8c0b2b572c</code> · comment vs. code · severity low</p>
+<p><strong>Gap:</strong> The comment says the code checks the reset_req pins. The code under it compares the predicted wkup_cause with the wakeup request pin (aon_intr_vif pin idx 1), not a reset request. The comment is misleading about which output is verified.</p>
+<p><strong>Test description says:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L1276"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:1276</code></a>: <code>// Check reset_req pins:</code></li>
+</ul>
+<p><strong>Test does:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L1282"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:1282</code></a>: <code>`DV_CHECK_CASE_EQ(predicted_wkup_req, cfg.aon_intr_vif.sample_pin(.idx(1)))</code> — check; When enabled and wkup_cause was not written in the same cycle, compares predicted wkup_cause with the wakeup request pin.</li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L1284"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:1284</code></a>: <code>else if (!(cfg.aon_intr_vif.sample_pin(.idx(1)) inside {0, predicted_wkup_req})) begin</code> — check; When wkup_cause was written in the same cycle, the wakeup request pin must be either 0 or the predicted value, otherwise fatal.</li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L1287"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:1287</code></a>: <code>`uvm_fatal(`gfn, $sformatf(&quot;aon_wkup_req_o comparison failed (not matching 0/%0d)&quot;,</code> — check; When wkup_cause was written in the same cycle, the wakeup request pin must be either 0 or the predicted value, otherwise fatal.</li>
+</ul>
+<p><strong>Verified:</strong> The comment says &quot;Check reset_req pins&quot; but the code checks the wakeup request output (aon_intr_vif pin idx 1, aon_wkup_req_o) against wkup_cause. The check is real and can fail, so only the comment is wrong. The code is in model_and_check_wdog_bark, called from run_wdog_bark_timer. Low severity.</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>Read the code around the comment in <code>aon_timer_scoreboard.sv:1240-1300</code>: Only wkup_req (pin idx 1) is compared; no reset_req check is present in that block.</li>
+</ul>
+<hr />
+<h3 id="34-predictwkupcause-comment-vs-code">3.4 predict_wkup_cause: comment vs. code</h3>
+<p><code>f_8f5bd34a107e</code> · comment vs. code · severity low</p>
+<p><strong>Gap:</strong> The comment says the code blocks only if 'predicting_value' = 1, but the code that follows is gated on <code>wait_for_we</code>. No 'predicting_value' appears in the shown code, so the comment looks stale or refers to a different condition.</p>
+<p><strong>Test description says:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L368"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:368</code></a>: <code>// Blocks only if 'predicting_value' = 1</code></li>
+</ul>
+<p><strong>Test does:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L369-L370"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:369-370</code></a> — stimulus; Optionally wait for the wkup_cause write-enable pulse.<pre><code>if (wait_for_we)
+                cfg.wait_for_we_pulse(&quot;.u_reg.aon_wkup_cause_we&quot;);
+</code></pre>
+</li>
+</ul>
+<p><strong>Verified:</strong> The comment mentions 'predicting_value', but the code is gated on the <code>wait_for_we</code> argument. 'predicting_value' appears nowhere else in the aon_timer DV code, so the comment is stale. This is cosmetic and has no functional impact.</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>predicting_value in <code>hw/ip/aon_timer/dv</code>: Only the comment at line 368; no declaration or use.</li>
+</ul>
+<hr />
+<h2 id="4-spec-and-test-disagree">4. Spec and test disagree</h2>
+<p>No verified findings.</p>
+<h2 id="5-spec-not-tested">5. Spec not tested</h2>
+<h3 id="51-partly-tested-3-requirements-in-aontimerhjson-gt-wakeuplist-and-2-more-sections">5.1 Partly tested: 3 requirements in aon_timer.hjson &gt; wakeup_list (and 2 more sections)</h3>
+<p><code>f_dcc2e1bc4337</code> · severity high</p>
+<ol>
+<li>
+<p><strong>Requirement</strong> <code>cr_5bd774f15d44</code>: wkup_req is raised when the wakeup timer or the watchdog timer has hit the specified threshold.<br />
+Section: hw/ip/aon_timer/data/aon_timer.hjson &gt; aon_timer &gt; wakeup_list</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/data/aon_timer.hjson#L63"><code>hw/ip/aon_timer/data/aon_timer.hjson:63</code></a>: <code>Raised if the wakeup or watchdog timer has hit the specified threshold.</code></li>
+</ul>
+<p><strong>Tested by <code>aon_timer_smoke_min_thold</code>:</strong> The smoke sequence runs the wakeup and watchdog timers with thresholds constrained to zero. The listed scoreboard checkers check the wakeup request pin after a WKUP threshold hit (c6) and after a watchdog bark (c9).<br />
+<strong>Not tested:</strong> Only the minimum (zero) threshold value is exercised. Thresholds at other values are not exercised in this test. The pin checks are tied to the scoreboard's predictions rather than a direct threshold comparison.</p>
+<p><strong>Tested by <code>aon_timer_smoke_max_thold</code>:</strong> The smoke sequence runs the wakeup and watchdog timers with thresholds constrained to their maximum values. The listed scoreboard checkers check the wakeup request pin after a WKUP threshold hit (c6) and after a watchdog bark (c9).<br />
+<strong>Not tested:</strong> Only the maximum threshold value is exercised. The counter may never reach it within the simulation, so the raise of wkup_req at the threshold may not be observed. Mid-range thresholds are not covered.</p>
+<p><strong>Verified:</strong> Only min (zero) and max thresholds are constrained; no mid-range threshold test was found.</p>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_7f62f6f22c9d</code>: Once regwen is cleared, the watchdog configuration is locked until the next reset.<br />
+Section: hw/ip/aon_timer/data/aon_timer.hjson &gt; aon_timer &gt; WDOG_REGWEN</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/data/aon_timer.hjson#L259"><code>hw/ip/aon_timer/data/aon_timer.hjson:259</code></a>: <code>Once cleared, the watchdog configuration will be locked until the next reset.</code></li>
+</ul>
+<p><strong>Tested by <code>WatchdogLockTest.Success</code>:</strong> The DIF unit test checks that watchdog_lock writes 0 to WDOG_REGWEN, which is the action that locks the configuration. It does not check that any configuration is actually locked afterwards.<br />
+<strong>Not tested:</strong> Hardware behavior after regwen is cleared: that writes to the watchdog configuration registers are blocked until reset.</p>
+<p><strong>Tested by <code>WatchdogStartTest.Locked</code>:</strong> With REGWEN mocked to 0, the DIF watchdog_start returns kDifLocked. This verifies software-level lock handling only.<br />
+<strong>Not tested:</strong> Hardware enforcement of the lock (register writes ignored while regwen is 0) and persistence until reset; only a mocked DIF return value is checked.</p>
+<p><strong>Tested by <code>WatchdogStopTest.Locked</code>:</strong> With REGWEN mocked to 0, the DIF watchdog_stop returns kDifLocked. This is a software-level lock check only.<br />
+<strong>Not tested:</strong> Hardware enforcement of the lock on the watchdog registers and persistence until reset.</p>
+<p><strong>Tested by <code>WatchdogRestartTest.Locked</code>:</strong> With REGWEN mocked to 0, the DIF watchdog_restart returns kDifLocked. This is a software-level lock check only.<br />
+<strong>Not tested:</strong> Hardware enforcement of the lock on the watchdog registers and persistence until reset.</p>
+<p><strong>Tested by <code>WatchdogIsLockedTest.SuccessLocked</code>:</strong> With REGWEN mocked to 0, the DIF is_locked reports true. This only checks software interpretation of the regwen value.<br />
+<strong>Not tested:</strong> Hardware enforcement of the lock on the watchdog configuration and persistence until reset.</p>
+<p><strong>Verified:</strong> The regwen write is commented out in the base vseq, so no DV test locks the watchdog and checks that writes are blocked.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv#L176-L177"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv:176-177</code></a>: <code>//  csr_utils_pkg::csr_wr(ral.wdog_regwen, wdog_regwen);</code> — WDOG_REGWEN is never written by the timer sequences; the write is commented out.</li>
+</ul>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_4f0006fef572</code>: The cause bit indicates that the AON timer requested a wakeup.<br />
+Section: hw/ip/aon_timer/data/aon_timer.hjson &gt; aon_timer &gt; WKUP_CAUSE</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/data/aon_timer.hjson#L363"><code>hw/ip/aon_timer/data/aon_timer.hjson:363</code></a>: <code>AON timer requested wakeup</code></li>
+</ul>
+<p><strong>Tested by <code>WakeupStatusTest.GetSuccess</code>:</strong> Mocks a WKUP_CAUSE read of 1 and checks that the DIF reports cause as true. This verifies only the software reading of the bit.<br />
+<strong>Not tested:</strong> Hardware behavior: that the cause bit is actually set when the AON timer requests a wakeup. The register is mocked and no timer runs.</p>
+<p><strong>Tested by <code>aon_timer_smoke</code>:</strong> Enables the wakeup timer and waits for expiry. Scoreboard checkers predict wkup_cause and check the wakeup request pin is 1. The wkup_cause readback check applies only if the cause register is read.<br />
+<strong>Not tested:</strong> The shown stimulus never reads WKUP_CAUSE, so the bit's value is not explicitly checked after the wakeup request. The wakeup-timer path is exercised, not the watchdog-bark source.</p>
+<p><strong>Verified:</strong> The sequences only write wkup_cause; they never read it after expiry, and the watchdog-bark source is not explicitly checked.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv#L131"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv:131</code></a>: <code>csr_utils_pkg::csr_wr(ral.wkup_cause, 1'b0);</code> — wkup_cause is only cleared by the sequences; no read after expiry was found.</li>
+</ul>
+</li>
+</ol>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>wkup_cause and wdog_regwen usage in the DV env in <code>hw/ip/aon_timer/dv</code>: The regwen write is commented out; wkup_cause is only written, with no read check after expiry in the sequences.</li>
+<li>csr_rd or regwen in seq_lib in <code>hw/ip/aon_timer/dv/env/seq_lib</code>: Only intr_state is read; no WKUP_CAUSE read and no regwen lock test.</li>
+</ul>
+<p><strong>Looked at and ruled out:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L764-L771"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:764-771</code></a>: The wkup_cause readback check exists in the scoreboard, but no timer sequence reads the register after the wakeup request.</li>
+</ul>
+<hr />
+<h3 id="52-partly-tested-2-requirements-in-programmersguidemd-gt-initialization-and-2-more-sections">5.2 Partly tested: 2 requirements in programmers_guide.md &gt; Initialization (and 2 more sections)</h3>
+<p><code>f_2d5f36dd3285</code> · severity high</p>
+<ol>
+<li>
+<p><strong>Requirement</strong> <code>cr_d3b9d9ce5458</code>: Software can lock the watchdog configuration by writing 0 to the regwen bit in WDOG_REGWEN.<br />
+Section: hw/ip/aon_timer/doc/programmers_guide.md &gt; Programmer's Guide &gt; Initialization</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L9"><code>hw/ip/aon_timer/doc/programmers_guide.md:9</code></a>: <code>If desired, lock the watchdog configuration by writing 0 to the `regwen` bit in WDOG_REGWEN.</code></li>
+</ul>
+<p><strong>Tested by <code>WatchdogLockTest.Success</code>:</strong> The DIF lock call is checked to write 0 to WDOG_REGWEN and return OK, which is the software side of locking.<br />
+<strong>Not tested:</strong> Does not verify that the hardware then makes the watchdog configuration registers read-only after the regwen write.</p>
+<p><strong>Tested by <code>WatchdogStartTest.SuccessPauseInSleepAndLock</code>:</strong> Watchdog start with the lock option is checked to write 0 to WDOG_REGWEN after enabling.<br />
+<strong>Not tested:</strong> Does not verify that the hardware actually blocks later writes to the watchdog configuration.</p>
+<p><strong>Tested by <code>WatchdogStartTest.SuccessLock</code>:</strong> Watchdog start with lock true is checked to write 0 to WDOG_REGWEN.<br />
+<strong>Not tested:</strong> Does not verify that the hardware enforces the lock on the configuration registers.</p>
+<p><strong>Verified:</strong> The REGWEN write is commented out in the vseq, so lock enforcement is not tested. The scoreboard only predicts the register.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv#L176-L177"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv:176-177</code></a>: <code>//  csr_utils_pkg::csr_wr(ral.wdog_regwen, wdog_regwen);</code> — WDOG_REGWEN write is commented out, so the lock is never exercised</li>
+</ul>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_ebc0e38e9d47</code>: For target values close to overflow, software disables the timer via WKUP_CTRL while writing the counter.<br />
+Section: hw/ip/aon_timer/doc/programmers_guide.md &gt; Programmer's Guide &gt; Wakeup count and threshold access &gt; Writing the counter</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L56"><code>hw/ip/aon_timer/doc/programmers_guide.md:56</code></a>: <code>For such values, disable the timer with WKUP_CTRL while writing the counter.</code></li>
+</ul>
+<p><strong>Tested by <code>WakeupRestartTest.Success</code>:</strong> The DIF wakeup_restart test expects WKUP_CTRL enable to be cleared, then the WKUP count registers to be written, then enable to be set again. That is the disable-write-enable pattern the requirement describes.<br />
+<strong>Not tested:</strong> It only writes a count of 0, not a value close to overflow. It does not check the selective use of the disable for near-overflow values, and it does not check that the counter value is uncorrupted.</p>
+<p><strong>Tested by <code>WakeupStartTest.Success</code>:</strong> The DIF wakeup_start test expects WKUP_CTRL enable to be cleared before the count and threshold registers are written, and the timer to be enabled afterwards. This is a disable-while-writing-the-counter sequence.<br />
+<strong>Not tested:</strong> It only writes a count of 0, not a near-overflow value. It does not check that software disables the timer specifically for such values.</p>
+<p><strong>Verified:</strong> No DV test disables the timer, writes a near-overflow count, and re-enables. Counts are constrained near the threshold, not near rollover.</p>
+</li>
+</ol>
+<p>Items 3, 4, 5 of this group were not verified (see Withdrawn and Inconclusive).</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>wkup_cause, regwen, wkup_count, wkup_ctrl in aon_timer DV in <code>hw/ip/aon_timer/dv</code>: Scoreboard checks wkup_cause clear and the wkup_req pin. shutdown clears WKUP_CTRL enable and WKUP_CAUSE. Count writes are done with the timer enabled. The regwen write is commented out. No near-overflow disable-and-write test.</li>
+</ul>
+<p><strong>Looked at and ruled out:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv#L131"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv:131</code></a>: Writes 0 to WKUP_CAUSE in shutdown; the scoreboard check on it is what refutes item cr_0838c215b7f8.</li>
+</ul>
+<hr />
+<h3 id="53-partly-tested-2-requirements-in-theoryofoperationmd-gt-theory-of-operation-and-1-more-section">5.3 Partly tested: 2 requirements in theory_of_operation.md &gt; Theory of Operation (and 1 more section)</h3>
+<p><code>f_517767a1d7fa</code> · severity high</p>
+<ol>
+<li>
+<p><strong>Requirement</strong> <code>cr_20f39fd89cf5</code>: Both timers halt counting when lc_escalate_en_i is set.<br />
+Section: hw/ip/aon_timer/doc/theory_of_operation.md &gt; Theory of Operation</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L5"><code>hw/ip/aon_timer/doc/theory_of_operation.md:5</code></a>: <code>Both timers halt the counting if the signal `lc_escalate_en_i` is set</code></li>
+</ul>
+<p><strong>Tested by <code>aon_timer_wdog_lc_escalate_test</code>:</strong> The test arms the AON watchdog to bark and bite during escalation phase 1, then forces escalation. After the escalation reset it checks that the reset reason is escalation. That outcome would differ if the watchdog kept counting through lc escalation and caused its own reset.<br />
+<strong>Not tested:</strong> The wakeup timer halting is never exercised or checked. The watchdog halt is only inferred from the reset reason, because an unexpected AON timer interrupt is only logged (k6 only reports).</p>
+<p><strong>Verified:</strong> No DV or software test checks that the counters stay halted while lc_escalate_en_i is set.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv#L208"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv:208</code></a>: <code>cfg.lc_escalate_en_vif.drive(0);</code> — DV only drives escalation at reset and then disables it, so no test checks that counting halts during escalation.</li>
+</ul>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_f75f4b79d7eb</code>: A register write can complete on the bus before the data has reached the underlying register in the AON domain.<br />
+Section: hw/ip/aon_timer/doc/theory_of_operation.md &gt; Theory of Operation &gt; Design Details</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L26"><code>hw/ip/aon_timer/doc/theory_of_operation.md:26</code></a>: <code>This means that writes can complete before the data has reached its underlying register in the slow clock domain.</code></li>
+</ul>
+<p><strong>Tested by <code>aon_timer_prescaler</code>:</strong> The test has to spin-wait on a backdoor read until the written prescaler appears in the AON register, which relies on the write reaching the AON domain after the bus write was issued.<br />
+<strong>Not tested:</strong> It does not check that the bus write completes before the data reaches the AON register. There is no timing comparison between bus completion and AON-register update.</p>
+<p><strong>Verified:</strong> No check compares bus write completion with the AON register update.</p>
+</li>
+</ol>
+<p>Items 2, 3, 4 of this group were not verified (see Withdrawn and Inconclusive).</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>escalation handling in scoreboard and sequences in <code>hw/ip/aon_timer/dv</code>: The scoreboard has no escalate check. Sequences only drive lc_escalate_en at reset and disable it afterwards.</li>
+<li>threshold and prescaler checking in <code>scoreboard and vseqs</code>: The scoreboard models the 64-bit threshold and the prescaler scaling of expiry time.</li>
+<li>bus write completion compared with AON register update in <code>hw/ip/aon_timer/dv</code>: Nothing found. The scoreboard only waits for the write-enable pulse in the AON domain.</li>
+</ul>
+<p><strong>Looked at and ruled out:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L390-L412"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:390-412</code></a>: It waits for the AON write-enable pulse before counting, but it never checks that the bus write completed earlier.</li>
+</ul>
+<hr />
+<h3 id="54-no-test-found-1-requirement-in-aontimerhjson-gt-intersignallist-and-2-more-sections">5.4 No test found: 1 requirement in aon_timer.hjson &gt; inter_signal_list (and 2 more sections)</h3>
+<p><code>f_c027da08f1ba</code> · severity medium</p>
+<ol>
+<li>
+<p><strong>Requirement</strong> <code>cr_d3bb7e9459e0</code>: The policy selection vector parameter selects the RACL policy for each register.<br />
+Section: hw/ip/aon_timer/data/aon_timer.hjson &gt; aon_timer &gt; inter_signal_list</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/data/aon_timer.hjson#L116"><code>hw/ip/aon_timer/data/aon_timer.hjson:116</code></a>: <code>The policy selection vector (parameter) selects the policy for each register.</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/interfaces.md#L20"><code>hw/ip/aon_timer/doc/interfaces.md:20</code></a>: <code>The policy selection vector (parameter) selects the policy for each register.</code></li>
+</ul>
+<p><strong>Verified:</strong> No RACL test; policies tied to 0.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/tb.sv#L25-L26"><code>hw/ip/aon_timer/dv/tb.sv:25-26</code></a> — RACL policies tied to 0; no RACL stimulus<pre><code>racl_policy_vec_t racl_policies;
+  assign racl_policies = 0;
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<p>Items 2, 3, 4, 5 of this group were not verified (see Withdrawn and Inconclusive).</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>racl|intr_test in <code>hw/ip/aon_timer/dv</code>: racl only tied off in tb; intr_test modelled in scoreboard and imported test</li>
+<li>prescaler qe in <code>hw/ip/aon_timer</code>: core resets prescale counter on qe; no explicit check traced</li>
+</ul>
+<hr />
+<h3 id="55-no-test-found-1-requirement-in-interfacesmd-gt-inter-module-signals">5.5 No test found: 1 requirement in interfaces.md &gt; <a href="https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling">Inter-Module Signals</a></h3>
+<p><code>f_4f056852409f</code> · severity medium</p>
+<ol>
+<li>
+<p><strong>Requirement</strong> <code>cr_cd5358219466</code>: racl_policies is a top_racl_pkg::racl_policy_vec unidirectional input received by the module, carrying the RACL policy vector from a racl_ctrl instance.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/interfaces.md#L15"><code>hw/ip/aon_timer/doc/interfaces.md:15</code></a>: <code>1</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/interfaces.md#L20"><code>hw/ip/aon_timer/doc/interfaces.md:20</code></a>: <code>racl_policies</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/interfaces.md#L20"><code>hw/ip/aon_timer/doc/interfaces.md:20</code></a>: <code>top_racl_pkg::racl_policy_vec</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/interfaces.md#L20"><code>hw/ip/aon_timer/doc/interfaces.md:20</code></a>: <code>uni</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/interfaces.md#L20"><code>hw/ip/aon_timer/doc/interfaces.md:20</code></a>: <code>rcv</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/interfaces.md#L20"><code>hw/ip/aon_timer/doc/interfaces.md:20</code></a>: <code>Incoming RACL policy vector from a racl_ctrl instance.</code></li>
+</ul>
+<p><strong>Verified:</strong> No test drives or checks racl_policies; the testbench ties it to 0.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/tb.sv#L25-L26"><code>hw/ip/aon_timer/dv/tb.sv:25-26</code></a> — Policy vector is constant zero; no stimulus<pre><code>racl_policy_vec_t racl_policies;
+assign racl_policies = 0;
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>racl in aon_timer/dv in <code>hw/ip/aon_timer/dv</code>: only tb.sv tie-off and an exclusion file</li>
+<li>racl in top_earlgrey/dv in <code>hw/top_earlgrey/dv</code>: nothing</li>
+</ul>
+<p><strong>Looked at and ruled out:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson#L47"><code>hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson:47</code></a>: Only a coverage exclusion file; not a test.</li>
+</ul>
+<hr />
+<h3 id="56-no-test-found-1-requirement-in-interfacesmd-gt-interfaces-and-1-more-section">5.6 No test found: 1 requirement in interfaces.md &gt; Interfaces (and 1 more section)</h3>
+<p><code>f_edad66225369</code> · severity medium</p>
+<ol start="4">
+<li>
+<p><strong>Requirement</strong> <code>cr_a34add480316</code>: racl_error is a top_racl_pkg::racl_error_log unidirectional output driven by the module, carrying the RACL error log information of this module.<br />
+Section: hw/ip/aon_timer/doc/interfaces.md &gt; Interfaces &gt; <a href="https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling">Inter-Module Signals</a></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/interfaces.md#L15"><code>hw/ip/aon_timer/doc/interfaces.md:15</code></a>: <code>1</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/interfaces.md#L21"><code>hw/ip/aon_timer/doc/interfaces.md:21</code></a>: <code>racl_error</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/interfaces.md#L21"><code>hw/ip/aon_timer/doc/interfaces.md:21</code></a>: <code>top_racl_pkg::racl_error_log</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/interfaces.md#L21"><code>hw/ip/aon_timer/doc/interfaces.md:21</code></a>: <code>uni</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/interfaces.md#L21"><code>hw/ip/aon_timer/doc/interfaces.md:21</code></a>: <code>req</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/interfaces.md#L21"><code>hw/ip/aon_timer/doc/interfaces.md:21</code></a>: <code>RACL error log information of this module.</code></li>
+</ul>
+<p><strong>Verified:</strong> racl_error_o is unconnected in the TB and no check covers it.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/tb.sv#L62"><code>hw/ip/aon_timer/dv/tb.sv:62</code></a>: <code>.racl_error_o              (),</code> — racl_error output unconnected in the TB, so it is never checked.</li>
+</ul>
+</li>
+</ol>
+<p>Items 1, 2, 3, 5 of this group were not verified (see Withdrawn and Inconclusive).</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>sleep_mode and racl_error in the aon_timer dv directory in <code>hw/ip/aon_timer/dv</code>: sleep_mode is driven and modelled; racl_error_o is unconnected and appears only in coverage exclusions</li>
+</ul>
+<p><strong>Looked at and ruled out:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/cov/aon_timer_unr_non_racl_manually_excluded_excl.el#L23-L45"><code>hw/ip/aon_timer/dv/cov/aon_timer_unr_non_racl_manually_excluded_excl.el:23-45</code></a>: These are coverage exclusions for racl_error toggles, not checks.</li>
+</ul>
+<hr />
+<h3 id="57-no-test-found-2-requirements-in-programmersguidemd-gt-writing-the-threshold-and-1-more-section">5.7 No test found: 2 requirements in programmers_guide.md &gt; Writing the threshold (and 1 more section)</h3>
+<p><code>f_b7844c8b9c9f</code> · severity medium</p>
+<ol>
+<li>
+<p><strong>Requirement</strong> <code>cr_ab0d74b3889d</code>: Enable the wakeup interrupt after the threshold update is complete.<br />
+Section: hw/ip/aon_timer/doc/programmers_guide.md &gt; Programmer's Guide &gt; Wakeup count and threshold access &gt; Writing the threshold</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L81"><code>hw/ip/aon_timer/doc/programmers_guide.md:81</code></a>: <code>enable_wakeup_interrupt();</code></li>
+</ul>
+<p><strong>Verified:</strong> No test enables the wakeup interrupt after a threshold update; intr_enable does not appear in the DV sequences.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv#L181-L183"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv:181-183</code></a>: <code>csr_utils_pkg::csr_wr(ral.intr_state, 2'b01);</code> — wkup_init clears intr_state and then writes the thresholds. It never disables or enables intr_enable around the threshold writes.</li>
+</ul>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_cd988f27543a</code>: Disable the wakeup interrupt before writing the threshold registers.<br />
+Section: hw/ip/aon_timer/doc/programmers_guide.md &gt; Programmer's Guide &gt; Wakeup count and threshold access &gt; Writing the threshold</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L68"><code>hw/ip/aon_timer/doc/programmers_guide.md:68</code></a>: <code>disable_wakeup_interrupt();</code></li>
+</ul>
+<p><strong>Verified:</strong> No test disables the wakeup interrupt before writing the threshold registers; wkup_init writes them directly.</p>
+</li>
+</ol>
+<p>Item 3 of this group was not verified (see Withdrawn and Inconclusive).</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>intr_enable used in aon_timer DV sequences in <code>hw/ip/aon_timer/dv/env/seq_lib</code>: no matches</li>
+<li>retrigger / remains above threshold in scoreboard in <code>aon_timer_scoreboard.sv</code>: no explicit retrigger check</li>
+</ul>
+<hr />
+<h3 id="58-no-test-found-5-requirements-in-programmersguidemd-gt-wakeup-count-and-threshold-access-and-2-more-sections">5.8 No test found: 5 requirements in programmers_guide.md &gt; Wakeup count and threshold access (and 2 more sections)</h3>
+<p><code>f_37f49dda2889</code> · severity medium</p>
+<ol>
+<li>
+<p><strong>Requirement</strong> <code>cr_f0d34bc61b8f</code>: The 64-bit wakeup counter and threshold values cannot be read or modified in a single atomic access.<br />
+Section: hw/ip/aon_timer/doc/programmers_guide.md &gt; Programmer's Guide &gt; Wakeup count and threshold access</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L18"><code>hw/ip/aon_timer/doc/programmers_guide.md:18</code></a>: <code>It is not possible to read or modify the 64-bit values in a single atomic access.</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L33"><code>hw/ip/aon_timer/doc/theory_of_operation.md:33</code></a>: <code>It is not possible to do a single atomic read or write of the 64-bit values.</code></li>
+</ul>
+<p><strong>Verified:</strong> No test or check covers non-atomic 64-bit access.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L784-L786"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:784-786</code></a>: <code>wkup_thold[31:0] =  csr.get_mirrored_value();</code> — The scoreboard only mirrors the threshold to predict interrupt timing. It has no check that hardware leaves the threshold unmodified and no check on atomicity.</li>
+</ul>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_13a3d2eb44cf</code>: Hardware does not modify WKUP_THOLD_LO and WKUP_THOLD_HI.<br />
+Section: hw/ip/aon_timer/doc/programmers_guide.md &gt; Programmer's Guide &gt; Wakeup count and threshold access &gt; Reading the threshold</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L60"><code>hw/ip/aon_timer/doc/programmers_guide.md:60</code></a>: <code>The hardware does not alter [`WKUP_THOLD_LO`](registers.md#wkup_thold_lo) and [`WKUP_THOLD_HI`](registers.md#wkup_thold_hi)</code></li>
+</ul>
+<p><strong>Verified:</strong> No explicit check that hardware leaves the threshold unchanged. The scoreboard only uses the mirrored value.</p>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_40aa3bfcebb9</code>: Write WKUP_THOLD_HI with the upper 32 bits of the new threshold second.<br />
+Section: hw/ip/aon_timer/doc/programmers_guide.md &gt; Programmer's Guide &gt; Wakeup count and threshold access &gt; Writing the threshold</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L74"><code>hw/ip/aon_timer/doc/programmers_guide.md:74</code></a>: <code>// Set the upper word to its desired value. The resulting threshold will still be at least as big</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L76"><code>hw/ip/aon_timer/doc/programmers_guide.md:76</code></a>: <code>REG_WRITE(WKUP_THOLD_HI, new_thold &gt;&gt; 32);</code></li>
+</ul>
+<p><strong>Verified:</strong> DV does not follow the guide's write sequence, and nothing checks the intermediate state.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv#L193-L196"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv:193-196</code></a>: <code>write_wkup_reg(ral.wkup_thold_lo, wkup_thold[31:0]);</code> — DV writes LO then HI with the final values directly. It does not first write LO=UINT32_MAX, then HI, then LO, as the guide describes.</li>
+</ul>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_64e15132845f</code>: Write WKUP_THOLD_LO with the lower 32 bits of the new threshold third.<br />
+Section: hw/ip/aon_timer/doc/programmers_guide.md &gt; Programmer's Guide &gt; Wakeup count and threshold access &gt; Writing the threshold</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L78-L79"><code>hw/ip/aon_timer/doc/programmers_guide.md:78-79</code></a>: <code>// Set the lower word to its desired value. REG_WRITE(WKUP_THOLD_LO, new_thold &amp; 0xffff_ffff);</code></li>
+</ul>
+<p><strong>Verified:</strong> The LO write happens, but not as the final step of the guide's sequence, and nothing checks the sequence's property.</p>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_7e6da13c8b08</code>: Write WKUP_THOLD_LO with its maximum value (UINT32_MAX) first.<br />
+Section: hw/ip/aon_timer/doc/programmers_guide.md &gt; Programmer's Guide &gt; Wakeup count and threshold access &gt; Writing the threshold</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L70"><code>hw/ip/aon_timer/doc/programmers_guide.md:70</code></a>: <code>// Set the lower word to its maximum value. The resulting threshold will definitely be at least as</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L72"><code>hw/ip/aon_timer/doc/programmers_guide.md:72</code></a>: <code>REG_WRITE(WKUP_THOLD_LO, UINT32_MAX);</code></li>
+</ul>
+<p><strong>Verified:</strong> No test writes UINT32_MAX to LO first as a safe-update step.</p>
+</li>
+</ol>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>threshold register usage in the aon_timer dv and data directories (atomic access, item 1) in <code>hw/ip/aon_timer/{dv,data}</code>: Only the randomized LO/HI writes in the base vseq and scoreboard prediction. No atomicity check.</li>
+<li>hardware-does-not-modify check on the thresholds (item 2) in <code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv</code>: The scoreboard mirrors the thresholds for timing prediction only. No explicit unchanged-threshold check.</li>
+<li>write ordering of THOLD_HI (item 3) in <code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv</code>: HI is written after LO with the final value. It is not the guide's second step.</li>
+<li>write ordering of THOLD_LO as the last step (item 4) in <code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv</code>: LO is written first with the final value. It is not the guide's third step.</li>
+<li>UINT32_MAX written to THOLD_LO first (item 5), plus device software tests in <code>hw/ip/aon_timer/dv and sw/device/tests</code>: No such sequence. The only software match for WKUP_THOLD was the unrelated rv_core_ibex_mem_test.c.</li>
+</ul>
+<p><strong>Looked at and ruled out:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_smoke_max_thold_vseq.sv#L1-L23"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_smoke_max_thold_vseq.sv:1-23</code></a>: Exercises a maximum threshold value, but not the write-ordering sequence.</li>
+</ul>
+<hr />
+<h3 id="59-no-test-found-4-requirements-in-theoryofoperationmd-gt-theory-of-operation">5.9 No test found: 4 requirements in theory_of_operation.md &gt; Theory of Operation</h3>
+<p><code>f_00c764972edf</code> · severity medium</p>
+<ol>
+<li>
+<p><strong>Requirement</strong> <code>cr_517c566609ad</code>: RACL ports are enabled by setting parameter EnableRacl to 1.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L12"><code>hw/ip/aon_timer/doc/theory_of_operation.md:12</code></a>: <code>In order to enable the RACL ports, the parameter `EnableRacl` should be set to 1.</code></li>
+</ul>
+<p><strong>Verified:</strong> EnableRacl is not exercised; only a tie-off exists in the testbench.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/tb.sv#L25-L26"><code>hw/ip/aon_timer/dv/tb.sv:25-26</code></a> — RACL policies are tied to 0; racl_error_o is unconnected, so there is no RACL testing.<pre><code>racl_policy_vec_t racl_policies;
+  assign racl_policies = 0;
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_6c14ebc81991</code>: intr_wkup_timer_expired_o, intr_wdog_timer_bark_o and nmi_wdog_timer_bark_o are driven on the SYS domain.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L8"><code>hw/ip/aon_timer/doc/theory_of_operation.md:8</code></a>: <code>The output signals `intr_wkup_timer_expired_o`, `intr_wdog_timer_bark_o` and `nmi_wdog_timer_bark_o` are driven on the SYS domain.</code></li>
+</ul>
+<p><strong>Verified:</strong> No check of the SYS-domain driving for the interrupt outputs was found.</p>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_7aa0f0735984</code>: wkup_req_o and aon_timer_rst_req_o are driven on the AON domain.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L9"><code>hw/ip/aon_timer/doc/theory_of_operation.md:9</code></a>: <code>The output signals `wkup_req_o` and `aon_timer_rst_req_o` are driven on the AON domain.</code></li>
+</ul>
+<p><strong>Verified:</strong> Values are checked but the AON domain is not.</p>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_c98fa20138a9</code>: The block has RACL ports racl_policies_i and racl_error_o.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L11"><code>hw/ip/aon_timer/doc/theory_of_operation.md:11</code></a>: <code>Furthermore, the block also has RACL ports `racl_policies_i` and `racl_error_o`</code></li>
+</ul>
+<p><strong>Verified:</strong> RACL ports are tied off and unchecked.</p>
+</li>
+</ol>
+<p>Item 2 of this group was not verified (see Withdrawn and Inconclusive).</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>racl and nmi references in aon_timer dv in <code>hw/ip/aon_timer/dv</code>: Only tb.sv tie-off, the NMI assertion, and a coverage exclusion file.</li>
+<li>wkup_req / rst_req checks in <code>hw/ip/aon_timer/dv</code>: Scoreboard checks values but not the clock domain.</li>
+</ul>
+<p><strong>Looked at and ruled out:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L1278-L1288"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:1278-1288</code></a>: Checks wkup_req value, not the AON clock domain it is driven on.</li>
+</ul>
+<hr />
+<h3 id="510-partly-tested-1-requirement-in-theoryofoperationmd-gt-design-details">5.10 Partly tested: 1 requirement in theory_of_operation.md &gt; Design Details</h3>
+<p><code>f_596c7148f2e0</code> · severity medium</p>
+<ol>
+<li>
+<p><strong>Requirement</strong> <code>cr_fe9918a1d87a</code>: Wakeup count bits [31:0] are in WKUP_COUNT_LO.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L32"><code>hw/ip/aon_timer/doc/theory_of_operation.md:32</code></a>: <code>Bits[31:0] in registers</code></li>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L32"><code>hw/ip/aon_timer/doc/theory_of_operation.md:32</code></a>: <code>WKUP_COUNT_LO</code></li>
+</ul>
+<p><strong>Tested by <code>WakeupGetCountTest.OverflowSuccess</code>:</strong> The mocked DIF read returns the LO register value 0x5A5A5A5A in the low 32 bits of the composed count (0xA5A5A5A65A5A5A5A). That is consistent with WKUP_COUNT_LO holding bits [31:0].<br />
+<strong>Not tested:</strong> This is a software unit test against mocked register reads. It does not check the hardware register map or that the real WKUP_COUNT_LO register holds count bits [31:0].</p>
+<p><strong>Verified:</strong> No hardware-level check found that WKUP_COUNT_LO equals count bits [31:0].</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L997-L999"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:997-999</code></a>: <code>csr_rd(.ptr(ral.wkup_count_lo), .value(rtl_count[31:0]), .backdoor(1));</code> — Backdoor read used only to sample coverage; no comparison or check. The upper half is also read from wkup_count_lo (likely a typo).</li>
+</ul>
+</li>
+</ol>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>WKUP_COUNT_LO usage in DV in <code>hw/ip/aon_timer/dv</code>: Scoreboard timing and coverage reads, sequence writes; no check of LO against count bits [31:0]</li>
+<li>WKUP_COUNT_LO usage in sw in <code>sw/</code>: Only the DIF, the DIF unit test (mocked) and the host HAL</li>
+</ul>
+<p><strong>Looked at and ruled out:</strong></p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L913-L914"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:913-914</code></a>: Backdoor reads feed the wake-up timing calculation; they do not check that LO holds count bits [31:0].</li>
+</ul>
+<hr />
+<h3 id="511-no-test-found-2-requirements-in-theoryofoperationmd-gt-design-details">5.11 No test found: 2 requirements in theory_of_operation.md &gt; Design Details</h3>
+<p><code>f_f56e7fab84c9</code> · severity medium</p>
+<ol>
+<li>
+<p><strong>Requirement</strong> <code>cr_bfbda21a02ad</code>: When integrating the AON timer, clk_aon_i must be started before clk_i.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L36"><code>hw/ip/aon_timer/doc/theory_of_operation.md:36</code></a>: <code>When integrating the AON timer into a bigger design, you must start the always-on clock (clk_aon_i) before you start the main clock (clk_i).</code></li>
+</ul>
+<p><strong>Verified:</strong> No test or assertion covers the clk_aon_i-before-clk_i start order.</p>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_c24c1a80fbfe</code>: Reading back a register guarantees that the preceding write to it has completed.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L27"><code>hw/ip/aon_timer/doc/theory_of_operation.md:27</code></a>: <code>If software needs to guarantee completion of a register write then it can read back the register value.</code></li>
+</ul>
+<p><strong>Verified:</strong> No test reads back a register to confirm earlier writes completed. The scoreboard only checks the timing of the write updates.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L462"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:462</code></a>: <code>task aon_timer_scoreboard::update_wkup_thold_lo_timely();</code> — The scoreboard checks the timing of thold_lo register updates. It does not check that a read-back guarantees completion of earlier writes.</li>
+</ul>
+</li>
+</ol>
+<p>Item 2 of this group was not verified (see Withdrawn and Inconclusive).</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>wkup_thold_lo, clock start order, busy and read-back in aon_timer dv in <code>hw/ip/aon_timer/dv</code>: Only scoreboard thold_lo timing updates and CDC busy coverage exclusions. No clock start-order test and no read-back-guarantees-completion check.</li>
+</ul>
+<hr />
+<h3 id="512-no-test-found-2-requirements-in-theoryofoperationmd-gt-design-details">5.12 No test found: 2 requirements in theory_of_operation.md &gt; Design Details</h3>
+<p><code>f_fce24c4eba49</code> · severity medium</p>
+<ol>
+<li>
+<p><strong>Requirement</strong> <code>cr_20034a8664a3</code>: The always-on timer runs on a clock of approximately 200KHz.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L20"><code>hw/ip/aon_timer/doc/theory_of_operation.md:20</code></a>: <code>The always-on timer will run on a ~200KHz clock.</code></li>
+</ul>
+<p><strong>Verified:</strong> The clock is only configured to 200kHz in tb.sv and nothing checks it.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/tb.sv#L78"><code>hw/ip/aon_timer/dv/tb.sv:78</code></a>: <code>aon_clk_rst_if.set_freq_khz(200);</code> — The 200kHz clock is only configured here, and nothing checks it.</li>
+</ul>
+</li>
+<li>
+<p><strong>Requirement</strong> <code>cr_8bcb4d2923d5</code>: A register read-back guarantees completion of all previous writes to the peripheral.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L28"><code>hw/ip/aon_timer/doc/theory_of_operation.md:28</code></a>: <code>This will guarantee the completion of all previous writes to the peripheral.</code></li>
+</ul>
+<p><strong>Verified:</strong> No test reads a register back to check completion of earlier writes. The helper waits for the write-enable pulse instead.</p>
+<ul>
+<li><a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv#L275"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv:275</code></a>: <code>csr_utils_pkg::csr_wr(ptr, value);</code> — The write helper waits for the write-enable pulse and does not do a read-back completion check.</li>
+</ul>
+</li>
+</ol>
+<p>Items 2, 3, 5 of this group were not verified (see Withdrawn and Inconclusive).</p>
+<p><strong>Searched:</strong></p>
+<ul>
+<li>Tests, sequences and scoreboard handling of WKUP_THOLD_HI, widths, clock frequency and read-back in <code>hw/ip/aon_timer/dv</code>: The scoreboard handles wkup_thold_hi and the sequences write bits [63:32]. The clock is set to 200kHz in tb.sv. No read-back completion check was found.</li>
+</ul>
+<hr />
+<h2 id="inconclusive">Inconclusive</h2>
+<p>The verifier could neither confirm nor refute these. They need a human decision.</p>
+<ul>
+<li><code>f_517767a1d7fa</code> (partly tested) TL-UL register accesses in the SYS domain are synchronized to the AON slow clock using the async register generation feature. — Many registers are written across the CDC and checked by the scoreboard, but I found no explicit test of the async synchronization read path.</li>
+<li><code>f_c027da08f1ba</code> (no test found) WKUP_CTRL.prescaler: hardware receives a write-qualifier pulse on software writes (true). — Indirectly covered by the prescaler vseq; no explicit qe check traced.</li>
+<li><code>f_edad66225369</code> (no test found) The module has no TL-UL bus host interfaces. — This is a structural absence of a bus host interface, with nothing specific to test.</li>
+<li><code>f_edad66225369</code> (no test found) The module has no peripheral pins for chip IO. — This is a structural absence of chip IO pins, with nothing specific to test.</li>
+<li><code>f_edad66225369</code> (no test found) The module has primary clock input clk_i. — clk_i is used by every test, but no dedicated check exists.</li>
+<li><code>f_b7844c8b9c9f</code> (no test found) The interrupt retriggers at the next clock tick if the count remains above the threshold after clearing and the timer remains enabled. — The scoreboard models count above threshold as immediate expiry, but I did not find a test that clears the interrupt while the count stays above the threshold and then checks for a retrigger at the next tick.</li>
+<li><code>f_f56e7fab84c9</code> (no test found) Wakeup threshold bits [31:0] are in the low threshold register. — The scoreboard exercises the thold_lo register implicitly, but no check explicitly targets the bits[31:0] mapping. The spec line also has a typo.</li>
+<li><code>f_3764d4badb94</code> (test plan items with no test) dv_base_lockable_field_cov — Coverage item with regwen-locked fields; collected in all tests, but no dedicated test.</li>
+<li><code>f_3764d4badb94</code> (test plan items with no test) mem_walk — Generic mem_walk test is imported, but the design has no memories, so it does nothing.</li>
+<li><code>f_6037878d66f2</code> (test plan items with no test) max_outstanding_cg — max_outstanding_cg is sampled by the shared TL monitor in every test, but it is coverage rather than a check. The env sets max_outstanding_req to 1.</li>
+<li><code>f_6037878d66f2</code> (test plan items with no test) pending_req_on_rst_cg — pending_req_on_rst_cg is sampled by the shared TL monitor on reset. No aon_timer test specifically drives a pending TL access across reset.</li>
+<li><code>f_a3cc6b93921a</code> (in a test plan, but no test found) Each write to WKUP_CTRL resets the internal prescaler count. — No explicit check exists. The scoreboard's count reset and timing prediction might catch a wrong reset, but this is not confirmed.</li>
+<li><code>f_d2255379ea1e</code> (test plan items with no test) mem_partial_access — The generic mem_partial_access test is imported by aon_timer, but the block has no memory, so it is unclear what the plan item means for this block.</li>
+</ul>
+<h2 id="withdrawn">Withdrawn</h2>
+<p>Candidates the verifier refuted, with the reason. Listed so the refutations can be checked too.</p>
+<ul>
+<li><code>f_4f700106f7fc</code> (spec too ambiguous to test) A watchdog bark interrupt is generated when the watchdog count reaches the threshold value. — The aon_timer README states the bark condition: a bark fires on every AON clock tick when the count is at least the threshold. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/README.md#L55"><code>hw/ip/aon_timer/README.md:55</code></a>)</li>
+<li><code>f_087fbd904483</code> (spec too ambiguous to test) The count at which a wakeup interrupt should be generated, top 32 bits. — Other spec text answers the comparison and immediate-firing questions: the README says the outputs go high when the count is at or above the threshold, on a prescaler tick. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/README.md#L35"><code>hw/ip/aon_timer/README.md:35</code></a>, <a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L93"><code>hw/ip/aon_timer/doc/programmers_guide.md:93</code></a>)</li>
+<li><code>f_1bc5edd4d321</code> (spec too ambiguous to test) The count at which a wakeup interrupt should be generated, bottom 32 bits. — The aon_timer README says the comparison is &quot;at or above&quot;, so it is &gt;=. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/README.md#L35"><code>hw/ip/aon_timer/README.md:35</code></a>, <a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/programmers_guide.md#L93"><code>hw/ip/aon_timer/doc/programmers_guide.md:93</code></a>)</li>
+<li><code>f_2d4541f82cf3</code> (spec too ambiguous to test) wkup_req is raised when the wakeup timer or the watchdog timer has hit the specified threshold. — The aon_timer README states that wkup_req_o is raised by the wakeup timer or a watchdog bark, and that it stays high until software writes 0 to WKUP_CAUSE. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/README.md#L75-L76"><code>hw/ip/aon_timer/README.md:75-76</code></a>, <a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/README.md#L41-L42"><code>hw/ip/aon_timer/README.md:41-42</code></a>)</li>
+<li><code>f_8da2bbc84b1a</code> (spec too ambiguous to test) The wakeup timer pre-scaler can slow the count so the counter matches a desired time unit. — Other spec text states both the field width (12 bits) and the division rule (cycles per tick = prescaler + 1). (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/README.md#L32"><code>hw/ip/aon_timer/README.md:32</code></a>, <a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/registers.md#L57"><code>hw/ip/aon_timer/doc/registers.md:57</code></a>)</li>
+<li><code>f_6bf289f534a0</code> (spec contradicts itself) TL-UL register accesses in the SYS domain are synchronized to the AON slow clock using the async register generation feature. — Line 25 says reads are synchronized. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/doc/theory_of_operation.md#L25-L28"><code>hw/ip/aon_timer/doc/theory_of_operation.md:25-28</code></a>)</li>
+<li><code>f_8b2618a31c84</code> (spec not tested) 5 plan item(s) with no implementing test — All five items are implemented. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/tl_access_tests.hjson#L20-L23"><code>hw/dv/tools/dvsim/tests/tl_access_tests.hjson:20-23</code></a>, <a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/csr_tests.hjson#L37-L39"><code>hw/dv/tools/dvsim/tests/csr_tests.hjson:37-39</code></a>)</li>
+<li><code>f_e193da4cd3c1</code> (spec not tested) 5 plan item(s) with no implementing test — All five items are implemented through shared CIP infrastructure that aon_timer imports. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/alert_test.hjson#L14-L19"><code>hw/dv/tools/dvsim/tests/alert_test.hjson:14-19</code></a>, <a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/sv/cip_lib/seq_lib/cip_base_vseq.sv#L960"><code>hw/dv/sv/cip_lib/seq_lib/cip_base_vseq.sv:960</code></a>)</li>
+<li><code>f_b715d5bebccc</code> (spec not tested) Untested: 1 requirement(s) in hw/ip/aon_timer/data/aon_timer.hjson &gt; aon_timer &gt; INTR_TEST — Tests do write INTR_TEST.wdog_timer_bark, and the scoreboard checks the resulting effect. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L841-L847"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:841-847</code></a>, <a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_custom_intr_vseq.sv#L38"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_custom_intr_vseq.sv:38</code></a>)</li>
+<li><code>f_7df3b4d77206</code> (spec not tested) Planned but not implemented: 5 requirement(s) in hw/ip/aon_timer/doc/interfaces.md &gt; Interfaces … (4 sections) — The aon_timer sim cfg imports the shared tl_access_tests.hjson (providing {name}_tl_intg_err with +run_tl_intg_err and {name}_tl_errors), csr_tests, sec_cm_tests, and the earlgrey chip cfg has chip_sw_aon_timer_wdog_lc_escalate. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson#L34-L35"><code>hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson:34-35</code></a>, <a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/tl_access_tests.hjson#L20-L23"><code>hw/dv/tools/dvsim/tests/tl_access_tests.hjson:20-23</code></a>)</li>
+<li><code>f_b1041443036d</code> (spec not tested) Partially tested: 1 requirement(s) in hw/ip/aon_timer/doc/programmers_guide.md &gt; Programmer's Guide &gt; Interrupt Handling — The finding's gap is that re-enabling WKUP_CTRL after a disable is never exercised. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv#L37-L42"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv:37-42</code></a>, <a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L910-L913"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:910-913</code></a>)</li>
+<li><code>f_2fc38343b1ac</code> (spec not tested) Register reset values: no suite covers every register — A generic csr_hw_reset test exists in the shared dvsim library, and the AES sim config (AES is my best guess at the block) imports it. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/csr_tests.hjson#L21-L23"><code>hw/dv/tools/dvsim/tests/csr_tests.hjson:21-23</code></a>, <a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/testplans/csr_testplan.hjson#L9"><code>hw/dv/tools/dvsim/testplans/csr_testplan.hjson:9</code></a>)</li>
+<li><code>f_e684b2415bb9</code> (spec not tested) Register access: no suite covers every register — The shared dvsim csr_tests.hjson defines generic csr_rw and csr_bit_bash tests, and many IP sim configs import it, including aes, hmac and kmac. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/csr_tests.hjson#L29-L33"><code>hw/dv/tools/dvsim/tests/csr_tests.hjson:29-33</code></a>)</li>
+<li><code>f_fe240411fef7</code> (spec not tested) Register write enable locks: no suite covers every register — The repository's generic CSR tests cover this. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/testplans/csr_testplan.hjson#L98-L99"><code>hw/dv/tools/dvsim/testplans/csr_testplan.hjson:98-99</code></a>, <a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/sv/dv_base_reg/dv_base_reg.sv#L356-L359"><code>hw/dv/sv/dv_base_reg/dv_base_reg.sv:356-359</code></a>)</li>
+</ul>
+<p>Withdrawn items from the groups in section 5 (39):</p>
+<ul>
+<li>Writing 0 to WKUP_CAUSE clears the wakeup request when a wakeup event has been caused by the timer. — The scoreboard predicts the WKUP_CAUSE clear and compares wkup_req against it, with expiry stimulated by the smoke tests. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L764-L771"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:764-771</code></a>)</li>
+<li>Clearing WKUP_COUNT_HI and WKUP_COUNT_LO resets the wakeup timer count. — The DV writes WKUP_COUNT_LO and HI (including zero) and the scoreboard predicts the count and the expiry. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv#L36-L41"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv:36-41</code></a>)</li>
+<li>Clearing the enable bit in WKUP_CTRL disables the wakeup timer. — The alternating enable/disable vseq clears WKUP_CTRL enable, and the scoreboard checks interrupts and wkup_req afterwards. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv#L36-L41"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv:36-41</code></a>)</li>
+<li>The wakeup count and threshold are each 64-bit values accessed through two 32-bit registers (hi and lo). — The base vseq writes a random 64-bit threshold through hi and lo, and the scoreboard checks the expiry against the full 64-bit value. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L933-L934"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:933-934</code></a>)</li>
+<li>The wakeup timer pre-scaler can slow the count so the counter matches a desired time unit. — The prescaler vseq randomizes the prescaler, and the scoreboard checks the expiry time scaled by (prescaler+1). (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L933-L934"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:933-934</code></a>)</li>
+<li>INTR_TEST.wkup_timer_expired: the register is implemented outside the register block (true). — Scoreboard intr_test model and the generic intr_test test check this. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L829-L834"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:829-834</code></a>)</li>
+<li>INTR_TEST.wkup_timer_expired: hardware receives a write-qualifier pulse on software writes (true). — The intr_test write must reach intr_state through the qe pulse; the scoreboard checks it. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L829-L834"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:829-834</code></a>)</li>
+<li>INTR_TEST.wdog_timer_bark: the register is implemented outside the register block (true). — Same as the other intr_test items. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L829-L834"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:829-834</code></a>)</li>
+<li>sleep_mode is a 1-bit logic unidirectional input received by the module (rcv). — sleep_mode is driven by the sleep interface and the scoreboard models the pause-in-sleep behaviour. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/tb.sv#L69"><code>hw/ip/aon_timer/dv/tb.sv:69</code></a>)</li>
+<li>nmi_wdog_timer_bark_o is a copy of intr_wdog_timer_bark_o. — A tb.sv assertion checks nmi equals bark on every run. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/tb.sv#L72"><code>hw/ip/aon_timer/dv/tb.sv:72</code></a>)</li>
+<li>Wakeup threshold bits [63:32] are in WKUP_THOLD_HI. — Sequences write wkup_thold_hi and the scoreboard predicts the wakeup behaviour that results. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv#L80-L82"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv:80-82</code></a>)</li>
+<li>The watchdog timer is 32 bits wide. — Watchdog thresholds are randomised up to the full 32-bit range with the scoreboard checking the results. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv#L80-L82"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv:80-82</code></a>)</li>
+<li>The wakeup timer is 64 bits wide. — Wakeup thresholds are randomised up to the full 64-bit range with the scoreboard checking the results. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv#L80-L82"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv:80-82</code></a>)</li>
+<li>csr_mem_rw_with_rand_reset — Test csr_mem_rw_with_rand_reset is defined and imported. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/csr_tests.hjson#L61-L63"><code>hw/dv/tools/dvsim/tests/csr_tests.hjson:61-63</code></a>)</li>
+<li>csr_aliasing — Test csr_aliasing is defined and imported. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/csr_tests.hjson#L45-L47"><code>hw/dv/tools/dvsim/tests/csr_tests.hjson:45-47</code></a>)</li>
+<li>X-value output assertions — ASSERT_KNOWN assertions in RTL check outputs for X in every sim. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/rtl/aon_timer.sv#L291"><code>hw/ip/aon_timer/rtl/aon_timer.sv:291</code></a>)</li>
+<li>TLUL protocol assertions — tlul_assert is bound into aon_timer through the sim_tops entry aon_timer_bind, so the assertions run with every test and fail it on a protocol violation. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/sva/aon_timer_bind.sv#L7-L9"><code>hw/ip/aon_timer/dv/sva/aon_timer_bind.sv:7-9</code></a>)</li>
+<li>The module has a TL-UL bus device interface named tl. — csr_rw and tl_access tests are imported in the aon_timer sim cfg. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson#L34-L35"><code>hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson:34-35</code></a>)</li>
+<li>tl is a tlul_pkg::tl request/response interface on which the module acts as responder (rsp). — tl_errors/tl_access tests are imported, and the tb binds the TL assertions. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson#L34-L35"><code>hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson:34-35</code></a>)</li>
+<li>lc_escalate_en is a 1-bit lc_ctrl_pkg::lc_tx unidirectional input received by the module (rcv). — The chip-level SW test chip_sw_aon_timer_wdog_lc_escalate exists, and the DV tb drives lc_escalate_en. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/top_earlgrey/dv/chip_sim_cfg.hjson#L1250-L1252"><code>hw/top_earlgrey/dv/chip_sim_cfg.hjson:1250-1252</code></a>)</li>
+<li>The fatal_fault alert is triggered when a fatal TL-UL bus integrity fault is detected. — aon_timer_tl_intg_err test is imported. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson#L34-L35"><code>hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson:34-35</code></a>)</li>
+<li>The AON_TIMER.BUS.INTEGRITY countermeasure provides an end-to-end bus integrity scheme. — The tl_intg_err and sec_cm tests are imported. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson#L34-L35"><code>hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson:34-35</code></a>)</li>
+<li>tl_intg_err — aon_timer_tl_intg_err comes from the imported tl_access_tests.hjson. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/tl_access_tests.hjson#L20-L23"><code>hw/dv/tools/dvsim/tests/tl_access_tests.hjson:20-23</code></a>)</li>
+<li>intr_test_cg — Covergroup sampled in the scoreboard; it is not a test to implement. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L355"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:355</code></a>)</li>
+<li>csr_bit_bash — aon_timer_csr_bit_bash comes from the imported csr_tests.hjson. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/csr_tests.hjson#L37-L39"><code>hw/dv/tools/dvsim/tests/csr_tests.hjson:37-39</code></a>)</li>
+<li>sec_cm_bus_integrity — The sec_cm testplan maps to aon_timer_tl_intg_err, which exists via tl_access_tests.hjson. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/tl_access_tests.hjson#L20-L23"><code>hw/dv/tools/dvsim/tests/tl_access_tests.hjson:20-23</code></a>)</li>
+<li>intr_pins_cg — Covergroup sampled in the scoreboard at line 355. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L355"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:355</code></a>)</li>
+<li>AON_TIMER.WATCHDOG.DISABLE_BY_LC_CTRL: the watchdog is disabled when the life cycle controller escalates. — The chip-level test chip_sw_aon_timer_wdog_lc_escalate is in the regression and implemented. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/top_earlgrey/dv/chip_sim_cfg.hjson#L1250-L1252"><code>hw/top_earlgrey/dv/chip_sim_cfg.hjson:1250-1252</code></a>)</li>
+<li>Setting the enable bit in WKUP_CTRL re-enables the wakeup timer. — The alternating_enable_on_off test covers re-enable after a disable. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv#L37-L42"><code>hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv:37-42</code></a>)</li>
+<li>INTR_TEST.wdog_timer_bark: hardware receives a write-qualifier pulse on software writes (true). — Stimulus writes intr_test; the scoreboard predicts intr_state and the interrupt output and checks them. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv#L841-L847"><code>hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv:841-847</code></a>)</li>
+<li>csr_hw_reset — aon_timer_csr_hw_reset is defined in the imported csr_tests.hjson and is run with the +csr_hw_reset option. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/csr_tests.hjson#L21-L23"><code>hw/dv/tools/dvsim/tests/csr_tests.hjson:21-23</code></a>)</li>
+<li>tl_intg_err_cg_wrap — This is a covergroup, not a test. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/sv/cip_lib/cip_base_env_cov.sv#L135"><code>hw/dv/sv/cip_lib/cip_base_env_cov.sv:135</code></a>)</li>
+<li>regwen_val_when_new_value_written_cg — This is a covergroup, not a test. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/sv/dv_base_reg/dv_base_lockable_field_cov.sv#L19"><code>hw/dv/sv/dv_base_reg/dv_base_lockable_field_cov.sv:19</code></a>)</li>
+<li>bit_toggle_cg_wrap — This is a covergroup, not a test. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/sv/cip_lib/cip_base_env_cov.sv#L135"><code>hw/dv/sv/cip_lib/cip_base_env_cov.sv:135</code></a>)</li>
+<li>tl_a_chan_cov_cg — Coverage is collected by the tl_agent_cov coverage group during the tl_access tests, so it is not a test that must exist. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/sv/cip_lib/cip_base_scoreboard.sv#L59-L60"><code>hw/dv/sv/cip_lib/cip_base_scoreboard.sv:59-60</code></a>)</li>
+<li>tl_errors_cg_wrap — tl_errors_cg_wrap is instantiated in the shared scoreboard. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/sv/cip_lib/cip_base_scoreboard.sv#L59-L60"><code>hw/dv/sv/cip_lib/cip_base_scoreboard.sv:59-60</code></a>)</li>
+<li>alert_test — aon_timer_alert_test runs the common vseq, which has checks. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/alert_test.hjson#L14-L19"><code>hw/dv/tools/dvsim/tests/alert_test.hjson:14-19</code></a>)</li>
+<li>tl_intg_err_cg — tl_intg_err_cg is sampled by the shared scoreboard. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/sv/cip_lib/cip_base_scoreboard.sv#L59-L60"><code>hw/dv/sv/cip_lib/cip_base_scoreboard.sv:59-60</code></a>)</li>
+<li>regwen_csr_and_corresponding_lockable_csr — WDOG_REGWEN is covered by the generic csr_rw tests; I did not trace the lockable-CSR check in detail. (<a href="https://github.com/lowRISC/opentitan/blob/b84154c71810e853c0b37c00e96bb830804dd9f4/hw/dv/tools/dvsim/tests/alert_test.hjson#L14-L19"><code>hw/dv/tools/dvsim/tests/alert_test.hjson:14-19</code></a>)</li>
+</ul>
+<h2 id="run-record">Run record</h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spec extraction</td>
+<td>claude-sonnet-5-5</td>
+</tr>
+<tr>
+<td>Test extraction</td>
+<td>claude-sonnet-5-5</td>
+</tr>
+<tr>
+<td>Merge and link</td>
+<td>claude-sonnet-5-5</td>
+</tr>
+<tr>
+<td>Correlate</td>
+<td>claude-sonnet-5-5</td>
+</tr>
+<tr>
+<td>Analyze</td>
+<td>claude-opus-5-5, claude-sonnet-5-5</td>
+</tr>
+<tr>
+<td>Verify</td>
+<td>claude-sonnet-5-5</td>
+</tr>
+</tbody>
+</table>
+<p>This run: $0.00 in 10 s (cached results reused where the inputs were unchanged).
+All LLM spend recorded for this workspace: $7.16.</p>
+<p>Manifest <code>work/opentitan-aon-timer/manifest.yaml</code> (sha256 <code>d1ae677b9090</code>); findings <code>work/opentitan-aon-timer/findings.yaml</code>; verifier transcripts in <code>work/opentitan-aon-timer/verify_runs/&lt;finding id&gt;/</code>.</p>
+</body></html>

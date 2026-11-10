@@ -1,0 +1,42 @@
+finding_hash: ab200daefd2fc33a
+started_at: '2026-11-10T19:44:57Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: A shared generic CSR test library provides csr_hw_reset and csr_mem_rw_with_rand_reset, enabled
+    per block via csr_tests_mode. csr_hw_reset_seq reads every CSR and compares it against the RAL reset
+    value, failing on mismatch. The finding does not name the block, so I could not confirm that it enables
+    these tests. Both suites are listed in the finding itself, which implies they exist for it.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 21
+    line_end: 23
+    quote: "name: \"{name}_csr_hw_reset\"\n      build_mode: \"cover_reg_top\"\n      run_opts: [\"+csr_hw_reset\"\
+      ]"
+    role: refutes
+    note: Generic shared test run over every block's registers.
+  - path: hw/dv/sv/csr_utils/csr_hw_reset_seq.sv
+    line_start: 47
+    line_end: 51
+    quote: csr_rd_check(.ptr           (csr),
+    role: refutes
+    note: Reads each CSR and compares against RAL reset value (compare_vs_ral=1); mismatch fails.
+  searches:
+  - what: csr_hw_reset / csr_mem_rw_with_rand_reset
+    where: repo
+    found: generic hjson in hw/dv/tools/dvsim/tests/csr_tests.hjson, used by block sim cfgs; checking
+      seq in csr_utils
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    reason: generic CSR tests
+  - path: hw/dv/sv/csr_utils/csr_hw_reset_seq.sv
+    reason: reset value check
+  resolution: Mark reset_values as covered by the generic csr_hw_reset test.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.032877199999999995
+error: null

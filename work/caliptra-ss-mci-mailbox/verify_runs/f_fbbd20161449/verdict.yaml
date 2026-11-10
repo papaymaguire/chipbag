@@ -1,0 +1,41 @@
+finding_hash: d9280a4c68178b37
+started_at: '2026-11-10T20:43:57Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Only the smoke tests check random addresses beyond the SRAM and below the 2MB maximum, and
+    the check is that they read 0 after a write. Nothing checks the exact 2MB boundary or that an address
+    above 2MB is not claimed. I did not see any test that varies the SRAM size, and I did not look at
+    the RTL or the other test directories in detail.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+    line_start: 124
+    line_end: 143
+    quote: // If SRAM is <2MB, write and read to a handful of random locations in invalid addresses
+    role: context
+    note: Random invalid addresses are written, then read back and checked for 0. The boundary addresses
+      (last valid SRAM word, 2MB top, just above 2MB) are never exercised.
+  searches:
+  - what: 2MB window / boundary checks in mbox tests
+    where: src/integration/test_suites
+    found: Only the random-address invalid-SRAM checks in the smoke_test_mcu_mbox_* tests.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+    line_start: 128
+    line_end: 143
+    why_not: It uses random addresses below MCU_MBOX_MAX_SIZE_KB. It does not check the exact 2MB limit
+      or that an address above 2MB is not claimed.
+  items:
+  - id: cr_e51e0acebd4b
+    outcome: verified
+    reason: The gap stands. Random invalid addresses are checked to read 0, but the exact 2MB boundary
+      and the address above 2MB are not tested.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0323659
+error: null

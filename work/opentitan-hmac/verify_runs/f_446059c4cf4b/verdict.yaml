@@ -1,0 +1,80 @@
+finding_hash: 8e09a2e8fb69b4fe
+started_at: '2026-11-10T21:04:32Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Items 1–4 are checked: the smoke and test-vector sequences randomise digest_size and key_length,
+    and the scoreboard computes the expected HMAC or SHA digest with a DPI model for each key length and
+    digest size, then compares it with the DUT digest. Item 5 (hash_stop) has only indirect checking:
+    the scoreboard flags a spurious hmac_done, and the sar tests would time out if the done never arrived.
+    Nothing checks the "as soon as the current block has been hashed" timing, so item 5 stands. The overall
+    outcome is verified only because item 5 stands.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 876
+    line_end: 889
+    quote: "if (digest_size == SHA2_256) begin\n        if (key_length == Key_128) begin"
+    role: refutes
+    note: The scoreboard model computes the expected HMAC per digest size and key length, including Key_384
+      and Key_1024, and compares it with the DUT digest. Only the opening lines of the model are quoted
+      here.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 412
+    line_end: 417
+    quote: "// here check DUT should only trigger hmac_done when sha is enabled, and\n          // previously\
+      \ triggered hash_process or hash_stop."
+    role: supports
+    note: For hash_stop the scoreboard only checks that hmac_done is not spurious. It does not check the
+      timing of the done interrupt after the current block.
+  searches:
+  - what: key_length and digest_size use in the DV env
+    where: hw/ip/hmac/dv
+    found: Random one-hot key_length and digest_size constraints in hmac_base_vseq. The scoreboard compares
+      digests against DPI models for every key length and digest size.
+  - what: hash_stop in the scoreboard
+    where: hmac_scoreboard.sv
+    found: Only a comment at line 413; no explicit check of hash_stop timing.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 173
+    line_end: 176
+    why_not: This invalid-config detection is relevant to key_length and digest_size, but it does not
+      test the valid one-hot selections.
+  items:
+  - id: cr_117f04d6cb5e
+    outcome: withdrawn
+    reason: The key_length one-hot field is randomised, and the scoreboard computes the expected digest
+      for each key length and compares it.
+    evidence:
+    - 0
+  - id: cr_2af3e76556ef
+    outcome: withdrawn
+    reason: The scoreboard model has an explicit Key_384 branch for each digest size, and the smoke test
+      randomises over it.
+    evidence:
+    - 0
+  - id: cr_a23c9a9236fe
+    outcome: withdrawn
+    reason: The scoreboard selects the SHA-256, SHA-384 or SHA-512 model by digest_size and compares the
+      digest.
+    evidence:
+    - 0
+  - id: cr_df02d4db8163
+    outcome: withdrawn
+    reason: The scoreboard has Key_1024 branches for the SHA-384 and SHA-512 models, and the DV skips
+      Key_1024 only for SHA-256 as an invalid configuration.
+    evidence:
+    - 0
+  - id: cr_302cc8a11faa
+    outcome: verified
+    reason: Only a spurious hmac_done is checked, plus an implicit hang or timeout if it never arrives.
+      The timing 'as soon as the current block has been hashed' is not checked.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0683801
+error: null

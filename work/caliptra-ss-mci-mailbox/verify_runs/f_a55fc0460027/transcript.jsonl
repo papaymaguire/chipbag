@@ -1,0 +1,13 @@
+{"t": "2026-11-10T20:36:45Z", "event": "  \u2192 Grep: dlen.*= *0|DLEN.*0x0|mbox_dlen *= *0"}
+{"t": "2026-11-10T20:36:46Z", "event": "  \u2192 Grep: VALID_AXI_USER|AXI_USER_LOCK"}
+{"t": "2026-11-10T20:36:48Z", "event": "Quick check of the DLEN=0 hits."}
+{"t": "2026-11-10T20:36:48Z", "event": "  \u2192 Grep: dlen.*= *0|DLEN.*0x0|mbox_dlen *= *0"}
+{"t": "2026-11-10T20:36:51Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites; sed -n 90,170p smoke_test_mcu_mbox_usr_lock_out_zero/cptra_smoke_test_mcu_mbox_usr_lock_out.c; sed -n 55,130p mcu_mb"}
+{"t": "2026-11-10T20:37:02Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:37:09Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:37:12Z", "event": "  \u2192 Grep: TARGET_USER_VALID|HW_CONFIG0|MCU_MBOX1"}
+{"t": "2026-11-10T20:37:15Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites; grep -n \"VPRINTF\\|if\\b\" smoke_test_mcu_mbox_instantiation/cptra_smoke_test_mcu_mbox_instantiation.c | head -40; grep"}
+{"t": "2026-11-10T20:37:18Z", "event": "Checking is done. I'm submitting the verdict now."}
+{"t": "2026-11-10T20:37:31Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:37:36Z", "event": "I submitted the verdict as verified: all five items remain only partly tested, and I found no test that closes any of the gaps.\n\n- **Two mailboxes independent (cr_318abb731c64):** `smoke_test_mcu_mbox_instantiation` expects AXI errors when no mailbox is instantiated, which covers the size-0 half. Nothing checks independence between the two mailboxes or the limit of 2.\n- **Trusted users via `MBOX*_AXI_USER_LOCK` (cr_554ae7995021):** no mailbox test references `AXI_USER_LOCK`. `smoke_test_mcu_mbox_invalid_axi` tests an invalid user, not the state before users are locked.\n- **Trusted users via `MBOX*_VALID_AXI_USER` (cr_daf7f972a12c):** no mailbox test references `VALID_AXI_USER`. The same near miss applies.\n- **DLEN=0 clear erases all SRAM (cr_3f38fb82f957):** `mcu_mbox_lock_return_one_during_zeroize` is the only test that clears EXECUTE with DLEN=0. It checks only that lock reads 1 during zeroize and never reads the SRAM back.\n- **Owner becomes SOC after EXECUTE=1 (cr_de12a01e738b):** my grep found no direct owner check straight after EXECUTE=1 in an MCU-requester flow. I did not read the target-user tests in detail, so this one rests on the search alone.\n\nI listed `smoke_test_mcu_mbox_instantiation` and `smoke_test_mcu_mbox_invalid_axi` as new sources for the analysis scope."}
+{"t": "2026-11-10T20:37:36Z", "event": "[10 turns, $0.1219]"}

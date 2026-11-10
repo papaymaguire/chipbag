@@ -1,0 +1,38 @@
+finding_hash: 9783e9fcc855b4c7
+started_at: '2026-11-10T19:36:57Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: all_error_non_fatal_check is an assert property whose only action is `else $display(...)`.
+    It has no $error, $fatal or error counter, so a violation prints a message and does not fail the test.
+    I found no log scanner or testbench hook in the repository that turns "SVA ERROR" into a failure.
+    The simulator's own assertion-failure count may still be flagged outside the repository, which I couldn't
+    check.
+  evidence:
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    line_start: 252
+    line_end: 252
+    quote: '  ) else $display("SVA ERROR: all_error_non_fatal is asserted unexpectedly");'
+    role: supports
+    note: The failure action is only $display, with no $error, $fatal or error counter.
+  searches:
+  - what: Other consumers of the 'SVA ERROR' string or assertion-failure checks
+    where: whole repo, excluding the SVA file
+    found: Only other $display-style SVA files (caliptra_mcu_top_sva.sv); no scanner.
+  - what: Scripts, makefiles or yml that grep logs for SVA or ERROR, or print TESTCASE PASSED/FAILED
+    where: '*.mk, *.py, *.sh, *.yml, *.yaml, *.pl, *Makefile'
+    found: No matches.
+  near_misses:
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    line_start: 247
+    line_end: 252
+    why_not: The assertion itself is real and can fire. The simulator may count assertion failures independently
+      of the $display, but nothing in the repository ties that count to the test result.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.043735300000000005
+error: null

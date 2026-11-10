@@ -1,0 +1,7 @@
+{"t": "2026-11-10T19:36:22Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mcu_mbox_csr.rdl"}
+{"t": "2026-11-10T19:36:23Z", "event": "  \u2192 Grep: lock.*reset|reset.*lock"}
+{"t": "2026-11-10T19:36:25Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mcu_mbox.sv"}
+{"t": "2026-11-10T19:36:33Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:36:39Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:36:41Z", "event": "I withdrew the finding because the two statements in `mcu_mbox_csr.rdl` don't conflict. The verdict was accepted.\n\n- **Reset value:** The RDL declares `lock=0`, which is the value while reset is asserted.\n- **After reset release:** The RTL sets the lock through `hwset` (driven by `rst_mbox_lock_req`) in `src/mci/rtl/mcu_mbox.sv:363`. At the same time `mbox_user` is loaded with `strap_root_axi_user` (line 382).\n- **Owner record:** The `mbox_user` register records the owner.\n\nThe description could say this explicitly, for example \"resets to 0; hardware sets it on reset release.\""}
+{"t": "2026-11-10T19:36:41Z", "event": "[6 turns, $0.0617]"}

@@ -1,0 +1,47 @@
+finding_hash: 2e352d8f030222e4
+started_at: '2026-11-10T19:36:17Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The spec says the sideload interface width sets the key length. It also says the value read
+    back does not depend on the key manager providing a key. The test expects KEY_512, which is that width,
+    so the two agree. The finding is really a coverage gap: the test never reads CFG without a valid key.
+    A gap is not an incompatible expectation.'
+  evidence:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 82
+    line_end: 82
+    quote: The length is determined by the width of the sideload interface, so the value read back does
+      not depend on the key manager providing a key and is available before an operation is started.
+    role: supports
+    note: The spec also derives the length from the sideload interface width, which is the same source
+      the finding calls a contradiction.
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    line_start: 125
+    line_end: 130
+    quote: CHECK_DIF_OK(dif_hmac_mode_hmac_start(&hmac, NULL, kSideloadConfig));
+    role: refutes
+    note: The test reads CFG and expects KEY_512, the sideload width. That matches the spec. It does not
+      assert that the value depends on the key manager.
+  searches:
+  - what: Read the spec passage and the test code in context
+    where: programmers_guide.md and keymgr_dpe_sideload_hmac_test.c
+    found: The spec ties the length to the sideload interface width. The test checks KEY_512 with a valid
+      key present. The test does not check behaviour without a key, but it does not contradict the spec
+      either.
+  near_misses:
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    line_start: 127
+    line_end: 130
+    why_not: The read happens with a valid key. That leaves the independence claim untested. It does not
+      make the test expect different behaviour from the spec.
+  items: []
+  new_sources: []
+  resolution: There is no contradiction. At most, the test could add a read of CFG.key_length with no
+    valid sideload key present, to cover the spec's independence claim.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.03883949999999999
+error: null

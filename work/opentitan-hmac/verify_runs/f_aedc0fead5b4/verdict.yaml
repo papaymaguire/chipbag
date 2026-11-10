@@ -1,0 +1,87 @@
+finding_hash: ab6eef637d58a1f7
+started_at: '2026-11-10T21:05:21Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: 'Four items are exercised and checked by the scoreboard, so they are withdrawn. The wipe-value
+    replication item is not checked: the scoreboard only requires the digest to differ after a wipe. It
+    never checks the replicated 64-bit value, so that item is verified. The finding as a whole is mixed,
+    so I''m submitting it as inconclusive with a per-item outcome.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1060
+    line_end: 1066
+    quote: function void hmac_scoreboard::check_idle(bit val);
+    role: refutes
+    note: The scoreboard compares the idle output pin against the expected value and predicts STATUS.hmac_idle.
+      The status read is then checked by the CSR checks.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 484
+    line_end: 485
+    quote: "if (cfg.wipe_secret_triggered) begin\n              `DV_CHECK_NE(real_digest_val, exp_digest[digest_idx])"
+    role: supports
+    note: After a wipe the digest is only checked to differ from the expected value. The 32-bit to 64-bit
+      replication is not checked.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 496
+    line_end: 496
+    quote: '`DV_CHECK_EQ(real_digest_val, exp_digest[digest_idx])'
+    role: refutes
+    note: Digest read-out is compared with the expected digest. Digest correctness depends on the key
+      being written through the external KEY and DIGEST registers.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 219
+    line_end: 219
+    quote: csr_wr(ral.key[key_idx], rand_key_value);
+    role: refutes
+    note: The test writes the KEY registers. A wrong hwqe or hwext implementation would produce a wrong
+      HMAC and fail the digest check.
+  searches:
+  - what: wipe_secret checks
+    where: hw/ip/hmac/dv
+    found: Only a DV_CHECK_NE on the digest after a wipe. No check of the replicated 64-bit wipe value.
+  - what: idle, key and digest usage
+    where: hw/ip/hmac/dv
+    found: The scoreboard checks idle, the key is written in the base vseq, and the digest is compared.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 482
+    line_end: 490
+    why_not: This is the wipe check, but it only asserts the digest differs. It does not check the replicated
+      value.
+  items:
+  - id: cr_8080aa204252
+    outcome: withdrawn
+    reason: check_idle compares the idle pin and predicts STATUS.hmac_idle, and the status read is checked.
+    evidence:
+    - 0
+  - id: cr_1c762e6535de
+    outcome: verified
+    reason: The wipe value is never checked. Only digest != expected is asserted.
+    evidence:
+    - 1
+  - id: cr_1b082437fa31
+    outcome: withdrawn
+    reason: KEY writes drive the HMAC computation, and the digest comparison would fail if the write-qualifier
+      pulse were wrong.
+    evidence:
+    - 2
+    - 3
+  - id: cr_993f078123e1
+    outcome: withdrawn
+    reason: KEY is written and its effect is checked through the digest comparison.
+    evidence:
+    - 2
+    - 3
+  - id: cr_37295a2dec07
+    outcome: withdrawn
+    reason: Digest registers are read and compared with the expected digest in the scoreboard.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0671747
+error: null

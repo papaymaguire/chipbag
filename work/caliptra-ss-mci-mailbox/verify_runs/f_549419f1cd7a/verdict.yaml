@@ -1,0 +1,89 @@
+finding_hash: 24cb93c91bd9de57
+started_at: '2026-11-10T19:42:41Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Three items (saturation, swwel, decrvalue) have no test. Two items (1-cycle pulse from the
+    same input as the event) are only exercised by mcu_intr_handler, which compares summed HW counters
+    to firmware counts. That check is aggregate and does not check pulse width. The finding stands.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 259
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: context
+    note: Aggregate check that the summed HW counters equal the number of triggered events. It is not
+      per-register and does not check the pulse width.
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1557
+    line_end: 1557
+    quote: field {desc = "Pulse mirrors interrupt event occurrence"; swwel = false;} pulse = 1'b0;
+    role: supports
+    note: No test writes the pulse field or checks swwel.
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1565
+    line_end: 1565
+    quote: Will not overflow ('incrsaturate').
+    role: supports
+    note: No test drives a counter to saturation.
+  searches:
+  - what: tests that check the 1-cycle pulse from the cptra_mbox_cmd_avail input (item 1)
+    where: src/integration, src/mci/coverage
+    found: Only the mcu_intr_handler aggregate sum check; mci_top_cov_if.sv has coverpoints only
+  - what: tests that check the mbox1 ECC uncorrectable counter pulse (item 2)
+    where: src/integration/test_suites
+    found: Only the aggregate sum in mcu_intr_handler.c; no per-register or pulse-width check
+  - what: counter saturation / overflow tests (item 3)
+    where: src/integration/test_suites
+    found: Nothing for the interrupt counters; only an unrelated LC transition counter hit
+  - what: writes to the pulse field or swwel checks (item 4)
+    where: src/integration, tests that reference notif_mbox1_cmd_avail counters
+    found: Only reads and sticky-type table entries in mci.c; no write test
+  - what: decrvalue behaviour tests (item 5)
+    where: src/integration/test_suites
+    found: Nothing direct; only the aggregate count match in mcu_intr_handler
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    why_not: Aggregate count comparison only. It does not check the 1-cycle pulse width or any individual
+      counter, and does not cover saturation, swwel or decrvalue.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 3960
+    line_end: 3960
+    why_not: Coverpoints only, no checks.
+  items:
+  - id: cr_193c2e86ca72
+    outcome: verified
+    reason: Only an aggregate count comparison touches this; no pulse-width check.
+    evidence:
+    - 0
+  - id: cr_1bcdcddb3f6d
+    outcome: verified
+    reason: The error counters are checked only in aggregate; no pulse-width check.
+    evidence:
+    - 0
+  - id: cr_1e422b850220
+    outcome: verified
+    reason: No test drives a counter to saturation.
+    evidence:
+    - 2
+  - id: cr_22a6d4baab20
+    outcome: verified
+    reason: No test writes the pulse field or checks swwel.
+    evidence:
+    - 1
+  - id: cr_242db8343387
+    outcome: verified
+    reason: No test checks the decrvalue behaviour directly.
+    evidence:
+    - 1
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Only test that reads and checks the interrupt counters.
+submissions: 2
+rejections: []
+turns: 14
+cost_usd: 0.1333873
+error: null

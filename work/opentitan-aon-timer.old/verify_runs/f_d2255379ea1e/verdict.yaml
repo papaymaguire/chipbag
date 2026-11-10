@@ -1,0 +1,85 @@
+finding_hash: 27f0cf4aa861c5d0
+started_at: '2026-11-10T22:08:15Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The csr_hw_reset item is implemented: the shared csr_tests.hjson defines {name}_csr_hw_reset,
+    and aon_timer''s sim cfg imports it. The other four items are covergroups (or, for mem_partial_access,
+    a generic test on a block with no memory). Covergroups are implemented in shared DV libraries and
+    sampled by every test, so "no implementing test" is a plan-mapping artifact, not a real gap. I did
+    not check whether the aon_timer sim cfg excludes any of these tests or covergroups.'
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 21
+    line_end: 23
+    quote: "name: \"{name}_csr_hw_reset\"\n      build_mode: \"cover_reg_top\"\n      run_opts: [\"+csr_hw_reset\"\
+      ]"
+    role: refutes
+    note: The csr_hw_reset test exists in the shared test list, which aon_timer imports.
+  - path: hw/dv/tools/dvsim/tests/mem_tests.hjson
+    line_start: 29
+    line_end: 31
+    quote: 'name: "{name}_mem_partial_access"'
+    role: context
+    note: A generic test exists, but aon_timer has no memories, so it has nothing to exercise.
+  - path: hw/dv/sv/dv_base_reg/dv_base_lockable_field_cov.sv
+    line_start: 19
+    line_end: 19
+    quote: covergroup regwen_val_when_new_value_written_cg(string name) with function sample();
+    role: refutes
+    note: The covergroup is implemented in the shared library, so no dedicated test is needed.
+  - path: hw/dv/sv/cip_lib/cip_base_env_cov.sv
+    line_start: 135
+    line_end: 135
+    quote: class tl_intg_err_cg_wrap;
+    role: refutes
+    note: The covergroup wrapper is implemented in the shared CIP library.
+  searches:
+  - what: csr_hw_reset, mem_partial_access, and the covergroup names
+    where: hw/dv/tools/dvsim/tests, hw/dv/sv, hw/ip/aon_timer
+    found: The csr and mem tests are in the shared lists imported by aon_timer_sim_cfg. The covergroups
+      are implemented in shared DV libraries.
+  near_misses:
+  - path: hw/dv/tools/dvsim/tests/mem_tests.hjson
+    line_start: 27
+    line_end: 33
+    why_not: The test is imported, but aon_timer has no memory, so it is vacuous there. I did not confirm
+      this against the RTL.
+  items:
+  - id: cp_62857800d897
+    outcome: withdrawn
+    reason: aon_timer_csr_hw_reset is defined in the imported csr_tests.hjson and is run with the +csr_hw_reset
+      option.
+    evidence:
+    - 0
+  - id: cp_647c2829d038
+    outcome: withdrawn
+    reason: This is a covergroup, not a test. It is implemented in cip_base_env_cov.sv and sampled during
+      all tests.
+    evidence:
+    - 3
+  - id: cp_69066ed60ce7
+    outcome: withdrawn
+    reason: This is a covergroup, not a test. It is implemented in dv_base_lockable_field_cov.sv and sampled
+      during all tests.
+    evidence:
+    - 2
+  - id: cp_6cea16223bb9
+    outcome: withdrawn
+    reason: This is a covergroup, not a test. bit_toggle_cg_wrap.sv is implemented in dv_lib, and cip_base_env_cov.sv
+      and tl_agent_cov.sv also match my search for it.
+    evidence:
+    - 3
+  - id: cp_78ba7f313582
+    outcome: inconclusive
+    reason: The generic mem_partial_access test is imported by aon_timer, but the block has no memory,
+      so it is unclear what the plan item means for this block.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.05794350000000001
+error: null

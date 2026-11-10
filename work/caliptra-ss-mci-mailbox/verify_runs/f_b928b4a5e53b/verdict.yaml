@@ -1,0 +1,82 @@
+finding_hash: 7d021833c012ff4e
+started_at: '2026-11-10T20:41:30Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four of five items stand as untested; CMD_FAILURE is exercised and withdrawn. No test or assertion
+    creates simultaneous HW and SW updates, so the three precedence=hw items stand. No test reads TARGET_STATUS
+    back after a handoff to see the hardware clear. The ownership-flow test does write CMD_FAILURE as
+    a terminal TARGET_STATUS and checks the resulting owner.
+  evidence:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 53
+    line_end: 53
+    quote: field {rset; sw=r; hw=r; hwset=true; hwclr=true; precedence=hw; swmod=true;} lock=0;
+    role: context
+    note: lock precedence=hw; no same-cycle stimulus found
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 202
+    line_end: 204
+    quote: for (int status = mcu_mbox_csr__mbox_cmd_status__status__mbox_status_e__DATA_READY;
+    role: refutes
+    note: The loop drives every terminal status through DATA_READY..CMD_FAILURE; the target writes it
+      at line 131 and the owner phase is checked at line 133. This covers CMD_FAILURE for the target-status
+      write.
+  - path: src/integration/test_suites/smoke_test_mbox_csr_zeros_after_release/smoke_test_mbox_csr_zeros_after_release.c
+    line_start: 132
+    line_end: 132
+    quote: if(lsu_read_32(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_TARGET_STATUS + MCU_MBOX_NUM_STRIDE * mbox_num)
+      != 0) {
+    role: context
+    note: Reads TARGET_STATUS after release, but Root never makes it nonzero, so the hwclr is not exercised.
+  searches:
+  - what: CMD_FAILURE / TARGET_STATUS in tests
+    where: src/integration
+    found: The ownership-flow SV test writes CMD_FAILURE as a terminal target status and checks the owner
+      phase. Other tests only touch TARGET_STATUS access rights.
+  - what: simultaneous / same-cycle / collision tests for mbox
+    where: src/integration mbox files
+    found: none
+  - what: TARGET_STATUS clear checks
+    where: zeros_after_release and target_user tests
+    found: zeros_after_release reads TARGET_STATUS == 0, but the status is never made nonzero there. target_user
+      checks only TARGET_USER_VALID cleared.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 240
+    line_end: 245
+    why_not: Checks that TARGET_USER_VALID is cleared by hardware on terminal status, not the hw-over-sw
+      precedence on simultaneous update.
+  items:
+  - id: cr_1090477d2115
+    outcome: verified
+    reason: No test creates a simultaneous hardware and software update of lock.
+    evidence:
+    - 0
+  - id: cr_a206ba683bb5
+    outcome: verified
+    reason: No test creates a simultaneous update of TARGET_USER.
+    evidence: []
+  - id: cr_7eea266009ff
+    outcome: verified
+    reason: TARGET_USER_VALID hardware clear is checked, but not the simultaneous-update precedence.
+    evidence: []
+  - id: cr_7e5a73e500a2
+    outcome: withdrawn
+    reason: The ownership-flow test writes CMD_FAILURE as a terminal TARGET_STATUS and checks the resulting
+      owner phase.
+    evidence:
+    - 1
+  - id: cr_b97504c83bee
+    outcome: verified
+    reason: No test reads TARGET_STATUS back after a handoff to confirm the hardware clear; the only read
+      is after release, when the register was never nonzero.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.11165919999999999
+error: null

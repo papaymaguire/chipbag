@@ -1,0 +1,77 @@
+finding_hash: fd7c5d47e5f66ccd
+started_at: '2026-11-10T20:58:12Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Two items are withdrawn: csr_aliasing has a generated test, and the fifo_empty interrupt plan
+    item lists real tests that the scoreboard checks. The two 100%-coverage items are closure goals with
+    no test, and the FPV item is marked N/A. They are not defects, but nothing implements them, so I left
+    them standing.'
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 45
+    line_end: 47
+    quote: '      name: "{name}_csr_aliasing"'
+    role: refutes
+    note: The generated hmac_csr_aliasing test exists. The hmac sim cfg imports csr_tests.hjson.
+  - path: hw/ip/hmac/data/hmac_testplan.hjson
+    line_start: 113
+    line_end: 120
+    quote: '      name: fifo_empty_status_interrupt'
+    role: refutes
+    note: The plan item maps to concrete tests such as hmac_smoke.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 391
+    line_end: 392
+    quote: '      bit intr_state_empty = fifo_empty_intr | last_intr_test_wr[HmacMsgFifoEmpty];'
+    role: refutes
+    note: The scoreboard predicts and checks the fifo_empty interrupt state.
+  - path: hw/ip/hmac/doc/checklist.md
+    line_start: 247
+    line_end: 249
+    quote: 'Coverage      | [SIM_CODE_COVERAGE_AT_100][]      | Done        | Documented in issue #25216'
+    role: context
+    note: The coverage checklist items are process sign-offs, not tests. FPV is N/A.
+  searches:
+  - what: fifo_empty_status_interrupt and csr_aliasing across hmac and hw/dv
+    where: hw/ip/hmac, hw/dv
+    found: The testplan lists tests for fifo_empty. The csr_aliasing test is generated from csr_tests.hjson.
+  - what: checklist coverage items
+    where: hw/ip/hmac/doc/checklist.md
+    found: SIM code and functional coverage at 100% are Done with issue references. FPV code coverage
+      is N/A.
+  near_misses: []
+  items:
+  - id: cp_89d6ab0e238e
+    outcome: verified
+    reason: A coverage-closure goal. No test implements it. The checklist cites an issue instead.
+    evidence:
+    - 3
+  - id: cp_8af9344465d9
+    outcome: withdrawn
+    reason: The generated hmac_csr_aliasing test exists through the csr_tests.hjson import.
+    evidence:
+    - 0
+  - id: cp_9d08f0b2671d
+    outcome: verified
+    reason: A coverage-closure goal. No test implements it.
+    evidence:
+    - 3
+  - id: cp_a202d247a900
+    outcome: withdrawn
+    reason: The plan item lists hmac_smoke and other tests, and the scoreboard checks the fifo_empty interrupt.
+    evidence:
+    - 1
+    - 2
+  - id: cp_b1bfe4a8a32d
+    outcome: verified
+    reason: The item is marked N/A for HMAC, so it has no test.
+    evidence:
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0631732
+error: null

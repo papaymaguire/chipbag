@@ -1,0 +1,58 @@
+finding_hash: 0a52ef7b69763bb0
+started_at: '2026-11-10T20:35:41Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The hardware spec answers the question. Gating covers write access only, non-owner writes are
+    dropped, and a trusted user's illegal write gets no error response. The RDL marks these registers
+    sw=rw with only swwe tied to the signal, so reads are not gated.
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1406
+    line_end: 1407
+    quote: '`CMD`, `DLEN` and `EXECUTE` write access follows SRAM ownership. Only the
+
+      current SRAM owner may write them, and writes from any other agent are dropped.'
+    role: refutes
+    note: Gating is write access only; non-owner writes are dropped.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1503
+    line_end: 1503
+    quote: '| Trusted User Illegal Access | Read:<br>&nbsp;- Data return 0 <br>Write:<br>&nbsp;- Data
+      dropped|'
+    role: refutes
+    note: A trusted user's illegal write is dropped with no AXI error listed. The error is listed only
+      for untrusted users.
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 87
+    line_end: 87
+    quote: field {sw=rw;hwclr; swwe=valid_sram_owner_req; } command[32]=0;
+    role: context
+    note: swwe gates writes only; sw=rw leaves reads ungated.
+  searches:
+  - what: non-owner / dropped / error response wording
+    where: docs/
+    found: Hardware spec lines 1406-1407 and 1503 state writes are dropped. Line 1503 lists no AXI error
+      for a trusted user's illegal write.
+  - what: valid_sram_owner_req elsewhere
+    where: repo
+    found: Only the RDL defines and uses it; the RDL register descriptions say 'Writable only by the current
+      SRAM owner'.
+  near_misses:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1502
+    line_end: 1502
+    why_not: This row covers untrusted users, who get an AXI error. It does not cover a trusted non-owner.
+  items: []
+  new_sources:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    reason: Defines the write-only gating, drop behaviour and error table for the mailbox.
+  resolution: The RDL uses swwe, so the signal gates writes only. Non-owner writes are dropped without
+    an error, and reads are not gated. The RDL signal description could say "gates write access" to match
+    the hardware spec.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.056738800000000006
+error: null

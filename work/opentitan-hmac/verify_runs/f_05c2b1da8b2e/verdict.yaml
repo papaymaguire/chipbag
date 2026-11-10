@@ -1,0 +1,29 @@
+finding_hash: 3c34dc513aaf1417
+started_at: '2026-11-10T20:51:56Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The plan item says each operation is streamed in two chunks. The test picks a random segment
+    count per streaming vector, so a vector can be streamed in one segment or in more than two. Two chunks
+    is not guaranteed. I did not read the helper that implements rand_testutils_gen32_range, so I did
+    not confirm whether 4 is a possible value. Neither reading yields a fixed two-chunk split.
+  evidence:
+  - path: sw/device/tests/crypto/hmac_multistream_functest.c
+    line_start: 109
+    line_end: 109
+    quote: cur_ext_vec->segment_count = rand_testutils_gen32_range(1, 4);
+    role: supports
+    note: Segment count is randomized, not fixed at 2.
+  searches:
+  - what: segment_count usage and plan link
+    where: hmac_multistream_functest.c, chip_hmac_testplan.hjson
+    found: Random segment count; the plan item links to this test via bazel target hmac_multistream_functest.
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.04644740000000001
+error: null

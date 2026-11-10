@@ -1,0 +1,31 @@
+finding_hash: 4a43e96feb89d688
+started_at: '2026-11-10T19:36:37Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The k24 check compares MBOX USER to 0xDEADBEEF & CMD_STATUS.STATUS mask, a few low bits. If
+    USER became 0xDEADBEEF, it would not equal the masked value, so the check would not fail. It can't
+    detect the corruption it names.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c
+    line_start: 188
+    line_end: 188
+    quote: if (mbox_rd_data == (0xDEADBEEF & MCU_MBOX0_CSR_MBOX_CMD_STATUS_STATUS_MASK)) {
+    role: supports
+    note: USER read-back compared to the masked value, not the full written value.
+  searches:
+  - what: read cited code in context
+    where: cptra_smoke_test_mcu_mbox_target_user.c lines 165-205
+    found: The USER check reuses the CMD_STATUS mask, copied from the CMD_STATUS check above it.
+  - what: mask definition
+    where: mcu_mbox0 files
+    found: No match; the mask is not defined there, so its exact value was not confirmed.
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.034086399999999996
+error: null

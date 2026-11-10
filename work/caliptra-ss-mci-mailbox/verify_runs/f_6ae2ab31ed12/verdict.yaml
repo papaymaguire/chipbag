@@ -1,0 +1,50 @@
+finding_hash: 7137222388e66466
+started_at: '2026-11-10T20:36:24Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Limited search found no test covering the gaps: no write to TARGET_USER_VALID while it is
+    1, no MCU-holds-lock full rule matrix, and no external-requester-lock EXECUTE test. I did not exhaustively
+    check every test, so confidence is moderate.'
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 146
+    line_end: 146
+    quote: Wasn't able to write Mbox%x TARGET_USER_VALID as Root
+    role: context
+    note: Only checks a successful write of TARGET_USER_VALID, not a blocked one.
+  searches:
+  - what: TARGET_USER_VALID in tests
+    where: src/integration/test_suites
+    found: Only writes while 0, checks for changed-by-target, and clear checks; no blocked write while
+      1.
+  near_misses: []
+  items:
+  - id: cr_2d3206a4c6cc
+    outcome: verified
+    reason: No test writes TARGET_USER_VALID while it is 1.
+    evidence:
+    - 0
+  - id: cr_381131113d9e
+    outcome: inconclusive
+    reason: Not searched in depth.
+    evidence: []
+  - id: cr_3812998537f7
+    outcome: inconclusive
+    reason: Not searched in depth.
+    evidence: []
+  - id: cr_c245e318661a
+    outcome: inconclusive
+    reason: Not searched in depth.
+    evidence: []
+  - id: cr_dd3d4e211825
+    outcome: inconclusive
+    reason: Not searched in depth.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.037236
+error: null

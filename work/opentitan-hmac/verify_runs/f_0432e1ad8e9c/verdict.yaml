@@ -1,0 +1,92 @@
+finding_hash: 74ee777743cfd51e
+started_at: '2026-11-10T21:03:19Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four of five items stand as gaps; cr_00446a3b2658 (key write during hash) is checked indirectly
+    and is withdrawn. The scoreboard drops key writes made during a hash, the sequence writes random keys
+    mid-hash, and the final digest is compared against the original-key prediction. Block DV forces sideload
+    off, so KEY-ignored-under-sideload is not tested there. No test checks KEY writes in non-idle states
+    other than mid-hash. No test confirms a DIGEST or MSG_LENGTH_UPPER write under hmac_idle=1 takes effect.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 322
+    line_end: 328
+    quote: "            update_err_intr_code(SwUpdateSecretKeyInProcess);\n            return;\n     \
+      \     end\n\n          key[key_idx] = item.a_data;"
+    role: refutes
+    note: Model keeps the original key when a write arrives during a hash; the final digest is compared
+      against it.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 216
+    line_end: 220
+    quote: "task hmac_base_vseq::write_discard_key();\n  bit [TL_DW-1:0] rand_key_value = $urandom();\n\
+      \  int key_idx = $urandom_range(0, 31);\n  csr_wr(ral.key[key_idx], rand_key_value);"
+    role: refutes
+    note: 'Stimulus: random key written during the hash.'
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: '  // TODO(#31634): Disable sideloading for now.'
+    role: supports
+    note: Sideload is disabled in block DV, so the sideload item is untested there.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 338
+    line_end: 340
+    quote: "\"digest_14\", \"digest_15\", \"msg_length_upper\", \"msg_length_lower\": begin\n        \
+      \  // Predict updated value coming from write iff SHA core is disabled.\n          do_predict =\
+      \ !sha_en;"
+    role: context
+    note: Scoreboard keys on sha_en, not STATUS.hmac_idle.
+  searches:
+  - what: key writes during hash and discard checks
+    where: hw/ip/hmac/dv
+    found: write_discard_key, scoreboard drops key write; digest compared with model
+  - what: sideload in DV
+    where: hw/ip/hmac/dv/env/seq_lib
+    found: sideload forced to 0 with a TODO
+  - what: hmac_idle use around digest/msg_length writes
+    where: hw/ip/hmac/dv
+    found: scoreboard keys on sha_en; no explicit hmac_idle check
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 392
+    line_end: 400
+    why_not: Key write during hash is covered, but only in the hashing state, not other non-idle states.
+  items:
+  - id: cr_00446a3b2658
+    outcome: withdrawn
+    reason: Random key writes mid-hash are dropped in the scoreboard model, and the final digest is compared
+      with the original-key prediction.
+    evidence:
+    - 0
+    - 1
+  - id: cr_67bea9a867f4
+    outcome: verified
+    reason: Sideload is disabled in block DV; no test writes KEY and then ignores it under sideload.
+    evidence:
+    - 2
+  - id: cr_781c9e811c5e
+    outcome: verified
+    reason: Only the mid-hash write is exercised; other non-idle states and the idle-success case are
+      not.
+    evidence:
+    - 1
+  - id: cr_98ab14b5706d
+    outcome: verified
+    reason: No check that a DIGEST write under hmac_idle takes effect; writes are only the same value
+      read back.
+    evidence:
+    - 3
+  - id: cr_ce024c03a454
+    outcome: verified
+    reason: No explicit hmac_idle=1 check before the MSG_LENGTH_UPPER write.
+    evidence:
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 13
+cost_usd: 0.11425489999999999
+error: null

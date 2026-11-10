@@ -1,0 +1,61 @@
+finding_hash: 12ab179a57852398
+started_at: '2026-11-10T19:44:18Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that explicitly checks the MBOX CSR window (0x0020_0000 to 0x0020_003F). Mailbox
+    tests do access the CSRs, but only through addresses generated from the same RDL as the RTL. None
+    of them checks the range itself or its boundaries. The RTL defines the CSRs at 0x20_00xx (for example
+    EXECUTE at 0x200018), which matches the spec, but nothing verifies it.
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1546
+    line_end: 1546
+    quote: '| 0x0020_0000      | 0x020_003F       | MBOX CSR        | Mailbox Control Status Registers              |'
+    role: supports
+    note: 'The requirement: the MBOX CSR window is 0x0020_0000 to 0x0020_003F.'
+  - path: src/mci/rtl/mcu_mbox_csr_defines.svh
+    line_start: 28
+    line_end: 28
+    quote: '`define MCU_MBOX_CSR_MBOX_EXECUTE                                                                   (32''h200018)'
+    role: context
+    note: The RTL places the CSRs in the 0x20_xxxx region, consistent with the spec. No test checks this.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/cptra_smoke_test_mcu_mbox_axi_param.c
+    line_start: 60
+    line_end: 60
+    quote: status = cptra_axi_dword_read_with_status(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_EXECUTE + MCU_MBOX_NUM_STRIDE
+      * mbox_num, payload);
+    role: context
+    note: The test uses generated CSR offsets. It checks AXI error behaviour, not the address range or
+      its boundaries.
+  searches:
+  - what: Tests or checks of the MCU mailbox CSR address range (0x200000, MCU_MBOX_CSR, MBOX_CSR)
+    where: src/ (tests, testbench, asserts)
+    found: Only functional accesses through generated offsets. No explicit range or boundary check, and
+      no assertion on the window.
+  - what: Address decode of the mailbox in the RTL
+    where: src/mci/rtl/mci_axi_sub_decode.sv
+    found: Decode uses MBOX0_START_ADDR = 0x0040_0000 and MBOX1_START_ADDR = 0x0080_0000 with a CSR address-width
+      span. No test checks the 0x20_0000 to 0x20_003F boundaries.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/cptra_smoke_test_mcu_mbox_axi_param.c
+    line_start: 55
+    line_end: 112
+    why_not: It reads and writes the CSRs by generated offsets and checks AXI errors for the AXI-param
+      configuration. It does not verify the range or its end address.
+  items:
+  - id: cr_22b98fe21dde
+    outcome: verified
+    reason: No test or assertion checks the MBOX CSR range (0x0020_0000 to 0x0020_003F). Only implicit
+      use of the generated offsets exists.
+    evidence:
+    - 0
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.06817100000000001
+error: null

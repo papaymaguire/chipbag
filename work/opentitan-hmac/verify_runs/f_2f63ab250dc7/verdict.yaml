@@ -1,0 +1,68 @@
+finding_hash: 913d90533608803e
+started_at: '2026-11-10T21:09:33Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The wipe items and the unused-key-register item stand. The key-length item is only partly covered.
+    No test probes internal key, hash state or schedule after a wipe, and none fills unused key words
+    with differing values. Key-length coverage exists but nothing forces all five lengths.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 482
+    line_end: 484
+    quote: // If wipe_secret is triggered, ensure the predicted value does not match the read out
+    role: supports
+    note: The only wipe check is that the digest differs from the prediction; internal state is not checked.
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 71
+    line_end: 71
+    quote: 'key_length: coverpoint cfg[KeyLengthMsb:KeyLengthLsb] {'
+    role: context
+    note: A key-length coverpoint exists, but it does not guarantee every length is hit by a test.
+  searches:
+  - what: wipe_secret usage in the hmac dv directory
+    where: hw/ip/hmac/dv
+    found: Only the smoke-based wipe vseq and the scoreboard digest-differs check; no probing of key,
+      hash state or message schedule.
+  - what: key-length coverage
+    where: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    found: A key_length coverpoint and crosses exist; nothing forces all five lengths.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 71
+    line_end: 87
+    why_not: Key-length coverage bins exist, but they are coverage only; they do not force every length
+      and do not check that unused key words are ignored.
+  items:
+  - id: cr_03340331c331
+    outcome: verified
+    reason: Only digest corruption is checked after a wipe.
+    evidence:
+    - 0
+  - id: cr_9f6c9dac2641
+    outcome: verified
+    reason: No test fills key registers beyond the configured length with differing values.
+    evidence: []
+  - id: cr_aab3a12796d4
+    outcome: verified
+    reason: No check that internal state equals the written wipe value.
+    evidence:
+    - 0
+  - id: cr_b8debfc7325d
+    outcome: verified
+    reason: 'Same gap as above: only the digest is observed after a wipe.'
+    evidence:
+    - 0
+  - id: cr_e5d424432a1f
+    outcome: inconclusive
+    reason: A key-length coverpoint exists and smoke randomizes the key length, so this is partly covered,
+      but nothing guarantees all five lengths are hit.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.048498
+error: null

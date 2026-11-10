@@ -1,0 +1,39 @@
+finding_hash: 0747e89c9b37127c
+started_at: '2026-11-10T19:36:52Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'The assertion''s else branch is only `$display("SVA ERROR: ...")`. It does not call `$error`
+    or `$fatal`, and it sets no failure flag. Nothing in the repository that I found scans logs for "SVA
+    ERROR" to fail a test. A violation is therefore printed but does not fail the test. I did not check
+    whether the simulator''s own assertion-failure count feeds into pass/fail.'
+  evidence:
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    line_start: 245
+    line_end: 245
+    quote: '  ) else $display("SVA ERROR: MCI HW ERROR NON FATAL is expected to remain unchanged on warm
+      reset");'
+    role: supports
+    note: The failure action only prints a message, so the check can't fail the test.
+  searches:
+  - what: uses of the assertion name
+    where: whole repo
+    found: Only the definition at line 241; no test references it.
+  - what: a log or checker that fails the test on 'SVA ERROR'
+    where: whole repo, excluding the SVA file itself
+    found: Only other $display-based SVA files; no consumer of the string.
+  near_misses:
+  - path: src/integration/testbench/caliptra_ss_top_tb_services.sv
+    line_start: 1
+    line_end: 1
+    why_not: It contains $error/$fatal-style matches, but none that parse SVA messages.
+  items: []
+  new_sources: []
+  resolution: Add `$error(...)` (or a testbench error-counter increment) to the else action. Alternatively,
+    have the regression log scanner treat "SVA ERROR" as a failure.
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0551206
+error: null

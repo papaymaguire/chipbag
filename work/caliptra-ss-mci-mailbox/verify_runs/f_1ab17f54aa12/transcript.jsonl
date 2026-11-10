@@ -1,0 +1,8 @@
+{"t": "2026-11-10T20:35:12Z", "event": "  \u2192 Grep: double.bit|ECC.*(SLVERR|error response)|invalid data"}
+{"t": "2026-11-10T20:35:13Z", "event": "  \u2192 Grep: mbox.*(ecc|dbe|double)|MCU_MBOX.*ECC"}
+{"t": "2026-11-10T20:35:15Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/docs/CaliptraSSHardwareSpecification.md"}
+{"t": "2026-11-10T20:35:18Z", "event": "  \u2192 Grep: SLVERR|AXI error"}
+{"t": "2026-11-10T20:35:18Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/docs/CaliptraSSIntegrationSpecification.md"}
+{"t": "2026-11-10T20:35:28Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:35:31Z", "event": "I withdrew the finding: other spec text does answer the data question, though not the AXI response one.\n\n- **Data returned:** the Integration spec (line 874) says a double-bit error causes \"unpredictable data to be returned\". The Hardware spec (line 1507) says agents must consume the double-bit ECC interrupt or check the mailbox status registers to know whether read data is valid. So the data is don't-care, and a test should check the interrupt, the status bit and HW_NON_FATAL rather than the data value.\n- **AXI response:** I found no spec text that says whether a mailbox read with a double-bit error gets OKAY or SLVERR. The SLVERR statement at Hardware spec line 1579 covers the MCU SRAM, not the mailbox, so that half of the finding's question is still open.\n\nI recorded in the verdict that the spec should state this explicitly, including the mailbox AXI response."}
+{"t": "2026-11-10T20:35:31Z", "event": "[7 turns, $0.0546]"}

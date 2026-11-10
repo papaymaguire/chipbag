@@ -1,0 +1,97 @@
+finding_hash: 2e022f61b0598b91
+started_at: '2026-11-10T19:40:14Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Four of the five items stand or are unsettled, and one is withdrawn. Item 3 (only MCU writes
+    CMD_STATUS) is covered: the test has the valid, granted Target attempt a CMD_STATUS write, and the
+    test fails if it takes effect. The other gaps are not closed by any test I found, but I did not examine
+    the SRAM_OWNER checks in depth.'
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c
+    line_start: 315
+    line_end: 316
+    quote: "        target_valid = true;\n        cptra_mcu_mbox_target_write_sram_and_csrs(mbox_num,\
+      \ sizeof(clptra_write_data), clptra_write_data, target_valid);"
+    role: refutes
+    note: After MCU grants ownership, the valid Target runs the write sequence, which includes a CMD_STATUS
+      write.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c
+    line_start: 176
+    line_end: 177
+    quote: "    if (mbox_rd_data == (0xDEADBEEF & MCU_MBOX0_CSR_MBOX_CMD_STATUS_STATUS_MASK)) {\n    \
+      \    VPRINTF(FATAL, \"Mbox%x CMD_STATUS was changed unexpectedly: 0x%x\\n\", mbox_num, mbox_rd_data);"
+    role: refutes
+    note: This check runs for the valid Target as well as the non-valid case, and fails the test if the
+      CMD_STATUS write took effect.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 64
+    line_end: 65
+    quote: "    if(mcu_mbox_read_cmd_status(mbox_num) != MCU_MBOX_DATA_READY) {\n        VPRINTF(FATAL,\
+      \ \"MCU: Mbox%x CMD_STATUS was changed by Target User\\n\", mbox_num);"
+    role: refutes
+    note: After the Target phase, MCU checks that CMD_STATUS still equals DATA_READY (line 256).
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1413
+    line_end: 1414
+    quote: '**NOTE**: Neither the Requester nor Root can reclaim the mailbox from a Target'
+    role: supports
+    note: Item 1's requirement. I found no test in which the Target never terminates.
+  searches:
+  - what: 'Item 1: Target never terminates, reclaim attempts, MCI reset recovery'
+    where: src/integration/test_suites, spec lines 1413-1414
+    found: No such test found. In the target_user test the Target always writes COMPLETE.
+  - what: 'Item 2: SRAM_OWNER checks'
+    where: src/integration
+    found: References in mci_mbox_ownership_flow.svh, mci_common_tasks.svh, smoke_test_mcu_mbox_write_user_lock
+      and target_user. I did not examine these in depth. Item 2 stays inconclusive.
+  - what: 'Item 3: CMD_STATUS write by valid Target'
+    where: smoke_test_mcu_mbox_target_user
+    found: The valid-Target phase attempts the write at line 316, the check at line 176 fails the test
+      if the write takes effect, and the MCU re-check at line 64 also fails the test. Item 3 is withdrawn.
+  - what: 'Item 4: Requester write to TARGET_STATUS'
+    where: src/integration/test_suites
+    found: Only an invalid-user write (instantiation test), a Root write (strb_wr_csr, write_user_lock)
+      and Target writes. No Requester write.
+  - what: 'Item 5: raw value 1 for DATA_READY and TARGET_STATUS DATA_READY'
+    where: src
+    found: No define of the numeric value 1 found, and no TARGET_STATUS DATA_READY check. Tests use the
+      macro only.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_instantiation/cptra_smoke_test_mcu_mbox_instantiation.c
+    line_start: 146
+    line_end: 148
+    why_not: This is an invalid-user TARGET_STATUS write, not a Requester write while a Target is granted.
+  items:
+  - id: cr_e6ab34aa5d38
+    outcome: verified
+    reason: No test has a Target that never terminates.
+    evidence:
+    - 3
+  - id: cr_f8ea4c6013a2
+    outcome: inconclusive
+    reason: SRAM_OWNER is referenced in several test files and I did not examine them in depth.
+    evidence: []
+  - id: cr_3d3f6dbf8fc3
+    outcome: withdrawn
+    reason: The valid, granted Target attempts a CMD_STATUS write, and the test checks both from the Caliptra
+      uC and from MCU that it had no effect.
+    evidence:
+    - 0
+    - 1
+    - 2
+  - id: cr_62191b6deb64
+    outcome: verified
+    reason: I found no Requester write to TARGET_STATUS while a Target is granted.
+    evidence: []
+  - id: cr_dabb81499101
+    outcome: verified
+    reason: I found no TARGET_STATUS DATA_READY check and no raw numeric value 1 check.
+    evidence: []
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 17
+cost_usd: 0.1462842
+error: null

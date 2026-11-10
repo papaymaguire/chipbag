@@ -1,0 +1,10 @@
+{"t": "2026-11-10T22:08:12Z", "event": "  \u2192 Grep: racl|intr_test|INTR_TEST"}
+{"t": "2026-11-10T22:08:14Z", "event": "  \u2192 Grep: racl|intr_test"}
+{"t": "2026-11-10T22:08:16Z", "event": "  \u2192 Grep: prescaler_qe|intr_test_qe"}
+{"t": "2026-11-10T22:08:18Z", "event": "  \u2192 Grep: prescaler\\.qe|prescaler_qe|wkup_ctrl\\.prescaler"}
+{"t": "2026-11-10T22:08:26Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T22:08:30Z", "event": "Fixing the rejected submission: I'm adding real refutes evidence for the intr_test items and removing the placeholder."}
+{"t": "2026-11-10T22:08:31Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv"}
+{"t": "2026-11-10T22:08:38Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T22:08:41Z", "event": "I submitted the verdict as inconclusive overall, with a different outcome for each item.\n\n- **RACL policy selection (cr_d3bb7e9459e0): verified as untested.** The testbench ties `racl_policies` to 0 in `dv/tb.sv`, and I found no RACL test.\n- **WKUP_CTRL.prescaler hwqe (cr_7352e4c71220): inconclusive.** The core resets the prescale counter on the write pulse. The prescaler vseq and the scoreboard exercise that path, but I did not trace a check aimed at the pulse itself.\n- **INTR_TEST hwext and hwqe (cr_413a62fd4916, cr_a7c7c80abce3, cr_b2ba11feb55d): withdrawn.** The scoreboard predicts `intr_state` from `intr_test` writes, and the sim config includes the generic `intr_test.hjson` test. A wrong hwext or hwqe would fail those checks.\n\nMy first submission was rejected because it cited a placeholder file and left the INTR_TEST items without refuting evidence. I corrected both and the second was accepted."}
+{"t": "2026-11-10T22:08:41Z", "event": "[8 turns, $0.0715]"}

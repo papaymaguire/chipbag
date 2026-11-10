@@ -1,0 +1,197 @@
+topic: MCI mailbox
+repo_root: targets/caliptra-ss
+repo_commit: 69a8afa1eeb8bc80ed8726da74798273c862c00b
+generated_at: '2026-11-10T14:29:44Z'
+model: claude-sonnet-5-5
+confirmed: false
+sources:
+- path: docs/CaliptraSSHardwareSpecification.md
+  role: spec
+  scope:
+    kind: sections
+    sections:
+    - '*MCU Mailbox*'
+  reason: 'MCU mailbox architecture: locking, target user, SRAM ownership, status, clearing, interrupts,
+    errors, address map'
+  units: 12
+  sha256: f0de0a3aa6896c9eb5c833c8023b6b70a5432f042e620fbc464528211a8c5f3e
+- path: docs/CaliptraSSIntegrationSpecification.md
+  role: spec
+  scope:
+    kind: sections
+    sections:
+    - '*MCU MBOX SRAM Sizing Requirements*'
+    - '*MCU Mailbox*'
+  reason: 'MCU mailbox integration requirements: SRAM sizing, trusted AXI users, DLEN'
+  units: 8
+  sha256: 0ac77c6718a6e216ac225df0b1e62f19c336af2280f4790b869f21b9f80f1eb2
+- path: src/mci/rtl/mcu_mbox_csr.rdl
+  role: spec
+  scope:
+    kind: whole_file
+  reason: RDL register definitions for MCU mailbox CSRs
+  units: 1
+  sha256: 2648967847b2ce9b419f8ce579ea2516d9c4e19057e6f8a1788433180f943409
+- path: src/integration/stimulus/testsuites/caliptra_ss_master_test_list.csv
+  role: verification
+  scope:
+    kind: rows
+    contains:
+    - mbox
+  reason: Master test list rows for MCU/MCI mailbox tests
+  units: 31
+  sha256: dd23c5168c3f4a47b91defc0cb38917176f907910483fde0deec63b83dad1bcb
+- path: src/integration/test_suites/mcu_mbox_lock_return_one_during_zeroize/mcu_mbox_lock_return_one_during_zeroize.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox lock during zeroize test
+  units: 1
+  sha256: 643d13a4c107c30603593364b3b1602122851e4f729b28c756d5ac0413e02f61
+- path: src/integration/test_suites/mcu_mbox_rand_rdwr/mcu_mbox_rand_rdwr.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: random mbox read/write test
+  units: 1
+  sha256: 0a593a4eeb5f97bd6378db6a23adfa2523b2c274c57757733c718e930b9af684
+- path: src/integration/test_suites/smoke_test_mbox_csr_zeros_after_release/smoke_test_mbox_csr_zeros_after_release.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox CSR zero after release test
+  units: 1
+  sha256: d9d9355c4f9238cf20f588101d74e0121e1fa28d193633404864756d2237d034
+- path: src/integration/test_suites/smoke_test_mcu_mbox/cptra_ss_mcu_mbox_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Caliptra-side MCU mailbox smoke test
+  units: 1
+  sha256: 6e47b4127b3aeaa26d74342ae8c89bfe1f9cc2645fc3b1c32bf23272b8f779d7
+- path: src/integration/test_suites/smoke_test_mcu_mbox/smoke_test_mcu_mbox.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: MCU mailbox smoke test
+  units: 1
+  sha256: 3732486eec552ceabe58ffff719ce9356a3424eb54acbbc4a5530d94c193cbd8
+- path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/smoke_test_mcu_mbox_axi_param.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox AXI param test
+  units: 1
+  sha256: 045d89da93584fef21dd5109cc768463663a2e190d334d6d29086fad76f71cf4
+- path: src/integration/test_suites/smoke_test_mcu_mbox_burst/smoke_test_mcu_mbox_burst.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox burst test
+  units: 1
+  sha256: 0a593a4eeb5f97bd6378db6a23adfa2523b2c274c57757733c718e930b9af684
+- path: src/integration/test_suites/smoke_test_mcu_mbox_csrs_warm_rst/smoke_test_mcu_mbox_csrs_warm_rst.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox CSRs warm reset test
+  units: 1
+  sha256: 11cf42d19d0999404f9f76196dd9f3618749e003d4e2f27bbad14052be7f70e1
+- path: src/integration/test_suites/smoke_test_mcu_mbox_ecc/smoke_test_mcu_mbox_ecc.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox ECC test
+  units: 1
+  sha256: 5ab2259e9891186dc2104d38943cae5604776efcd9090fa4991d066fa86701da
+- path: src/integration/test_suites/smoke_test_mcu_mbox_instantiation/smoke_test_mcu_mbox_instantiation.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox instantiation test
+  units: 1
+  sha256: e1aa6b527b239c5792cc6e45b583ddea036aa6a079244ad4d9457d05b0db9e35
+- path: src/integration/test_suites/smoke_test_mcu_mbox_invalid_axi/smoke_test_mcu_mbox_invalid_axi.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox invalid AXI test
+  units: 1
+  sha256: daa9713d4a9eca22056e47212046a8211ab49d2d2f4f946912a3d512cddb2e35
+- path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/smoke_test_mcu_mbox_pass_data.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox pass data test
+  units: 1
+  sha256: 2e4c43341585a0567c1dacdabe47e2a261763fa23387f1f7ccc5cd54906aa687
+- path: src/integration/test_suites/smoke_test_mcu_mbox_strb_wr_csr/smoke_test_mcu_mbox_strb_wr_csr.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox strobe write CSR test
+  units: 1
+  sha256: bd70a43f3558921f980478068de2142858000ca6ace1aa6b8622459a32f16457
+- path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox target user test
+  units: 1
+  sha256: 48a5c594b491a833f14e8c0e8655b519f719acb0093b96cbacea6358dd04808f
+- path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/smoke_test_mcu_mbox_usr_lock_out_zero.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox user lock out zero test
+  units: 1
+  sha256: af1a30c7ebfaf90a2bd97d77216a8100e0d729fc54c7b49516b47dd6a75f9ad1
+- path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox valid user test
+  units: 1
+  sha256: abf2c71ba1ff052a8cd8add73c3ec9e5afd48be546fe069f0a88083010240c16
+- path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox write user lock test
+  units: 1
+  sha256: 79003733c16ab54dc89feb57d7d446667e73412f5f0d60d559afa59c9b7d989c
+- path: src/integration/test_suites/smoke_test_mcu_mbox_zeroize/smoke_test_mcu_mbox_zeroize.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: mbox zeroize test
+  units: 1
+  sha256: 94ffbde80a5e6595b80b974b3d309ec7917917cd9a79391787545fa559dabd6f
+- path: src/integration/testbench/sv_tests/mci/mci_mbox_dlen_wrap.svh
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SV test of mailbox DLEN wrap
+  units: 1
+  sha256: e87c629677d14bf7fa0a031508c66032ddae3a051638691f374e725a3b099539
+- path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SV test of mailbox ownership flow
+  units: 1
+  sha256: dc1df63e8390aff03a492313b2a83d6bc9d316d0541cccf1805343cbc57c6db4
+- path: src/integration/testbench/sv_tests/mci/mcu_mbox_soc_agent_write_fw_image.svh
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SV test of SoC agent writing FW image via MCU mailbox
+  units: 1
+  sha256: 41800ad601c031e458d6144fa2ad9b0b15309209f81f746ee7fb3c0464690f56
+excluded_notable:
+- path: src/mci/rtl/mcu_mbox.sv
+  reason: RTL implementation
+- path: src/mci/rtl/mcu_mbox_csr.h
+  reason: generated
+incomplete: false
+notes: null

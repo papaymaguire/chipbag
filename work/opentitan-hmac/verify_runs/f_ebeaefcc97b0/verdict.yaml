@@ -1,0 +1,77 @@
+finding_hash: 6e70458e7157bf4b
+started_at: '2026-11-10T20:54:15Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Searched hmac DV for wipe_secret, key-write and sideload handling. The wipe only checks digest
+    corruption. The scoreboard ignores a key write while hashing and expects an error, but I found no
+    explicit key-unchanged check. I found no test that writes KEY registers under sideload, writes the
+    key in non-idle states other than in-process, or checks a DIGEST write while idle. Item 2 is the weakest:
+    the scoreboard keeps the old key, so the digest compare could implicitly cover it, but the sequence
+    doing the key write was not located.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 322
+    line_end: 328
+    quote: "if (hmac_start) begin\n            if (cfg.en_cov) cov.wr_key_during_hash_cg.sample(1);\n\
+      \            update_err_intr_code(SwUpdateSecretKeyInProcess);\n            return;\n          end\n\
+      \n          key[key_idx] = item.a_data;"
+    role: context
+    note: Scoreboard models rejected in-process key write (error) and keeps old key; only the in-process
+      case is handled.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 330
+    line_end: 332
+    quote: "\"wipe_secret\": begin\n          // Do nothing"
+    role: supports
+    note: Scoreboard does not model wipe of key/state; only the digest-mismatch check applies.
+  searches:
+  - what: wipe_secret usage in DV
+    where: hw/ip/hmac/dv
+    found: Only digest-corruption check in the scoreboard (wipe_secret_triggered); no key/state/schedule
+      checks.
+  - what: key write handling and SwUpdateSecretKeyInProcess
+    where: hw/ip/hmac
+    found: Scoreboard models the error for in-process key writes only; no other non-idle states.
+  - what: sideload with key register writes
+    where: hw/ip/hmac/dv
+    found: Sideload agent exists; no sequence found writing KEY registers while sideloaded.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 316
+    line_end: 329
+    why_not: Key write during hash is modelled with error and the old key retained, but I found no explicit
+      key-unchanged check, and other non-idle states are not covered.
+  items:
+  - id: cr_b8debfc7325d
+    outcome: verified
+    reason: Only digest corruption is checked; the scoreboard does nothing for wipe_secret.
+    evidence:
+    - 1
+  - id: cr_00446a3b2658
+    outcome: inconclusive
+    reason: The scoreboard retains the old key and the digest is probably compared with it, so the item
+      is plausibly covered implicitly. I did not read the sequence that performs the write.
+    evidence:
+    - 0
+  - id: cr_67bea9a867f4
+    outcome: verified
+    reason: No sequence found that writes KEY registers while a key is sideloaded.
+    evidence: []
+  - id: cr_781c9e811c5e
+    outcome: verified
+    reason: The scoreboard handles only the in-process case (hmac_start); other non-idle states are not
+      covered.
+    evidence:
+    - 0
+  - id: cr_98ab14b5706d
+    outcome: verified
+    reason: No test found that writes a different DIGEST value while idle and checks that it takes effect.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0768282
+error: null

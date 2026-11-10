@@ -1,0 +1,78 @@
+finding_hash: 109a708af5cf09ac
+started_at: '2026-11-10T19:41:56Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Two of the four items are not verified by any test: the 240-cycle HMAC overhead and the 20%
+    SHA-2 256 throughput. The other two are covered by the scoreboard and random-address stimulus, so
+    I withdrew them. The scoreboard comment at line 414 says a future throughput test should check the
+    accurate cycles.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 631
+    line_end: 634
+    quote: "// if fifo full, tlul will not write next data until fifo has space again\n      if ((hmac_wr_cnt\
+      \ - hmac_rd_cnt) == HMAC_MSG_FIFO_DEPTH_WR) begin\n        wait((hmac_wr_cnt - hmac_rd_cnt) < HMAC_MSG_FIFO_DEPTH_WR);"
+    role: refutes
+    note: Scoreboard models the full-FIFO stall and checks the full status and interrupt against the DUT.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 104
+    line_end: 104
+    quote: 'wr_addr inside {[HMAC_MSG_FIFO_BASE : HMAC_MSG_FIFO_LAST_ADDR]};'
+    role: refutes
+    note: Writes go to random addresses across the wide MSG_FIFO window.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 133
+    line_end: 133
+    quote: end else if (!(masked_addr inside {[HMAC_MSG_FIFO_BASE:HMAC_MSG_FIFO_LAST_ADDR]})) begin
+    role: refutes
+    note: Scoreboard checks that every access is within the MSG_FIFO window, with a fatal error otherwise.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 414
+    line_end: 414
+    quote: // future throughput test should check the accurate cycles
+    role: supports
+    note: Throughput and cycle counts are explicitly not checked.
+  searches:
+  - what: fifo full, msg_fifo, and cycle-count checks
+    where: hw/ip/hmac/dv
+    found: The full stall and the address range are modelled and checked. The key-processing cycle constants
+      are used only for waits and as a model delay, with no check of the 240-cycle total or the throughput.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 220
+    line_end: 226
+    why_not: Key process cycles are used only as a wait delay, not as a check of the 240-cycle overhead.
+  items:
+  - id: cr_c8b49e8b7b1f
+    outcome: withdrawn
+    reason: The scoreboard models the stall when the FIFO is full and checks the full status and interrupt,
+      so a DUT that accepted more data would fail.
+    evidence:
+    - 0
+  - id: cr_ed89d1bd86c3
+    outcome: verified
+    reason: No test checks the 240-cycle total. The scoreboard only models the 80-cycle key padding delay,
+      and the cycle constants are used for waits.
+    evidence:
+    - 3
+  - id: cr_f6528a1e1fc7
+    outcome: verified
+    reason: The scoreboard comment says a future throughput test should check the accurate cycles, so
+      no such test exists.
+    evidence:
+    - 3
+  - id: cr_4be360be4489
+    outcome: withdrawn
+    reason: Writes go to random addresses across the MSG_FIFO window, and the scoreboard flags any access
+      outside it as fatal.
+    evidence:
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0693056
+error: null

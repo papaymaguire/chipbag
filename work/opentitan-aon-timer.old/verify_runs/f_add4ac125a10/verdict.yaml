@@ -1,0 +1,48 @@
+finding_hash: 35ade83ff5cc2a95
+started_at: '2026-11-10T22:06:08Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'The ISR for an AON timer interrupt only calls LOG_ERROR and returns true. It never fails the
+    test, so the plan''s "fail the test in the interrupt handler" is not implemented. The reset-reason
+    check does exist, but a wdog bite would also produce a wrong reset reason. A bark alone is not enforced.
+    The finding is low severity: an unhandled, uncleared bark would likely cause a hang or timeout, and
+    a later bite would be caught by the reset-reason CHECK.'
+  evidence:
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    line_start: 87
+    line_end: 90
+    quote: "LOG_ERROR(\"Unexpected aon timer interrupt %d\", irq);\n    return true;"
+    role: supports
+    note: The bark IRQ handler only logs and returns true. There is no CHECK or failure.
+  - path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+    line_start: 122
+    line_end: 123
+    quote: Start the escalation process and fail the test in the interrupt handler in case the
+    role: supports
+    note: The plan requires the test to fail in the interrupt handler.
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    line_start: 276
+    line_end: 278
+    quote: "CHECK(rst_info == kDifRstmgrResetInfoPor ||\n            rst_info == kDifRstmgrResetInfoEscalation,"
+    role: context
+    note: The reset reason is checked, which partly covers the plan's second claim.
+  searches:
+  - what: Read the full test source and the plan item
+    where: sw/device/tests/aon_timer_wdog_lc_escalate_test.c, chip_aon_timer_testplan.hjson
+    found: The plan item is explicitly linked to this test via bazel and tests fields. The AON ISR only
+      logs.
+  near_misses:
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    line_start: 276
+    line_end: 290
+    why_not: The reset-reason check fails the test on a wdog reset, but it does not detect a bark IRQ
+      that fires without a bite.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.044735899999999995
+error: null

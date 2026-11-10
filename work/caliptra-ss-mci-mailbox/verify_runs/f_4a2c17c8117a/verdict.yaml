@@ -1,0 +1,46 @@
+finding_hash: def5303100c3dc14
+started_at: '2026-11-10T19:42:21Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks that CMD_FAILURE means a command failure. mci_mbox_ownership_flow writes CMD_FAILURE
+    as the terminal CMD_STATUS. Its checks cover only SRAM ownership and the notification, never the status
+    value or any behaviour specific to CMD_FAILURE. The smoke tests write CMD_FAILURE only as a user write
+    that is expected to be ignored.
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 138
+    line_end: 139
+    quote: "mcu_mbox_write(mci_comm_flow_cmd_status_addr, mci_comm_flow_root, status);\n    mci_comm_flow_check_phase(\"\
+      requester-owns-response\", MCU_MBOX_OWNER_REQUESTER);"
+    role: supports
+    note: CMD_FAILURE is only written as the terminal status. The check that follows is on ownership,
+      not on the status value or any failure semantics.
+  searches:
+  - what: CMD_FAILURE across the repo
+    where: whole repo
+    found: Only mci_mbox_ownership_flow.svh, two smoke tests, the lib header, the RDL and the generated
+      package
+  - what: Read the ownership-flow transaction and the smoke test use
+    where: mci_mbox_ownership_flow.svh, smoke_test_mcu_mbox_valid_user
+    found: The ownership flow checks ownership only. The smoke test writes CMD_FAILURE as a user write
+      that must be ignored, so it does not test the CMD_FAILURE semantics.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/cptra_smoke_test_mcu_mbox_valid_user.c
+    line_start: 169
+    line_end: 180
+    why_not: Checks that a user cannot write CMD_STATUS. It does not check the CMD_FAILURE meaning.
+  items:
+  - id: cr_e44c4e0735c0
+    outcome: verified
+    reason: CMD_FAILURE is exercised as stimulus only. No check reads it back or checks behaviour specific
+      to the failure status.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 7
+cost_usd: 0.0634493
+error: null

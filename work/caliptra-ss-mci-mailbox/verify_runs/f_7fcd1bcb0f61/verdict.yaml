@@ -1,0 +1,66 @@
+finding_hash: 0a22bc558a18697f
+started_at: '2026-11-10T20:36:37Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I searched only the MCU mailbox test suites, and only for CMD_STATUS and TARGET_STATUS. One
+    item (only MCU writes CMD_STATUS) is covered by the target-user test, so I withdrew it. The other
+    four I did not search for individually, so I marked them inconclusive. The finding stands overall
+    because most of the items are unrefuted.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c
+    line_start: 171
+    line_end: 171
+    quote: 'VPRINTF(LOW, "CALIPTRA: Attempting MBOX%x CMD_STATUS write: 0x%x\n", mbox_num, mbox_wr_data);'
+    role: refutes
+    note: The Target user attempts a CMD_STATUS write, and the test then checks the value was not changed
+      (fatal if it was). This covers the gap for cr_3d3f6dbf8fc3.
+  searches:
+  - what: CMD_STATUS write attempts by the Target and a check that the value is unchanged
+    where: src/integration/test_suites/smoke_test_mcu_mbox_target_user
+    found: The Target attempts a CMD_STATUS write and the test checks it did not change.
+  - what: 'cr_9ac8672befb2: non-owner writes to DLEN, CMD and EXECUTE'
+    where: src/integration/test_suites
+    found: Not searched in depth.
+  - what: 'cr_c967c84789bf: owner register read during release or zeroize'
+    where: src/integration/test_suites
+    found: Not searched in depth.
+  - what: 'cr_e6ab34aa5d38: Target that never finishes, recovery by MCI reset'
+    where: src/integration/test_suites
+    found: Not searched in depth.
+  - what: 'cr_32bf7a8b6e0d: TARGET_STATUS literal value 2'
+    where: src/integration/test_suites
+    found: The target-user test uses the symbolic MCU_MBOX_TARGET_STATUS_COMPLETE macro. I found no literal-value
+      check.
+  near_misses: []
+  items:
+  - id: cr_9ac8672befb2
+    outcome: inconclusive
+    reason: I did not search for this item in depth.
+    evidence: []
+  - id: cr_c967c84789bf
+    outcome: inconclusive
+    reason: I did not search for this item in depth.
+    evidence: []
+  - id: cr_e6ab34aa5d38
+    outcome: inconclusive
+    reason: I did not search for this item in depth.
+    evidence: []
+  - id: cr_32bf7a8b6e0d
+    outcome: inconclusive
+    reason: I did not search for this item in depth. The target-user test uses a symbolic macro, so a
+      literal-value check is not shown.
+    evidence: []
+  - id: cr_3d3f6dbf8fc3
+    outcome: withdrawn
+    reason: The target-user test has the Target attempt a CMD_STATUS write and checks the value is unchanged.
+      This covers the missing Target case.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 5
+cost_usd: 0.0638314
+error: null

@@ -1,0 +1,89 @@
+finding_hash: 23ceb80ceee17ecd
+started_at: '2026-11-10T20:56:37Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The finding stands for items 2 and 3, and I withdrew items 1 and 4. The scoreboard compares
+    the DUT digest against a C-model HMAC computed with the configured key_length. This covers 1024-bit
+    keys and key-length-dependent key use, and it fails the test on a mismatch. For hash_stop, the scoreboard
+    has no digest comparison. The only check on hmac_done after hash_stop is the sequences' wait for it
+    to be set. I did not read the sar_* sequences themselves, so I could not confirm whether their wait
+    would time out if the interrupt never came.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 497
+    line_end: 498
+    quote: '`DV_CHECK_EQ(real_digest_val, exp_digest[digest_idx])'
+    role: refutes
+    note: Digest read from the DUT is compared with the expected digest. exp_digest comes from predict_digest,
+      which uses the configured key_length (Key_1024 included), so a wrong key length would fail the test.
+      Reached by the smoke and test-vector sequences.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 885
+    line_end: 885
+    quote: end else if (key_length == Key_1024) begin
+    role: refutes
+    note: The expected-digest model branches on key_length, including 1024.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 476
+    line_end: 484
+    quote: // compare digest. Only the final digest will be compared in case of S&R, this is enough
+    role: supports
+    note: Digest comparison is skipped (`if (!hmac_stopped)`) after hash_stop, so the digest after hash_stop
+      is never compared. The code carries a TODO for this.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 413
+    line_end: 417
+    quote: if (sha_en && (hmac_process || hmac_stopped)) begin
+    role: supports
+    note: hmac_done is only predicted after it is observed set. A missing done interrupt is not flagged
+      by the scoreboard; the only catch is the sequences' wait for it timing out.
+  searches:
+  - what: key_length, 1024 and hash_stop in the hmac dv directory
+    where: hw/ip/hmac/dv
+    found: The scoreboard feeds key_length to the DPI HMAC model and compares digests. The sequences randomise
+      key_length with 1024 included (key_length_c). cfg_cg covers it.
+  - what: digest comparison after hash_stop
+    where: hmac_scoreboard.sv
+    found: Comparison is skipped when hmac_stopped is set, and a TODO (#23240) notes the missing intermediate-digest
+      model.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 405
+    line_end: 420
+    why_not: Only checks that hmac_done is not spuriously expected. It does not check that hmac_done is
+      set after hash_stop.
+  items:
+  - id: cr_df02d4db8163
+    outcome: withdrawn
+    reason: The scoreboard computes an HMAC with a 1024-bit key via the DPI model and compares it with
+      the DUT digest. Randomised and test-vector sequences use Key_1024 with SHA-384/512.
+    evidence:
+    - 0
+    - 1
+  - id: cr_302cc8a11faa
+    outcome: verified
+    reason: There is no explicit check that hmac_done is set after hash_stop. The scoreboard only predicts
+      it from the observed value, and the sar_* sequences only wait for it.
+    evidence:
+    - 3
+  - id: cr_ef5931e3a47f
+    outcome: verified
+    reason: The scoreboard skips digest comparison when hmac_stopped is set. The intermediate digest after
+      hash_stop is never checked.
+    evidence:
+    - 2
+  - id: cr_37e3fb4dd09b
+    outcome: withdrawn
+    reason: The expected digest is computed with the configured key_length, and the scoreboard compares
+      it with the DUT digest. A wrong number of relevant key registers would fail the test.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.09703810000000002
+error: null

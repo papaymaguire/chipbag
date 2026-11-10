@@ -1,0 +1,42 @@
+finding_hash: 74cd5a4e59f2e920
+started_at: '2026-11-10T20:52:36Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No spec text defines the exact conditions under which hmac_idle reads 1. The docs only say
+    writes to DIGEST and MSG_LENGTH are allowed when idle, and that polling hmac_idle can replace waiting
+    for hmac_done after hash_process. Neither answers the FIFO, hash_stop or latency questions.
+  evidence:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 170
+    line_end: 170
+    quote: waiting for the `hmac_done` interrupt / status bit (or polling on the `STATUS.hmac_idle` bit)
+      to indicate the ongoing operation has completed
+    role: context
+    note: Implies idle after hash_process completion, but doesn't define the conditions or latency.
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 418
+    line_end: 418
+    quote: When IDLE, the `DIGEST` and the `MSG_LENGTH_LOWER`/`MSG_LENGTH_UPPER` can be written to from
+      SW
+    role: supports
+    note: Only states the consequence of idle, not its definition.
+  searches:
+  - what: idle mentions in hmac docs and hjson
+    where: hw/ip/hmac
+    found: Only the register description, the programmer's guide polling note, and a sideload-abort note
+      that says the core returns to idle. No definition of idle conditions.
+  near_misses:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 156
+    line_end: 156
+    why_not: Says the core returns to idle after a sideload-key abort. It doesn't define hmac_idle for
+      the FIFO, hash_stop or latency cases.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0302677
+error: null

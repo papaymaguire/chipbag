@@ -1,0 +1,107 @@
+finding_hash: 990d3b5f431a185c
+started_at: '2026-11-10T19:47:42Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that fills any of the five gaps. No test has Root write TARGET_USER_VALID while
+    it is 1, and none checks that TARGET_USER and TARGET_USER_VALID become writable again after hardware
+    clears them. The write-enable checks that exist are limited to TARGET_USER and to non-Root writers.
+    An owner EXECUTE write is not checked directly either.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 144
+    line_end: 149
+    quote: "mcu_mbox_write_target_user_valid(mbox_num, 1);\n    if (mcu_mbox_read_target_user_valid(mbox_num)\
+      \ != 1) {"
+    role: context
+    note: Root sets valid while it is 0. It never writes valid again while 1.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 177
+    line_end: 179
+    quote: "mcu_mbox_clear_execute(mbox_num);\n    if (mcu_mbox_read_execute(mbox_num) != 1) {"
+    role: context
+    note: This checks the Root (non-owner) EXECUTE write is dropped. It does not check an owner EXECUTE
+      write.
+  - path: src/integration/test_suites/smoke_test_mbox_csr_zeros_after_release/smoke_test_mbox_csr_zeros_after_release.c
+    line_start: 122
+    line_end: 126
+    quote: if(lsu_read_32(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_TARGET_USER_VALID + MCU_MBOX_NUM_STRIDE * mbox_num)
+      != 0) {
+    role: context
+    note: This checks the hardware clear on release. It does not then write the registers to confirm they
+      are unlocked.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 190
+    line_end: 191
+    quote: "// TARGET_USER_VALID stays 0 so Root keeps ownership when EXECUTE is set.\n    mcu_mbox_set_execute(mbox_num);"
+    role: context
+    note: The owner sets EXECUTE here with no direct readback check. It is only implicitly exercised.
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 81
+    line_end: 81
+    quote: field {sw=rw; hw=r; hwclr; precedence=hw; swwe=target_cfg_write_en; swmod=true;} valid=0;
+    role: context
+    note: The write-enable on the valid field that the gap is about.
+  searches:
+  - what: Tests that write TARGET_USER_VALID or TARGET_USER
+    where: src/integration (C tests, svh)
+    found: Root writes valid only when it is 0. No test has Root write valid while it is 1. The strb_wr_csr
+      test (per the finding) only tries TARGET_USER, not valid.
+  - what: Writes after the hardware clear, to show the registers are unlocked again
+    where: smoke_test_mbox_csr_zeros_after_release and the other tests
+    found: The tests check that the registers read 0 after release. None writes them afterwards.
+  - what: Owner EXECUTE set or clear with a check
+    where: target_user, ownership_flow and zeros_after_release tests
+    found: Only an implicit use of EXECUTE in the owner flows. Non-owner EXECUTE drops are checked.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mbox_csr_zeros_after_release/smoke_test_mbox_csr_zeros_after_release.c
+    line_start: 101
+    line_end: 126
+    why_not: The owner EXECUTE=0 clear and the hardware clear are exercised, but no write is made afterwards
+      to show TARGET_USER and TARGET_USER_VALID are writable again.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 250
+    line_end: 256
+    why_not: It checks the hardware clears valid on terminal status, but does not check that the earlier
+      lock held against Root writes.
+  items:
+  - id: cr_9d0cf674096c
+    outcome: verified
+    reason: No test has Root write TARGET_USER_VALID while it is set, or checks that writes are re-enabled
+      after the clear.
+    evidence:
+    - 0
+    - 4
+  - id: cr_bb86bcb9095e
+    outcome: verified
+    reason: No test checks an owner EXECUTE write taking effect. The tests only check the non-owner EXECUTE
+      write is dropped, and the owner set is not read back.
+    evidence:
+    - 1
+    - 3
+  - id: cr_618052e4c5dd
+    outcome: verified
+    reason: No test has Root write either target configuration register while valid is 1.
+    evidence:
+    - 0
+    - 2
+  - id: cr_e41c800a8617
+    outcome: verified
+    reason: No test has Root write TARGET_USER while valid is 1.
+    evidence:
+    - 0
+    - 4
+  - id: cr_465defb96dea
+    outcome: verified
+    reason: No test checks that valid stays locked at 1, or that both registers unlock after the hardware
+      clear.
+    evidence:
+    - 0
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.114205
+error: null

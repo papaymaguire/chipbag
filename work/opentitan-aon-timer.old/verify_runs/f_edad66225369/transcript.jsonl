@@ -1,0 +1,6 @@
+{"t": "2026-11-10T22:08:39Z", "event": "  \u2192 Grep: sleep_mode|racl_error"}
+{"t": "2026-11-10T22:08:39Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/doc/interfaces.md"}
+{"t": "2026-11-10T22:08:41Z", "event": "  \u2192 Grep: sleep_mode|racl_error"}
+{"t": "2026-11-10T22:08:49Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T22:08:52Z", "event": "I submitted the verdict as verified overall, with a different outcome for each of the five items.\n\n- **`racl_error` (cr_a34add480316):** verified as untested. `hw/ip/aon_timer/dv/tb.sv:62` leaves `racl_error_o` unconnected, so no check can see it. The only other DV hits are coverage exclusions for its toggles, not checks.\n- **`sleep_mode` (cr_b50528f0b75d):** withdrawn. The testbench drives `sleep_mode_i` (`tb.sv:69`) with a randomised initial value. The scoreboard reads the internal `aon_sleep_mode` and models the pause-in-sleep behaviour (`aon_timer_scoreboard.sv:986`).\n- **No bus host interfaces (cr_627c824e7226), no chip IO pins (cr_8d65e39a5db1) and `clk_i` (cr_e4e318bad395):** inconclusive. The first two are structural absences with nothing specific to test. Every test uses `clk_i`, but I found no dedicated check on it."}
+{"t": "2026-11-10T22:08:52Z", "event": "[5 turns, $0.0407]"}

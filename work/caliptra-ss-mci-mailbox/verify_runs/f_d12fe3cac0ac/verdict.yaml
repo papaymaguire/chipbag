@@ -1,0 +1,91 @@
+finding_hash: 6cb868716c374f5b
+started_at: '2026-11-10T20:42:35Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks any of the 5 lock behaviours. Existing code only programs VALID_AXI_USER
+    and then sets LOCK as setup. Register-list tables in mci.c only list the registers. Nothing writes
+    after lock and checks the value is unchanged, writes LOCK after it is set, or uses an unlocked slot
+    as a negative case.
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_common_tasks.svh
+    line_start: 419
+    line_end: 429
+    quote: // Program valid-user slots 0..N-1 of the mailbox with `users`. Each slot is locked, since
+      HW ignores unlocked slots.
+    role: context
+    note: Lock is used only as setup; always lock after write, no write-after-lock check and no unlocked-slot
+      negative test.
+  - path: src/integration/testbench/sv_tests/mci/mcu_mbox_soc_agent_write_fw_image.svh
+    line_start: 104
+    line_end: 107
+    quote: '        if (rd_data == 1) begin'
+    role: context
+    note: Only polls that LOCK reads 1; does not test read-only-after-lock or VALID write blocking.
+  - path: src/integration/test_suites/libs/caliptra_ss_lib/caliptra_ss_lib.c
+    line_start: 507
+    line_end: 507
+    quote: '    lsu_write_32(SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_0 + MCU_MBOX_AXI_CFG_STRIDE*mbox_num,
+      MCI_REG_MBOX0_AXI_USER_LOCK_0_LOCK_MASK);'
+    role: context
+    note: Setup write that sets the lock; no post-lock write attempt or readback check.
+  searches:
+  - what: 'cr_0b9bfdf42da6: writes to LOCK after set (swwel), expecting ignore'
+    where: src/integration test_suites, testbench, libs
+    found: Only single setup writes of LOCK; no second write or check
+  - what: 'cr_24d6af90a638: use of unlocked VALID_AXI_USER slot as negative test; grep unlocked/ignored'
+    where: src/integration .sv/.svh/.c
+    found: nothing relevant; only comment in mci_common_tasks.svh
+  - what: 'cr_43669ff8e969: readback of LOCK / write-after-lock check'
+    where: mcu_mbox_soc_agent_write_fw_image.svh, smoke_test_mcu_hitless.c
+    found: Only polls LOCK==1 and reads it; no write-after-lock check
+  - what: 'cr_b4c4fa8cc446: per-bit lock to slot association tests'
+    where: mci_common_tasks.svh, caliptra_ss_lib.c
+    found: Address helpers and setup writes only; no check
+  - what: 'cr_8429ea5b7749: write VALID_AXI_USER after lock and check unchanged (MBOX1 too)'
+    where: src/integration, mci.c register tables
+    found: mci.c lists registers only; no post-lock write check
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 1915
+    line_end: 1933
+    why_not: Register mask table entries for generic register tests; they do not exercise write-after-lock
+      behaviour.
+  - path: src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c
+    line_start: 41
+    line_end: 42
+    why_not: Reads LOCK_4 and VALID_4 for hitless data, no check of lock semantics.
+  items:
+  - id: cr_0b9bfdf42da6
+    outcome: verified
+    reason: No test writes LOCK after it is set and checks the write is ignored.
+    evidence:
+    - 2
+  - id: cr_24d6af90a638
+    outcome: verified
+    reason: Tests always lock slots before use; no test uses an unlocked slot as a negative case.
+    evidence:
+    - 0
+  - id: cr_43669ff8e969
+    outcome: verified
+    reason: The lock is only set and read back, with no write-after-lock check.
+    evidence:
+    - 1
+  - id: cr_b4c4fa8cc446
+    outcome: verified
+    reason: The per-bit lock-to-slot association is only exercised as setup, with no check of locking
+      behaviour.
+    evidence:
+    - 0
+  - id: cr_8429ea5b7749
+    outcome: verified
+    reason: No test writes VALID_AXI_USER after lock and checks the value is unchanged.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 13
+cost_usd: 0.15773140000000002
+error: null

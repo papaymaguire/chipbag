@@ -1,0 +1,81 @@
+finding_hash: 9efeced75ae009d9
+started_at: '2026-11-10T22:07:41Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: 'Item 1 is not "planned only": the chip_sw_aon_timer_wdog_lc_escalate test is in the sim cfg
+    and the SW test exists with checks. Item 2 has no dedicated check that a WKUP_CTRL write resets the
+    prescaler count. The scoreboard does model a count reset on update, but I could not confirm it ties
+    to WKUP_CTRL writes or is precise enough to fail on a wrong reset.'
+  evidence:
+  - path: hw/top_earlgrey/dv/chip_sim_cfg.hjson
+    line_start: 1250
+    line_end: 1252
+    quote: "name: chip_sw_aon_timer_wdog_lc_escalate\n      uvm_test_seq: chip_sw_base_vseq\n      sw_images:\
+      \ [\"//sw/device/tests:aon_timer_wdog_lc_escalate_test:1:new_rules\"]"
+    role: refutes
+    note: Test is implemented and in the regression, not just planned.
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    line_start: 86
+    line_end: 88
+    quote: // We should not get aon timer interrupts since escalation suppresses them.
+    role: refutes
+    note: The ISR flags any aon timer interrupt as an error, so a watchdog that stays enabled fails the
+      test.
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    line_start: 239
+    line_end: 240
+    quote: // This should never run since escalation turns the CPU off.
+    role: context
+    note: The test also checks that the reset is caused by the escalation.
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 1018
+    line_end: 1019
+    quote: // reset the cycle counter when we update the cycle count needed
+    role: context
+    note: The scoreboard models a count reset on update, but it is unclear that it is specific to WKUP_CTRL
+      writes.
+  - path: hw/ip/aon_timer/rtl/aon_timer_core.sv
+    line_start: 49
+    line_end: 49
+    quote: end else if (reg2hw_i.wkup_ctrl.prescaler.qe) begin
+    role: context
+    note: RTL resets the prescaler count on a write to the prescaler field.
+  searches:
+  - what: LC escalate watchdog test
+    where: hw/top_earlgrey, sw/device/tests
+    found: The test is in chip_sim_cfg.hjson and the SW test has checks.
+  - what: prescaler checks in the IP-level DV
+    where: hw/ip/aon_timer/dv
+    found: prescaler_vseq only randomizes the prescaler. The scoreboard uses prescaler+1 in its timing
+      predictions. No explicit prescaler-reset-on-write check.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+    line_start: 51
+    line_end: 58
+    why_not: It writes the prescaler but does not check any prescaler count reset on write.
+  items:
+  - id: cr_a4b492d0289b
+    outcome: withdrawn
+    reason: The chip-level test chip_sw_aon_timer_wdog_lc_escalate is in the regression and implemented.
+      It fails on an unexpected AON timer interrupt and checks the escalation reset.
+    evidence:
+    - 0
+    - 1
+    - 2
+  - id: cr_346ab297701a
+    outcome: inconclusive
+    reason: No explicit check exists. The scoreboard's count reset and timing prediction might catch a
+      wrong reset, but this is not confirmed.
+    evidence:
+    - 3
+    - 4
+  new_sources:
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    reason: Implements the planned LC escalate watchdog test.
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.082151
+error: null

@@ -1,0 +1,52 @@
+finding_hash: 7e244d3d9fa4764b
+started_at: '2026-11-10T20:44:00Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no generic register test that runs over the MCU mailbox CSR block. mci_reg_rand_test
+    sweeps only the MCI-register-space mailbox valid-user registers (REG_GROUP_MCI_MBOX0/1). Its group
+    list leaves out REG_GROUP_MCU_MBOX0, which holds the mcu_mbox CSRs (CMD, DLEN, EXECUTE, TARGET_STATUS
+    and so on). The cited strobe-write test checks only a subset of registers directly.
+  evidence:
+  - path: src/integration/test_suites/mci_reg_rand_test/mci_reg_rand_test.c
+    line_start: 51
+    line_end: 52
+    quote: "        REG_GROUP_MCI_MBOX0,\n        REG_GROUP_MCI_MBOX1,"
+    role: context
+    note: The generic random register test covers only the MCI-space mailbox AXI-user groups. REG_GROUP_MCU_MBOX0
+      is not in its list.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 271
+    line_end: 272
+    quote: "    // REG_GROUP_MCI_MBOX0\n    {"
+    role: context
+    note: REG_GROUP_MCI_MBOX0 holds only the VALID_AXI_USER registers, not the mcu_mbox CSR block.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_strb_wr_csr/smoke_test_mcu_mbox_strb_wr_csr.c
+    line_start: 93
+    line_end: 93
+    quote: '        if(mcu_mbox_read_cmd(mbox_num) != mask) {'
+    role: supports
+    note: The suite directly checks only a handful of registers (DLEN, CMD, CMD_STATUS, TARGET_STATUS,
+      TARGET_USER). It is not a full per-register sweep.
+  searches:
+  - what: UVM register sequences (reg_hw_reset, bit_bash, reg_access)
+    where: whole repo
+    found: none
+  - what: generic register tests
+    where: src/integration/test_suites
+    found: mci_reg_rand_test, which does not include the REG_GROUP_MCU_MBOX0 group. smoke_test_mcu_mbox_csrs_warm_rst
+      is a separate directed test.
+  near_misses:
+  - path: src/integration/test_suites/mci_reg_rand_test/mci_reg_rand_test.c
+    line_start: 46
+    line_end: 57
+    why_not: It touches mailbox registers, but only the MCI-space AXI-user registers. It does not touch
+      the MCU_MBOX CSR block.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.0842029
+error: null

@@ -1,0 +1,47 @@
+finding_hash: 73c603c8396b1ace
+started_at: '2026-11-10T20:33:51Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The plan rows say the MCU gets the lock and passes data to a SoC agent. In the test the MCU
+    is only the root, and a random SoC user is the requester that acquires the lock. The roles are reversed.
+    Nothing in the repository ties the plan rows to this test by name, so the link is inferred. I found
+    no other test that realizes the plan rows.
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 178
+    line_end: 178
+    quote: // Requester and Target are random trusted SoC users; Root is the MCU.
+    role: supports
+    note: Requester and target are SoC users; the MCU is root.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 196
+    line_end: 197
+    quote: mcu_mbox_release(mbox_num, mci_comm_flow_root);  // Root holds LOCK out of reset
+    role: supports
+    note: The MCU only releases the mailbox as root. The SoC requester acquires the lock on the next line.
+  searches:
+  - what: Plan rows about the MCU getting the lock and passing data to a SoC agent
+    where: docs/Caliptra_Gen2_SS_TestPlan.xlsx
+    found: Rows B137 and B138 match the finding's quote. No test name is given in those rows.
+  - what: Other tests realizing the plan rows (DATA_READY, mcu_mbox)
+    where: src, docs
+    found: Only mci_mbox_ownership_flow.svh uses DATA_READY in the testbench. mcu_mbox_soc_agent_write_fw_image.svh
+      is the only other mailbox test I checked; it uses COMPLETE.
+  near_misses:
+  - path: src/integration/testbench/sv_tests/mci/mcu_mbox_soc_agent_write_fw_image.svh
+    line_start: 16
+    line_end: 20
+    why_not: It is a SoC agent firmware-image write flow that uses COMPLETE. It does not realize the DATA_READY
+      plan row.
+  items: []
+  new_sources: []
+  resolution: Either reword the plan rows to match the test's roles (SoC requester, MCU as root) or add
+    a test where the MCU acquires the lock as requester. The plan rows should also name the test that
+    covers them.
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.0999793
+error: null

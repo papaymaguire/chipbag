@@ -1,0 +1,49 @@
+finding_hash: b1fbb84bbf83f072
+started_at: '2026-11-10T21:01:02Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks the 2MB SRAM range (0x0 to 0x1F_FFFF) of the MCU mailbox. Tests only access
+    low SRAM offsets, and the invalid-AXI test only checks that a non-owner gets errors. The SRAM end
+    address appears only in generated address-map defines, not in any check.
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1545
+    line_end: 1545
+    quote: '| 0x0000_0000      | 0x01F_FFFF*      | MBOX SRAM        | Mailbox SRAM              |'
+    role: supports
+    note: Spec requirement
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_invalid_axi/cptra_smoke_test_mcu_mbox_invalid_axi.c
+    line_start: 101
+    line_end: 101
+    quote: expect_axi_wr_err(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_SRAM_BASE_ADDR + (4*addr) + MCU_MBOX_NUM_STRIDE
+      * mbox_num);
+    role: context
+    note: 'Near miss: checks access errors for unauthorized access, not the range boundary'
+  searches:
+  - what: mbox SRAM usage in test suites
+    where: src/integration/test_suites
+    found: Tests use base offset + small index; none probe the end of the 2MB range or the reserved space
+      beyond configured size
+  - what: 0x1FFFFF / 2MB / SRAM end
+    where: src/integration
+    found: Only generated address map defines
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_invalid_axi/cptra_smoke_test_mcu_mbox_invalid_axi.c
+    line_start: 100
+    line_end: 105
+    why_not: Tests access errors for non-owner, not the address range
+  items:
+  - id: cr_488fae088122
+    outcome: verified
+    reason: No test checks the SRAM address range boundaries.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0431384
+error: null

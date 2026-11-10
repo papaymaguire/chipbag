@@ -1,0 +1,57 @@
+finding_hash: f243e9e431dc7f14
+started_at: '2026-11-10T19:39:55Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The finding says the MCU-holds-lock case is not covered. The smoke_test_mcu_mbox_usr_lock_out_zero
+    test covers it. The MCU acquires the lock and the test checks USER reflects the MCU. The Caliptra
+    side checks that an external requester cannot acquire the lock while the MCU holds it, and that it
+    can acquire it later. I did not find a separate test that exercises every sub-case in the gap, such
+    as another user reading LOCK or USER while the MCU holds the lock.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/smoke_test_mcu_mbox_usr_lock_out_zero.c
+    line_start: 56
+    line_end: 70
+    quote: '    if (!mcu_mbox_acquire_lock(mbox_num, 10000)) {'
+    role: refutes
+    note: MCU acquires the lock and then checks that USER becomes the MCU ID, failing the test otherwise.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/cptra_smoke_test_mcu_mbox_usr_lock_out.c
+    line_start: 308
+    line_end: 309
+    quote: '        if(caliptra_ss_mcu_mbox_acquire_lock(mbox_num, 5)) {'
+    role: refutes
+    note: An external requester (Caliptra) is expected to fail to acquire the lock; the test prints FATAL
+      if it succeeds.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/cptra_smoke_test_mcu_mbox_usr_lock_out.c
+    line_start: 246
+    line_end: 246
+    quote: '        VPRINTF(FATAL, "Mbox%x MBOX USER was changed\n", mbox_num);'
+    role: refutes
+    note: Checks that the external requester cannot change USER while the MCU holds the lock.
+  searches:
+  - what: MBOX_LOCK and USER usage in MCU mailbox tests
+    where: src/integration/test_suites
+    found: The usr_lock_out_zero, valid_user, zeroize and lock_return_one_during_zeroize tests use LOCK
+      and USER. The usr_lock_out_zero test covers the MCU holding the lock, with the Caliptra lockout
+      check.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 1
+    line_end: 1
+    why_not: Only checks that Root writes to LOCK and USER leave them unchanged.
+  items:
+  - id: cr_dd3d4e211825
+    outcome: withdrawn
+    reason: MCU lock acquisition, USER capture and external lockout are checked by usr_lock_out_zero.
+      A separate sub-case, release followed by re-acquire, may not be covered by a dedicated test.
+    evidence:
+    - 0
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.0890834
+error: null

@@ -1,0 +1,12 @@
+{"t": "2026-11-10T21:10:04Z", "event": "  \u2192 Grep: hash_continue|SwInvalidConfig|SW_INVALID_CONFIG"}
+{"t": "2026-11-10T21:10:05Z", "event": "  \u2192 Grep: sideload"}
+{"t": "2026-11-10T21:10:07Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:10:07Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/sw/device/tests/keymgr_dpe_sideload_hmac_test.c"}
+{"t": "2026-11-10T21:10:08Z", "event": "  \u2192 Grep: byte_mask|a_mask|write_byte|wr_size|sub.?word|partial"}
+{"t": "2026-11-10T21:10:11Z", "event": "  \u2192 Grep: write_discard_config|wr_msg|\\[3:0\\] +(mask|be)|csr_wr.*msg|tl_access.*msg|byte_en|\\.mask"}
+{"t": "2026-11-10T21:10:13Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T21:10:16Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/sw/device/tests/keymgr_dpe_sideload_hmac_test.c"}
+{"t": "2026-11-10T21:10:17Z", "event": "Checking the last items, then I'll submit the verdict."}
+{"t": "2026-11-10T21:10:24Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:10:28Z", "event": "I submitted the verdict as verified overall, with three items standing and one withdrawn.\n\n- **cr_d468d703ae52 (sideloaded key length overrides CFG.key_length): stands.** `keymgr_dpe_sideload_hmac_test.c` reads CFG.key_length back as KEY_512, but never programs a different length before the sideloaded run, so the override isn't shown. The HMAC DV env has no sideload stimulus.\n- **cr_6bc711c2b717 (ERR_CODE reports SwInvalidConfig for hash_stop/hash_continue): stands.** Only `CMD.hash_stop` is issued with a sideloaded key; `hash_continue` never is. The SwInvalidConfig handling in `hmac_scoreboard.sv` is for the ordinary invalid-config case, not sideloading.\n- **cr_f3333982706d (both commands rejected with a sideloaded key): stands.** `hash_continue` is untested. The test checks the error interrupt and ERR_CODE after `hash_stop`, but has no separate check that the HMAC state is otherwise unchanged.\n- **cr_061121ce8d53 (prim_packer compacts non-word writes): withdrawn.** `hmac_base_vseq.sv` randomizes the write address and byte mask for each message write (line 358). That produces sub-word and unaligned writes, and the scoreboard digest check would fail on wrong packing.\n\nI read the files and made no changes to the repository."}
+{"t": "2026-11-10T21:10:28Z", "event": "[10 turns, $0.0811]"}

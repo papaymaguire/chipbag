@@ -1,0 +1,76 @@
+finding_hash: 1bdf746ff8da31b3
+started_at: '2026-11-10T19:40:25Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The scoreboard computes expected HMAC digests using the CFG key_swap, key_length and digest_size
+    values through a DPI reference model and compares them with the DUT digest. Randomized smoke and stress
+    sequences drive these fields, so the tests do check the behavior. I read the scoreboard and found
+    the matching sequence code by grep; I did not open the comparison lines (938-1031) or the smoke vseq
+    body. I did not confirm that any test or regression list actually runs these sequences. I also did
+    not find evidence that the key_swap = 1 case is hit (the base vseq randomizes key_swap and the test-vector
+    vseq sets it to 0).
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 861
+    line_end: 862
+    quote: "  // Swap the key when required according to the dedicated register field CFG.key_swap\n \
+      \ if (`gmv(ral.cfg.key_swap)) begin"
+    role: refutes
+    note: The scoreboard model applies key_swap to the key before computing the expected digest.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 876
+    line_end: 879
+    quote: "      if (digest_size == SHA2_256) begin\n        if (key_length == Key_128) begin"
+    role: refutes
+    note: Expected HMAC is computed per digest size and key length, so a wrong DUT result fails the digest
+      comparison.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 114
+    line_end: 115
+    quote: "constraint hmac_base_vseq::key_length_c {\n  $countones(key_length) == 1 dist {"
+    role: supports
+    note: key_length is randomized as one-hot, which supplies the stimulus.
+  searches:
+  - what: key_swap, key_length and digest_size in hmac dv
+    where: hw/ip/hmac/dv
+    found: Randomized in the base vseq. The scoreboard checks the digest against DPI model results using
+      these fields.
+  near_misses: []
+  items:
+  - id: cr_117f04d6cb5e
+    outcome: withdrawn
+    reason: key_length is randomized one-hot and the scoreboard checks the digest per key length.
+    evidence:
+    - 0
+    - 1
+    - 2
+  - id: cr_762d42294038
+    outcome: withdrawn
+    reason: The scoreboard applies key_swap to the key and compares the resulting digest. The base vseq
+      randomizes key_swap.
+    evidence:
+    - 0
+  - id: cr_77c6d3831bb2
+    outcome: withdrawn
+    reason: The Key_128 branch computes the expected HMAC and it is compared against the DUT.
+    evidence:
+    - 1
+  - id: cr_8550a9f5fdd3
+    outcome: withdrawn
+    reason: The Key_256 branch computes the expected HMAC and it is compared against the DUT.
+    evidence:
+    - 1
+  - id: cr_a23c9a9236fe
+    outcome: withdrawn
+    reason: The scoreboard branches on digest_size (SHA-256, 384, 512) to compute the expected digest
+      and compares it.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.07195099999999999
+error: null

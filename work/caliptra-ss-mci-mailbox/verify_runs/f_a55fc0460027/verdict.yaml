@@ -1,0 +1,90 @@
+finding_hash: 31add9b415fff163
+started_at: '2026-11-10T20:36:41Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: All five items stand as partially tested. Two existing tests come close. smoke_test_mcu_mbox_instantiation
+    expects AXI errors when no mailbox is instantiated, which covers the size-0 half of item 1. smoke_test_mcu_mbox_invalid_axi
+    expects errors for an invalid user. Neither covers what is missing. I found no test that checks independence
+    between the two mailboxes. No test references MBOX*_VALID_AXI_USER or AXI_USER_LOCK, and no test checks
+    rejection before the users are configured and locked. DLEN=0 clear is only checked via lock=1. I did
+    not read in detail the target-user tests for item 5, so my search there was a grep only.
+  evidence:
+  - path: src/integration/test_suites/mcu_mbox_lock_return_one_during_zeroize/mcu_mbox_lock_return_one_during_zeroize.c
+    line_start: 69
+    line_end: 69
+    quote: 'VPRINTF(LOW, "MCU: Mbox%x write DLEN: 0x0\n", mbox_num, mbox_dlen);'
+    role: context
+    note: This is the only test that clears EXECUTE with DLEN=0. It checks only that lock reads 1 during
+      zeroize, not that the SRAM is zero.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_instantiation/cptra_smoke_test_mcu_mbox_instantiation.c
+    line_start: 60
+    line_end: 60
+    quote: 'VPRINTF(LOW, "Caliptra: CSR Writes and Read as Valid AXI but no Mbox instantiation\n");'
+    role: context
+    note: This covers the not-instantiated mailbox case, which is part of item 1. It does not cover independence
+      or the limit of 2 mailboxes.
+  searches:
+  - what: DLEN=0 followed by execute clear in the mbox tests
+    where: src/integration/test_suites/*mbox*/*.c
+    found: Only mcu_mbox_lock_return_one_during_zeroize, with no SRAM-zero check.
+  - what: VALID_AXI_USER or AXI_USER_LOCK references
+    where: src/integration mbox tests
+    found: No matches.
+  - what: Mailbox independence, HW_CONFIG0 and MCU_MBOX1 usage
+    where: src/integration/test_suites/*mbox*/*.c
+    found: The instantiation test covers the no-mailbox case. Nothing checks cross-mailbox independence.
+  - what: Owner check right after EXECUTE=1 with TARGET_USER_VALID
+    where: src/integration/test_suites/*mbox*/*.c
+    found: The target_user and write_user_lock tests check the owner, but not in an MCU-requester ordering
+      immediately after EXECUTE=1.
+  - what: Rejection before AXI users are locked
+    where: smoke_test_mcu_mbox_invalid_axi and smoke_test_mcu_mbox_valid_user
+    found: The invalid-AXI test uses a user that is invalid by configuration. It does not test the unconfigured
+      state before locking.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_invalid_axi/cptra_smoke_test_mcu_mbox_invalid_axi.c
+    line_start: 45
+    line_end: 45
+    why_not: It checks that an invalid user gets AXI errors. It does not cover the before-lock or no-strap
+      programming flow.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_instantiation/cptra_smoke_test_mcu_mbox_instantiation.c
+    line_start: 60
+    line_end: 60
+    why_not: It covers the not-instantiated case only. It does not cover independence or the maximum of
+      2 mailboxes.
+  items:
+  - id: cr_318abb731c64
+    outcome: verified
+    reason: An instantiation test exists, but independence and the limit of 2 mailboxes are unchecked.
+    evidence:
+    - 1
+  - id: cr_554ae7995021
+    outcome: verified
+    reason: No test references AXI_USER_LOCK, and none checks rejection before locking.
+    evidence: []
+  - id: cr_daf7f972a12c
+    outcome: verified
+    reason: No test references VALID_AXI_USER, and none checks rejection before the register is programmed.
+    evidence: []
+  - id: cr_3f38fb82f957
+    outcome: verified
+    reason: The only DLEN=0 execute-clear test checks the lock value, not that the SRAM is zero.
+    evidence:
+    - 0
+  - id: cr_de12a01e738b
+    outcome: verified
+    reason: I found no direct owner check immediately after EXECUTE=1 in an MCU-requester flow. This rests
+      on a grep, not a detailed read of every target-user test.
+    evidence: []
+  new_sources:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_instantiation/cptra_smoke_test_mcu_mbox_instantiation.c
+    reason: It tests the no-mailbox-instantiated case.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_invalid_axi/cptra_smoke_test_mcu_mbox_invalid_axi.c
+    reason: It tests that an invalid AXI user is rejected.
+submissions: 2
+rejections: []
+turns: 10
+cost_usd: 0.1219212
+error: null

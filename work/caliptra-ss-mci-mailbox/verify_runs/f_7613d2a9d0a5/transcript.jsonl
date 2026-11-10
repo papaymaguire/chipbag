@@ -1,0 +1,15 @@
+{"t": "2026-11-10T20:39:27Z", "event": "  \u2192 Grep: DEFAULT_USER|soc_req_data_avail|data_avail|SOC_DATA|notif_cptra_mcu_data"}
+{"t": "2026-11-10T20:39:29Z", "event": "  \u2192 Grep: DEFAULT_USER|default_user|data_avail|DATA_AVAIL"}
+{"t": "2026-11-10T20:39:30Z", "event": "  \u2192 Grep: DEFAULT_USER|default_user|data_avail"}
+{"t": "2026-11-10T20:39:32Z", "event": "  \u2192 Grep: soc_data_avail_interrupt|DEFAULT_USER|0xFFFFFFFF.*user|valid_user"}
+{"t": "2026-11-10T20:39:35Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c"}
+{"t": "2026-11-10T20:39:35Z", "event": "  \u2192 Grep: DEFAULT|0xffffffff|0xFFFFFFFF"}
+{"t": "2026-11-10T20:39:38Z", "event": "  \u2192 Grep: soc_req_while_mcu_lock|SOC_REQ_WHILE|notif_mcu_mbox|MBOX._DATA_AVAIL|DATA_AVAIL"}
+{"t": "2026-11-10T20:39:39Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c"}
+{"t": "2026-11-10T20:39:42Z", "event": "Checking the two plan items against the tests. I haven't found a test for either yet. Next is a repo-wide search for the DEFAULT_USER case."}
+{"t": "2026-11-10T20:39:42Z", "event": "  \u2192 Grep: DEFAULT_USER|default.user|all.?1s? user"}
+{"t": "2026-11-10T20:39:44Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox/smoke_test_mcu_mbox.c"}
+{"t": "2026-11-10T20:39:48Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox/smoke_test_mcu_mbox.c"}
+{"t": "2026-11-10T20:40:00Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:40:02Z", "event": "I submitted the verdict: the finding is verified overall, but only one of the two items is a real gap.\n\n- **cp_7e15eab8e3fc (SOC Data available interrupt on MCU EXECUTE): verified.** No test has the MCU hold the lock, set EXECUTE and check the SOC data-available interrupt. `smoke_test_mcu_hitless` waits on that interrupt, but there the SoC BFM sets EXECUTE, so it doesn't match the plan item.\n- **cp_d1a3175f448b (DEFAULT_USER treated as valid): withdrawn.** `smoke_test_mcu_mbox` sets Caliptra's AXI user to 0xFFFFFFFF and configures no valid user. It fails if that user can't take the mailbox lock, and it then checks the data that user wrote.\n\nI added `smoke_test_mcu_mbox.c` to the sources as the test that implements the DEFAULT_USER plan item."}
+{"t": "2026-11-10T20:40:02Z", "event": "[13 turns, $0.1338]"}

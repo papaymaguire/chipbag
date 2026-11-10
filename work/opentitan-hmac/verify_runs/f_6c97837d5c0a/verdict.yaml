@@ -1,0 +1,76 @@
+finding_hash: 12a879b6c70ac4d1
+started_at: '2026-11-10T19:41:43Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Three items are withdrawn and one stands. The DV env runs save/restore randomly (save_and_restore_pct=20)
+    with digest checking by the scoreboard, which covers items 1 and 2. The scoreboard also predicts and
+    checks the fifo_empty interrupt, which covers item 4. Nothing models or checks the one-cycle fifo_empty
+    lowering while depth stays 0 (item 3). I only skimmed the vseq and did not read its code in depth.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 693
+    line_end: 693
+    quote: if (fifo_full_detected && hmac_fifo_empty) begin
+    role: refutes
+    note: Scoreboard predicts fifo_empty interrupt after the FIFO was full and runs empty, and checks
+      it against intr_state reads (item 4).
+  - path: hw/ip/hmac/dv/tests/hmac_base_test.sv
+    line_start: 22
+    line_end: 22
+    quote: cfg.save_and_restore_pct = 20;
+    role: refutes
+    note: Random save/restore (including keyed HMAC) is enabled in the base test; the scoreboard compares
+      digests, so a context or key restore failure fails the test (items 1 and 2).
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 673
+    line_end: 673
+    quote: hmac_fifo_empty = hmac_fifo_depth == 0;
+    role: supports
+    note: The model derives fifo_empty purely from depth==0 and has no one-cycle lowering with depth 0
+      (item 3).
+  searches:
+  - what: save/restore tests and checks
+    where: hw/ip/hmac/dv
+    found: Random SAR sequences (same, different, stop/continue) run with scoreboard digest checks. Keyed
+      HMAC is covered by the random config.
+  - what: fifo_empty handling
+    where: hmac_scoreboard.sv
+    found: The interrupt is predicted and checked. The status bit is modelled as depth==0 only.
+  - what: fifo_empty in SW tests
+    where: sw/device/tests/*hmac*
+    found: Only polled helper usage, not a one-cycle lowering check.
+  near_misses:
+  - path: sw/device/tests/hmac_smoketest.c
+    line_start: 90
+    line_end: 90
+    why_not: Only polls for fifo_empty; does not check the one-cycle lowering.
+  items:
+  - id: cr_109cfa6d4f77
+    outcome: withdrawn
+    reason: Random save/restore with scoreboard digest checks exists.
+    evidence:
+    - 1
+  - id: cr_f2fbfe521519
+    outcome: withdrawn
+    reason: Keyed HMAC runs with random save/restore, and a wrong key restore would corrupt the digest
+      the scoreboard checks.
+    evidence:
+    - 1
+  - id: cr_9287ecbc9b5d
+    outcome: verified
+    reason: The model has no one-cycle lowering with depth 0; no test checks it.
+    evidence:
+    - 2
+  - id: cr_b3cf3229b231
+    outcome: withdrawn
+    reason: The scoreboard predicts the fifo_empty interrupt and checks it in intr_state reads.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0752872
+error: null

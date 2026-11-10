@@ -1,0 +1,27 @@
+[project]
+name = "chipbag"
+version = "0.1.0"
+description = "LLM skills and associated scripts for managing spec and test planning for silicon"
+readme = "README.md"
+authors = [
+    { name = "Maguire Papay", email = "papaymaguire@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "anthropic>=2.7.0",
+    "claude-agent-sdk>=0.2.180",
+    "hjson>=3.1.0",
+    "openpyxl>=3.1.5",
+    "python-dotenv>=1.2.4",
+    "pyyaml>=6.0.3",
+    "scikit-learn>=1.9.1",
+    "systemrdl-compiler>=1.33.0",
+    "typer>=0.29.0",
+]
+
+[project.scripts]
+chipbag = "chipbag.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.11.11,<0.12.0"]
+build-backend = "uv_build"

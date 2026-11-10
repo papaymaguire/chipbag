@@ -1,0 +1,48 @@
+finding_hash: 61c0de11243a9098
+started_at: '2026-11-10T19:38:10Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No other specification text defines what happens when MSG_LENGTH_UPPER is written while hmac_idle
+    is 0. The STATUS description and the programmer's guide only say when writing is permitted (idle,
+    for context restore). The register doc repeats the same "unpredictable behavior" sentence.
+  evidence:
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 545
+    line_end: 546
+    quote: "When `STATUS.hmac_idle` is 1, this register may be written by software.\n            Outside\
+      \ of this window, writes can cause unpredictable behavior."
+    role: supports
+    note: Source text; it does not say whether the write is ignored, applied or illegal.
+  - path: hw/ip/hmac/doc/registers.md
+    line_start: 316
+    line_end: 316
+    quote: When IDLE, the `DIGEST` and the `MSG_LENGTH_LOWER`/`MSG_LENGTH_UPPER` can be written to from
+      SW which enables restoring context (to support context switching).
+    role: context
+    note: Says when writing is allowed, but nothing about writes outside idle.
+  searches:
+  - what: MSG_LENGTH and unpredictable in the HMAC docs
+    where: hw/ip/hmac/doc/*.md
+    found: Only the same sentence repeated in registers.md, plus the STATUS idle description and the context-switch
+      steps in the programmer's guide. None define non-idle write behavior.
+  - what: idle in theory_of_operation.md
+    where: hw/ip/hmac/doc/theory_of_operation.md
+    found: Nothing about MSG_LENGTH writes while not idle.
+  near_misses:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 156
+    line_end: 164
+    why_not: Describes the context save/restore flow, where the restore happens while idle. It does not
+      say what a write outside that window does.
+  items: []
+  new_sources: []
+  resolution: The spec should say whether a non-idle write is ignored, applied, or architecturally undefined,
+    and whether verification may exclude such writes. It should also say whether the design must still
+    avoid a hang or alert. I did not read the RTL, so I can't say what the design does.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0341193
+error: null

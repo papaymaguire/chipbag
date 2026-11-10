@@ -1,0 +1,49 @@
+finding_hash: 9b0075b296153728
+started_at: '2026-11-10T19:37:48Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The header comment in both param test files says the MCU configures the Caliptra uC as an invalid
+    AXI user. The MCU code doesn't do that. It picks either 0x33333333 (the build-time parameter value)
+    or an entry from axi_user_id[], and passes that same array as the mailbox valid users. The test appears
+    to be a copy of smoke_test_mcu_mbox_invalid_axi, whose code does generate an invalid ID, with the
+    stale comment kept. The comment mismatch is real but low severity. The in-function comment at lines
+    77-78 describes the actual behaviour, which depends on cfg_caliptra_axi_with_param.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/smoke_test_mcu_mbox_axi_param.c
+    line_start: 35
+    line_end: 35
+    quote: 1. MCU will configure Caliptra uC to be an invalid AXI
+    role: supports
+    note: Header comment claims an invalid AXI user.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/smoke_test_mcu_mbox_axi_param.c
+    line_start: 62
+    line_end: 62
+    quote: caliptra_uc_axi_id = axi_user_id[axi_select];
+    role: supports
+    note: Code uses an ID from the valid-user array, not an invalid one.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_invalid_axi/smoke_test_mcu_mbox_invalid_axi.c
+    line_start: 51
+    line_end: 51
+    quote: uint32_t caliptra_uc_axi_id = mcu_mbox_generate_invalid_axi(axi_user_id);
+    role: context
+    note: The sibling test with the same comment really generates an invalid ID.
+  searches:
+  - what: Compared the param test with the invalid_axi test and the valid-user setup
+    where: src/integration/test_suites/smoke_test_mcu_mbox_axi_param, smoke_test_mcu_mbox_invalid_axi
+    found: The param test never generates an invalid ID. Its own in-function comment says errors are expected
+      only when configured with a CSR AXI.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/smoke_test_mcu_mbox_axi_param.c
+    line_start: 77
+    line_end: 78
+    why_not: This comment describes the param behaviour correctly, but it does not fix the stale header
+      comment.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.079807
+error: null

@@ -1,0 +1,156 @@
+topic: MCI watchdog timer
+repo_root: targets/caliptra-ss
+repo_commit: 69a8afa1eeb8bc80ed8726da74798273c862c00b
+generated_at: '2026-11-10T16:33:57Z'
+model: claude-sonnet-5-5
+confirmed: true
+sources:
+- path: docs/CaliptraSSHardwareSpecification.md
+  role: spec
+  scope:
+    kind: sections
+    sections:
+    - '*Watchdog Timer*'
+  reason: 'MCI Watchdog Timer section: cascade/independent modes, NMI and error behavior'
+  units: 1
+  sha256: f0de0a3aa6896c9eb5c833c8023b6b70a5432f042e620fbc464528211a8c5f3e
+- path: src/mci/rtl/mci_reg.rdl
+  role: spec
+  scope:
+    kind: lines
+    start: 678
+    end: 800
+  reason: SystemRDL WDT timer1/timer2 registers (approximate range, starts at WDT section)
+  units: 1
+  sha256: 073d8a723359c457142bfb6e12ec0d0dbeada16776b4f30b31a1260857997045
+- path: docs/CaliptraSSCoverage.md
+  role: verification
+  scope:
+    kind: sections
+    sections:
+    - '*i_mci_wdt_top*'
+    - '*i_wdt*'
+  reason: Coverage documentation for WDT modules
+  units: 3
+  sha256: c1aa4a5b9f1737d32949dbe449d521a61a77b82dd8b8df368a553b6e96bf2acc
+- path: src/integration/asserts/caliptra_ss_top_sva.sv
+  role: verification
+  scope:
+    kind: lines
+    start: 90
+    end: 152
+  reason: WDT SVA checks for pet, service and status
+  units: 1
+  sha256: a806efe82e8a82e39b3764dd626f12ea997add5195f34e33fd17885b19be6661
+- path: src/integration/coverage/caliptra_ss_top_cov_if.sv
+  role: verification
+  scope:
+    kind: lines
+    start: 30
+    end: 96
+  reason: WDT timer enable coverpoints and cross
+  units: 1
+  sha256: dfd7574cdd3be2b9cd8482a12cbf796d91d86844e27100175dbae5c2387c3c4c
+- path: src/integration/stimulus/L0_Promote_caliptra_ss_top_tb_regression.yml
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - '*smoke_test_wdt*'
+  reason: L0 regression includes WDT test
+  units: 1
+  sha256: 5539410396e3f3c149147f7197dd57ab116ece6f930c8f433311f6269362bcdc
+- path: src/integration/stimulus/L1_Nightly_Directed_Strict_caliptra_ss_top_tb_regression.yml
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - '*smoke_test_wdt*'
+  reason: Strict nightly regression WDT tests
+  units: 2
+  sha256: 383368a6d713feb3e216023421ee3039e0698047ada50af3793a9fbd4e564800
+- path: src/integration/stimulus/L1_Nightly_Directed_caliptra_ss_top_tb_regression.yml
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - '*smoke_test_wdt*'
+  reason: Nightly regression WDT tests
+  units: 2
+  sha256: 7a971ef051590b7c59ddaa6cfd36c243abf439382513e81b8e783e846a824b42
+- path: src/integration/stimulus/testsuites/caliptra_ss_master_test_list.csv
+  role: verification
+  scope:
+    kind: rows
+    contains:
+    - smoke_test_wdt
+  reason: Master test list rows for WDT tests
+  units: 2
+  sha256: dd23c5168c3f4a47b91defc0cb38917176f907910483fde0deec63b83dad1bcb
+- path: src/integration/test_suites/libs/wdt/wdt.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: WDT test helper library
+  units: 1
+  sha256: 06565801c21a6b15374c6ad0a584c551c580d4befec2a7ae5a1c8e25b35257ff
+- path: src/integration/test_suites/libs/wdt/wdt.h
+  role: verification
+  scope:
+    kind: whole_file
+  reason: WDT test helper header
+  units: 1
+  sha256: 77f71ca0b41a258b1550eed649ba535ec624c4ed973469c2f022ac851a53dedb
+- path: src/integration/test_suites/smoke_test_wdt/caliptra_isr.h
+  role: verification
+  scope:
+    kind: whole_file
+  reason: ISR support for WDT smoke test
+  units: 1
+  sha256: caf4c3700f41e9275b411a2bb875b68ec11ec6563465d61fdd8c1346274502ce
+- path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: MCU firmware smoke test of WDT
+  units: 1
+  sha256: 4a93066d5ff82bd36344effed424f55c92a9b28fa7f8f031d509fa0c2ac74ddc
+- path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.yml
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Test config for WDT smoke test
+  units: 1
+  sha256: 4beb0f9e271248d479f3fb5db9055fd37b8dee7604311d25d46067e423af5952
+- path: src/integration/test_suites/smoke_test_wdt_rst/caliptra_isr.h
+  role: verification
+  scope:
+    kind: whole_file
+  reason: ISR support for WDT reset test
+  units: 1
+  sha256: caf4c3700f41e9275b411a2bb875b68ec11ec6563465d61fdd8c1346274502ce
+- path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: MCU firmware test of WDT with reset
+  units: 1
+  sha256: 61d646119ec6243971e41d5d4cb985fb428795a771391617b1b5ddc3209a58a8
+- path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.yml
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Test config for WDT reset test
+  units: 1
+  sha256: 99da368dd04c1c1bd91041642330aa27254faa2052d116f1e88254f48ff23fdb
+excluded_notable:
+- path: src/integration/test_suites/libs/mci/mci_reg_defs.h
+  reason: Generated register header
+- path: src/integration/test_suites/smoke_test_error_handling/smoke_test_error_handling.c
+  reason: Only incidentally enables WDT error interrupts
+- path: src/mci/coverage/mci_top_cov_if.sv
+  reason: Generated register-access covergroups for WDT registers
+- path: src/mci/rtl/mci_wdt_top.sv
+  reason: RTL implementation
+incomplete: false
+notes: null

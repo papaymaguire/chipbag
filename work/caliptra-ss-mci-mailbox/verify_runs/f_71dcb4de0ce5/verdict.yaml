@@ -1,0 +1,72 @@
+finding_hash: c9aa11105657b038
+started_at: '2026-11-10T20:39:03Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks the intr_count_incr_r pulse/counter-increment behaviour for any
+    of the five items. The only references are generated address and field defines, UVM register model
+    and RTL, coverage coverpoints, and mask entries in the mci.c register-access helper. None of these
+    drives an interrupt event and then checks the counter.
+  evidence:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2096
+    line_end: 2098
+    quote: "    // ERROR_MBOX1_ECC_UNC_INTR_COUNT_INCR_R\n    add_mask_entry(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR_MBOX1_ECC_UNC_INTR_COUNT_INCR_R,"
+    role: context
+    note: This is only a register read/write mask entry. It does not stimulate an interrupt event or check
+      the counter.
+  searches:
+  - what: intr_count_incr_r and the individual register names, outside the RDL and generated reg files
+    where: whole repo
+    found: Only address defines, the UVM register model, coverage coverpoints and the mci.c mask table.
+  - what: INTR_COUNT_INCR in C tests, SV and scripts
+    where: src
+    found: Only generated files, coverage, and the mci.c mask entries. No test references the incr registers.
+  - what: intr_count in the mcu_mbox smoke test
+    where: src/integration/test_suites/smoke_test_mcu_mbox
+    found: Only a local variable named intr_count. It is unrelated to the register.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4820
+    line_end: 4820
+    why_not: This is a coverpoint, so it samples the register but has no check that can fail.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2088
+    line_end: 2110
+    why_not: These are register-access mask entries. They do not trigger an interrupt event or check that
+      the counter increments.
+  items:
+  - id: cr_c1daf87f3285
+    outcome: verified
+    reason: No test creates a hardware interrupt rising edge and then checks the notif_mbox1_target_done
+      counter.
+    evidence:
+    - 0
+  - id: cr_c43fbab16d30
+    outcome: verified
+    reason: No test checks that the pulse field mirrors an interrupt event.
+    evidence:
+    - 0
+  - id: cr_c65a366c2f2e
+    outcome: verified
+    reason: The only reference to the error_mbox1_ecc_unc incr register is a register mask entry. It does
+      not check the counter.
+    evidence:
+    - 0
+  - id: cr_c79bd4ac60ff
+    outcome: verified
+    reason: No test references the notif_mbox1_ecc_cor incr register.
+    evidence:
+    - 0
+  - id: cr_c89b47159e50
+    outcome: verified
+    reason: No test checks the decrvalue = 1 behaviour of the notif_mbox0_target_done pulse.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 12
+cost_usd: 0.1039799
+error: null

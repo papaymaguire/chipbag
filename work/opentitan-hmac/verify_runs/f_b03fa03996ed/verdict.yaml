@@ -1,0 +1,47 @@
+finding_hash: 121b0f46af6fd91c
+started_at: '2026-11-10T20:52:51Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The programmer''s guide answers the main question. A blocked start is reported through INTR_STATE.hmac_err,
+    and ERR_CODE shows SwInvalidConfig (0x6) for an invalid key length in HMAC mode. The register text
+    limits the block to hmac_en == 1 with an "However" qualifier, so plain SHA-2 is not blocked. One gap
+    remains: the guide says "invalid key length" and does not name the Key_1024 + SHA2_256 case explicitly.'
+  evidence:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 174
+    line_end: 175
+    quote: When HMAC errors are triggered, the IP reports the error via [`INTR_STATE.hmac_err`](registers.md#intr_state).
+    role: refutes
+    note: Says the error is signalled through hmac_err and ERR_CODE.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 186
+    line_end: 186
+    quote: The error is reported when HMAC has been configured incorrectly by SW, i.e. invalid digest
+      size for SHA-2/HMAC modes or invalid key length for HMAC mode.
+    role: refutes
+    note: Gives the ERR_CODE value SwInvalidConfig (0x6) for an invalid key length in HMAC mode.
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 317
+    line_end: 317
+    quote: However, for HMAC mode (`hmac_en == 1`), when HMAC is triggered to start while
+    role: context
+    note: Restricts the blocking rule to hmac_en == 1.
+  searches:
+  - what: ERR_CODE / SwInvalidConfig / Key_1024 in hmac docs
+    where: hw/ip/hmac
+    found: programmers_guide.md lines 184-186 define SwInvalidConfig for invalid key length in HMAC mode.
+      theory_of_operation.md and programmers_guide.md also use it for sideloaded-key cases.
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    reason: Error table defines ERR_CODE SwInvalidConfig and the hmac_err reporting path.
+  resolution: The design reports SwInvalidConfig (0x6) and raises hmac_err. For completeness, the hjson
+    CFG text could cite SwInvalidConfig explicitly.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.036477699999999995
+error: null

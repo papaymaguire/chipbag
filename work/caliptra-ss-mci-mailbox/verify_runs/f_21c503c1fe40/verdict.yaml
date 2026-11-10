@@ -1,0 +1,49 @@
+finding_hash: 772629c351f9e979
+started_at: '2026-11-10T19:41:25Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that drives notif_mbox1_ecc_cor_intr_count_r to its maximum and checks that
+    it stays saturated. The only related stimulus is a handful of interrupt triggers, and the only related
+    coverage is a coverpoint on the counter.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1565
+    line_end: 1565
+    quote: Will not overflow ('incrsaturate').";
+    role: supports
+    note: The saturation requirement as written in the register description.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4750
+    line_end: 4750
+    quote: 'INTR_BLOCK_RF_NOTIF_MBOX1_ECC_COR_INTR_COUNT_R_cp : coverpoint i_mci_reg_top.i_mci_reg.field_storage.intr_block_rf.notif_mbox1_ecc_cor_intr_count_r;'
+    role: context
+    note: This is a coverage sample only. It has no check that fails if saturation is wrong.
+  searches:
+  - what: Counter name and saturation in test suites
+    where: src/integration
+    found: No saturation test for this counter. mcu_intr_handler.c only triggers each interrupt a few
+      times. mci.c only contains 0xFFFFFFFF reset or mask values.
+  - what: Counter name across the repository
+    where: whole repository
+    found: The name appears only in the RDL, generated RTL, the UVM register model and the coverage interface.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 40
+    line_end: 75
+    why_not: It triggers a few interrupts and counts them. It never drives a counter to 0xFFFFFFFF or
+      checks saturation.
+  items:
+  - id: cr_f255266393b7
+    outcome: verified
+    reason: No stimulus reaches the maximum count and no check covers saturation for this counter.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.04830090000000001
+error: null

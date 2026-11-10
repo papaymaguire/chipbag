@@ -1,0 +1,78 @@
+finding_hash: d94cd24c2371c32a
+started_at: '2026-11-10T20:36:45Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that fills the named gaps. I only read one extra test, smoke_test_mcu_mbox_write_user_lock,
+    which has Root write TARGET_USER_VALID=1 and check the owner becomes Target. It never writes TARGET_USER
+    or TARGET_USER_VALID again after the grant or after a terminal TARGET_STATUS. I did not open the other
+    test directories or the ownership-flow tests, so those items rest on the finding's own description
+    of them.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 144
+    line_end: 149
+    quote: "mcu_mbox_write_target_user_valid(mbox_num, 1);\n    if (mcu_mbox_read_target_user_valid(mbox_num)\
+      \ != 1) {"
+    role: context
+    note: Root sets valid; no later attempt to clear TARGET_USER_VALID or rewrite TARGET_USER afterwards.
+  searches:
+  - what: TARGET_USER_VALID usage in C tests
+    where: src/integration/test_suites
+    found: 11 files; I read only write_user_lock in detail. It does not test the lock, relock or clear-after-grant
+      behaviour.
+  - what: rewrite after terminal TARGET_STATUS (cr_29fbbfde9d79)
+    where: write_user_lock test
+    found: No rewrite of TARGET_USER or TARGET_USER_VALID after a terminal status.
+  - what: writes after lock (cr_4c05e98bd6a2)
+    where: write_user_lock test
+    found: Only the initial valid=1 write; no later writes to either register.
+  - what: clear after grant (cr_8e68a65f2d45)
+    where: write_user_lock test
+    found: No write of 0 to TARGET_USER_VALID after the grant.
+  - what: non-Root writers (cr_afbf3aa32a43)
+    where: write_user_lock test
+    found: Only Root writes the target registers; no Target or other-agent write attempts.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 128
+    line_end: 154
+    why_not: Root writes TARGET_USER and TARGET_USER_VALID successfully and checks the owner after the
+      grant. It does not attempt writes after the lock.
+  items:
+  - id: cr_29fbbfde9d79
+    outcome: verified
+    reason: I found no test that rewrites the registers after a terminal TARGET_STATUS. I did not read
+      the other test directories.
+    evidence:
+    - 0
+  - id: cr_4c05e98bd6a2
+    outcome: verified
+    reason: I found no test that makes repeated writes to both registers after the lock. I did not read
+      the other test directories.
+    evidence:
+    - 0
+  - id: cr_8e68a65f2d45
+    outcome: verified
+    reason: I found no test where Root writes 0 to TARGET_USER_VALID after the grant. I did not read the
+      other test directories.
+    evidence:
+    - 0
+  - id: cr_afbf3aa32a43
+    outcome: verified
+    reason: I did not find tests that try writes from the Target or from other trusted non-Root agents
+      with valid at both 0 and 1. I did not read the other test directories.
+    evidence:
+    - 0
+  - id: cr_071a71b48260
+    outcome: inconclusive
+    reason: I did not examine the ownership-flow tests or the RTL precedence logic, so I could not confirm
+      or refute the precedence-combination gap.
+    evidence: []
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 6
+cost_usd: 0.0696375
+error: null

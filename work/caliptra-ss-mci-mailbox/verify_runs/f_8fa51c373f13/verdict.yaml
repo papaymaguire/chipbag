@@ -1,0 +1,36 @@
+finding_hash: 23a234f93456f7d8
+started_at: '2026-11-10T19:37:11Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The Caliptra uC code reads MBOX_USER after taking the lock and only prints it. Nothing compares
+    it to the expected lock holder. The MCU-side USER check only tests that a Root write leaves USER unchanged.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/cptra_smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 66
+    line_end: 68
+    quote: "    // Checking MBOX USER INFO\n    soc_ifc_axi_dma_read_ahb_payload(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_USER\
+      \ + MCU_MBOX_NUM_STRIDE * mbox_num, 0, read_payload, 4, 0);     \n    VPRINTF(LOW, \"CALIPTRA: MCU\
+      \ MBOX%x USER: 0x%x\\n\", mbox_num, read_payload[0]);"
+    role: supports
+    note: USER is read and only printed, with no comparison.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 102
+    line_end: 107
+    quote: '    // USER, LOCK, and HW_STATUS are read-only.'
+    role: context
+    note: The only USER check on the MCU side verifies that USER is unchanged after a write. It does not
+      check that USER names the lock holder.
+  searches:
+  - what: USER checks in the MCU-side test
+    where: smoke_test_mcu_mbox_write_user_lock.c
+    found: Only the read-only unchanged check, not a lock-holder check
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0357938
+error: null

@@ -1,0 +1,18 @@
+{"t": "2026-11-10T19:41:48Z", "event": "  \u2192 Grep: MBOX0_VALID_AXI_USER|MBOX0_AXI_USER_LOCK|mbox0_valid_axi_user|mbox0_axi_user_lock"}
+{"t": "2026-11-10T19:41:51Z", "event": "  \u2192 Grep: MBOX0_VALID_AXI_USER|MBOX0_AXI_USER_LOCK|mbox_valid_axi_user|mbox_axi_user_lock|MBOX\\w*_AXI_USER_LOCK"}
+{"t": "2026-11-10T19:41:51Z", "event": "  \u2192 Grep: AXI_USER_LOCK"}
+{"t": "2026-11-10T19:41:53Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_common_tasks.svh"}
+{"t": "2026-11-10T19:41:54Z", "event": "  \u2192 Grep: locked|lock.*(write|reset)|MBOX0_VALID|mbox_lock"}
+{"t": "2026-11-10T19:41:57Z", "event": "  \u2192 Grep: get_mcu_mbox_axi_user_lock_address|get_mcu_mbox_valid_axi_user_address|mcu_mbox_axi_cfg|mbox_axi_user_cfg"}
+{"t": "2026-11-10T19:41:58Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/libs/caliptra_ss_lib/caliptra_ss_lib.c"}
+{"t": "2026-11-10T19:41:59Z", "event": "Check the SV test at line 60-110."}
+{"t": "2026-11-10T19:42:00Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mcu_mbox_soc_agent_write_fw_image.svh"}
+{"t": "2026-11-10T19:42:03Z", "event": "  \u2192 Grep: AXI_USER|axi_user_lock|SWWEL|wel"}
+{"t": "2026-11-10T19:42:04Z", "event": "  \u2192 Grep: AXI_USER_LOCK|VALID_AXI_USER"}
+{"t": "2026-11-10T19:42:06Z", "event": "  \u2192 Grep: AXI_USER_LOCK|VALID_AXI_USER"}
+{"t": "2026-11-10T19:42:06Z", "event": "  \u2192 Grep: axi_user_lock|valid_axi_user"}
+{"t": "2026-11-10T19:42:15Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:42:22Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:42:31Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:42:33Z", "event": "I submitted the verdict: all 5 items are verified as untested.\n\nI found no test that writes to `MBOX0_VALID_AXI_USER` or `MBOX0_AXI_USER_LOCK` after the lock is set and checks the result. The firmware helper `mcu_mbox_configure_valid_axi` writes the users and then the lock once. The SV agent in `mcu_mbox_soc_agent_write_fw_image.svh` only polls reads. The generic register tests in `mci.c` only list the registers.\n\nThe submission is accepted, so there is nothing left to do."}
+{"t": "2026-11-10T19:42:33Z", "event": "[16 turns, $0.1584]"}

@@ -1,0 +1,19 @@
+{"t": "2026-11-10T19:40:18Z", "event": "  \u2192 Grep: TARGET_STATUS|target_status"}
+{"t": "2026-11-10T19:40:18Z", "event": "  \u2192 Grep: TARGET_STATUS|Neither the Requester"}
+{"t": "2026-11-10T19:40:21Z", "event": "  \u2192 Grep: TARGET_STATUS|DATA_READY"}
+{"t": "2026-11-10T19:40:21Z", "event": "  \u2192 Grep: TARGET_STATUS"}
+{"t": "2026-11-10T19:40:30Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:40:33Z", "event": "  \u2192 Grep: SRAM_OWNER|sram_owner"}
+{"t": "2026-11-10T19:40:34Z", "event": "  \u2192 Grep: CMD_STATUS"}
+{"t": "2026-11-10T19:40:34Z", "event": "  \u2192 Grep: MCU_MBOX_DATA_READY\\s+(0x)?1|define\\s+MCU_MBOX_DATA_READY"}
+{"t": "2026-11-10T19:40:38Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c"}
+{"t": "2026-11-10T19:40:39Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c"}
+{"t": "2026-11-10T19:40:42Z", "event": "Checking whether the Caliptra uC in that test is the valid Target. If it is, item 3 is covered."}
+{"t": "2026-11-10T19:40:43Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c"}
+{"t": "2026-11-10T19:40:44Z", "event": "  \u2192 Grep: check_target_non_accessible_regs|target_user_valid|TARGET_USER_VALID"}
+{"t": "2026-11-10T19:40:48Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c"}
+{"t": "2026-11-10T19:40:48Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c"}
+{"t": "2026-11-10T19:40:51Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c"}
+{"t": "2026-11-10T19:41:07Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:12Z", "event": "I submitted the verdict as verified overall, with item 3 withdrawn and item 2 inconclusive. The search was limited. I did not read the test sources for items 2 and 5 in depth.\n\n- **Item 1, `cr_e6ab34aa5d38` (verified):** No test has a Target that never writes a terminal status. In the target-user test the Target always writes COMPLETE.\n- **Item 2, `cr_f8ea4c6013a2` (inconclusive):** `SRAM_OWNER` is referenced in several test files, and I did not examine them in depth.\n- **Item 3, `cr_3d3f6dbf8fc3` (withdrawn):** In `smoke_test_mcu_mbox_target_user`, MCU grants ownership and the valid Target then attempts a `CMD_STATUS` write. The test fails if that write takes effect, both in the Caliptra uC check and in the MCU re-check.\n- **Item 4, `cr_62191b6deb64` (verified):** I found no Requester write to `TARGET_STATUS` while a Target is granted. The only non-Root, non-Target attempt is an invalid-user write in the instantiation test.\n- **Item 5, `cr_dabb81499101` (verified):** I found no `TARGET_STATUS` DATA_READY check and no check of the raw value 1. Tests use only the `MCU_MBOX_DATA_READY` macro."}
+{"t": "2026-11-10T19:41:12Z", "event": "[17 turns, $0.1463]"}

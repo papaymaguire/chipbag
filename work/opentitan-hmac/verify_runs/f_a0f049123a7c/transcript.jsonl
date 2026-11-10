@@ -1,0 +1,9 @@
+{"t": "2026-11-10T20:56:40Z", "event": "  \u2192 Grep: DIGEST_12|digest_12|wipe_secret|msg_fifo|MSG_FIFO"}
+{"t": "2026-11-10T20:56:42Z", "event": "  \u2192 Grep: digest|fifo"}
+{"t": "2026-11-10T20:56:43Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_wipe_secret_vseq.sv"}
+{"t": "2026-11-10T20:56:46Z", "event": "  \u2192 Grep: SHA2_384|get_digest_index|NUM_DIGESTS"}
+{"t": "2026-11-10T20:56:49Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:56:50Z", "event": "  \u2192 Grep: wipe_secret"}
+{"t": "2026-11-10T20:57:00Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:57:02Z", "event": "I've submitted the verdict on finding f_a0f049123a7c as verified, and it was accepted. Nothing more is left to do.\n\n- **Message FIFO read:** no test tries a software read of the FIFO and checks the result.\n- **Wipe and the FIFO:** the wipe checks cover only the digest, not whether the FIFO is left intact.\n- **SHA-2 384 digest:** the scoreboard checks only DIGEST_0\u201311. DIGEST_12 is never checked, so the README's \"DIGEST_0-DIGEST_12\" is not what is tested. That range may be a typo in the README, but the repository doesn't settle it."}
+{"t": "2026-11-10T20:57:02Z", "event": "[8 turns, $0.0655]"}

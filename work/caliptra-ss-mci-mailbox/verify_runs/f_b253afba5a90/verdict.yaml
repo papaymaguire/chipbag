@@ -1,0 +1,90 @@
+finding_hash: b1ca8f083b8002b3
+started_at: '2026-11-10T20:41:12Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Only mcu_intr_handler.c exercises these counters. It writes each notif trigger bit once, sums
+    all notif counters (including mbox0/1 soc_req_lock, mbox1 target_done and mbox0/1 ecc_cor) and fails
+    the sim if the sum differs from the software count. That covers "increments by 1 per event" (items
+    1 and 3) for the trigger path, and so withdraws them. Nothing tests swwel=false on the pulse field
+    (item 4). Nothing exercises the real hardware input driving the pulse (item 5); only the software
+    trigger path is used. The one-cycle pulse in item 2 is only covered implicitly, through the sum.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 256
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: refutes
+    note: Aggregate check of the sum of the notif counters against the software count; it fails the sim
+      on mismatch.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 220
+    line_end: 220
+    quote: lsu_read_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_MBOX0_SOC_REQ_LOCK_INTR_COUNT_R   ) +
+    role: refutes
+    note: The soc_req_lock counters are included in the summed hardware count.
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1557
+    line_end: 1557
+    quote: field {desc = "Pulse mirrors interrupt event occurrence"; swwel = false;} pulse = 1'b0;
+    role: supports
+    note: swwel=false; no test writes the pulse field or checks that it is software-unwritable.
+  - path: src/mci/rtl/mci_reg.sv
+    line_start: 22276
+    line_end: 22276
+    quote: next_c = field_storage.intr_block_rf.notif_mbox0_ecc_cor_intr_count_incr_r.pulse.value;
+    role: context
+    note: The pulse is set from the trigger bit or from the hardware set input. The test only uses the
+      trigger path.
+  searches:
+  - what: count_incr_r / intr_count references outside the register RTL
+    where: whole repo
+    found: Only the coverage interface, mcu_intr_handler.c and the docs mention them.
+  - what: checks in mcu_intr_handler.c
+    where: src/integration/test_suites/mcu_intr_handler
+    found: Sum comparison of counters against the software count; the trigger path only; no per-counter
+      or pulse-width check.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 3960
+    line_end: 3960
+    why_not: Coverage points only; no checks.
+  items:
+  - id: cr_6afa6a396511
+    outcome: withdrawn
+    reason: mcu_intr_handler.c triggers soc_req_lock events and checks the summed counters equal the software
+      count.
+    evidence:
+    - 0
+    - 1
+  - id: cr_6b0e6ce5d2b8
+    outcome: inconclusive
+    reason: The 1-bit down-counter pulse is only covered indirectly by the sum (a stuck pulse would over-count).
+      No direct check.
+    evidence:
+    - 0
+  - id: cr_701e3a3d1a92
+    outcome: withdrawn
+    reason: mbox1 target_done is triggered and its counter is included in the summed check.
+    evidence:
+    - 0
+  - id: cr_72ef5cfc7830
+    outcome: verified
+    reason: No test writes the pulse field, and none checks that swwel=false is honoured.
+    evidence:
+    - 2
+  - id: cr_73c6e4152180
+    outcome: verified
+    reason: Only software trigger bits are used. The real hardware input that sets the event and the pulse
+      is not driven and checked for mbox0_ecc_cor.
+    evidence:
+    - 3
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: The only test that checks the interrupt event counters.
+submissions: 2
+rejections: []
+turns: 14
+cost_usd: 0.15190550000000003
+error: null

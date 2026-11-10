@@ -1,0 +1,84 @@
+finding_hash: 3101de1b5f6ab63b
+started_at: '2026-11-10T19:45:30Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test drives any interrupt counter to saturation, and none checks the INCR pulse field's
+    down-counter behavior. The only test that exercises the counters, mcu_intr_handler, uses software
+    INTR_TRIG writes and compares summed counter values against software tallies. That does not check
+    a hardware-input rising edge or per-counter saturation. The mci.c register test explicitly masks the
+    PULSE field out of its comparison.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 258
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: context
+    note: 'Only counter check: sum of all notif counters versus a software tally of INTR_TRIG writes.
+      No saturation, no per-counter check, and no hardware-edge stimulus.'
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2092
+    line_end: 2094
+    quote: // ERROR_MBOX0_ECC_UNC_INTR_COUNT_INCR_R
+    role: context
+    note: The register test masks the INCR_R PULSE field out of its checks, so it does not verify the
+      pulse behavior.
+  searches:
+  - what: Saturation or overflow tests for the error_mbox0_ecc_unc interrupt counter
+    where: whole repo (intr_count_incr, saturate, overflow)
+    found: Only the RDL, generated RTL and UVM register model, coverage interface, mci.c mask entries
+      and address headers. No saturation test.
+  - what: Saturation or overflow tests for the error_mbox1_ecc_unc interrupt counter
+    where: whole repo, including src/integration/test_suites
+    found: mcu_intr_handler only triggers once per source. The counter is never driven toward its maximum.
+  - what: Hardware-input rising-edge stimulus for the notif_mbox1_cmd_avail counter
+    where: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    found: Only a software INTR_TRIG write, checked via an aggregate sum (lines 108-112, 256). No hardware-edge
+      stimulus and no per-counter check.
+  - what: Saturation test for the notif_mbox1_ecc_cor counter
+    where: whole repo
+    found: None. The counter is never pushed to its maximum.
+  - what: Check of the INCR_R PULSE field's 1-bit down-counter
+    where: src/integration/test_suites/libs/mci/mci.c, mcu_intr_handler.c
+    found: The PULSE masks are only used as exclusions in the register test. No check observes the pulse.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 108
+    line_end: 112
+    why_not: Exercises the notif_mbox1_cmd_avail counter increment through a software trigger write. It
+      is summed with the other counters, and it is not a hardware-input rising-edge stimulus.
+  items:
+  - id: cr_8a0bed11bd11
+    outcome: verified
+    reason: No test drives the mbox0 ECC uncorrectable error counter to saturation.
+    evidence:
+    - 0
+  - id: cr_8c05acc52333
+    outcome: verified
+    reason: No test drives the mbox1 ECC uncorrectable error counter to saturation.
+    evidence:
+    - 0
+  - id: cr_8e37e686e23b
+    outcome: verified
+    reason: The only stimulus is a software INTR_TRIG write, checked through an aggregate count. A hardware-input
+      rising edge is never created or checked.
+    evidence:
+    - 0
+  - id: cr_8f7eafce5cc8
+    outcome: verified
+    reason: No test drives the mbox1 ECC correctable notif counter to saturation.
+    evidence:
+    - 0
+  - id: cr_909044a1f8f3
+    outcome: verified
+    reason: The PULSE field is only masked out in the register test. No check observes the 1-bit down-counter
+      pulse.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 12
+cost_usd: 0.1268863
+error: null

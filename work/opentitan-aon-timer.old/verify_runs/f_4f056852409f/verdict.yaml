@@ -1,0 +1,39 @@
+finding_hash: 80fbb3fb9e86cf2f
+started_at: '2026-11-10T22:07:13Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The aon_timer DV testbench ties racl_policies to 0 and has no RACL tests or checks. The finding
+    stands.
+  evidence:
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 25
+    line_end: 26
+    quote: "  racl_policy_vec_t racl_policies;\n  assign racl_policies = 0;"
+    role: supports
+    note: Policy vector is constant zero; no stimulus
+  searches:
+  - what: racl in aon_timer/dv
+    where: hw/ip/aon_timer/dv
+    found: only tb.sv tie-off and an exclusion file
+  - what: racl in top_earlgrey/dv
+    where: hw/top_earlgrey/dv
+    found: nothing
+  near_misses:
+  - path: hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson
+    line_start: 47
+    line_end: 47
+    why_not: Only a coverage exclusion file; not a test.
+  items:
+  - id: cr_cd5358219466
+    outcome: verified
+    reason: No test drives or checks racl_policies; the testbench ties it to 0.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.026019799999999996
+error: null

@@ -1,0 +1,13 @@
+{"t": "2026-11-10T20:54:19Z", "event": "  \u2192 Grep: fifo_empty|fifo_depth|hmac_status"}
+{"t": "2026-11-10T20:54:21Z", "event": "  \u2192 Grep: fifo_empty|fifo_depth|status"}
+{"t": "2026-11-10T20:54:22Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:54:24Z", "event": "  \u2192 Grep: do_read_check"}
+{"t": "2026-11-10T20:54:25Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:54:27Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:54:27Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:54:30Z", "event": "I'm checking how the scoreboard predicts fifo_empty and whether the status check can fail."}
+{"t": "2026-11-10T20:54:31Z", "event": "  \u2192 Grep: hmac_fifo_empty|hmac_fifo_depth"}
+{"t": "2026-11-10T20:54:31Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv"}
+{"t": "2026-11-10T20:54:41Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:54:44Z", "event": "I withdrew both items. The HMAC scoreboard checks every read of STATUS, so neither `fifo_empty` nor `fifo_depth` is untested.\n\n- **`fifo_empty` (cr_cb42c461741a):** `hw/ip/hmac/dv/env/hmac_scoreboard.sv` predicts the whole STATUS value, including `fifo_empty`, from its model of the FIFO depth. It then compares the read data against that prediction with `DV_CHECK_EQ` (line 557). That check is skipped only when `sar_skip_ctxt` is set.\n- **`fifo_depth` (cr_d7084e0ddaed):** each STATUS read is compared with the predicted depth, and a mismatch raises `uvm_error`. The check allows the read value to be one higher than predicted. The sequences also poll `ral.status.fifo_depth` with `csr_spinwait`.\n- **Stimulus:** the sequences read STATUS through `read_status_intr_clr()` in `hmac_base_vseq.sv`, so the check runs in the smoke and related tests.\n\nThe one-cycle `fifo_empty` mismatch noted in `hmac_smoke_vseq.sv` affects the `intr_state` check, not the STATUS check."}
+{"t": "2026-11-10T20:54:44Z", "event": "[11 turns, $0.0907]"}

@@ -1,0 +1,60 @@
+finding_hash: 571af62ab5b44d39
+started_at: '2026-11-10T19:39:31Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Other spec text answers the finding's questions. The LOCK register description pairs each lock
+    bit with its entry. The hardware spec says untrusted users get an AXI error response. The integration
+    spec says programmed entries must be locked before use.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 830
+    line_end: 831
+    quote: "[br]Each bit corresponds to locking the associated MBO0X_VALID_AXI_USER register.\n      \
+      \           [br]Associated MBOX0_VALID_AXI_USER register is only valid once locked by this bit."
+    role: refutes
+    note: Ties the LOCK entry to the VALID_AXI_USER entry with the same index (5 entries each), which
+      answers the referent question.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1297
+    line_end: 1299
+    quote: Any untrusted AXI user trying to read or write the mailbox will receive an AXI error response
+    role: refutes
+    note: 'Gives the denied-request response: an AXI error, not read-as-zero with dropped writes.'
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2290
+    line_end: 2292
+    quote: 'If build-time integration straps are not used for configuring the trusted MBOX AXI users,
+      then trusted users will need to configured with the following lockable MCI registers before MBOX
+      can be used by SOC agents:'
+    role: refutes
+    note: Says the entries must be programmed and locked before use. Combined with the LOCK description,
+      an unlocked entry is not trusted.
+  searches:
+  - what: VALID_AXI_USER and AXI_USER_LOCK references in docs and rdl
+    where: repo docs/ and src/mci/rtl/mci_reg.rdl
+    found: LOCK register description, hardware spec section 'MCU Mailbox Limited Trusted AXI users', integration
+      spec requirement CSS_Axi_9
+  near_misses:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1562
+    line_end: 1562
+    why_not: This is about MCU SRAM AXI USER filtering, not the mailbox, so it does not answer the mailbox
+      question.
+  items: []
+  new_sources:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    reason: Section 'MCU Mailbox Limited Trusted AXI users' defines the trusted-user set and the error
+      response for untrusted users.
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    reason: Requirement CSS_Axi_9 and the 'MCU Mailbox Limited Trusted AXI users' section say entries
+      must be programmed and locked before use.
+  resolution: 'Spec text suffices: entry n is paired with LOCK[n]. An entry that is not locked is not
+    trusted. An untrusted user gets an AXI error response. A small clarification could say outright that
+    unlocked entries are excluded from the check.'
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.056463200000000005
+error: null

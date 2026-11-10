@@ -1,0 +1,111 @@
+path: src/fuse_ctrl/dv/env/otp_ctrl_scoreboard.sv
+scope:
+  kind: whole_file
+model: claude-sonnet-5-5
+cost_usd: 0.0532923
+file_kind: authored
+chunks:
+- title_path: otp_ctrl_scoreboard > class declaration and members
+  kind: class
+  line_start: 7
+  line_end: 59
+- title_path: otp_ctrl_scoreboard > build_phase/connect_phase/run_phase
+  kind: function
+  line_start: 60
+  line_end: 91
+- title_path: otp_ctrl_scoreboard > process_wipe_mem
+  kind: function
+  line_start: 92
+  line_end: 136
+- title_path: otp_ctrl_scoreboard > process_otp_power_up
+  kind: function
+  line_start: 137
+  line_end: 272
+- title_path: otp_ctrl_scoreboard > process_lc_esc
+  kind: function
+  line_start: 273
+  line_end: 313
+- title_path: otp_ctrl_scoreboard > recover_lc_prog_req
+  kind: function
+  line_start: 314
+  line_end: 327
+- title_path: otp_ctrl_scoreboard > process_lc_prog_req
+  kind: function
+  line_start: 328
+  line_end: 353
+- title_path: otp_ctrl_scoreboard > process_edn_req
+  kind: function
+  line_start: 354
+  line_end: 361
+- title_path: otp_ctrl_scoreboard > check_otbn_rsp
+  kind: function
+  line_start: 362
+  line_end: 420
+- title_path: otp_ctrl_scoreboard > check_flash_rsps
+  kind: function
+  line_start: 421
+  line_end: 466
+- title_path: otp_ctrl_scoreboard > check_sram_rsps
+  kind: function
+  line_start: 467
+  line_end: 524
+- title_path: otp_ctrl_scoreboard > process_tl_access and process_prim_tl_access
+  kind: function
+  line_start: 525
+  line_end: 559
+- title_path: otp_ctrl_scoreboard > process_core_tl_access > setup and memory windows
+  kind: function
+  line_start: 560
+  line_end: 658
+- title_path: otp_ctrl_scoreboard > process_core_tl_access > intr_state/intr_test
+  kind: entry
+  line_start: 659
+  line_end: 694
+- title_path: otp_ctrl_scoreboard > process_core_tl_access > direct_access_cmd
+  kind: entry
+  line_start: 695
+  line_end: 885
+- title_path: otp_ctrl_scoreboard > process_core_tl_access > status/check_trigger/direct_access_regwen
+  kind: entry
+  line_start: 886
+  line_end: 984
+- title_path: otp_ctrl_scoreboard > process_core_tl_access > err_code_0..12
+  kind: entry
+  line_start: 985
+  line_end: 1097
+- title_path: otp_ctrl_scoreboard > process_core_tl_access > secret2_digest/alert_test/default/read
+    check
+  kind: entry
+  line_start: 1098
+  line_end: 1142
+- title_path: otp_ctrl_scoreboard > recover_interrupted_op, backdoor_update_otp_array,
+    read_a_word_with_ecc
+  kind: function
+  line_start: 1143
+  line_end: 1196
+- title_path: otp_ctrl_scoreboard > reset and check_otp_idle
+  kind: function
+  line_start: 1197
+  line_end: 1259
+- title_path: otp_ctrl_scoreboard > predict_digest_csrs and update_digest_to_otp,
+    check_phase
+  kind: function
+  line_start: 1260
+  line_end: 1346
+- title_path: otp_ctrl_scoreboard > cal_digest_val and present_encode_with_final_const
+  kind: function
+  line_start: 1347
+  line_end: 1431
+- title_path: otp_ctrl_scoreboard > get_scb_otp_addr, predict_err, predict_no_err,
+    predict_rdata, get_key_from_otp, digest getters
+  kind: function
+  line_start: 1432
+  line_end: 1555
+- title_path: otp_ctrl_scoreboard > is_tl_mem_access_allowed
+  kind: function
+  line_start: 1556
+  line_end: 1672
+- title_path: otp_ctrl_scoreboard > predict_tl_err and set_exp_alert
+  kind: function
+  line_start: 1673
+  line_end: 1696

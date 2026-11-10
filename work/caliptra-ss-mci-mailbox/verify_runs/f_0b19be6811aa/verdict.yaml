@@ -1,0 +1,90 @@
+finding_hash: f6fce5f20a60ed54
+started_at: '2026-11-10T19:40:46Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The directed test mcu_intr_handler triggers every notif interrupt once, including mbox1_soc_req_lock
+    and mbox1_ecc_cor. It then compares the summed hardware counters against the firmware count and kills
+    the sim on a mismatch. That covers the increment-by-1 items (cr_4400c784ffb0, cr_49c8b388dda9), though
+    only in aggregate. I found no test that drives a counter to saturation, so the two saturation items
+    stand. The internal decrement pulse is only checked indirectly, so I left that item inconclusive.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 256
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: refutes
+    note: Check fails the sim if the summed HW counters differ from the number of interrupts triggered.
+      Covers increment-by-1 in aggregate.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 117
+    line_end: 117
+    quote: MCI_REG_INTR_BLOCK_RF_NOTIF0_INTR_TRIG_R_NOTIF_MBOX1_SOC_REQ_LOCK_TRIG_MASK  ); mci_notif_intr_count++;
+    role: refutes
+    note: 'Stimulus: mbox1_soc_req_lock triggered once and counted in firmware.'
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 113
+    line_end: 113
+    quote: MCI_REG_INTR_BLOCK_RF_NOTIF0_INTR_TRIG_R_NOTIF_MBOX1_ECC_COR_TRIG_MASK       ); mci_notif_intr_count++;
+    role: refutes
+    note: 'Stimulus: mbox1_ecc_cor triggered once and counted in firmware.'
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1565
+    line_end: 1565
+    quote: Will not overflow ('incrsaturate').
+    role: supports
+    note: Saturation requirement. No test drives a counter to 2^32.
+  searches:
+  - what: Tests that read or check the INTR_COUNT registers
+    where: src/integration/test_suites
+    found: Only mcu_intr_handler.c checks them, via a sum comparison. It is in the nightly directed regression
+      and the master test list.
+  - what: Saturation or overflow tests of the interrupt counters
+    where: whole repo
+    found: None. Only coverpoints in mci_top_cov_if.sv, which are not checks.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4800
+    line_end: 4800
+    why_not: Coverpoints on the counter fields only. They check nothing.
+  items:
+  - id: cr_4400c784ffb0
+    outcome: withdrawn
+    reason: mbox1_soc_req_lock is triggered once, and the summed counters are compared with the firmware
+      count. The check is aggregate, so errors in different counters could cancel, but it is a real checked
+      test.
+    evidence:
+    - 0
+    - 1
+  - id: cr_49c8b388dda9
+    outcome: withdrawn
+    reason: mbox1_ecc_cor is triggered once and included in the summed counter check, which fails the
+      sim on mismatch. The check is aggregate.
+    evidence:
+    - 0
+    - 2
+  - id: cr_4706175d6d92
+    outcome: inconclusive
+    reason: The internal decrement pulse is not checked directly. A wrong pulse would only show up indirectly
+      through the counter total.
+    evidence:
+    - 0
+  - id: cr_4868f6c38d1f
+    outcome: verified
+    reason: No test drives a counter to saturation.
+    evidence:
+    - 3
+  - id: cr_48e9dbdcfdb2
+    outcome: verified
+    reason: No test drives a counter to saturation.
+    evidence:
+    - 3
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Directed test that checks interrupt event counters against the number of triggers.
+submissions: 2
+rejections: []
+turns: 13
+cost_usd: 0.17104920000000004
+error: null

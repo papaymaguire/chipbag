@@ -1,0 +1,76 @@
+finding_hash: 643c556abe8f6655
+started_at: '2026-11-10T20:55:35Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: 'Sideload is untested: the DV base vseq forces CFG.sideload to 0 (TODO #31634). sha_en, digest_swap
+    and digest_size are exercised and checked by the scoreboard in functional tests. The hwext/hwqe items,
+    however, are implementation attributes that no test checks directly.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: '// TODO(#31634): Disable sideloading for now.'
+    role: supports
+    note: Sideload is forced to 0 in random config, so hwqe on sideload is never exercised.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 353
+    line_end: 353
+    quote: if (`gmv(ral.cfg.digest_swap)) begin
+    role: context
+    note: Scoreboard models digest_swap and compares the digest, which checks the field functionally.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 306
+    line_end: 306
+    quote: if (sha_en && !item.a_data[ShaEn]) begin
+    role: context
+    note: Scoreboard models sha_en writes and the digest clear, which checks the field functionally.
+  searches:
+  - what: sideload in hmac DV seq_lib/scoreboard
+    where: hw/ip/hmac/dv/env
+    found: Only the agent setup, plus the line in base_vseq that forces sideload to 0.
+  - what: sha_en, digest_swap and digest_size in DV
+    where: hw/ip/hmac/dv/env
+    found: Used in sequences and modelled in the scoreboard, which checks the digest.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 353
+    line_end: 353
+    why_not: Checks digest_swap behaviour, not the hwext attribute itself.
+  items:
+  - id: cr_2d1b1f596874
+    outcome: inconclusive
+    reason: digest_size is exercised and checked by the scoreboard, but no test checks the hwext attribute
+      directly.
+    evidence:
+    - 1
+  - id: cr_2d95da7d94e3
+    outcome: inconclusive
+    reason: digest_swap is exercised and checked by the scoreboard, but no test checks the hwext attribute
+      directly.
+    evidence:
+    - 1
+  - id: cr_4c2b700f74a7
+    outcome: inconclusive
+    reason: sha_en writes are modelled by the scoreboard, including the digest clear, but no test checks
+      the hwqe pulse directly.
+    evidence:
+    - 2
+  - id: cr_5a80d0a89e9e
+    outcome: verified
+    reason: Sideload is forced to 0 in DV, so software writes of CFG.sideload never reach the hwqe path.
+    evidence:
+    - 0
+  - id: cr_66c5e6c7c036
+    outcome: inconclusive
+    reason: sha_en is exercised and checked by the scoreboard, but no test checks the hwext attribute
+      directly.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.1051427
+error: null

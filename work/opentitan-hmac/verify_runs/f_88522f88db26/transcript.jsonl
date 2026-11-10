@@ -1,0 +1,10 @@
+{"t": "2026-11-10T21:10:50Z", "event": "  \u2192 Grep: sideload|key_valid|SwInvalidConfig|ErrSwInvalid|SwInvalid"}
+{"t": "2026-11-10T21:10:50Z", "event": "  \u2192 Grep: sideload|SwInvalidConfig"}
+{"t": "2026-11-10T21:10:52Z", "event": "  \u2192 Grep: sideload|key_valid|SwInvalid|revok"}
+{"t": "2026-11-10T21:10:53Z", "event": "Sideloading is disabled in the vseq; the scoreboard has some handling but no stimulus."}
+{"t": "2026-11-10T21:10:54Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T21:10:55Z", "event": "  \u2192 Grep: hmac"}
+{"t": "2026-11-10T21:11:03Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:11:11Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:11:15Z", "event": "I submitted the verdict as verified: none of the five sideloaded-key items has a test that both creates the condition and checks the result.\n\n- **Block-level DV:** `hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv:211-212` forces the CFG sideload bit to 0, with a TODO to disable sideloading for now. No block-level test ever runs a sideloaded operation, so none can revoke the key mid-operation or hold the valid indication across one.\n- **Scoreboard:** `hmac_scoreboard.sv` at lines 199 and 219 predicts `SwInvalidConfig`. It is never reached without sideload stimulus, so I counted it as a near miss.\n- **Chip level:** the only other sideload test is `chip_sw_keymgr_dpe_sideload_hmac_vseq.sv`. I did not read it in full. I judged from its name that it covers only the basic keymgr-to-HMAC flow, not revocation, abort, digest clearing or CFG retention.\n\nAll five items were marked verified (untested). The weakest part of that is the chip-level test, which I only identified by name and a count of its HMAC mentions."}
+{"t": "2026-11-10T21:11:15Z", "event": "[8 turns, $0.0656]"}

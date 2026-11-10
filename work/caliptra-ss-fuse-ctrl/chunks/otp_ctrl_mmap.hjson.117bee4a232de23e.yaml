@@ -1,0 +1,88 @@
+path: src/fuse_ctrl/data/otp_ctrl_mmap.hjson
+scope:
+  kind: whole_file
+model: claude-sonnet-5-5
+cost_usd: 0.0614528
+chunks:
+- title_path: otp_ctrl_mmap > Header and keys
+  kind: section
+  line_start: 1
+  line_end: 74
+- title_path: otp_ctrl_mmap > partitions > SW_TEST_UNLOCK_PARTITION
+  kind: entry
+  line_start: 75
+  line_end: 100
+- title_path: otp_ctrl_mmap > partitions > SECRET_MANUF_PARTITION
+  kind: entry
+  line_start: 101
+  line_end: 128
+- title_path: otp_ctrl_mmap > partitions > SECRET_PROD_PARTITION_0
+  kind: entry
+  line_start: 129
+  line_end: 156
+- title_path: otp_ctrl_mmap > partitions > SECRET_PROD_PARTITION_1
+  kind: entry
+  line_start: 157
+  line_end: 184
+- title_path: otp_ctrl_mmap > partitions > SECRET_PROD_PARTITION_2
+  kind: entry
+  line_start: 185
+  line_end: 212
+- title_path: otp_ctrl_mmap > partitions > SECRET_PROD_PARTITION_3
+  kind: entry
+  line_start: 213
+  line_end: 240
+- title_path: otp_ctrl_mmap > partitions > SW_MANUF_PARTITION
+  kind: entry
+  line_start: 241
+  line_end: 371
+- title_path: otp_ctrl_mmap > partitions > SECRET_LC_TRANSITION_PARTITION
+  kind: entry
+  line_start: 372
+  line_end: 485
+- title_path: otp_ctrl_mmap > partitions > SVN_PARTITION
+  kind: entry
+  line_start: 486
+  line_end: 534
+- title_path: otp_ctrl_mmap > partitions > VENDOR_TEST_PARTITION
+  kind: entry
+  line_start: 535
+  line_end: 562
+- title_path: otp_ctrl_mmap > partitions > VENDOR_HASHES_MANUF_PARTITION
+  kind: entry
+  line_start: 563
+  line_end: 595
+- title_path: otp_ctrl_mmap > partitions > VENDOR_HASHES_PROD_PARTITION
+  kind: entry
+  line_start: 596
+  line_end: 889
+- title_path: otp_ctrl_mmap > partitions > VENDOR_REVOCATIONS_PROD_PARTITION > part
+    1
+  kind: entry
+  line_start: 890
+  line_end: 1103
+- title_path: otp_ctrl_mmap > partitions > VENDOR_REVOCATIONS_PROD_PARTITION > part
+    2
+  kind: entry
+  line_start: 1104
+  line_end: 1316
+- title_path: otp_ctrl_mmap > partitions > VENDOR_SECRET_PROD_PARTITION
+  kind: entry
+  line_start: 1317
+  line_end: 1447
+- title_path: otp_ctrl_mmap > partitions > VENDOR_NON_SECRET_PROD_PARTITION
+  kind: entry
+  line_start: 1448
+  line_end: 1562
+- title_path: otp_ctrl_mmap > partitions > CPTRA_SS_LOCK_HEK_PROD_0-3
+  kind: entry
+  line_start: 1563
+  line_end: 1658
+- title_path: otp_ctrl_mmap > partitions > CPTRA_SS_LOCK_HEK_PROD_4-7
+  kind: entry
+  line_start: 1659
+  line_end: 1754
+- title_path: otp_ctrl_mmap > partitions > LIFE_CYCLE
+  kind: entry
+  line_start: 1755
+  line_end: 1804

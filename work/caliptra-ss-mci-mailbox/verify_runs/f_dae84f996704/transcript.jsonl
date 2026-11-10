@@ -1,0 +1,13 @@
+{"t": "2026-11-10T20:43:17Z", "event": "  \u2192 Grep: TARGET_STATUS|TARGET_USER_VALID|MBOX_LOCK"}
+{"t": "2026-11-10T20:43:18Z", "event": "  \u2192 Grep: mcu_mbox.*(target|TARGET)"}
+{"t": "2026-11-10T20:43:20Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c"}
+{"t": "2026-11-10T20:43:20Z", "event": "  \u2192 Grep: NONE|mbox_lock|MBOX_LOCK|reset"}
+{"t": "2026-11-10T20:43:23Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh"}
+{"t": "2026-11-10T20:43:24Z", "event": "  \u2192 Grep: mcu_mbox_read_execute|EXECUTE"}
+{"t": "2026-11-10T20:43:29Z", "event": "  \u2192 Grep: non-responsive|nonresponsive|unresponsive|stuck.*target"}
+{"t": "2026-11-10T20:43:40Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:43:41Z", "event": "Retrying the verdict submission. The tool name was wrong, so I'm calling it by its full name."}
+{"t": "2026-11-10T20:43:48Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:43:59Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:44:04Z", "event": "I submitted the verdict as verified overall. Four of the five items stand as untested and one, the NONE-owner case, was withdrawn.\n\n- **cr_51f02e52744d (no software owner when `MBOX_LOCK` is not set): withdrawn.** The ownership flow in `mci_mbox_ownership_flow.svh` writes `EXECUTE=0` and then asserts the SRAM owner is NONE in the \"released\" phase, with the lock free.\n- **cr_12643f17b618 (next Target user after the clear): untested.** The smoke test runs one transaction and checks that `TARGET_USER_VALID` is cleared. The flow re-programs the Target user only in later transactions, after a lock release, and has no check on the clear-then-reprogram sequence.\n- **cr_eb54be3afc42 (Target finishes SRAM and DMA accesses before the terminal status): untested.** This is Target-side behaviour, and no check detects a Target violating it.\n- **cr_f484f55cbce1 (`EXECUTE` stays 1 after the terminal write): untested.** Nothing reads `EXECUTE` after the terminal `TARGET_STATUS` write; the checks look only at the SRAM owner and the cleared target registers.\n- **cr_3437364f9e35 (only an MCI reset recovers a non-responsive Target): untested.** My searches for non-responsive or unresponsive terms found nothing for the MCU mailbox.\n\nI did not run any tests. This is based on reading the test sources and testbench flow."}
+{"t": "2026-11-10T20:44:04Z", "event": "[11 turns, $0.1448]"}

@@ -1,0 +1,14 @@
+{"t": "2026-11-10T19:46:06Z", "event": "  \u2192 Grep: notif_cptra_mbox_cmd_avail_intr_count_incr|notif_mbox1_cmd_avail_intr_count_incr|notif_mbox0_target_done_intr_count_incr"}
+{"t": "2026-11-10T19:46:07Z", "event": "  \u2192 Grep: intr_count_incr"}
+{"t": "2026-11-10T19:46:09Z", "event": "  \u2192 Grep: intr_count_incr"}
+{"t": "2026-11-10T19:46:09Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T19:46:11Z", "event": "Those C hits are probably the generic \"intr_count\" regs. Check for notif ones specifically."}
+{"t": "2026-11-10T19:46:12Z", "event": "  \u2192 Grep: notif_(cptra_mbox_cmd_avail|mbox1_cmd_avail|mbox0_target_done)_intr_count|NOTIF_(CPTRA_MBOX_CMD_AVAIL|MBOX1_CMD_AVAIL|MBOX0_TARGET_DONE)_INTR_COUNT"}
+{"t": "2026-11-10T19:46:14Z", "event": "Only address maps/coverage; no tests use them. Quick check for tests reading the mbox notif count."}
+{"t": "2026-11-10T19:46:14Z", "event": "  \u2192 Grep: NOTIF_(CPTRA_MBOX_CMD_AVAIL|MBOX1_CMD_AVAIL|MBOX0_TARGET_DONE)_INTR_COUNT"}
+{"t": "2026-11-10T19:46:16Z", "event": "  \u2192 Grep: NOTIF_(CPTRA_MBOX_CMD_AVAIL|MBOX1_CMD_AVAIL|MBOX0_TARGET_DONE)_INTR_COUNT"}
+{"t": "2026-11-10T19:46:18Z", "event": "Those read the count registers (not the incr pulse) and don't check increments."}
+{"t": "2026-11-10T19:46:24Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:46:32Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:46:35Z", "event": "I submitted the verdict as verified: the finding stands for all 5 items. I found no test that exercises the `notif_*_intr_count_incr_r` registers or checks the event-counter behaviour for any of them.\n\n- **Where the names appear:** `mci_reg.sv`, `mci_reg_uvm.sv`, the address-map defines and `mci_top_cov_if.sv`. The coverage file only has coverpoints, which can't fail a test.\n- **Closest tests:** `mcu_intr_handler.c` (lines 211\u2013215) reads the `..._INTR_COUNT_R` registers and sums them. `libs/mci/mci.c` (lines 582\u2013586) lists them in a register table. Neither writes the incr pulse registers or checks an increment, so I recorded them as near misses.\n- **Per item:** none of the five (swwel gating, rising-edge increment, counter field, increment by 1, 1-bit down-counter pulse) has a stimulus and a check that would fail on wrong behaviour.\n\nThe first submission was rejected for having too few searches recorded, so I resubmitted with a search entry per item."}
+{"t": "2026-11-10T19:46:35Z", "event": "[10 turns, $0.0862]"}

@@ -1,0 +1,3014 @@
+generated_at: '2026-11-10T19:12:46Z'
+run_id: 2026-11-10T191243Z
+model: claude-sonnet-5-5
+top_k: 8
+stats:
+  needs_test: 48
+  by_construction: 61
+  requirements_judged: 48
+  requirements_without_candidates: 0
+  candidate_pairs: 132
+  judged_pairs: 623
+  batches: 17
+  entries: 25
+  covers: 1
+  partial: 24
+  conflicts: 0
+  by_strength:
+    stimulus_only: 6
+    unknown: 14
+    non_failing: 5
+  entries_citing_a_checker: 7
+  requirements_mapped: 14
+  requirements_mapped_by_a_test: 14
+  requirements_mapped_only_by_plans_coverage_or_lists: 0
+  requirements_unmapped: 34
+  dropped: {}
+  plan_links: 0
+  plan_links_from_dedup: 0
+  plans: 0
+  plans_with_a_test: 0
+  plan_link_dropped: {}
+  register_categories:
+    access: no_suite
+    other: no_suite
+    reset_values: no_suite
+  llm_calls: 1
+  cached_calls: 17
+  errors: 0
+  cost_usd: 0.0024
+errors: []
+register_suites:
+  requirements: 61
+  categories:
+    access:
+      requirements: 40
+      status: no_suite
+      suites: []
+    other:
+      requirements: 2
+      status: no_suite
+      suites: []
+    reset_values:
+      requirements: 19
+      status: no_suite
+      suites: []
+  suites: []
+entries:
+- req_id: cr_27bb5f1d8f1f
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: partial
+  strength: stimulus_only
+  rationale: Phases 3, 4, 6 and 7 run independent mode with error interrupts enabled and wait for timeouts,
+    but nothing checks that the error interrupt is asserted.
+  missing: A check that the error interrupt is asserted on timeout in independent mode.
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: &id001
+    - 1289
+    - 1289
+    text: When they timeout an error interrupt will be asserted.
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id032
+    - 73
+    - 73
+    text: '*soc_intr_en = MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_EN_R_ERROR_WDT_TIMER1_TIMEOUT_EN_MASK | MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_EN_R_ERROR_WDT_TIMER2_TIMEOUT_EN_MASK;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: Enable WDT timer1/timer2 timeout error interrupts and the MCI global error/notif interrupts.
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id033
+    - 74
+    - 74
+    text: '*mci_global_intr_en = MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R_ERROR_EN_MASK | MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R_NOTIF_EN_MASK;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: Enable WDT timer1/timer2 timeout error interrupts and the MCI global error/notif interrupts.
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id002
+    - 103
+    - 103
+    text: else if (rst_count == 3) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id003
+    - 105
+    - 105
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x200, 0x00000000, 0x200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id004
+    - 113
+    - 113
+    text: service_t2_intr();
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id005
+    - 110
+    - 110
+    text: '*wdt_timer1_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id006
+    - 115
+    - 115
+    text: '*wdt_timer2_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id007
+    - 120
+    - 120
+    text: else if (rst_count == 4) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 4: independent mode with both timers enabled, wait for both timeouts, then cold
+      reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id008
+    - 145
+    - 145
+    text: else if (rst_count == 6) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 6: independent mode with timer2 enabled and timer1 disabled, set the timer2 period,
+      wait for the timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id009
+    - 152
+    - 152
+    text: '*wdt_timer2_en = MCI_REG_WDT_TIMER2_EN_TIMER2_EN_MASK;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 6: independent mode with timer2 enabled and timer1 disabled, set the timer2 period,
+      wait for the timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id010
+    - 153
+    - 153
+    text: set_t2_period(0x00000200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 6: independent mode with timer2 enabled and timer1 disabled, set the timer2 period,
+      wait for the timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id011
+    - 162
+    - 162
+    text: else if (rst_count == 7) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 7: independent mode with T1_DIS_T2_EN, wait for the timer2 timeout, then cold reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id012
+    - 164
+    - 164
+    text: configure_wdt_independent(T1_DIS_T2_EN, 0x200, 0x00000000, 0x200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 7: independent mode with T1_DIS_T2_EN, wait for the timer2 timeout, then cold reset.'
+  req_hash: 30c61842c286
+  unit_hash: 57b2dab6f5d8
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_27bb5f1d8f1f
+  unit_id: ct_67663b5d022c
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt
+  relation: partial
+  strength: unknown
+  rationale: Configures independent mode with both timers enabled and polls WDT_STATUS T1 and T2 timeout
+    bits. It services the interrupts but does not check that an error interrupt is asserted.
+  missing: A check that the error interrupt is actually asserted (only the status timeout bits are polled).
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: *id001
+    text: When they timeout an error interrupt will be asserted.
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: &id027
+    - 91
+    - 91
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x00000040, 0x00000000, 0x00000040, 0x00000000);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Configure independent mode with both timers enabled, each with a 0x40 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: &id028
+    - 99
+    - 99
+    text: service_t1_intr();
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Service the T1 and T2 interrupts after the independent-mode timeouts.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: &id029
+    - 100
+    - 100
+    text: service_t2_intr();
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Service the T1 and T2 interrupts after the independent-mode timeouts.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: &id025
+    - 96
+    - 96
+    text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T2_TIMEOUT_MASK));
+    kind: check
+    case_id: vc_a49967e28115
+    statement: Poll the WDT status register until the T2 timeout bit is set (independent mode and cascade
+      mode with t2 timeout).
+    fails_test: unknown
+  req_hash: 30c61842c286
+  unit_hash: 296f0407ec5a
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_2a8e5fb09eff
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: partial
+  strength: non_failing
+  rationale: Independent-mode phases run to timeouts, and the NMI handler would flag an NMI pin set. That
+    check only reports and the test does not assert that no NMI occurs.
+  missing: A failing check that the NMI pin and NMI output stay deasserted in independent mode.
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines:
+    - 1289
+    - 1289
+    text: The NMI will never be asserted while in independent mode.
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id002
+    text: else if (rst_count == 3) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id003
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x200, 0x00000000, 0x200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id004
+    text: service_t2_intr();
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id005
+    text: '*wdt_timer1_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id006
+    text: '*wdt_timer2_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id007
+    text: else if (rst_count == 4) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 4: independent mode with both timers enabled, wait for both timeouts, then cold
+      reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id008
+    text: else if (rst_count == 6) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 6: independent mode with timer2 enabled and timer1 disabled, set the timer2 period,
+      wait for the timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id009
+    text: '*wdt_timer2_en = MCI_REG_WDT_TIMER2_EN_TIMER2_EN_MASK;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 6: independent mode with timer2 enabled and timer1 disabled, set the timer2 period,
+      wait for the timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id010
+    text: set_t2_period(0x00000200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 6: independent mode with timer2 enabled and timer1 disabled, set the timer2 period,
+      wait for the timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id011
+    text: else if (rst_count == 7) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 7: independent mode with T1_DIS_T2_EN, wait for the timer2 timeout, then cold reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id012
+    text: configure_wdt_independent(T1_DIS_T2_EN, 0x200, 0x00000000, 0x200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 7: independent mode with T1_DIS_T2_EN, wait for the timer2 timeout, then cold reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id018
+    - 58
+    - 58
+    text: if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK) {
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: The NMI handler reads HW_ERROR_FATAL and tests the NMI pin bit. If it is set, the handler
+      requests a cold reset. Otherwise it only prints an error message.
+    fails_test: 'no'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id019
+    - 63
+    - 63
+    text: VPRINTF(ERROR, "Unexpected entry into NMI handler function\n");
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: The NMI handler reads HW_ERROR_FATAL and tests the NMI pin bit. If it is set, the handler
+      requests a cold reset. Otherwise it only prints an error message.
+    fails_test: 'no'
+  req_hash: 34a4685018d1
+  unit_hash: 57b2dab6f5d8
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_408718719167
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: partial
+  strength: unknown
+  rationale: The test writes the NMI handler address into the MCU NMI vector register (s2) and later triggers
+    an NMI that relies on that vector. This only indirectly shows a software write taking effect, and
+    only in the unlocked case.
+  missing: No check that a write is blocked when ss_config_unlock is deasserted, no readback of the register,
+    and no explicit check that the NMI jumped to the written vector.
+  checkers: []
+  req_cite:
+  - path: src/mci/rtl/mci_reg.rdl
+    lines: &id013
+    - 806
+    - 806
+    text: swwe = axi_mcu_or_mci_soc_config_req__ss_config_unlock
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines:
+    - 75
+    - 75
+    text: lsu_write_32(SOC_MCI_TOP_MCI_REG_MCU_NMI_VECTOR, (uint32_t) (nmi_handler));
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: Install the NMI handler address in the MCU NMI vector register.
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id014
+    - 135
+    - 135
+    text: else if (rst_count == 5) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 5: cascaded mode with a timer2 timeout, wait for the NMI pin in HW_ERROR_FATAL,
+      then call handle_error if execution continues.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id015
+    - 137
+    - 137
+    text: configure_wdt_cascade(0x200, 0x00, 0x00000200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 5: cascaded mode with a timer2 timeout, wait for the NMI pin in HW_ERROR_FATAL,
+      then call handle_error if execution continues.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id016
+    - 142
+    - 142
+    text: while(!(lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK));
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: In phase 5, poll until the HW_ERROR_FATAL NMI pin bit is set. If execution continues past
+      the NMI/reset, handle_error is called, but its failure behaviour is not visible here.
+    fails_test: unknown
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id017
+    - 143
+    - 143
+    text: handle_error("WDT timeout in cascade mode is expected to trigger NMI and reset!\n");
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: In phase 5, poll until the HW_ERROR_FATAL NMI pin bit is set. If execution continues past
+      the NMI/reset, handle_error is called, but its failure behaviour is not visible here.
+    fails_test: unknown
+  req_hash: 82c02f977c61
+  unit_hash: 57b2dab6f5d8
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_408718719167
+  unit_id: ct_67663b5d022c
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt
+  relation: partial
+  strength: non_failing
+  rationale: The test sets the NMI vector (s1) and later expects an NMI-triggered cold reset handled by
+    the installed handler. This only indirectly shows a software write taking effect, and only in the
+    unlocked case.
+  missing: No check that a write is blocked when ss_config_unlock is deasserted, no readback of the register,
+    and no explicit check that the NMI jumped to the written vector.
+  checkers: []
+  req_cite:
+  - path: src/mci/rtl/mci_reg.rdl
+    lines: *id013
+    text: swwe = axi_mcu_or_mci_soc_config_req__ss_config_unlock
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines:
+    - 71
+    - 71
+    text: '*soc_intr_en = MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_EN_R_ERROR_WDT_TIMER1_TIMEOUT_EN_MASK | MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_EN_R_ERROR_WDT_TIMER2_TIMEOUT_EN_MASK;'
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Enable WDT timer1/timer2 timeout error interrupts, the global error/notif interrupts, and
+      set the NMI vector.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines:
+    - 72
+    - 72
+    text: '*mci_global_intr_en = MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R_ERROR_EN_MASK | MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R_NOTIF_EN_MASK;'
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Enable WDT timer1/timer2 timeout error interrupts, the global error/notif interrupts, and
+      set the NMI vector.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines:
+    - 73
+    - 73
+    text: lsu_write_32(SOC_MCI_TOP_MCI_REG_MCU_NMI_VECTOR, (uint32_t) (nmi_handler));
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Enable WDT timer1/timer2 timeout error interrupts, the global error/notif interrupts, and
+      set the NMI vector.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: &id022
+    - 58
+    - 58
+    text: SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: The NMI handler requests a cold reset if the NMI pin bit is set in HW_ERROR_FATAL.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: &id023
+    - 57
+    - 57
+    text: if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK) {
+    kind: check
+    case_id: vc_a49967e28115
+    statement: The NMI handler checks that the NMI pin bit is set in HW_ERROR_FATAL; otherwise it only
+      logs an error message.
+    fails_test: 'no'
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: &id024
+    - 61
+    - 61
+    text: VPRINTF(ERROR, "Unexpected entry into NMI handler function\n");
+    kind: check
+    case_id: vc_a49967e28115
+    statement: The NMI handler checks that the NMI pin bit is set in HW_ERROR_FATAL; otherwise it only
+      logs an error message.
+    fails_test: 'no'
+  req_hash: 82c02f977c61
+  unit_hash: 296f0407ec5a
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_53f341ca2b26
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: covers
+  strength: unknown
+  rationale: Phase 5 runs cascade mode with a timer2 timeout and polls until the HW_ERROR_FATAL NMI pin
+    bit is set. The NMI handler is also installed.
+  missing: null
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: &id020
+    - 1284
+    - 1284
+    text: 'If the WDT is not serviced before Timer 2 times out two things happen:'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: &id021
+    - 1286
+    - 1286
+    text: NMI output pin is asserted
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id014
+    text: else if (rst_count == 5) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 5: cascaded mode with a timer2 timeout, wait for the NMI pin in HW_ERROR_FATAL,
+      then call handle_error if execution continues.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id015
+    text: configure_wdt_cascade(0x200, 0x00, 0x00000200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 5: cascaded mode with a timer2 timeout, wait for the NMI pin in HW_ERROR_FATAL,
+      then call handle_error if execution continues.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id016
+    text: while(!(lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK));
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: In phase 5, poll until the HW_ERROR_FATAL NMI pin bit is set. If execution continues past
+      the NMI/reset, handle_error is called, but its failure behaviour is not visible here.
+    fails_test: unknown
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id017
+    text: handle_error("WDT timeout in cascade mode is expected to trigger NMI and reset!\n");
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: In phase 5, poll until the HW_ERROR_FATAL NMI pin bit is set. If execution continues past
+      the NMI/reset, handle_error is called, but its failure behaviour is not visible here.
+    fails_test: unknown
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id018
+    text: if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK) {
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: The NMI handler reads HW_ERROR_FATAL and tests the NMI pin bit. If it is set, the handler
+      requests a cold reset. Otherwise it only prints an error message.
+    fails_test: 'no'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id019
+    text: VPRINTF(ERROR, "Unexpected entry into NMI handler function\n");
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: The NMI handler reads HW_ERROR_FATAL and tests the NMI pin bit. If it is set, the handler
+      requests a cold reset. Otherwise it only prints an error message.
+    fails_test: 'no'
+  req_hash: c7aeddcba7b9
+  unit_hash: 57b2dab6f5d8
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_53f341ca2b26
+  unit_id: ct_67663b5d022c
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt
+  relation: partial
+  strength: unknown
+  rationale: Runs cascade mode with both timers timing out and the NMI handler tests the NMI pin bit.
+    That check only reports, and there is no direct wait on or assertion of the NMI pin.
+  missing: A failing check that the NMI output pin is asserted after Timer 2 timeout.
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: *id020
+    text: 'If the WDT is not serviced before Timer 2 times out two things happen:'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: *id021
+    text: NMI output pin is asserted
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: &id051
+    - 108
+    - 108
+    text: configure_wdt_cascade(0x00000040, 0x00000000, 0x00000040, 0x00000000);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Configure cascade mode with a 0x40 period on both timers so that T2 also times out.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id022
+    text: SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: The NMI handler requests a cold reset if the NMI pin bit is set in HW_ERROR_FATAL.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id023
+    text: if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK) {
+    kind: check
+    case_id: vc_a49967e28115
+    statement: The NMI handler checks that the NMI pin bit is set in HW_ERROR_FATAL; otherwise it only
+      logs an error message.
+    fails_test: 'no'
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id024
+    text: VPRINTF(ERROR, "Unexpected entry into NMI handler function\n");
+    kind: check
+    case_id: vc_a49967e28115
+    statement: The NMI handler checks that the NMI pin bit is set in HW_ERROR_FATAL; otherwise it only
+      logs an error message.
+    fails_test: 'no'
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id025
+    text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T2_TIMEOUT_MASK));
+    kind: check
+    case_id: vc_a49967e28115
+    statement: Poll the WDT status register until the T2 timeout bit is set (independent mode and cascade
+      mode with t2 timeout).
+    fails_test: unknown
+  req_hash: c7aeddcba7b9
+  unit_hash: 296f0407ec5a
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_636839e0c3cf
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: partial
+  strength: unknown
+  rationale: The test drives phases that switch between cascaded and independent WDT modes and waits for
+    timeouts, with passive assertions checking counter behavior in each mode. Independent mode is entered
+    after cascade phases, but no check ties the disabled cascade behavior directly to timer2_en=1.
+  missing: No direct check that cascaded mode is disabled when timer2_en is set; the checks are polling
+    and reporting-only, so the outcome is only implicitly observed.
+  checkers:
+  - ct_9fa1e52ddd7f
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  req_cite:
+  - path: src/mci/rtl/mci_reg.rdl
+    lines: &id026
+    - 703
+    - 703
+    text: 'Note: Setting this to 1 will disable the default cascaded mode'
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id034
+    - 83
+    - 83
+    text: if (rst_count == 1) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id035
+    - 85
+    - 85
+    text: configure_wdt_cascade(0x200, 0x00, 0xffffffff, 0xffffffff);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id036
+    - 88
+    - 88
+    text: service_t1_intr();
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id037
+    - 90
+    - 90
+    text: SEND_STDOUT_CTRL(TB_CMD_WARM_RESET);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id002
+    text: else if (rst_count == 3) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id003
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x200, 0x00000000, 0x200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id004
+    text: service_t2_intr();
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id005
+    text: '*wdt_timer1_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id006
+    text: '*wdt_timer2_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id007
+    text: else if (rst_count == 4) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 4: independent mode with both timers enabled, wait for both timeouts, then cold
+      reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id016
+    text: while(!(lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK));
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: In phase 5, poll until the HW_ERROR_FATAL NMI pin bit is set. If execution continues past
+      the NMI/reset, handle_error is called, but its failure behaviour is not visible here.
+    fails_test: unknown
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id017
+    text: handle_error("WDT timeout in cascade mode is expected to trigger NMI and reset!\n");
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: In phase 5, poll until the HW_ERROR_FATAL NMI pin bit is set. If execution continues past
+      the NMI/reset, handle_error is called, but its failure behaviour is not visible here.
+    fails_test: unknown
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: &id030
+    - 129
+    - 129
+    text: (`MCI_WDT_PATH.i_wdt.wdt_timer1_timeout_serviced_qual && `MCI_WDT_PATH.timer1_en && `MCI_WDT_PATH.timer2_en
+      && !`MCI_WDT_PATH.t2_timeout) |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+    kind: checker_check
+    case_id: vc_2405484d10ff
+    statement: After timer1 timeout serviced with both timers enabled and no t2_timeout, timer1_count
+      must be 0 on the next clock; failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_c2784848d855
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: &id031
+    - 135
+    - 135
+    text: (`MCI_WDT_PATH.i_wdt.wdt_timer2_timeout_serviced_qual && `MCI_WDT_PATH.timer2_en) |=> (`MCI_WDT_PATH.i_wdt.timer2_count
+      == 'h0)
+    kind: checker_check
+    case_id: vc_3d3ea34db036
+    statement: After timer2 timeout serviced with timer2 enabled, timer2_count must be 0 on the next clock;
+      failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_d147697bef91
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: &id059
+    - 117
+    - 117
+    text: (`MCI_WDT_PATH.timer1_restart && `MCI_WDT_PATH.timer1_en && `MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t1_timeout)
+      |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+    kind: checker_check
+    case_id: vc_cb193fd51bf3
+    statement: After timer1_restart with both timers enabled and no t1_timeout, timer1_count must be 0
+      on the next clock; failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_b058210792fe
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: &id060
+    - 123
+    - 123
+    text: (`MCI_WDT_PATH.timer2_restart && `MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t2_timeout) |=> (`MCI_WDT_PATH.i_wdt.timer2_count
+      == 'h0)
+    kind: checker_check
+    case_id: vc_63c46acf4d2a
+    statement: After timer2_restart with timer2_en and no t2_timeout, timer2_count must be 0 on the next
+      clock; failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_9fa1e52ddd7f
+  req_hash: 6a8c2a8d33aa
+  unit_hash: 57b2dab6f5d8
+  checker_hashes:
+    ct_c2784848d855: 11cd279181f8
+    ct_d147697bef91: 689ceb666724
+    ct_b058210792fe: 07d719bc6782
+    ct_9fa1e52ddd7f: 3cf7df05b511
+  run_id: 2026-11-10T191243Z
+- req_id: cr_636839e0c3cf
+  unit_id: ct_67663b5d022c
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt
+  relation: partial
+  strength: unknown
+  rationale: The test runs cascade mode and then independent mode, polling T1 and T2 timeout status bits,
+    with assertions on timer counters in each mode. It does not directly check that cascade behavior is
+    disabled by timer2_en.
+  missing: No direct check that cascade behavior ceases when timer2_en=1; only timeout status polling
+    plus report-only assertions.
+  checkers:
+  - ct_c2784848d855
+  - ct_d147697bef91
+  req_cite:
+  - path: src/mci/rtl/mci_reg.rdl
+    lines: *id026
+    text: 'Note: Setting this to 1 will disable the default cascaded mode'
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: &id043
+    - 78
+    - 78
+    text: rst_count++;
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: &id044
+    - 80
+    - 80
+    text: if (rst_count == 1) {
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: &id045
+    - 82
+    - 82
+    text: lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, 0x0);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: &id046
+    - 83
+    - 83
+    text: configure_wdt_cascade(0x00000040, 0x00000000, 0x00000000, 0x00000001);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id027
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x00000040, 0x00000000, 0x00000040, 0x00000000);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Configure independent mode with both timers enabled, each with a 0x40 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id028
+    text: service_t1_intr();
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Service the T1 and T2 interrupts after the independent-mode timeouts.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id029
+    text: service_t2_intr();
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Service the T1 and T2 interrupts after the independent-mode timeouts.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: &id047
+    - 85
+    - 85
+    text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T1_TIMEOUT_MASK));
+    kind: check
+    case_id: vc_a49967e28115
+    statement: Poll the WDT status register until the T1 timeout bit is set (cascade mode). A timeout
+      is not visible here; only a message is printed afterwards.
+    fails_test: unknown
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id025
+    text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T2_TIMEOUT_MASK));
+    kind: check
+    case_id: vc_a49967e28115
+    statement: Poll the WDT status register until the T2 timeout bit is set (independent mode and cascade
+      mode with t2 timeout).
+    fails_test: unknown
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: *id030
+    text: (`MCI_WDT_PATH.i_wdt.wdt_timer1_timeout_serviced_qual && `MCI_WDT_PATH.timer1_en && `MCI_WDT_PATH.timer2_en
+      && !`MCI_WDT_PATH.t2_timeout) |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+    kind: checker_check
+    case_id: vc_2405484d10ff
+    statement: After timer1 timeout serviced with both timers enabled and no t2_timeout, timer1_count
+      must be 0 on the next clock; failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_c2784848d855
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: *id031
+    text: (`MCI_WDT_PATH.i_wdt.wdt_timer2_timeout_serviced_qual && `MCI_WDT_PATH.timer2_en) |=> (`MCI_WDT_PATH.i_wdt.timer2_count
+      == 'h0)
+    kind: checker_check
+    case_id: vc_3d3ea34db036
+    statement: After timer2 timeout serviced with timer2 enabled, timer2_count must be 0 on the next clock;
+      failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_d147697bef91
+  req_hash: 6a8c2a8d33aa
+  unit_hash: 296f0407ec5a
+  checker_hashes:
+    ct_c2784848d855: 11cd279181f8
+    ct_d147697bef91: 689ceb666724
+  run_id: 2026-11-10T191243Z
+- req_id: cr_6c452036f447
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: partial
+  strength: non_failing
+  rationale: Phase 2 has software write timer1_restart in cascade mode, and checker c4 confirms timer1_count
+    returns to 0 after the restart. This shows a write takes effect when the write is permitted.
+  missing: The blocked case is never exercised. No write to timer1_restart is made while axi_mcu_or_mci_soc_config_req
+    is deasserted, and nothing checks that such a write has no effect.
+  checkers:
+  - ct_9b920c3eccde
+  req_cite:
+  - path: src/mci/rtl/mci_reg.rdl
+    lines:
+    - 691
+    - 691
+    text: swwe = axi_mcu_or_mci_soc_config_req
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id038
+    - 93
+    - 93
+    text: else if (rst_count == 2) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 2: cascaded mode, restart timer1, wait for timer1 timeout, then cold reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id039
+    - 97
+    - 97
+    text: '*wdt_timer1_ctrl = MCI_REG_WDT_TIMER1_CTRL_TIMER1_RESTART_MASK;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 2: cascaded mode, restart timer1, wait for timer1 timeout, then cold reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: &id040
+    - 59
+    - 59
+    text: SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 2: cascaded mode, restart timer1, wait for timer1 timeout, then cold reset.'
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines:
+    - 93
+    - 93
+    text: (`MCI_WDT_PATH.timer1_restart && `MCI_WDT_PATH.timer1_en && !`MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t1_timeout)
+      |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+    kind: checker_check
+    case_id: vc_a945c19ebf09
+    statement: After timer1_restart with timer1_en, timer2 disabled and no t1_timeout, timer1_count must
+      be 0 on the next clock; failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_9b920c3eccde
+  req_hash: 4259f2988213
+  unit_hash: 57b2dab6f5d8
+  checker_hashes:
+    ct_9b920c3eccde: ae45473812f9
+  run_id: 2026-11-10T191243Z
+- req_id: cr_7ae30acfa128
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: partial
+  strength: stimulus_only
+  rationale: Phases 1 and 2 run cascade mode with T1 timeout and error interrupts enabled, then reset.
+    No check that the interrupt is asserted.
+  missing: A check that the error interrupt is triggered on timer1 timeout.
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: &id041
+    - 1279
+    - 1279
+    text: 'In cascade mode when the first timer reaches a timeout two things will happen:'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: &id042
+    - 1281
+    - 1281
+    text: An error interrupt will be triggered
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id032
+    text: '*soc_intr_en = MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_EN_R_ERROR_WDT_TIMER1_TIMEOUT_EN_MASK | MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_EN_R_ERROR_WDT_TIMER2_TIMEOUT_EN_MASK;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: Enable WDT timer1/timer2 timeout error interrupts and the MCI global error/notif interrupts.
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id033
+    text: '*mci_global_intr_en = MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R_ERROR_EN_MASK | MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R_NOTIF_EN_MASK;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: Enable WDT timer1/timer2 timeout error interrupts and the MCI global error/notif interrupts.
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id034
+    text: if (rst_count == 1) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id035
+    text: configure_wdt_cascade(0x200, 0x00, 0xffffffff, 0xffffffff);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id036
+    text: service_t1_intr();
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id037
+    text: SEND_STDOUT_CTRL(TB_CMD_WARM_RESET);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id038
+    text: else if (rst_count == 2) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 2: cascaded mode, restart timer1, wait for timer1 timeout, then cold reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id039
+    text: '*wdt_timer1_ctrl = MCI_REG_WDT_TIMER1_CTRL_TIMER1_RESTART_MASK;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 2: cascaded mode, restart timer1, wait for timer1 timeout, then cold reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id040
+    text: SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 2: cascaded mode, restart timer1, wait for timer1 timeout, then cold reset.'
+  req_hash: 46d5a241a53c
+  unit_hash: 57b2dab6f5d8
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_7ae30acfa128
+  unit_id: ct_67663b5d022c
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt
+  relation: partial
+  strength: unknown
+  rationale: Cascade mode with a T1 timeout, and the test polls the WDT_STATUS T1 timeout bit. It does
+    not check that an error interrupt is triggered.
+  missing: A check of the error interrupt itself.
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: *id041
+    text: 'In cascade mode when the first timer reaches a timeout two things will happen:'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: *id042
+    text: An error interrupt will be triggered
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id043
+    text: rst_count++;
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id044
+    text: if (rst_count == 1) {
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id045
+    text: lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, 0x0);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id046
+    text: configure_wdt_cascade(0x00000040, 0x00000000, 0x00000000, 0x00000001);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines:
+    - 88
+    - 88
+    text: service_t1_intr();
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Service the T1 interrupt after the cascade-mode T1 timeout.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id047
+    text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T1_TIMEOUT_MASK));
+    kind: check
+    case_id: vc_a49967e28115
+    statement: Poll the WDT status register until the T1 timeout bit is set (cascade mode). A timeout
+      is not visible here; only a message is printed afterwards.
+    fails_test: unknown
+  req_hash: 46d5a241a53c
+  unit_hash: 296f0407ec5a
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_7e519e5d467b
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: partial
+  strength: stimulus_only
+  rationale: Exercises independent mode with timer2 only and timer1 disabled, and both timers enabled.
+    Nothing checks the independence of the timers.
+  missing: Checks that each timer's behavior is unaffected by the other.
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: &id048
+    - 1289
+    - 1289
+    text: In Independent mode the two timers are completely independent of each other.
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id002
+    text: else if (rst_count == 3) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id003
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x200, 0x00000000, 0x200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id004
+    text: service_t2_intr();
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id005
+    text: '*wdt_timer1_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id006
+    text: '*wdt_timer2_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id008
+    text: else if (rst_count == 6) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 6: independent mode with timer2 enabled and timer1 disabled, set the timer2 period,
+      wait for the timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id009
+    text: '*wdt_timer2_en = MCI_REG_WDT_TIMER2_EN_TIMER2_EN_MASK;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 6: independent mode with timer2 enabled and timer1 disabled, set the timer2 period,
+      wait for the timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id010
+    text: set_t2_period(0x00000200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 6: independent mode with timer2 enabled and timer1 disabled, set the timer2 period,
+      wait for the timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id011
+    text: else if (rst_count == 7) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 7: independent mode with T1_DIS_T2_EN, wait for the timer2 timeout, then cold reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id012
+    text: configure_wdt_independent(T1_DIS_T2_EN, 0x200, 0x00000000, 0x200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 7: independent mode with T1_DIS_T2_EN, wait for the timer2 timeout, then cold reset.'
+  req_hash: 496afd475c43
+  unit_hash: 57b2dab6f5d8
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_7e519e5d467b
+  unit_id: ct_67663b5d022c
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt
+  relation: partial
+  strength: unknown
+  rationale: Independent mode runs with both timers and the test polls T1 and T2 timeout status bits.
+    It does not show that one timer is unaffected by the other.
+  missing: A check that the timers do not influence each other, such as the effects of servicing one on
+    the other.
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: *id048
+    text: In Independent mode the two timers are completely independent of each other.
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id027
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x00000040, 0x00000000, 0x00000040, 0x00000000);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Configure independent mode with both timers enabled, each with a 0x40 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id028
+    text: service_t1_intr();
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Service the T1 and T2 interrupts after the independent-mode timeouts.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id029
+    text: service_t2_intr();
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Service the T1 and T2 interrupts after the independent-mode timeouts.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id025
+    text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T2_TIMEOUT_MASK));
+    kind: check
+    case_id: vc_a49967e28115
+    statement: Poll the WDT status register until the T2 timeout bit is set (independent mode and cascade
+      mode with t2 timeout).
+    fails_test: unknown
+  req_hash: 496afd475c43
+  unit_hash: 296f0407ec5a
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_8384e15625f8
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: partial
+  strength: unknown
+  rationale: Phase 5 waits for the HW_ERROR_FATAL NMI pin bit after a cascade T2 timeout, which is observable
+    evidence of NMI HW_ERROR_FATAL being triggered. The error_fatal output on the MCI port is not checked.
+  missing: A check of the error_fatal output on the MCI port.
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines:
+    - 1284
+    - 1284
+    text: 'If the WDT is not serviced before Timer 2 times out two things happen:'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines:
+    - 1287
+    - 1287
+    text: NMI HW_ERROR_FATAL is triggered which can assert an error_fatal on the MCI port.
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id014
+    text: else if (rst_count == 5) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 5: cascaded mode with a timer2 timeout, wait for the NMI pin in HW_ERROR_FATAL,
+      then call handle_error if execution continues.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id015
+    text: configure_wdt_cascade(0x200, 0x00, 0x00000200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 5: cascaded mode with a timer2 timeout, wait for the NMI pin in HW_ERROR_FATAL,
+      then call handle_error if execution continues.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id016
+    text: while(!(lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK));
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: In phase 5, poll until the HW_ERROR_FATAL NMI pin bit is set. If execution continues past
+      the NMI/reset, handle_error is called, but its failure behaviour is not visible here.
+    fails_test: unknown
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id017
+    text: handle_error("WDT timeout in cascade mode is expected to trigger NMI and reset!\n");
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: In phase 5, poll until the HW_ERROR_FATAL NMI pin bit is set. If execution continues past
+      the NMI/reset, handle_error is called, but its failure behaviour is not visible here.
+    fails_test: unknown
+  req_hash: fcc4ffd66d5a
+  unit_hash: 57b2dab6f5d8
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_9e9a3fb2203b
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: partial
+  strength: unknown
+  rationale: Phase 5 runs cascade mode to a timer2 timeout, which implies timer2 started after timer1
+    timeout. No direct check.
+  missing: A check that Timer 2 starts counting at timer1 timeout.
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: &id049
+    - 1279
+    - 1279
+    text: 'In cascade mode when the first timer reaches a timeout two things will happen:'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: &id050
+    - 1282
+    - 1282
+    text: Timer 2 will start counting
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id014
+    text: else if (rst_count == 5) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 5: cascaded mode with a timer2 timeout, wait for the NMI pin in HW_ERROR_FATAL,
+      then call handle_error if execution continues.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id015
+    text: configure_wdt_cascade(0x200, 0x00, 0x00000200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 5: cascaded mode with a timer2 timeout, wait for the NMI pin in HW_ERROR_FATAL,
+      then call handle_error if execution continues.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id016
+    text: while(!(lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK));
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: In phase 5, poll until the HW_ERROR_FATAL NMI pin bit is set. If execution continues past
+      the NMI/reset, handle_error is called, but its failure behaviour is not visible here.
+    fails_test: unknown
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id017
+    text: handle_error("WDT timeout in cascade mode is expected to trigger NMI and reset!\n");
+    kind: check
+    case_id: vc_707aa4cc2091
+    statement: In phase 5, poll until the HW_ERROR_FATAL NMI pin bit is set. If execution continues past
+      the NMI/reset, handle_error is called, but its failure behaviour is not visible here.
+    fails_test: unknown
+  req_hash: 4fe1dcbb9f77
+  unit_hash: 57b2dab6f5d8
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_9e9a3fb2203b
+  unit_id: ct_67663b5d022c
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt
+  relation: partial
+  strength: unknown
+  rationale: Cascade mode with T1 timeout then T2 timeout and polling the T2 timeout status bit. This
+    implies that T2 started, but it does not check it directly.
+  missing: A check that Timer 2 begins counting right after the timer1 timeout.
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: *id049
+    text: 'In cascade mode when the first timer reaches a timeout two things will happen:'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: *id050
+    text: Timer 2 will start counting
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id051
+    text: configure_wdt_cascade(0x00000040, 0x00000000, 0x00000040, 0x00000000);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Configure cascade mode with a 0x40 period on both timers so that T2 also times out.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id025
+    text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T2_TIMEOUT_MASK));
+    kind: check
+    case_id: vc_a49967e28115
+    statement: Poll the WDT status register until the T2 timeout bit is set (independent mode and cascade
+      mode with t2 timeout).
+    fails_test: unknown
+  req_hash: 4fe1dcbb9f77
+  unit_hash: 296f0407ec5a
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_a9d3fa1d1d16
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: partial
+  strength: stimulus_only
+  rationale: The MCU configures the timer1 period across several phases, and the phases then wait for
+    timer1 timeouts. This shows only that writes are accepted when allowed.
+  missing: The case where axi_mcu_or_mci_soc_config_req is deasserted is never exercised, and no check
+    confirms that a write is ignored. The register value is never read back.
+  checkers: []
+  req_cite:
+  - path: src/mci/rtl/mci_reg.rdl
+    lines: &id052
+    - 697
+    - 697
+    text: swwe = axi_mcu_or_mci_soc_config_req
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id034
+    text: if (rst_count == 1) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id035
+    text: configure_wdt_cascade(0x200, 0x00, 0xffffffff, 0xffffffff);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id036
+    text: service_t1_intr();
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id037
+    text: SEND_STDOUT_CTRL(TB_CMD_WARM_RESET);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id038
+    text: else if (rst_count == 2) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 2: cascaded mode, restart timer1, wait for timer1 timeout, then cold reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id039
+    text: '*wdt_timer1_ctrl = MCI_REG_WDT_TIMER1_CTRL_TIMER1_RESTART_MASK;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 2: cascaded mode, restart timer1, wait for timer1 timeout, then cold reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id040
+    text: SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 2: cascaded mode, restart timer1, wait for timer1 timeout, then cold reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id002
+    text: else if (rst_count == 3) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id003
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x200, 0x00000000, 0x200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id004
+    text: service_t2_intr();
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id005
+    text: '*wdt_timer1_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id006
+    text: '*wdt_timer2_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  req_hash: 448b8e5ff1e5
+  unit_hash: 57b2dab6f5d8
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_a9d3fa1d1d16
+  unit_id: ct_67663b5d022c
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt
+  relation: partial
+  strength: unknown
+  rationale: The MCU writes the timer1 period (0x40) and the test then waits for the T1 timeout status
+    bit. This shows indirectly that writes take effect when the MCU is allowed to configure the register.
+  missing: The case where axi_mcu_or_mci_soc_config_req is deasserted is never exercised. No write is
+    shown being blocked, and the register value is never read back.
+  checkers: []
+  req_cite:
+  - path: src/mci/rtl/mci_reg.rdl
+    lines: *id052
+    text: swwe = axi_mcu_or_mci_soc_config_req
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id043
+    text: rst_count++;
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id044
+    text: if (rst_count == 1) {
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id045
+    text: lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, 0x0);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id046
+    text: configure_wdt_cascade(0x00000040, 0x00000000, 0x00000000, 0x00000001);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id027
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x00000040, 0x00000000, 0x00000040, 0x00000000);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Configure independent mode with both timers enabled, each with a 0x40 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id047
+    text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T1_TIMEOUT_MASK));
+    kind: check
+    case_id: vc_a49967e28115
+    statement: Poll the WDT status register until the T1 timeout bit is set (cascade mode). A timeout
+      is not visible here; only a message is printed afterwards.
+    fails_test: unknown
+  req_hash: 448b8e5ff1e5
+  unit_hash: 296f0407ec5a
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_bf055beaa8ff
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: partial
+  strength: non_failing
+  rationale: The test enables timer1 across several phases and waits for timer1 timeouts, which only happen
+    if the enable write took effect in the permitted case.
+  missing: No write is attempted while axi_mcu_or_mci_soc_config_req is deasserted, so the test never
+    checks that such a write is ignored. Its own checks concern NMI and reset behavior, not the register
+    write gating.
+  checkers:
+  - ct_f333dfc5105d
+  req_cite:
+  - path: src/mci/rtl/mci_reg.rdl
+    lines: &id053
+    - 685
+    - 685
+    text: swwe = axi_mcu_or_mci_soc_config_req
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id034
+    text: if (rst_count == 1) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id035
+    text: configure_wdt_cascade(0x200, 0x00, 0xffffffff, 0xffffffff);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id036
+    text: service_t1_intr();
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id037
+    text: SEND_STDOUT_CTRL(TB_CMD_WARM_RESET);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id002
+    text: else if (rst_count == 3) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id003
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x200, 0x00000000, 0x200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id004
+    text: service_t2_intr();
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id005
+    text: '*wdt_timer1_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id006
+    text: '*wdt_timer2_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id007
+    text: else if (rst_count == 4) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 4: independent mode with both timers enabled, wait for both timeouts, then cold
+      reset.'
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: &id054
+    - 141
+    - 141
+    text: disable iff (~`CPTRA_SS_TB_TOP_NAME.cptra_ss_rst_b_i)
+    kind: checker_check
+    case_id: vc_0b87673261fc
+    statement: When t1_timeout rises, the WDT_STATUS.t1_timeout value must rise on the next clock (disabled
+      while cptra_ss_rst_b_i is low); failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_f333dfc5105d
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: &id055
+    - 142
+    - 142
+    text: $rose(`MCI_WDT_PATH.t1_timeout) |=> $rose(`MCI_PATH.mci_reg_hwif_out.WDT_STATUS.t1_timeout.value)
+    kind: checker_check
+    case_id: vc_0b87673261fc
+    statement: When t1_timeout rises, the WDT_STATUS.t1_timeout value must rise on the next clock (disabled
+      while cptra_ss_rst_b_i is low); failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_f333dfc5105d
+  req_hash: e156978f1d4d
+  unit_hash: 57b2dab6f5d8
+  checker_hashes:
+    ct_f333dfc5105d: 858f6854fb70
+  run_id: 2026-11-10T191243Z
+- req_id: cr_bf055beaa8ff
+  unit_id: ct_67663b5d022c
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt
+  relation: partial
+  strength: unknown
+  rationale: The test writes timer1_en from the MCU in cascade and independent modes and polls WDT_STATUS
+    until the T1 timeout bit is set. This shows an enabling write takes effect when the MCU is allowed
+    to configure.
+  missing: No write is attempted while axi_mcu_or_mci_soc_config_req is deasserted, so the test never
+    checks that such a write is ignored.
+  checkers:
+  - ct_f333dfc5105d
+  req_cite:
+  - path: src/mci/rtl/mci_reg.rdl
+    lines: *id053
+    text: swwe = axi_mcu_or_mci_soc_config_req
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id043
+    text: rst_count++;
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id044
+    text: if (rst_count == 1) {
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id045
+    text: lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, 0x0);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id046
+    text: configure_wdt_cascade(0x00000040, 0x00000000, 0x00000000, 0x00000001);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id027
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x00000040, 0x00000000, 0x00000040, 0x00000000);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Configure independent mode with both timers enabled, each with a 0x40 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id047
+    text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T1_TIMEOUT_MASK));
+    kind: check
+    case_id: vc_a49967e28115
+    statement: Poll the WDT status register until the T1 timeout bit is set (cascade mode). A timeout
+      is not visible here; only a message is printed afterwards.
+    fails_test: unknown
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: *id054
+    text: disable iff (~`CPTRA_SS_TB_TOP_NAME.cptra_ss_rst_b_i)
+    kind: checker_check
+    case_id: vc_0b87673261fc
+    statement: When t1_timeout rises, the WDT_STATUS.t1_timeout value must rise on the next clock (disabled
+      while cptra_ss_rst_b_i is low); failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_f333dfc5105d
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: *id055
+    text: $rose(`MCI_WDT_PATH.t1_timeout) |=> $rose(`MCI_PATH.mci_reg_hwif_out.WDT_STATUS.t1_timeout.value)
+    kind: checker_check
+    case_id: vc_0b87673261fc
+    statement: When t1_timeout rises, the WDT_STATUS.t1_timeout value must rise on the next clock (disabled
+      while cptra_ss_rst_b_i is low); failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_f333dfc5105d
+  req_hash: e156978f1d4d
+  unit_hash: 296f0407ec5a
+  checker_hashes:
+    ct_f333dfc5105d: 858f6854fb70
+  run_id: 2026-11-10T191243Z
+- req_id: cr_c31cbc41b451
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: partial
+  strength: stimulus_only
+  rationale: Configures cascade and independent modes across phases and runs them, but does not read back
+    a mode setting.
+  missing: Readback or verification of the mode configuration.
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: &id056
+    - 1274
+    - 1274
+    text: 'These timers can be configured in two different modes:'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: &id057
+    - 1276
+    - 1276
+    text: Cascade
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: &id058
+    - 1277
+    - 1277
+    text: Independent
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id034
+    text: if (rst_count == 1) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id035
+    text: configure_wdt_cascade(0x200, 0x00, 0xffffffff, 0xffffffff);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id036
+    text: service_t1_intr();
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id037
+    text: SEND_STDOUT_CTRL(TB_CMD_WARM_RESET);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id002
+    text: else if (rst_count == 3) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id003
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x200, 0x00000000, 0x200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id004
+    text: service_t2_intr();
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id005
+    text: '*wdt_timer1_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id006
+    text: '*wdt_timer2_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  req_hash: dd500db80a1a
+  unit_hash: 57b2dab6f5d8
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_c31cbc41b451
+  unit_id: ct_67663b5d022c
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt
+  relation: partial
+  strength: stimulus_only
+  rationale: Configures cascade mode and independent mode and observes different timeout behavior, without
+    any readback of the mode configuration.
+  missing: Readback of the mode setting and an explicit check of mode behavior differences.
+  checkers: []
+  req_cite:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: *id056
+    text: 'These timers can be configured in two different modes:'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: *id057
+    text: Cascade
+  - path: docs/CaliptraSSHardwareSpecification.md
+    lines: *id058
+    text: Independent
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id043
+    text: rst_count++;
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id044
+    text: if (rst_count == 1) {
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id045
+    text: lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, 0x0);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id046
+    text: configure_wdt_cascade(0x00000040, 0x00000000, 0x00000000, 0x00000001);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id027
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x00000040, 0x00000000, 0x00000040, 0x00000000);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Configure independent mode with both timers enabled, each with a 0x40 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id051
+    text: configure_wdt_cascade(0x00000040, 0x00000000, 0x00000040, 0x00000000);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Configure cascade mode with a 0x40 period on both timers so that T2 also times out.
+  req_hash: dd500db80a1a
+  unit_hash: 296f0407ec5a
+  checker_hashes: {}
+  run_id: 2026-11-10T191243Z
+- req_id: cr_fc16aba2ad78
+  unit_id: ct_0364c01d7f8e
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt_rst
+  relation: partial
+  strength: non_failing
+  rationale: Phases 3, 4, 10 and 11 enable both timers in independent mode and wait for both timeouts,
+    and the independent-mode assertions check timer counts. This exercises independent counting of both
+    timers.
+  missing: No explicit check that timer1 and timer2 count independently as a result of timer2_en=1; checks
+    are reporting-only and the test mostly waits for timeouts.
+  checkers:
+  - ct_9fa1e52ddd7f
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  req_cite:
+  - path: src/mci/rtl/mci_reg.rdl
+    lines: &id061
+    - 703
+    - 703
+    text: will have both timers count independently
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id002
+    text: else if (rst_count == 3) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id003
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x200, 0x00000000, 0x200, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id004
+    text: service_t2_intr();
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id005
+    text: '*wdt_timer1_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id006
+    text: '*wdt_timer2_en = 0;'
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each
+      timer, then warm reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines: *id007
+    text: else if (rst_count == 4) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phase 4: independent mode with both timers enabled, wait for both timeouts, then cold
+      reset.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines:
+    - 188
+    - 188
+    text: else if (rst_count == 10) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phases 10-11: configure independent mode with both timers and a short timer2 period, then
+      issue a warm reset (10) or cold reset (11) during WDT operation.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines:
+    - 192
+    - 192
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x200, 0x00000000, 0x34, 0x00000000);
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phases 10-11: configure independent mode with both timers and a short timer2 period, then
+      issue a warm reset (10) or cold reset (11) during WDT operation.'
+  - path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+    lines:
+    - 196
+    - 196
+    text: else if (rst_count == 11) {
+    kind: stimulus
+    case_id: vc_707aa4cc2091
+    statement: 'Phases 10-11: configure independent mode with both timers and a short timer2 period, then
+      issue a warm reset (10) or cold reset (11) during WDT operation.'
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: *id030
+    text: (`MCI_WDT_PATH.i_wdt.wdt_timer1_timeout_serviced_qual && `MCI_WDT_PATH.timer1_en && `MCI_WDT_PATH.timer2_en
+      && !`MCI_WDT_PATH.t2_timeout) |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+    kind: checker_check
+    case_id: vc_2405484d10ff
+    statement: After timer1 timeout serviced with both timers enabled and no t2_timeout, timer1_count
+      must be 0 on the next clock; failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_c2784848d855
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: *id031
+    text: (`MCI_WDT_PATH.i_wdt.wdt_timer2_timeout_serviced_qual && `MCI_WDT_PATH.timer2_en) |=> (`MCI_WDT_PATH.i_wdt.timer2_count
+      == 'h0)
+    kind: checker_check
+    case_id: vc_3d3ea34db036
+    statement: After timer2 timeout serviced with timer2 enabled, timer2_count must be 0 on the next clock;
+      failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_d147697bef91
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: *id059
+    text: (`MCI_WDT_PATH.timer1_restart && `MCI_WDT_PATH.timer1_en && `MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t1_timeout)
+      |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+    kind: checker_check
+    case_id: vc_cb193fd51bf3
+    statement: After timer1_restart with both timers enabled and no t1_timeout, timer1_count must be 0
+      on the next clock; failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_b058210792fe
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: *id060
+    text: (`MCI_WDT_PATH.timer2_restart && `MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t2_timeout) |=> (`MCI_WDT_PATH.i_wdt.timer2_count
+      == 'h0)
+    kind: checker_check
+    case_id: vc_63c46acf4d2a
+    statement: After timer2_restart with timer2_en and no t2_timeout, timer2_count must be 0 on the next
+      clock; failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_9fa1e52ddd7f
+  req_hash: 078faf138d05
+  unit_hash: 57b2dab6f5d8
+  checker_hashes:
+    ct_c2784848d855: 11cd279181f8
+    ct_d147697bef91: 689ceb666724
+    ct_b058210792fe: 07d719bc6782
+    ct_9fa1e52ddd7f: 3cf7df05b511
+  run_id: 2026-11-10T191243Z
+- req_id: cr_fc16aba2ad78
+  unit_id: ct_67663b5d022c
+  unit_kind: test
+  unit_role: test
+  unit_name: smoke_test_wdt
+  relation: partial
+  strength: unknown
+  rationale: The independent-mode phase enables both timers with 0x40 periods and polls for T1 and T2
+    timeout bits, with independent-mode assertions on count resets.
+  missing: Does not check that timer2 counts independently of timer1; it only waits for both timeouts
+    and the assertions only report.
+  checkers:
+  - ct_9fa1e52ddd7f
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  req_cite:
+  - path: src/mci/rtl/mci_reg.rdl
+    lines: *id061
+    text: will have both timers count independently
+  unit_cite:
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id027
+    text: configure_wdt_independent(BOTH_TIMERS_EN, 0x00000040, 0x00000000, 0x00000040, 0x00000000);
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Configure independent mode with both timers enabled, each with a 0x40 period.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id028
+    text: service_t1_intr();
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Service the T1 and T2 interrupts after the independent-mode timeouts.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id029
+    text: service_t2_intr();
+    kind: stimulus
+    case_id: vc_a49967e28115
+    statement: Service the T1 and T2 interrupts after the independent-mode timeouts.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    lines: *id025
+    text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T2_TIMEOUT_MASK));
+    kind: check
+    case_id: vc_a49967e28115
+    statement: Poll the WDT status register until the T2 timeout bit is set (independent mode and cascade
+      mode with t2 timeout).
+    fails_test: unknown
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: *id030
+    text: (`MCI_WDT_PATH.i_wdt.wdt_timer1_timeout_serviced_qual && `MCI_WDT_PATH.timer1_en && `MCI_WDT_PATH.timer2_en
+      && !`MCI_WDT_PATH.t2_timeout) |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+    kind: checker_check
+    case_id: vc_2405484d10ff
+    statement: After timer1 timeout serviced with both timers enabled and no t2_timeout, timer1_count
+      must be 0 on the next clock; failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_c2784848d855
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: *id031
+    text: (`MCI_WDT_PATH.i_wdt.wdt_timer2_timeout_serviced_qual && `MCI_WDT_PATH.timer2_en) |=> (`MCI_WDT_PATH.i_wdt.timer2_count
+      == 'h0)
+    kind: checker_check
+    case_id: vc_3d3ea34db036
+    statement: After timer2 timeout serviced with timer2 enabled, timer2_count must be 0 on the next clock;
+      failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_d147697bef91
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: *id059
+    text: (`MCI_WDT_PATH.timer1_restart && `MCI_WDT_PATH.timer1_en && `MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t1_timeout)
+      |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+    kind: checker_check
+    case_id: vc_cb193fd51bf3
+    statement: After timer1_restart with both timers enabled and no t1_timeout, timer1_count must be 0
+      on the next clock; failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_b058210792fe
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    lines: *id060
+    text: (`MCI_WDT_PATH.timer2_restart && `MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t2_timeout) |=> (`MCI_WDT_PATH.i_wdt.timer2_count
+      == 'h0)
+    kind: checker_check
+    case_id: vc_63c46acf4d2a
+    statement: After timer2_restart with timer2_en and no t2_timeout, timer2_count must be 0 on the next
+      clock; failure only prints a message.
+    fails_test: 'no'
+    checker_id: ct_9fa1e52ddd7f
+  req_hash: 078faf138d05
+  unit_hash: 296f0407ec5a
+  checker_hashes:
+    ct_c2784848d855: 11cd279181f8
+    ct_d147697bef91: 689ceb666724
+    ct_b058210792fe: 07d719bc6782
+    ct_9fa1e52ddd7f: 3cf7df05b511
+  run_id: 2026-11-10T191243Z
+plan_links: []
+baseline:
+- req_id: cr_1ff962a312fd
+  unit_id: ct_0364c01d7f8e
+  score: 5.641
+- req_id: cr_21fcb159fe0b
+  unit_id: ct_bfd5ad4b1295
+  score: 12.722
+- req_id: cr_27bb5f1d8f1f
+  unit_id: ct_67663b5d022c
+  score: 8.86
+- req_id: cr_2a8e5fb09eff
+  unit_id: ct_0364c01d7f8e
+  score: 5.704
+- req_id: cr_2f81ac754a0b
+  unit_id: ct_67663b5d022c
+  score: 2.464
+- req_id: cr_30c8d796ee5e
+  unit_id: ct_bfd5ad4b1295
+  score: 7.932
+- req_id: cr_3423638404c0
+  unit_id: ct_79dc987f4a36
+  score: 2.938
+- req_id: cr_3456fb30114e
+  unit_id: ct_bfd5ad4b1295
+  score: 10.078
+- req_id: cr_3774897bcc3f
+  unit_id: ct_0364c01d7f8e
+  score: 4.677
+- req_id: cr_38a389da0de2
+  unit_id: ct_0364c01d7f8e
+  score: 3.476
+- req_id: cr_3a16ce569514
+  unit_id: ct_bfd5ad4b1295
+  score: 6.658
+- req_id: cr_3a3d5cbca3d6
+  unit_id: ct_bfd5ad4b1295
+  score: 10.078
+- req_id: cr_3a7501391c31
+  unit_id: ct_0364c01d7f8e
+  score: 3.476
+- req_id: cr_3e9013890dc9
+  unit_id: ct_0364c01d7f8e
+  score: 5.641
+- req_id: cr_408718719167
+  unit_id: ct_bfd5ad4b1295
+  score: 15.082
+- req_id: cr_47a9e9e5fa43
+  unit_id: ct_bfd5ad4b1295
+  score: 12.431
+- req_id: cr_53f341ca2b26
+  unit_id: ct_67663b5d022c
+  score: 11.691
+- req_id: cr_596a2bf229aa
+  unit_id: ct_bfd5ad4b1295
+  score: 6.33
+- req_id: cr_5a1201a654e5
+  unit_id: ct_0364c01d7f8e
+  score: 5.641
+- req_id: cr_636839e0c3cf
+  unit_id: ct_67663b5d022c
+  score: 7.643
+- req_id: cr_638b56faf03a
+  unit_id: ct_bfd5ad4b1295
+  score: 13.585
+- req_id: cr_63aba301004b
+  unit_id: ct_bfd5ad4b1295
+  score: 12.431
+- req_id: cr_693d5aecb4af
+  unit_id: ct_bfd5ad4b1295
+  score: 7.947
+- req_id: cr_6c452036f447
+  unit_id: ct_bfd5ad4b1295
+  score: 12.741
+- req_id: cr_6c5bda189850
+  unit_id: ct_bfd5ad4b1295
+  score: 6.727
+- req_id: cr_7149ed2302b5
+  unit_id: ct_bfd5ad4b1295
+  score: 9.753
+- req_id: cr_7ae30acfa128
+  unit_id: ct_67663b5d022c
+  score: 10.411
+- req_id: cr_7af775cc3e34
+  unit_id: ct_bfd5ad4b1295
+  score: 6.658
+- req_id: cr_7afb4201c253
+  unit_id: ct_bfd5ad4b1295
+  score: 15.297
+- req_id: cr_7e519e5d467b
+  unit_id: ct_67663b5d022c
+  score: 3.644
+- req_id: cr_81e541ae0429
+  unit_id: ct_0364c01d7f8e
+  score: 5.641
+- req_id: cr_8384e15625f8
+  unit_id: ct_67663b5d022c
+  score: 21.625
+- req_id: cr_8d23d518a328
+  unit_id: ct_bfd5ad4b1295
+  score: 7.862
+- req_id: cr_9e9a3fb2203b
+  unit_id: ct_67663b5d022c
+  score: 3.915
+- req_id: cr_9ea74aa973cc
+  unit_id: ct_0364c01d7f8e
+  score: 9.169
+- req_id: cr_a50218a2692c
+  unit_id: ct_bfd5ad4b1295
+  score: 19.99
+- req_id: cr_a9d3fa1d1d16
+  unit_id: ct_bfd5ad4b1295
+  score: 12.741
+- req_id: cr_aaddef66f898
+  unit_id: ct_bfd5ad4b1295
+  score: 6.658
+- req_id: cr_aff7593a17bc
+  unit_id: ct_bfd5ad4b1295
+  score: 10.078
+- req_id: cr_bf055beaa8ff
+  unit_id: ct_bfd5ad4b1295
+  score: 13.894
+- req_id: cr_c17d872ba768
+  unit_id: ct_bfd5ad4b1295
+  score: 4.845
+- req_id: cr_c31cbc41b451
+  unit_id: ct_67663b5d022c
+  score: 5.096
+- req_id: cr_cadc6830658d
+  unit_id: ct_0364c01d7f8e
+  score: 3.776
+- req_id: cr_d1021cdb24ca
+  unit_id: ct_67663b5d022c
+  score: 5.172
+- req_id: cr_e7262762a535
+  unit_id: ct_0364c01d7f8e
+  score: 6.995
+- req_id: cr_ec500a7b175a
+  unit_id: ct_bfd5ad4b1295
+  score: 10.078
+- req_id: cr_f09945fb73b7
+  unit_id: ct_bfd5ad4b1295
+  score: 8.696
+- req_id: cr_fc16aba2ad78
+  unit_id: ct_b058210792fe
+  score: 5.5
+candidates:
+  cr_1ff962a312fd:
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  cr_21fcb159fe0b:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_27bb5f1d8f1f:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_2a8e5fb09eff:
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_2f81ac754a0b:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_30c8d796ee5e:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_3423638404c0:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_3456fb30114e:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_3774897bcc3f:
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  cr_38a389da0de2:
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  cr_3a16ce569514:
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_3a3d5cbca3d6:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_3a7501391c31:
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  cr_3e9013890dc9:
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  cr_408718719167:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_47a9e9e5fa43:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_53f341ca2b26:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_596a2bf229aa:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_5a1201a654e5:
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  cr_636839e0c3cf:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_638b56faf03a:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_63aba301004b:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_693d5aecb4af:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_6c452036f447:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_6c5bda189850:
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_7149ed2302b5:
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_7ae30acfa128:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_7af775cc3e34:
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_7afb4201c253:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_7e519e5d467b:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_81e541ae0429:
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  cr_8384e15625f8:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_8d23d518a328:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_9e9a3fb2203b:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_9ea74aa973cc:
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  - ct_bfd5ad4b1295
+  cr_a50218a2692c:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_a9d3fa1d1d16:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_aaddef66f898:
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_aff7593a17bc:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_bf055beaa8ff:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_c17d872ba768:
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_c31cbc41b451:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  cr_cadc6830658d:
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  cr_d1021cdb24ca:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  cr_e7262762a535:
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  - ct_bfd5ad4b1295
+  cr_ec500a7b175a:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_f09945fb73b7:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  cr_fc16aba2ad78:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+batches:
+- section_id: sec_0907979a767f
+  prompt_hash: 18ef7159a95c
+  requirements:
+  - cr_408718719167
+  - cr_7af775cc3e34
+  - cr_9ea74aa973cc
+  - cr_e7262762a535
+  units:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_122ec9f939dc
+  prompt_hash: 75149ff3bac4
+  requirements:
+  - cr_2f81ac754a0b
+  units:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_192b9760d000
+  prompt_hash: 3a308c440b39
+  requirements:
+  - cr_63aba301004b
+  units:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_1fc83d29a163
+  prompt_hash: 463eeb813c10
+  requirements:
+  - cr_21fcb159fe0b
+  - cr_596a2bf229aa
+  - cr_693d5aecb4af
+  - cr_7afb4201c253
+  - cr_aaddef66f898
+  - cr_cadc6830658d
+  units:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_2f8eee2cab73
+  prompt_hash: 307e2c524d62
+  requirements:
+  - cr_6c452036f447
+  units:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_40f675b0f78c
+  prompt_hash: d604b7d14d66
+  requirements:
+  - cr_bf055beaa8ff
+  units:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_4a743eda7095
+  prompt_hash: 85f33c922231
+  requirements:
+  - cr_ec500a7b175a
+  units:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_65085ba59ae6
+  prompt_hash: 7865b47f7a2a
+  requirements:
+  - cr_38a389da0de2
+  - cr_3e9013890dc9
+  - cr_5a1201a654e5
+  - cr_aff7593a17bc
+  units:
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_653082b45801
+  prompt_hash: cf35f0e0e9c6
+  requirements:
+  - cr_27bb5f1d8f1f
+  - cr_2a8e5fb09eff
+  - cr_53f341ca2b26
+  - cr_7ae30acfa128
+  - cr_7e519e5d467b
+  - cr_8384e15625f8
+  - cr_9e9a3fb2203b
+  - cr_c31cbc41b451
+  - cr_d1021cdb24ca
+  units:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_8d80b25bb68d
+  prompt_hash: 0f58d07a9697
+  requirements:
+  - cr_47a9e9e5fa43
+  units:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_8e3a5e42a5aa
+  prompt_hash: 1ab038d5fb56
+  requirements:
+  - cr_1ff962a312fd
+  - cr_3456fb30114e
+  - cr_3a7501391c31
+  - cr_81e541ae0429
+  units:
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_8ea8b5bff8f0
+  prompt_hash: 9dddd6d91469
+  requirements:
+  - cr_30c8d796ee5e
+  - cr_3774897bcc3f
+  - cr_f09945fb73b7
+  units:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_94fbf3f4a3f5
+  prompt_hash: 7b189d396645
+  requirements:
+  - cr_3423638404c0
+  - cr_3a16ce569514
+  - cr_7149ed2302b5
+  - cr_a50218a2692c
+  units:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_9ad4b5f47a60
+  prompt_hash: 9893aad8ead5
+  requirements:
+  - cr_a9d3fa1d1d16
+  units:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_bdb3c795b94d
+  prompt_hash: f9816c1312a0
+  requirements:
+  - cr_3a3d5cbca3d6
+  units:
+  - ct_bfd5ad4b1295
+  - ct_0364c01d7f8e
+  - ct_67663b5d022c
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_c455978e88f8
+  prompt_hash: 51b178cc8c69
+  requirements:
+  - cr_6c5bda189850
+  - cr_8d23d518a328
+  - cr_c17d872ba768
+  units:
+  - ct_bfd5ad4b1295
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- section_id: sec_f436db9bf44d
+  prompt_hash: cccd2e035773
+  requirements:
+  - cr_636839e0c3cf
+  - cr_638b56faf03a
+  - cr_fc16aba2ad78
+  units:
+  - ct_67663b5d022c
+  - ct_0364c01d7f8e
+  - ct_bfd5ad4b1295
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+  linked_checkers:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d

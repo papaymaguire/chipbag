@@ -1,0 +1,55 @@
+finding_hash: 20cc2a1137d02c4b
+started_at: '2026-11-10T19:36:17Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The text and table are consistent. The text names Root as the writer and says Root is "typically
+    MCU". The table is the MCU-view access table and gives MCU RW on these registers only while valid
+    is 0, which matches the text's write window. The spec does not say that an MCU which is not Root can
+    write them. I did not check the RTL.
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1318
+    line_end: 1319
+    quote: 'Root, typically MCU, is the only agent
+
+      that programs `TARGET_USER` and `TARGET_USER_VALID`.'
+    role: refutes
+    note: Root is typically MCU, so MCU acting as Root having RW access is not a contradiction.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1532
+    line_end: 1533
+    quote: '| `TARGET_USER` | RW while `TARGET_USER_VALID=0` | RW while `TARGET_USER_VALID=0` |'
+    role: context
+    note: 'The table is the MCU-view access table and carries the same condition as the text: writable
+      only while valid is 0.'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1511
+    line_end: 1513
+    quote: 'MCU write access is
+
+      determined by its role in the current transaction'
+    role: refutes
+    note: The section intro says MCU's write access depends on its role, so the table's MCU RW entry is
+      read as MCU acting as Root.
+  searches:
+  - what: TARGET_USER mentions in the hardware spec
+    where: docs/CaliptraSSHardwareSpecification.md
+    found: Sections at 1314-1353 and 1515-1533; all say Root (typically MCU) writes the registers, only
+      while TARGET_USER_VALID=0.
+  near_misses:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1527
+    line_end: 1536
+    why_not: The table lists RW for MCU without naming Root. This is a mild looseness, not an incompatible
+      statement, because the intro at 1511-1513 says MCU's write access follows its role.
+  items: []
+  new_sources: []
+  resolution: No spec contradiction. An optional wording fix would be to label the table column entries
+    "RW as Root while TARGET_USER_VALID=0". I did not check the RTL, so I cannot say which side it matches.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.047101300000000006
+error: null

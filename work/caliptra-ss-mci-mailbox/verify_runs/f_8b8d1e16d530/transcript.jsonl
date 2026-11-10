@@ -1,0 +1,12 @@
+{"t": "2026-11-10T19:37:51Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_axi_param/smoke_test_mcu_mbox_axi_param.c"}
+{"t": "2026-11-10T19:37:51Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_axi_param/cptra_smoke_test_mcu_mbox_axi_param.c"}
+{"t": "2026-11-10T19:37:54Z", "event": "  \u2192 Grep: mcu_mbox0_valid_user"}
+{"t": "2026-11-10T19:37:56Z", "event": "  \u2192 Grep: mcu_mbox0_valid_user|MBOX0_VALID_AXI_USER"}
+{"t": "2026-11-10T19:37:58Z", "event": "Compare with the invalid_axi test."}
+{"t": "2026-11-10T19:37:58Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_invalid_axi/smoke_test_mcu_mbox_invalid_axi.c"}
+{"t": "2026-11-10T19:38:06Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:38:07Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_axi_param/smoke_test_mcu_mbox_axi_param.c"}
+{"t": "2026-11-10T19:38:07Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_invalid_axi/smoke_test_mcu_mbox_invalid_axi.c"}
+{"t": "2026-11-10T19:38:14Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:38:17Z", "event": "I submitted the verdict as **verified**. The finding is real but low severity.\n\nThe header comment in both param test files says the MCU configures the Caliptra uC as an invalid AXI user. The code in `smoke_test_mcu_mbox_axi_param.c` does not do that. It uses either 0x33333333 (the build-time parameter value) or a randomly chosen entry from `axi_user_id[]`. It then passes that same array as the mailbox valid users.\n\nThe test looks like a copy of `smoke_test_mcu_mbox_invalid_axi`. That test calls `mcu_mbox_generate_invalid_axi(axi_user_id)` to produce a genuinely invalid ID, and the stale comment appears to have been carried over.\n\nThe in-function comment at lines 77-78 of the param test describes the behaviour correctly. It says the outcome depends on `cfg_caliptra_axi_with_param`, so the header comment is the only part that is wrong.\n\nI did not work out why the Caliptra side expects AXI errors in the non-param case when the ID is in the valid-user array. That doesn't change the comment mismatch."}
+{"t": "2026-11-10T19:38:17Z", "event": "[10 turns, $0.0798]"}

@@ -1,0 +1,85 @@
+finding_hash: 8653fe70953edcc0
+started_at: '2026-11-10T20:53:04Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four of five items stand. The HMAC DV has no check that the FIFO fills and applies back-pressure,
+    no check of a mid-operation abort or key revocation, and no hash_continue check with an invalid key.
+    Item cr_a65819a54cf2 is withdrawn. The scoreboard predicts SwInvalidConfig for SHA-2 256 with a 1024-bit
+    key, and the smoke sequence reaches that configuration.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 173
+    line_end: 177
+    role: refutes
+    quote: "((`gmv(ral.cfg.digest_size) == SHA2_256) &\n                          (`gmv(ral.cfg.key_length)\
+      \ == Key_1024) &\n                          `gmv(ral.cfg.hmac_en));"
+    note: Scoreboard flags SHA-2 256 with a 1024-bit key as invalid and predicts SwInvalidConfig on hash
+      start (lines 198-199). This covers the 'rejected with error' part of cr_a65819a54cf2.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 178
+    line_end: 180
+    role: context
+    note: Smoke sequence handles the invalid_cfg case, so it is reachable. I did not confirm that the
+      smoke sequence randomizes into it.
+    quote: "if (invalid_cfg) begin\n        rd_digest(); // capture the digest CSRs before moving on to\
+      \ next transaction"
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 807
+    line_end: 807
+    role: context
+    note: The directed-config randomization only produces valid configs, so invalid configs come from
+      other paths.
+    quote: (local::hmac_en && digest_size == SHA2_256) -> (key_length != Key_1024);
+  searches:
+  - what: FIFO-full / back-pressure checks
+    where: hw/ip/hmac/dv
+    found: The scoreboard only tracks fifo_full status and detection. I found no check that a TL response
+      is delayed while the FIFO is full.
+  - what: SwInvalidConfig and Key_1024 handling
+    where: hw/ip/hmac/dv
+    found: The scoreboard predicts SwInvalidConfig on hash start. The test-vector sequence skips invalid
+      vectors.
+  - what: SwInvalidConfig in the chip-level keymgr sideload vseq
+    where: hw/top_earlgrey/dv/env/seq_lib/chip_sw_keymgr_dpe_sideload_hmac_vseq.sv
+    found: No matches
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_test_vectors_sha_vseq.sv
+    line_start: 97
+    line_end: 105
+    why_not: Invalid key-length and digest combinations are skipped here, so this sequence does not test
+      rejection.
+  items:
+  - id: cr_26f0103d3cea
+    outcome: verified
+    reason: No check that the FIFO becomes full or that back-pressure is applied. The scoreboard only
+      tracks fifo_full status.
+    evidence: []
+  - id: cr_a65819a54cf2
+    outcome: withdrawn
+    reason: The scoreboard predicts SwInvalidConfig for SHA-2 256 with a 1024-bit key, and the smoke sequence
+      handles that case. The valid length/digest pairs are checked against the DPI reference model, so
+      the finding's gap is covered.
+    evidence:
+    - 0
+    - 1
+  - id: cr_0f006fc77258
+    outcome: verified
+    reason: No HMAC test aborts an in-flight operation and checks that hmac_done stays clear.
+    evidence: []
+  - id: cr_605b3802525f
+    outcome: verified
+    reason: No test revokes the key mid-operation or measures how quickly the revocation takes effect.
+    evidence: []
+  - id: cr_75181956206e
+    outcome: verified
+    reason: The only sideload-with-invalid-key test I found is the chip-level keymgr sideload test the
+      finding cites, which exercises hash_start. I found no check of hash_continue with an invalid key.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 12
+cost_usd: 0.0891947
+error: null

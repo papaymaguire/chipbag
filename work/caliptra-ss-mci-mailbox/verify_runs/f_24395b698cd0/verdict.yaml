@@ -1,0 +1,43 @@
+finding_hash: 39e9bec3211519c6
+started_at: '2026-11-10T20:37:12Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The ownership-flow test drives a CMD_FAILURE transaction, but nothing reads CMD_STATUS back
+    and compares it to CMD_FAILURE. Its only pass/fail check is the error counter and the fatal-error
+    output. The smoke tests write CMD_FAILURE as a payload that must be rejected, which is a different
+    check.
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 138
+    line_end: 138
+    quote: mcu_mbox_write(mci_comm_flow_cmd_status_addr, mci_comm_flow_root, status);
+    role: supports
+    note: Status is only written. The following phase check covers SRAM owner, SRAM reads and HW_STATUS,
+      with no CMD_STATUS value readback.
+  searches:
+  - what: CMD_FAILURE across the repo
+    where: whole repo
+    found: Only the ownership flow test, the smoke tests (payload value), the library enum and the RDL/package.
+  - what: Status readback in the ownership flow
+    where: mci_mbox_ownership_flow.svh
+    found: No read of CMD_STATUS compared to the expected status value.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/cptra_smoke_test_mcu_mbox_valid_user.c
+    line_start: 168
+    line_end: 177
+    why_not: Writes MCU_MBOX_CMD_FAILURE as an attempted CMD_STATUS write by a user and checks the write
+      is rejected. It does not check a real CMD_FAILURE outcome.
+  items:
+  - id: cr_e44c4e0735c0
+    outcome: verified
+    reason: No test reads CMD_STATUS after a CMD_FAILURE transaction and checks the value.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.066576
+error: null

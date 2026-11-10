@@ -1,0 +1,96 @@
+finding_hash: bd20c1ea322aacdd
+started_at: '2026-11-10T19:38:56Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The DV environment covers three of the five items. The smoke vseq randomizes endian_swap with
+    byte-masked TL writes, and the scoreboard compares the digest. The STATUS register is read and checked
+    against the scoreboard's fifo_empty prediction. Key writes during hashing are discarded and the error
+    code is checked. The wipe_secret and back-pressure items remain gaps.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 196
+    line_end: 199
+    quote: "  if (do_wr_key) begin\n    write_discard_key();\n    check_error_code(0);\n  end"
+    role: refutes
+    note: Key written during hashing, then the error code is checked.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 322
+    line_end: 326
+    quote: "          if (hmac_start) begin\n            if (cfg.en_cov) cov.wr_key_during_hash_cg.sample(1);\n\
+      \            update_err_intr_code(SwUpdateSecretKeyInProcess);\n            return;\n          end"
+    role: refutes
+    note: The scoreboard model drops the key write, so the digest comparison uses the original key.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 383
+    line_end: 387
+    quote: "      hmac_status_data = (hmac_idle       << HmacStaIdle)         |\n                    \
+      \     (hmac_fifo_empty << HmacStaMsgFifoEmpty) |"
+    role: refutes
+    note: STATUS fifo_empty is predicted from FIFO depth and checked on STATUS reads.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 373
+    line_end: 373
+    quote: '                  .write(1''b1), .data(word), .mask(wr_mask), .blocking(1));'
+    role: refutes
+    note: Random contiguous byte masks are used for MSG_FIFO writes, so sub-word writes occur with randomized
+      endian_swap.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 330
+    line_end: 332
+    quote: "        \"wipe_secret\": begin\n          // Do nothing"
+    role: supports
+    note: The scoreboard does not model the wipe value, so wipe contents are not checked.
+  searches:
+  - what: fifo_empty checks in DV
+    where: hw/ip/hmac/dv
+    found: The scoreboard predicts the status fifo_empty bit from the FIFO depth. read_status_intr_clr
+      reads STATUS.
+  - what: key write during hash
+    where: hw/ip/hmac/dv
+    found: write_discard_key plus check_error_code, with scoreboard discard logic.
+  - what: endian_swap with wr_mask
+    where: hw/ip/hmac/dv/env
+    found: Random endian_swap and random byte masks in the smoke flow.
+  - what: wipe_secret in scoreboard
+    where: hmac_scoreboard.sv
+    found: Only checks that the digest differs from the expected one. The wipe value is not modelled.
+  near_misses: []
+  items:
+  - id: cr_d8c0f0f46351
+    outcome: withdrawn
+    reason: DV smoke randomizes endian_swap with byte-masked writes, and the scoreboard compares the digest.
+      This is likely covered, though the SHA-384/512 coverage is not confirmed.
+    evidence:
+    - 3
+  - id: cr_1089c5d4e1c7
+    outcome: verified
+    reason: No direct check was found that writes are blocked or back-pressured while the FIFO is full.
+    evidence: []
+  - id: cr_cb42c461741a
+    outcome: withdrawn
+    reason: The scoreboard predicts the STATUS fifo_empty bit and checks it on STATUS reads in DV.
+    evidence:
+    - 2
+  - id: cr_b0906404bd67
+    outcome: verified
+    reason: The scoreboard does not model the wipe value. It only checks that the digest differs from
+      the expected one.
+    evidence:
+    - 4
+  - id: cr_00446a3b2658
+    outcome: withdrawn
+    reason: The DV flow writes the key during hashing, checks the error code, and the scoreboard drops
+      the key write, so the digest is compared against the original key.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+  resolution: Add a directed check that the wipe value is observed in the digest and key state. Add a
+    check on TL response timing while the FIFO is full.
+submissions: 1
+rejections: []
+turns: 12
+cost_usd: 0.10024310000000002
+error: null

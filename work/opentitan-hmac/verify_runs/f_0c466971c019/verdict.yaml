@@ -1,0 +1,51 @@
+finding_hash: e2564c365f1bba13
+started_at: '2026-11-10T19:36:37Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The csr_rd of err_code in the task has no local compare, but the scoreboard checks every CSR
+    read against the RAL mirror. The "err_code" case does not clear do_read_check, so DV_CHECK_EQ compares
+    the read data with the predicted err_code. The scoreboard sets that prediction in update_err_intr_code.
+    So the err_code content is verified, as the comment says.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 542
+    line_end: 542
+    quote: '"err_code": if (cfg.en_cov) cov.err_code_cg.sample(item.d_data);'
+    role: refutes
+    note: err_code case only samples coverage and does not disable the read check.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 553
+    line_end: 556
+    quote: '`DV_CHECK_EQ(item.d_data, `gmv(csr), csr_name)'
+    role: refutes
+    note: Read check against the mirrored value applies to err_code reads, so a wrong value fails the
+      test.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1055
+    line_end: 1055
+    quote: void'(ral.err_code.predict(.value(err_code_val), .kind(UVM_PREDICT_DIRECT)));
+    role: refutes
+    note: Scoreboard predicts the expected err_code value.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 545
+    line_end: 545
+    quote: csr_rd(ral.err_code, error_code);
+    role: context
+    note: The read itself has no compare in the sequence; the check is done by the scoreboard.
+  searches:
+  - what: err_code handling in the HMAC scoreboard
+    where: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    found: The err_code case only samples coverage. do_read_check defaults to 1 (line 121) and the generic
+      DV_CHECK_EQ runs against the predicted value.
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    reason: Performs the err_code read check against the predicted value.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0418361
+error: null

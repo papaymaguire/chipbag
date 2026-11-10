@@ -1,0 +1,35 @@
+finding_hash: cb9c505bcd09e2a6
+started_at: '2026-11-10T22:05:58Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The comment says "Check reset_req pins" but the code checks the wakeup request output (aon_intr_vif
+    pin idx 1, aon_wkup_req_o) against wkup_cause. The check is real and can fail, so only the comment
+    is wrong. The code is in model_and_check_wdog_bark, called from run_wdog_bark_timer. Low severity.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 1276
+    line_end: 1282
+    quote: '// Check reset_req pins:'
+    role: supports
+    note: The comment names reset_req, but the following code compares the wakeup request pin (idx 1).
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 1287
+    line_end: 1287
+    quote: '`uvm_fatal(`gfn, $sformatf("aon_wkup_req_o comparison failed (not matching 0/%0d)",'
+    role: supports
+    note: The error message names aon_wkup_req_o, confirming the checked output is the wakeup request.
+  searches:
+  - what: Read the code around the comment
+    where: aon_timer_scoreboard.sv:1240-1300
+    found: Only wkup_req (pin idx 1) is compared; no reset_req check is present in that block.
+  near_misses: []
+  items: []
+  new_sources: []
+  resolution: Change the comment to "Check wkup_req pin:". The code needs no change.
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.0255651
+error: null

@@ -1,0 +1,85 @@
+finding_hash: 0e4a29ec3cf40fab
+started_at: '2026-11-10T20:43:22Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 4 of 5 items have no test check. The fifth (cr_4400c784ffb0, increment by 1 per event) is checked
+    by mcu_intr_handler, which is in the nightly regressions. That test only checks the summed counters,
+    and only for events forced through the TRIG register. I'm treating the item as partly tested and leaving
+    the verdict as verified, because it stays unverified for real input events and per register. The 1-cycle
+    pulse, 1-bit down-counter, saturation and "counter" field properties are not checked anywhere. The
+    pulse register mask list in mci.c only feeds a generic register access test. Coverage collects the
+    counter values but has no check.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 257
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: context
+    note: Only the sum of notif counters is compared with the number of TRIG writes. This covers the increment-by-1
+      item only partly, because events come from TRIG and the check is on the sum.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2088
+    line_end: 2088
+    quote: // ERROR_INTERNAL_INTR_COUNT_INCR_R
+    role: context
+    note: Only a pulse mask entry for generic register access testing. It does not check pulse width or
+      saturation.
+  searches:
+  - what: intr_count_incr / INTR_COUNT_INCR in tests, tcl, py, yml, sv
+    where: whole repo
+    found: Only RTL, UVM reg model, coverage interface, address map defines and the mci.c reg list/mask.
+  - what: notif intr count usage in tests
+    where: src/integration/test_suites
+    found: mcu_intr_handler sums COUNT_R values and compares with TRIG writes. It does not read INCR_R,
+      check pulse width, saturation or the down-counter.
+  - what: mcu_intr_handler in regression lists
+    where: src/integration/stimulus
+    found: Included in the nightly directed regressions.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 208
+    line_end: 257
+    why_not: Checks only the sum of the counters, with events forced through TRIG and not through the
+      real input signals. It does not check individual counters, pulse width or saturation.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 3960
+    line_end: 3960
+    why_not: Coverpoints on counter values only, with no pass/fail check.
+  items:
+  - id: cr_3d4f68eca3da
+    outcome: verified
+    reason: No test checks that the incr signal pulses for 1 clock cycle on the same input that sets the
+      event.
+    evidence:
+    - 1
+  - id: cr_3e59aca31cd9
+    outcome: verified
+    reason: No test checks the 1-bit down-counter or the immediate decrement that produces the pulse.
+    evidence:
+    - 1
+  - id: cr_3ecbe358fb05
+    outcome: verified
+    reason: No test drives the counter to its maximum or checks that it saturates.
+    evidence:
+    - 0
+  - id: cr_416033921743
+    outcome: verified
+    reason: The 'counter' property of the incr_r pulse field is not checked by any test.
+    evidence:
+    - 1
+  - id: cr_4400c784ffb0
+    outcome: verified
+    reason: Only partly covered. mcu_intr_handler checks that the summed notif counters equal the number
+      of TRIG-triggered events, but not per register and not for real input events. The item stays unverified.
+    evidence:
+    - 0
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Checks the summed interrupt counters against the number of TRIG writes.
+submissions: 1
+rejections: []
+turns: 12
+cost_usd: 0.14169310000000002
+error: null

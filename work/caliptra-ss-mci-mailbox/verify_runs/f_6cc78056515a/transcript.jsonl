@@ -1,0 +1,14 @@
+{"t": "2026-11-10T19:43:42Z", "event": "  \u2192 Grep: intr_count_r"}
+{"t": "2026-11-10T19:43:42Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T19:43:44Z", "event": "Check tests for counter usage."}
+{"t": "2026-11-10T19:43:45Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T19:43:46Z", "event": "Probably these are generic register-reset/access tests. Check specific counters."}
+{"t": "2026-11-10T19:43:48Z", "event": "  \u2192 Grep: notif_mbox0_target_done_intr_count|notif_mbox0_soc_req_lock_intr_count|error_mbox0_ecc_unc_intr_count|notif_cptra_mbox_cmd_avail_intr_count"}
+{"t": "2026-11-10T19:43:48Z", "event": "  \u2192 Grep: intr_count_r"}
+{"t": "2026-11-10T19:43:51Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:43:52Z", "event": "Unrelated variable names."}
+{"t": "2026-11-10T19:43:57Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:44:02Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:44:09Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:44:13Z", "event": "I verified the finding: all five items are untested, and the verdict was accepted.\n\nThe four counter register names from the items (`notif_mbox0_target_done_intr_count_r`, `notif_mbox0_soc_req_lock_intr_count_r`, `error_mbox0_ecc_unc_intr_count_r`, `notif_cptra_mbox_cmd_avail_intr_count_r`) appear only in three files. Those are `mci_reg.sv`, `mci_reg_uvm.sv` and `mci_top_cov_if.sv`, which are RTL, the UVM register model and a coverage interface. No test increments or reads any of the counters, and nothing checks saturation.\n\nThe only test-suite hit for `intr_count` is an unrelated local C variable in `cptra_ss_mcu_mbox_test.c`. I recorded it as a near miss.\n\nThe search covered `.c`, `.h`, `.sv`, `.svh`, `.py`, `.yml` and `.tcl` files. I did not search other file types, so a check in something like a Makefile or log-compare script would not have shown up."}
+{"t": "2026-11-10T19:44:13Z", "event": "[10 turns, $0.0739]"}

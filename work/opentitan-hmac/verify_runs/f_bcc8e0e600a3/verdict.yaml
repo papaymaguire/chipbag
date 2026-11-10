@@ -1,0 +1,80 @@
+finding_hash: 84591aeec93156ad
+started_at: '2026-11-10T21:05:27Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'No HMAC DV test exercises sideloading. The base vseq forces CFG.sideload to 0 (TODO #31634),
+    and no sequence drives the keymgr sideload agent or toggles key valid. All 5 items remain untested.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: "  // TODO(#31634): Disable sideloading for now.\n  rand_config_value[ral.cfg.sideload.get_lsb_pos()]\
+      \ = 1'b0;"
+    role: supports
+    note: Sideload is forced off in randomized config.
+  - path: hw/ip/hmac/dv/env/hmac_env_cfg.sv
+    line_start: 58
+    line_end: 58
+    quote: keymgr_sideload_agent_cfg.start_default_seq = 0;
+    role: context
+    note: Sideload agent default sequence is not started.
+  searches:
+  - what: sideload / CFG.sideload with hmac_en (item cr_89cd9ce85cff)
+    where: hw/ip/hmac/dv
+    found: Only forced to 0 in base vseq; no test sets it.
+  - what: 'abort clears packer and FIFO (cr_aeeb0cb3e0f0): sideload, key_valid, abort'
+    where: hw/ip/hmac/dv
+    found: No abort stimulus or checker.
+  - what: 'key valid deassert mid-operation (cr_af28a6129f5c): key_valid, sideload'
+    where: hw/ip/hmac/dv
+    found: Nothing drives valid; agent default sequence disabled.
+  - what: SwInvalidConfig on key invalid (cr_b276172d406a)
+    where: hw/ip/hmac/dv
+    found: Scoreboard SwInvalidConfig handling at lines 199 and 219 covers other cases; sideload never
+      enabled.
+  - what: 'key change during operation (cr_d882830deff5): sideload key change'
+    where: hw/ip/hmac/dv
+    found: No sequence changes the sideload key.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 199
+    line_end: 219
+    why_not: SwInvalidConfig checks exist, but they cover other configuration errors, and sideload is
+      never enabled to trigger them.
+  items:
+  - id: cr_89cd9ce85cff
+    outcome: verified
+    reason: Sideload is forced to 0, so no stimulus reaches it.
+    evidence:
+    - 0
+  - id: cr_aeeb0cb3e0f0
+    outcome: verified
+    reason: No abort stimulus exists, since sideload is disabled.
+    evidence:
+    - 0
+  - id: cr_af28a6129f5c
+    outcome: verified
+    reason: No test deasserts valid during an operation.
+    evidence:
+    - 0
+    - 1
+  - id: cr_b276172d406a
+    outcome: verified
+    reason: No test drives key invalidation, so ERR_CODE is never checked for this case.
+    evidence:
+    - 0
+    - 1
+  - id: cr_d882830deff5
+    outcome: verified
+    reason: No test changes the sideloaded key mid-operation.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 7
+cost_usd: 0.0759368
+error: null

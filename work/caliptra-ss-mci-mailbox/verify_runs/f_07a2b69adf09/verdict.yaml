@@ -1,0 +1,48 @@
+finding_hash: 9e40e9a751bd5178
+started_at: '2026-11-10T21:08:23Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No other spec text says what happens on a sub-DWORD access to the MCU mailbox SRAM. The only
+    statement is "Accesses must be DWORD aligned and BYTE accesses are not supported by the SRAM." The
+    AXI response and any data modification are unspecified.
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1458
+    line_end: 1458
+    quote: Accesses must be DWORD aligned and BYTE accesses are not supported by the SRAM.
+    role: supports
+    note: Only statement; no response or data behavior given.
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2020
+    line_end: 2020
+    quote: including partial writes
+    role: context
+    note: This row is about a different SRAM (the FW exec region), not the MCU mailbox SRAM.
+  searches:
+  - what: byte access / sub-DWORD / partial write in markdown docs
+    where: '**/*.md'
+    found: Only the cited line, the TL-UL README (unrelated), and an integration spec row about a different
+      SRAM.
+  - what: mcu mbox with unaligned/error/SLVERR/strobe/byte in md, rdl and txt files
+    where: repo docs
+    found: Only an unrelated CSS_Mem_6 row.
+  near_misses:
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2020
+    line_end: 2020
+    why_not: Concerns a different SRAM (the FW exec region), not the MCU mailbox SRAM.
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 3239
+    line_end: 3239
+    why_not: Concerns an external staging area, not sub-DWORD accesses.
+  items: []
+  new_sources: []
+  resolution: Add a sentence to the spec saying what a sub-DWORD or unaligned access returns (for example
+    SLVERR) and whether any SRAM data is modified. The RTL behavior was not examined.
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.042861
+error: null

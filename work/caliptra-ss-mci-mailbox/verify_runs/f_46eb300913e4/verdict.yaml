@@ -1,0 +1,57 @@
+finding_hash: 647361f7e5ef4180
+started_at: '2026-11-10T19:38:36Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No other spec text settles the question. The MBOX1 lock description is a copy of the MBOX0
+    one and still names MBOX0_VALID_AXI_USER. The integration spec only refers to `MBOX*_VALID_AXI_USER`
+    and `MBOX*_AXI_USER_LOCK` generically. Nothing states that index i of one lock register maps to index
+    i of the matching VALID_AXI_USER array.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 847
+    line_end: 848
+    quote: "[br]Each bit corresponds to locking the associated MBO0X_VALID_AXI_USER register.\n      \
+      \           [br]Associated MBOX0_VALID_AXI_USER register is only valid once locked by this bit."
+    role: supports
+    note: The MBOX1 lock description names MBO0X/MBOX0 registers, which is a copy-paste error, and says
+      'each bit' for a 1-bit field.
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 839
+    line_end: 840
+    quote: "Valid AXI USER attributes for requests from SoC AXI Interface. Only valid once LOCK is set.\n\
+      \                 [br]Read-Only once locked by AXI_USER_LOCK."
+    role: context
+    note: The MBOX1_VALID_AXI_USER description does not give the index mapping to the lock register.
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2295
+    line_end: 2296
+    quote: "   - `MBOX*_VALID_AXI_USER`\n   - `MBOX*_AXI_USER_LOCK`"
+    role: context
+    note: The only other mention uses a wildcard and does not give the per-index pairing.
+  searches:
+  - what: AXI_USER_LOCK / VALID_AXI_USER in all markdown and rdl files
+    where: repo-wide
+    found: Only mci_reg.rdl and the integration spec (generic wildcard mention). The integration spec
+      points to a hardware spec anchor, but the hardware spec has no matching section or text.
+  - what: VALID_AXI_USER and AXI_USER_LOCK in CaliptraSSHardwareSpecification.md
+    where: docs/
+    found: No matches
+  near_misses:
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2291
+    line_end: 2298
+    why_not: It says the registers must be configured, but gives no index mapping and does not say whether
+      MBOX0 and MBOX1 are independent.
+  items: []
+  new_sources: []
+  resolution: The register array structure (5 entries each) and the integration-spec wording suggest MBOX1_AXI_USER_LOCK[i]
+    locks MBOX1_VALID_AXI_USER[i] only. To resolve, change the MBOX1 description to 'Each LOCK register
+    locks the MBOX1_VALID_AXI_USER register with the same index' and fix the MBOX0 spelling. I did not
+    check the RTL for what it actually does.
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.0883459
+error: null

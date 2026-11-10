@@ -1,0 +1,53 @@
+finding_hash: 5e76e46780a1b2d6
+started_at: '2026-11-10T19:47:55Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'I checked only the strb_wr_csr test, because the budget ran out. It matches the finding''s
+    description: it writes EXECUTE and TARGET_USER_VALID while MCU holds the lock, with no write to TARGET_USER_VALID
+    after it is set. I did not open the other cited tests or look for tests beyond that file, so the gaps
+    in the other four items are not independently confirmed.'
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_strb_wr_csr/smoke_test_mcu_mbox_strb_wr_csr.c
+    line_start: 137
+    line_end: 138
+    quote: // TARGET_USER_VALID accepts a byte write and locks both target fields.
+    role: supports
+    note: The only TARGET_USER_VALID write in this test is while the value is 0, so no write is made after
+      it is set.
+  searches:
+  - what: TARGET_USER_VALID usage in C tests
+    where: src/integration/test_suites
+    found: 11 files reference it. I read only the strb_wr_csr test, so the gap is confirmed there only.
+  near_misses: []
+  items:
+  - id: cr_2d3206a4c6cc
+    outcome: verified
+    reason: strb_wr_csr makes no TARGET_USER_VALID write after the bit is set. I did not check the other
+      tests.
+    evidence:
+    - 0
+  - id: cr_381131113d9e
+    outcome: inconclusive
+    reason: I did not search for this item.
+    evidence: []
+  - id: cr_3812998537f7
+    outcome: inconclusive
+    reason: I did not search for this item.
+    evidence: []
+  - id: cr_612d264d8d65
+    outcome: verified
+    reason: strb_wr_csr has no write after valid=1. I did not check the other tests.
+    evidence:
+    - 0
+  - id: cr_c245e318661a
+    outcome: inconclusive
+    reason: I did not search for this item.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.035803100000000004
+error: null

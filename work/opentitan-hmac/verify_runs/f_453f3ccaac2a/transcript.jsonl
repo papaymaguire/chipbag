@@ -1,0 +1,8 @@
+{"t": "2026-11-10T21:10:29Z", "event": "  \u2192 Grep: wipe|DIGEST_12|digest_12"}
+{"t": "2026-11-10T21:10:29Z", "event": "  \u2192 Grep: wipe_secret|WIPE_SECRET"}
+{"t": "2026-11-10T21:10:31Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:10:32Z", "event": "  \u2192 Grep: fifo|replic|dupl"}
+{"t": "2026-11-10T21:10:43Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T21:10:50Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:10:54Z", "event": "I submitted the verdict as **verified** for all four items: I found no test that checks any of them.\n\n- **Wipe value replication (`cr_1c762e6535de`):** The wipe sequence and scoreboard only check that the digest differs from the prediction after a wipe (`hw/ip/hmac/dv/env/hmac_scoreboard.sv:482`). Nothing checks that the 32-bit value is replicated into a 64-bit one.\n- **SW cannot read the message FIFO (`cr_4282db4ce90a`):** I found no test or assertion that tries to read the FIFO from SW and checks the result.\n- **SHA-2 384 digest in DIGEST_0-DIGEST_12 (`cr_4977ddf1d188`):** The scoreboard checks SHA-384 digests only up to index 11 (`hmac_scoreboard.sv:491`). DIGEST_12 is never checked, and the spec's range differs from what the scoreboard checks.\n- **Wiping does not clear the message FIFO (`cr_8e41a2412a72`):** No test checks FIFO contents after a wipe. `sw/device/tests/hmac_secure_wipe_test.c` only polls for the FIFO to be empty after processing a message.\n\nMy first submission attempt failed because the tool wasn't available. The retry through the `mcp__verify__submit_verdict` tool was accepted."}
+{"t": "2026-11-10T21:10:55Z", "event": "[7 turns, $0.0723]"}

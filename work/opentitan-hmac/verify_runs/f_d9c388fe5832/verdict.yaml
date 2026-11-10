@@ -1,0 +1,87 @@
+finding_hash: 1a65cbded7725a3e
+started_at: '2026-11-10T20:58:00Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks the hwext or hwqe attribute of CFG directly. The HMAC DV environment
+    writes CFG through the RAL in its sequences, and the scoreboard checks digests. That only exercises
+    the register's behaviour indirectly. No assertion or check targets the write-qualifier pulse (`qe`)
+    or the external implementation of the four named fields.
+  evidence:
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 202
+    line_end: 203
+    quote: "hwext:    \"true\",\n      hwqe:     \"true\","
+    role: context
+    note: CFG is declared hwext and hwqe.
+  - path: hw/ip/hmac/rtl/hmac_reg_top.sv
+    line_start: 643
+    line_end: 643
+    quote: assign cfg_qe = &cfg_flds_we;
+    role: context
+    note: The RTL generates the CFG qe pulse. I found no DV check on it.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 162
+    line_end: 169
+    quote: ral.cfg.sha_en.set(sha_en);
+    role: context
+    note: The sequences write CFG as stimulus. The checking is functional (digest comparison), not a check
+      of the hwext or hwqe attributes.
+  searches:
+  - what: 'hmac_en: hwext/hwqe/qe checks in HMAC RTL and DV'
+    where: hw/ip/hmac
+    found: Only generated reg_top RTL. No DV assertion on hmac_en qe or hwext.
+  - what: 'digest_size: qe pulse checks and uses in DV'
+    where: hw/ip/hmac/dv
+    found: Only functional set/get/read in the sequences. No qe check.
+  - what: 'key_length: hwext checks'
+    where: hw/ip/hmac/dv
+    found: Only functional csr_rd and csr_update. No structural check.
+  - what: 'endian_swap: hwext checks'
+    where: hw/ip/hmac/dv
+    found: Only functional set/get. No structural check.
+  - what: cfg_qe or cfg.qe references
+    where: hw/ip/hmac/dv
+    found: None.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 162
+    line_end: 169
+    why_not: These functional CFG writes are checked indirectly through the digest results. They do not
+      verify hwext or hwqe, so I count this only as a near miss. I did not inspect the scoreboard or the
+      generic CSR tests in detail.
+  items:
+  - id: cr_6d3cb7350c6c
+    outcome: verified
+    reason: No check on the hmac_en qe pulse.
+    evidence:
+    - 0
+    - 1
+  - id: cr_98f6488c2d66
+    outcome: verified
+    reason: No direct check that hmac_en is implemented outside the register block.
+    evidence:
+    - 0
+  - id: cr_afe1daf5c85e
+    outcome: verified
+    reason: No check on the digest_size qe pulse.
+    evidence:
+    - 0
+    - 1
+  - id: cr_bf372f75531c
+    outcome: verified
+    reason: No direct check that key_length is implemented outside the register block.
+    evidence:
+    - 0
+  - id: cr_bf833396a76a
+    outcome: verified
+    reason: No direct check that endian_swap is implemented outside the register block.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 7
+cost_usd: 0.0898913
+error: null

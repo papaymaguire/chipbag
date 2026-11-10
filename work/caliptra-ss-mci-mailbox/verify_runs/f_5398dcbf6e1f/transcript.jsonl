@@ -1,0 +1,7 @@
+{"t": "2026-11-10T21:08:28Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/docs/CaliptraSSIntegrationSpecification.md"}
+{"t": "2026-11-10T21:08:29Z", "event": "  \u2192 Grep: MCU_MBOX[01]_SIZE_KB|MBOX.*2 ?MB|2 ?MB.*MBOX"}
+{"t": "2026-11-10T21:08:30Z", "event": "The parameter table in the same spec gives per-parameter bounds."}
+{"t": "2026-11-10T21:08:36Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T21:08:42Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:08:46Z", "event": "I withdrew the finding. Other spec text in the same document answers the question: the 2 MB limit applies to each mailbox separately, not to their sum.\n\n- **Spec:** The parameter table in `docs/CaliptraSSIntegrationSpecification.md` (lines 1806 and 1809) gives `MCU_MBOX0_SIZE_KB` and `MCU_MBOX1_SIZE_KB` each a range of 0 to 2048 KB (2 MB). A config with 2 MB + 2 MB is therefore legal.\n- **Over-limit sizes:** The RTL rejects them at elaboration. `src/mci/rtl/mci_top.sv` has a separate `CALIPTRA_ASSERT_INIT` max-size check for each mailbox (line 956 for mailbox 0).\n- **Garbled sentence:** The sentence at line 2263 is still poorly worded. Rewording it to say each mailbox can be up to 2 MB would remove the ambiguity."}
+{"t": "2026-11-10T21:08:46Z", "event": "[5 turns, $0.0563]"}

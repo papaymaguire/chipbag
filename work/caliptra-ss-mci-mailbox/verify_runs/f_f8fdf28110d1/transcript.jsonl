@@ -1,0 +1,13 @@
+{"t": "2026-11-10T20:43:22Z", "event": "  \u2192 Grep: intr_count_r"}
+{"t": "2026-11-10T20:43:23Z", "event": "  \u2192 Grep: intr_count_r"}
+{"t": "2026-11-10T20:43:25Z", "event": "  \u2192 Grep: intr_count_r"}
+{"t": "2026-11-10T20:43:26Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T20:43:28Z", "event": "Check whether any test touches count regs for these specific interrupts."}
+{"t": "2026-11-10T20:43:30Z", "event": "  \u2192 Grep: (notif_mbox0_soc_req_lock|error_mbox0_ecc_unc|notif_mbox1_target_done|notif_cptra_mbox_cmd_avail)_intr_count|NOTIF_MBOX0_SOC_REQ_LOCK_INTR_COUNT|ERROR_MBOX0_ECC_UNC_INTR_COUNT|NOTIF_MBOX1_TARGET_DONE_"}
+{"t": "2026-11-10T20:43:30Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:43:32Z", "event": "Only address map defines; no tests use them."}
+{"t": "2026-11-10T20:43:38Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:43:44Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:43:53Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:43:57Z", "event": "I submitted a verdict of verified for all five items: I found no test that checks any of these interrupt counters.\n\n- **What I searched:** every reference to the counter registers across the repository. Outside the generated register files, the hits were address-map defines, docs and a coverage interface.\n- **Coverage:** `src/mci/coverage/mci_top_cov_if.sv` has coverpoints on these counters, for example line 3970 for the `error_mbox0_ecc_unc` counter. They only sample the value, so they can't fail a test.\n- **Unrelated hit:** `smoke_test_wdt.c` has a variable named `intr_count`, but it is plain software state, not the register.\n- **Items:** that covers \"the field is a counter\", \"increments by 1\" and \"saturates and does not overflow\". None has stimulus plus a pass/fail check.\n- **Caveat:** I searched for the counter names and address defines. I did not trace whether a generic register test touches these registers indirectly."}
+{"t": "2026-11-10T20:43:57Z", "event": "[10 turns, $0.0845]"}

@@ -1,0 +1,15 @@
+{"t": "2026-11-10T19:43:50Z", "event": "  \u2192 Grep: hash_stop|Key_None|key_length"}
+{"t": "2026-11-10T19:43:51Z", "event": "  \u2192 Grep: Key_None|key_length"}
+{"t": "2026-11-10T19:43:53Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:43:58Z", "event": "  \u2192 Grep: HashStop|hash_stop|hmac_done"}
+{"t": "2026-11-10T19:43:58Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:44:00Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:44:01Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:44:05Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib; grep -n \"digest\\|check\\|compare\" hmac_sar_same_context_vseq.sv 2>/dev/null | head -40; ls | grep -i sar"}
+{"t": "2026-11-10T19:44:07Z", "event": "Checking where the save-and-restore (sar) tests live and whether they compare the final digest."}
+{"t": "2026-11-10T19:44:08Z", "event": "  \u2192 Grep: sar_same_context|sar_stop_and_continue"}
+{"t": "2026-11-10T19:44:10Z", "event": "  \u2192 Grep: sar_same_context|sar_stop_and_continue|sar_different_context"}
+{"t": "2026-11-10T19:44:21Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:44:29Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:44:34Z", "event": "I submitted an inconclusive verdict. Three of the five items look covered by a real check, and I could not settle the other two.\n\nThe check that covers three items is in `hw/ip/hmac/dv/env/hmac_scoreboard.sv`. It predicts the digest with a DPI reference model and compares it with what the design reads back.\n\n- **Withdrawn (3 items):**\n  - **`cr_db590d70ed32`:** unkeyed SHA-2 with `Key_None` counts as a valid config, so the scoreboard predicts and compares a digest. A blocked start would fail that comparison.\n  - **`cr_37e3fb4dd09b`:** the model slices the key by `key_length` before computing the expected digest.\n  - **`cr_412c96a5a69d`:** the model feeds the key words in KEY0 onward order, so a wrong order would give a digest mismatch.\n- **Inconclusive (2 items):**\n  - **`cr_302cc8a11faa`:** after `hash_stop`, the scoreboard predicts `hmac_done` from the done bit it observes, which is circular. The save-and-restore tests poll for done, so a missing interrupt would probably time out, but I did not confirm that.\n  - **`cr_ef5931e3a47f`:** the check on the intermediate digest after a stop is a commented-out TODO (#23240). I did not confirm that the final restored digest is checked.\n\nI did not open the save-and-restore sequences in `hmac_base_vseq.sv` in detail, so those two items could still go either way."}
+{"t": "2026-11-10T19:44:34Z", "event": "[13 turns, $0.1042]"}

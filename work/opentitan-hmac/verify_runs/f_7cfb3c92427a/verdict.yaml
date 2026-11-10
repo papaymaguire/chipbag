@@ -1,0 +1,78 @@
+finding_hash: 227cf5cbdea1cccb
+started_at: '2026-11-10T21:10:28Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: All five items are hwext/hwqe implementation attributes, and the existing HMAC DV env checks
+    the behavior they imply. The scoreboard compares every STATUS read against its prediction, which includes
+    hmac_idle and fifo_full. It compares DIGEST values against the C-model prediction. Software-written
+    keys feed those digests, so a missing hwqe pulse or a wrong external register would give wrong digests.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 554
+    line_end: 557
+    quote: '    if (do_read_check) begin'
+    role: refutes
+    note: STATUS reads (idle, fifo_full) are compared against the predicted mirror value, so a wrong value
+      fails the test. Only fifo_depth gets a special tolerance.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 496
+    line_end: 496
+    quote: '                `DV_CHECK_EQ(real_digest_val, exp_digest[digest_idx])'
+    role: refutes
+    note: The DIGEST registers read from the DUT are checked against the C-model prediction, which depends
+      on the written key.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1062
+    line_end: 1062
+    quote: '    `DV_CHECK_EQ(cfg.hmac_vif.is_idle(), val)'
+    role: refutes
+    note: The idle output is checked, and it also updates the predicted STATUS.hmac_idle.
+  searches:
+  - what: Checks on STATUS, DIGEST and KEY in the HMAC DV scoreboard
+    where: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    found: The scoreboard predicts STATUS on reads and compares the data. It compares digests against
+      the C model and records key writes for the prediction.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 502
+    line_end: 507
+    why_not: The status check skips the read compare when cfg.sar_skip_ctxt is set, and fifo_depth is
+      checked with a +1 tolerance. Normal runs still check hmac_idle and fifo_full.
+  items:
+  - id: cr_45e847d688ba
+    outcome: withdrawn
+    reason: The scoreboard predicts fifo_full and compares every STATUS read, so the externally implemented
+      register is checked.
+    evidence:
+    - 0
+  - id: cr_8080aa204252
+    outcome: withdrawn
+    reason: The idle pin is checked against the model and STATUS reads are compared, so hmac_idle is covered.
+    evidence:
+    - 0
+    - 2
+  - id: cr_1b082437fa31
+    outcome: withdrawn
+    reason: Key writes go through the hwqe pulse to the HMAC core. The digest compare fails if a pulse
+      is lost. This is only an indirect check.
+    evidence:
+    - 1
+  - id: cr_993f078123e1
+    outcome: withdrawn
+    reason: The externally implemented key registers are exercised end to end, because the digest depends
+      on the key and is compared.
+    evidence:
+    - 1
+  - id: cr_37295a2dec07
+    outcome: withdrawn
+    reason: DIGEST reads are compared with the predicted digest.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.07017010000000001
+error: null

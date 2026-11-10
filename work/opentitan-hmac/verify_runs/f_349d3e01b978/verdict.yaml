@@ -1,0 +1,38 @@
+finding_hash: 53beb9bb3b88343c
+started_at: '2026-11-10T20:51:56Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The repository does not link the HMAC plan item to this test. The HMAC sec_cm testplan maps
+    sec_cm_key_sideload to "N/A". The sideload test is mapped only from the chip keymgr_dpe testplan.
+    The finding also says there is no concrete plan/test inconsistency, so there is no mismatch to report.
+  evidence:
+  - path: hw/ip/hmac/data/hmac_sec_cm_testplan.hjson
+    line_start: 34
+    line_end: 36
+    quote: 'desc: "Verify the countermeasure(s) KEY.SIDELOAD."'
+    role: refutes
+    note: The plan item lists tests N/A on the next lines, so the link to keymgr_dpe_sideload_hmac_test
+      was inferred by the analysis.
+  - path: hw/top_earlgrey/data/ip/chip_keymgr_dpe_testplan.hjson
+    line_start: 186
+    line_end: 186
+    quote: 'tests: ["chip_sw_keymgr_dpe_sideload_hmac"]'
+    role: context
+    note: The test is tied to a different, chip-level plan item.
+  searches:
+  - what: KEY.SIDELOAD plan entry in the HMAC sec_cm testplan
+    where: hw/ip/hmac/data/hmac_sec_cm_testplan.hjson
+    found: 'tests: N/A'
+  - what: References to keymgr_dpe_sideload_hmac
+    where: repo hjson, py, bzl and build files
+    found: Only the chip keymgr_dpe testplan and chip_sim_cfg reference it. No HMAC plan references it.
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0566752
+error: null

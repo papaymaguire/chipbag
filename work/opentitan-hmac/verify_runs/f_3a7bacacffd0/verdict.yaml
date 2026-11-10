@@ -1,0 +1,73 @@
+finding_hash: ef6e4c0a54a2c20b
+started_at: '2026-11-10T20:55:20Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'All five items are register-implementation attributes (hwext/hwqe). The HMAC DV env exercises
+    them functionally: the vseqs write each CMD bit, and the scoreboard checks STATUS.fifo_empty on reads
+    and checks digests/done. A broken hwqe/hwext implementation would fail those tests. I did not find
+    a dedicated structural test, so this rests on implicit coverage.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 233
+    line_end: 251
+    quote: csr_wr(.ptr(ral.cmd), .value(1'b1 << HashContinue));
+    role: refutes
+    note: Stimulus writes CMD.hash_continue and CMD.hash_stop (line 250), so hwqe pulses are required
+      for function.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 383
+    line_end: 387
+    quote: (hmac_fifo_empty << HmacStaMsgFifoEmpty) |
+    role: refutes
+    note: Scoreboard predicts STATUS including fifo_empty and checks it on reads.
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 376
+    line_end: 377
+    quote: 'hwext: "true",'
+    role: context
+    note: Structural attributes under question.
+  searches:
+  - what: hash_stop/hash_continue/fifo_empty in hmac dv
+    where: hw/ip/hmac/dv
+    found: vseq triggers for start/process/stop/continue; scoreboard status prediction and checks
+  near_misses:
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 378
+    line_end: 380
+    why_not: CMD is excluded from generic CSR write tests (CsrExclWrite), but directed vseqs cover it.
+  items:
+  - id: cr_8c35dbd4c060
+    outcome: withdrawn
+    reason: hash_continue written in trigger_hash_continue; digest checked after.
+    evidence:
+    - 0
+  - id: cr_94bea331064f
+    outcome: withdrawn
+    reason: hash_process is written in every hash flow; the scoreboard checks hmac_done and the digest.
+    evidence:
+    - 0
+  - id: cr_e1b1dec92be8
+    outcome: withdrawn
+    reason: hash_start is written in every hash flow, and the digest checks fail if the write pulse is
+      missing.
+    evidence:
+    - 0
+  - id: cr_efce56b61414
+    outcome: withdrawn
+    reason: hash_stop is written in trigger_hash_stop, and the later context-switch flow is checked via
+      digests.
+    evidence:
+    - 0
+  - id: cr_05908482e34e
+    outcome: withdrawn
+    reason: The scoreboard predicts STATUS including fifo_empty and checks it on reads.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.0745718
+error: null

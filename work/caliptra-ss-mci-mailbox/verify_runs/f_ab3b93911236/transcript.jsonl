@@ -1,0 +1,10 @@
+{"t": "2026-11-10T21:01:48Z", "event": "  \u2192 Grep: MBOX_DMI_SRAM_SIZE|SRAM size between|MCU_MBOX\\w*SRAM_SIZE|MCU_MBOX_SRAM_SIZE"}
+{"t": "2026-11-10T21:01:48Z", "event": "  \u2192 Grep: SRAM size between"}
+{"t": "2026-11-10T21:01:50Z", "event": "  \u2192 Grep: SRAM_SIZE|sram_size"}
+{"t": "2026-11-10T21:01:51Z", "event": "  \u2192 Grep: MCU_MBOX\\w*SRAM_SIZE|MBOX_DMI_SRAM_SIZE|MCU_MBOX\\w*_SIZE"}
+{"t": "2026-11-10T21:01:53Z", "event": "  \u2192 Grep: MCU_MBOX\\d?_SIZE_KB"}
+{"t": "2026-11-10T21:01:55Z", "event": "Only a single configuration is built; no sweep."}
+{"t": "2026-11-10T21:01:59Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T21:02:04Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:02:07Z", "event": "I verified the finding: no test checks that the MCU mailbox SRAM size is configurable.\n\nEach testbench build uses one fixed size, for example `MCU_MBOX0_SIZE_KB = 256` in `src/integration/testbench/tb_top_pkg.sv`. The smoke test `cptra_smoke_test_mcu_mbox_axi_param.c` reads the configured size and adapts its addresses to it, but never changes the size or checks configurability. I found no regression or test that varies `MCU_MBOX*_SIZE_KB`. I also found no file containing the plan text \"SRAM size between\", so no test implements that plan item.\n\nThe init-time size assertions in `src/mci/rtl/mci_top.sv` only check the bounds of the single configured value.\n\nThe verdict was accepted on the second attempt. The first call failed because the tool wasn't available under that name."}
+{"t": "2026-11-10T21:02:07Z", "event": "[8 turns, $0.0593]"}

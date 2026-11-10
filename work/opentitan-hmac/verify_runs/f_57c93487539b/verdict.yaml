@@ -1,0 +1,82 @@
+finding_hash: c2e6df73e55c0f82
+started_at: '2026-11-10T19:41:00Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: The digest-clear item (cr_4bb0aa48a9b1) is tested, so I withdrew it. The scoreboard predicts
+    a cleared digest when CFG.sha_en goes from 1 to 0, and it compares the later digest reads against
+    that prediction. The four hwext/hwqe items describe implementation attributes of the register interface.
+    I found no dedicated test or check for them. Key and digest accesses do exercise those paths indirectly,
+    so I did not call them clearly untested.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 306
+    line_end: 309
+    quote: "if (sha_en && !item.a_data[ShaEn]) begin\n            exp_digest   = '{default:0};  // Digest\
+      \ gets cleared on disabling."
+    role: refutes
+    note: The scoreboard predicts a zeroed digest when sha_en goes from 1 to 0.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 496
+    line_end: 496
+    quote: '`DV_CHECK_EQ(real_digest_val, exp_digest[digest_idx])'
+    role: refutes
+    note: Digest reads are compared to the expected value, which is zero after sha_en is disabled. This
+      check fails the test if the digest was not cleared.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 346
+    line_end: 357
+    quote: if (csr_name.substr(0, 5) == "digest") begin
+    role: context
+    note: Digest register writes are predicted only when sha_en is 0, and exp_digest is updated from them.
+      This exercises the DIGEST hwext/hwqe write path indirectly.
+  searches:
+  - what: sha_en and digest-clear handling in the HMAC DV code
+    where: hw/ip/hmac/dv
+    found: The scoreboard clears exp_digest on the sha_en 1->0 transition and compares digest reads in
+      the check at line 496. Sequences disable sha_en in several places.
+  - what: hwext, hwqe and csr test names in the HMAC DV directory
+    where: hw/ip/hmac/dv
+    found: No matches. There is no dedicated check for the hwext/hwqe attributes.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 256
+    line_end: 264
+    why_not: This is only a comment plus a digest read. The actual check is in the scoreboard.
+  items:
+  - id: cr_4bb0aa48a9b1
+    outcome: withdrawn
+    reason: The scoreboard clears exp_digest when CFG.sha_en transitions from 1 to 0, and the digest read
+      check compares against it.
+    evidence:
+    - 0
+    - 1
+  - id: cr_1b082437fa31
+    outcome: inconclusive
+    reason: KEY hwqe is a structural attribute with no direct test. Key writes are exercised indirectly
+      through the HMAC digest comparison.
+    evidence: []
+  - id: cr_993f078123e1
+    outcome: inconclusive
+    reason: KEY hwext is a structural attribute with no direct test. Key writes are exercised indirectly
+      through the HMAC digest comparison.
+    evidence: []
+  - id: cr_37295a2dec07
+    outcome: inconclusive
+    reason: DIGEST hwext has no direct check. Digest reads and writes are exercised and compared indirectly
+      by the scoreboard.
+    evidence:
+    - 2
+  - id: cr_ad1ab862f50a
+    outcome: inconclusive
+    reason: DIGEST hwqe has no direct check. Digest writes are predicted and read back indirectly by the
+      scoreboard.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.0821648
+error: null

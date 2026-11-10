@@ -1,0 +1,52 @@
+finding_hash: f9e9533064332f5f
+started_at: '2026-11-10T22:05:44Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The plan ties the prescaler item to aon_timer_prescaler. It promises prescaler switches at
+    random times while the timer runs, with WKUP_COUNT checked. The vseq writes the prescaler once before
+    enabling the timer and never changes it afterwards. It never reads WKUP_COUNT. The scoreboard does
+    model wakeup timing with the prescaler, so the interrupt timing is checked indirectly. That does not
+    supply the "switch while running" stimulus.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+    line_start: 57
+    line_end: 61
+    quote: csr_utils_pkg::csr_wr(ral.wkup_ctrl.prescaler, prescaler);
+    role: supports
+    note: The prescaler is written once, before the timer is enabled. It is never changed while the timer
+      runs, and WKUP_COUNT is never read.
+  - path: hw/ip/aon_timer/data/aon_timer_testplan.hjson
+    line_start: 37
+    line_end: 48
+    quote: Switch prescaler value at random times without locking configuration registers
+    role: supports
+    note: The plan item promises random-time switching. It lists aon_timer_prescaler as the test.
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 934
+    line_end: 934
+    quote: wkup_num = ((wkup_thold - wkup_count) * (prescaler + 1));
+    role: context
+    note: The scoreboard models wakeup timing with the prescaler. This is a generic indirect check, not
+      a WKUP_COUNT comparison in the test.
+  searches:
+  - what: prescaler in the testplan
+    where: aon_timer_testplan.hjson
+    found: The prescaler item links to the test aon_timer_prescaler.
+  - what: prescaler in the scoreboard
+    where: aon_timer_scoreboard.sv
+    found: The scoreboard uses the prescaler in its wakeup timing model, so the interrupt timing is checked.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 934
+    line_end: 934
+    why_not: The scoreboard checks wakeup timing generically. It does not give the test the missing stimulus
+      of changing the prescaler at random times while the timer runs.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.07275419999999999
+error: null

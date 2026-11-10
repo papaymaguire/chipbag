@@ -1,0 +1,59 @@
+finding_hash: f51d8837c53604c0
+started_at: '2026-11-10T19:38:11Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Other spec text answers the question. The programmer's guide says starting with an invalid
+    key is blocked and ERR_CODE reports SwInvalidConfig (0x6). The register documentation says Key_None
+    only blocks start in HMAC mode, not in SHA-only mode.
+  evidence:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 110
+    line_end: 110
+    quote: Starting while the key is invalid is blocked, and [`ERR_CODE`](registers.md#err_code) reports
+      `SwInvalidConfig`.
+    role: refutes
+    note: Names the ERR_CODE value raised when start is blocked by an invalid key.
+  - path: hw/ip/hmac/doc/registers.md
+    line_start: 212
+    line_end: 212
+    quote: If only unkeyed SHA-2 is configured (`hmac_en == 0`), starting is not blocked, since this does
+      not require a key.
+    role: refutes
+    note: Says Key_None does not block start in SHA-only mode.
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 317
+    line_end: 317
+    quote: However, for HMAC mode (`hmac_en == 1`), when HMAC is triggered to start while !!KEY_LENGTH
+      holds `Key_None`
+    role: refutes
+    note: The hjson also restricts the blocking to HMAC mode.
+  - path: hw/ip/hmac/rtl/hmac.sv
+    line_start: 952
+    line_end: 954
+    quote: '// SwInvalidConfig has the highest priority: SW configures HMAC incorrectly'
+    role: context
+    note: RTL reports SwInvalidConfig as the error code.
+  searches:
+  - what: Key_None and SwInvalidConfig in the hmac docs, hjson and RTL
+    where: hw/ip/hmac
+    found: The programmer's guide, theory of operation and registers.md state the ERR_CODE value and the
+      hmac_en scope.
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    reason: States that a blocked start reports ERR_CODE SwInvalidConfig (0x6).
+  - path: hw/ip/hmac/doc/registers.md
+    reason: States that Key_None does not block start when hmac_en == 0.
+  resolution: The design reports SwInvalidConfig (0x6) in ERR_CODE when start is blocked by Key_None in
+    HMAC mode, and does not block in SHA-only mode. The hjson description at line 354 could repeat the
+    programmer's guide wording, including the ERR_CODE value and the hmac_en == 0 exception. Whether the
+    error interrupt (intr_state.hmac_err) is also raised was not checked in the docs; the scoreboard's
+    use of update_err_intr_code suggests it is.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0517658
+error: null

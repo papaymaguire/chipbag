@@ -1,0 +1,83 @@
+finding_hash: 927bae4db32f4b3e
+started_at: '2026-11-10T21:04:29Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: hwext and hwqe are implementation attributes of the register interface, not separately testable
+    behaviours. The HMAC DV scoreboard exercises and checks them functionally. STATUS fifo_empty and fifo_full
+    are modelled and compared on every status read. CMD start, process and stop are modelled, and their
+    effect is checked through the digest, hmac_done and idle checks. I did not trace the individual test
+    sequences or the regression list, so the CMD items are withdrawn with less certainty than the STATUS
+    ones.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 383
+    line_end: 387
+    quote: hmac_status_data = (hmac_idle       << HmacStaIdle)         |
+    role: refutes
+    note: The scoreboard predicts the status register, including fifo_empty and fifo_full, from its FIFO
+      model. The generic CSR read check compares the prediction to the value read back.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 171
+    line_end: 193
+    quote: '"cmd": begin'
+    role: refutes
+    note: CMD writes (hash_start and hash_process) drive the model. The model then checks idle and predicts
+      the digest, so a wrong hardware write-qualifier would show up as a mismatch.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 411
+    line_end: 419
+    quote: if (item.d_data[HmacDone]) begin
+    role: refutes
+    note: hmac_done is only accepted after hash_process or hash_stop was issued. This checks the hash_stop
+      path.
+  searches:
+  - what: hash_stop, fifo_empty, fifo_full, hash_start and hash_process in the HMAC DV environment
+    where: hw/ip/hmac/dv
+    found: The scoreboard predicts status.fifo_empty and fifo_full and handles CMD writes. A coverage
+      cross on the fifo_empty and fifo_full states exists. hash_stop is used via trigger_hash_stop in
+      the base vseq.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 503
+    line_end: 521
+    why_not: The status handler explicitly checks only fifo_depth, with a +1 tolerance. fifo_empty and
+      fifo_full are checked by the generic CSR mirror comparison, not by this block.
+  items:
+  - id: cr_94bea331064f
+    outcome: withdrawn
+    reason: hwqe is an implementation attribute. Writes to hash_process are modelled in the scoreboard
+      and the resulting digest is checked.
+    evidence:
+    - 1
+  - id: cr_e1b1dec92be8
+    outcome: withdrawn
+    reason: hwqe is an implementation attribute. hash_start writes are modelled and the resulting idle
+      state and digest are checked.
+    evidence:
+    - 1
+  - id: cr_efce56b61414
+    outcome: withdrawn
+    reason: hwext is an implementation attribute. The hash_stop effect (hmac_done after a stop) is checked
+      in the scoreboard.
+    evidence:
+    - 2
+  - id: cr_05908482e34e
+    outcome: withdrawn
+    reason: The scoreboard models fifo_empty and the generic CSR read check compares the modelled value
+      to the value read from the status register.
+    evidence:
+    - 0
+  - id: cr_45e847d688ba
+    outcome: withdrawn
+    reason: The scoreboard models fifo_full and the generic CSR read check compares the modelled value
+      to the value read from the status register.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.0793217
+error: null

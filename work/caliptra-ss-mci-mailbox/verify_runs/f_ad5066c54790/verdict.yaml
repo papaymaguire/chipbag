@@ -1,0 +1,100 @@
+finding_hash: c8a2f96f3b5b647f
+started_at: '2026-11-10T19:46:35Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: Three of the five items are covered by the nightly ownership-flow test, and two have no test.
+    The `mci_mbox0/1_ownership_flow` test is in the nightly regression. It drives full Requester→Root→Target→Root→Requester
+    transactions with a terminal status in the range DATA_READY..CMD_FAILURE (1..3), and it checks `HW_STATUS.SRAM_OWNER`
+    in every phase. SRAM_OWNER=NONE and FAILURE=3 are therefore checked, and the BUSY=0 encoding is only
+    partly checked. Nothing checks that a terminal TARGET_STATUS is invisible to the Requester as completion,
+    and nothing covers the MCU-as-Requester case.
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 95
+    line_end: 95
+    quote: '    mci_comm_flow_check_phase("released", MCU_MBOX_OWNER_NONE);'
+    role: refutes
+    note: After EXECUTE=0, `mcu_mbox_check_sram_owner` counts an error unless `SRAM_OWNER` reads NONE
+      (value 0). The test is in the nightly regression.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 202
+    line_end: 204
+    quote: "    for (int status = mcu_mbox_csr__mbox_cmd_status__status__mbox_status_e__DATA_READY;\n\
+      \         status <= mcu_mbox_csr__mbox_cmd_status__status__mbox_status_e__CMD_FAILURE; status++)\n\
+      \        mci_comm_flow_transaction(status);"
+    role: refutes
+    note: FAILURE (3) is written as a terminal status to both TARGET_STATUS and CMD_STATUS. The ownership
+      transitions are then checked in each phase.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 137
+    line_end: 137
+    quote: '    mcu_mbox_write_target_status(mbox_num, MCU_MBOX_TARGET_STATUS_FAILURE);'
+    role: context
+    note: Root's write of FAILURE to TARGET_STATUS is checked to be ignored. This is an access-control
+      check, not an encoding check.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 133
+    line_end: 133
+    quote: '    mci_comm_flow_check_phase("root-owns-response", MCU_MBOX_OWNER_ROOT);'
+    role: context
+    note: After the Target's terminal status, the SRAM owner is Root. The test never reads CMD_STATUS
+      as the Requester to confirm the Requester does not see completion yet.
+  searches:
+  - what: CMD_STATUS, TARGET_STATUS and SRAM_OWNER in tests and testbench
+    where: src/integration
+    found: The SV ownership-flow test and the C smoke tests (`target_user`, `write_user_lock`, `csrs_warm_rst`)
+      use them. No test checks MCU-as-Requester behaviour or Requester visibility of the Target's terminal
+      status.
+  - what: Whether the ownership flow is in the regression
+    where: stimulus yml and csv
+    found: '`mci_mbox0_ownership_flow` and `mci_mbox1_ownership_flow` are in the nightly list.'
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 212
+    line_end: 212
+    why_not: Only waits for COMPLETE (a terminal TARGET_STATUS). It does not check the encoding values
+      or Requester visibility.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_csrs_warm_rst/smoke_test_mcu_mbox_csrs_warm_rst.c
+    line_start: 85
+    line_end: 85
+    why_not: Checks only that TARGET_STATUS reads 0 after warm reset. That is a reset-value check, not
+      a check of the BUSY encoding at handoff.
+  items:
+  - id: cr_1742179d80a0
+    outcome: withdrawn
+    reason: '`SRAM_OWNER`=NONE is checked after EXECUTE=0, in the released phase of the ownership-flow
+      test.'
+    evidence:
+    - 0
+  - id: cr_666421936fb3
+    outcome: inconclusive
+    reason: The warm-reset test reads TARGET_STATUS as 0, and the flow relies on non-BUSY values to move
+      ownership. No test explicitly checks that 0 means BUSY at Target handoff.
+    evidence: []
+  - id: cr_680e463fd93d
+    outcome: verified
+    reason: The flow checks only that the SRAM owner stays Root after the Target's terminal status. No
+      test reads CMD_STATUS as the Requester to confirm it does not show completion.
+    evidence:
+    - 3
+  - id: cr_7752eba85af4
+    outcome: withdrawn
+    reason: The ownership-flow loop runs a transaction for each terminal status value including CMD_FAILURE
+      (3), and checks the ownership transitions in each phase.
+    evidence:
+    - 1
+  - id: cr_cd3b9f710b55
+    outcome: verified
+    reason: No test makes the MCU the Requester and checks that CMD_STATUS is unused. A search of the
+      test suites found none.
+    evidence: []
+  new_sources:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    reason: Nightly random ownership-flow test that checks SRAM_OWNER transitions and terminal statuses.
+submissions: 2
+rejections: []
+turns: 15
+cost_usd: 0.18787500000000001
+error: null

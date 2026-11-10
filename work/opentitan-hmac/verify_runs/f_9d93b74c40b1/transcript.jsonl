@@ -1,0 +1,15 @@
+{"t": "2026-11-10T19:42:32Z", "event": "  \u2192 Grep: SwPushMsgWhenShaDisabled|SwPushMsgWhenDisallowed|SwInvalidConfig|SwPushMsgWhenDisallowed|sw_push_msg|err_code|ERR_CODE"}
+{"t": "2026-11-10T19:42:35Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:42:36Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:42:37Z", "event": "  \u2192 Grep: key_valid|wipe|invalid_key|sideload|msg_push_sha_disabled|SwPushMsg"}
+{"t": "2026-11-10T19:42:39Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/rtl/hmac.sv"}
+{"t": "2026-11-10T19:42:40Z", "event": "  \u2192 Grep: keymgr_sideload|key_valid|sideload_agent|invalid_key"}
+{"t": "2026-11-10T19:42:44Z", "event": "  \u2192 Grep: after.*process|invalid_sideload|key_valid|set_sideload|sideload"}
+{"t": "2026-11-10T19:42:45Z", "event": "  \u2192 Grep: msg_push|push.*(not|dis)allowed|write.*msg.*(without|when)|wr_msg|sha_en = 0|disable.*sha"}
+{"t": "2026-11-10T19:42:46Z", "event": "Check smoke vseq around 180-200 (writes with SHA disabled / after process)."}
+{"t": "2026-11-10T19:42:46Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv"}
+{"t": "2026-11-10T19:42:50Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv"}
+{"t": "2026-11-10T19:42:53Z", "event": "  \u2192 Grep: msg_push_not_allowed"}
+{"t": "2026-11-10T19:43:04Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:43:08Z", "event": "I submitted the verdict as verified overall. Items 1 and 3 are untested, and item 2 is inconclusive.\n\n- **Item 1, `SwPushMsgWhenShaDisabled` = 0x1 (verified untested):**\n  - The RTL never assigns error code 1. The priority case in `hw/ip/hmac/rtl/hmac.sv` has no branch for it.\n  - Nothing in the scoreboard or the sequences produces or checks it.\n  - The coverage bin for it in `hmac_env_cov.sv` is commented out.\n- **Item 2, `SwPushMsgWhenDisallowed` after CMD.process (inconclusive):**\n  - The scoreboard predicts and checks this error when a message is pushed with SHA disabled or before the hash is started. The smoke sequence generates those pushes.\n  - I found no sequence that pushes message words after CMD.process, which is the specific condition the spec describes. So the general error is tested, but the exact case is not shown to be.\n- **Item 3, `SwInvalidConfig` when the sideloaded key becomes invalid (verified untested):**\n  - `hmac_base_vseq.sv` forces sideload off (`TODO(#31634): Disable sideloading for now`).\n  - No sequence drives the key valid signal low mid-operation."}
+{"t": "2026-11-10T19:43:08Z", "event": "[13 turns, $0.1201]"}

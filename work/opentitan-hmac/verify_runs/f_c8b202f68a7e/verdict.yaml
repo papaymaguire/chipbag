@@ -1,0 +1,79 @@
+finding_hash: 16c67d9cd11262e7
+started_at: '2026-11-10T19:43:47Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: 'The scoreboard compares the DUT digest with a DPI reference model for random and NIST tests.
+    That is a real check for items 1, 4 and 5. For items 2 and 3 (hash_stop), the done interrupt is predicted
+    from the observed done bit, and the intermediate digest is not checked (TODO #23240). I did not confirm
+    whether the final restored digest is checked in the S&R flow.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 846
+    line_end: 846
+    quote: '  bit [5:0] key_length  = 0);'
+    role: refutes
+    note: predict_digest takes the configured key_length and slices the key (e.g. big_endian_key[0:3]
+      for Key_128) before calling the DPI HMAC model. Real digest comparison covers key length and key
+      order.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 184
+    line_end: 188
+    quote: '              if (!invalid_cfg) begin'
+    role: refutes
+    note: With Key_None and hmac_en=0 the config is valid, so a digest is predicted and compared. A blocked
+      start would cause a mismatch.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 474
+    line_end: 476
+    quote: '          // Predict intermediate digest values when S&R has been triggered'
+    role: supports
+    note: The intermediate digest check after hash_stop is a TODO and commented out. Items 2 and 3 are
+      only weakly checked.
+  searches:
+  - what: scoreboard handling of key_length, hash_stop and hmac_done
+    where: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    found: The digest prediction through DPI uses key_length and the key words. hash_stop only sets hmac_stopped.
+      The done interrupt is predicted from the observed read, and the intermediate digest check is a TODO.
+  - what: sar tests
+    where: hw/ip/hmac/dv
+    found: The sar tasks are in hmac_base_vseq.sv and use scoreboard events. I did not verify the final-digest
+      check.
+  near_misses: []
+  items:
+  - id: cr_db590d70ed32
+    outcome: withdrawn
+    reason: Digest prediction and comparison run for SHA-only starts with Key_None.
+    evidence:
+    - 1
+  - id: cr_302cc8a11faa
+    outcome: inconclusive
+    reason: The done prediction after hash_stop is reactive. The sar sequences poll for done, so a missing
+      interrupt would likely time out, but I did not confirm this.
+    evidence:
+    - 2
+  - id: cr_ef5931e3a47f
+    outcome: inconclusive
+    reason: The intermediate digest check is a TODO. Whether the final S&R digest is checked was not confirmed.
+    evidence:
+    - 2
+  - id: cr_37e3fb4dd09b
+    outcome: withdrawn
+    reason: The scoreboard model slices the key by key_length and compares the digest.
+    evidence:
+    - 0
+  - id: cr_412c96a5a69d
+    outcome: withdrawn
+    reason: The DPI reference model uses the key words in KEY0.. order and the digest is compared. A wrong
+      order would fail.
+    evidence:
+    - 0
+  new_sources:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    reason: Contains the digest prediction and compare checks.
+submissions: 1
+rejections: []
+turns: 13
+cost_usd: 0.1042004
+error: null

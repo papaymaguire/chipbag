@@ -1,0 +1,13 @@
+{"t": "2026-11-10T20:38:09Z", "event": "  \u2192 Grep: sram_owner|SRAM_OWNER|mbox_hw_status|HW_STATUS"}
+{"t": "2026-11-10T20:38:09Z", "event": "  \u2192 Grep: mcu_mbox.*(cmd_status|CMD_STATUS)"}
+{"t": "2026-11-10T20:38:11Z", "event": "  \u2192 Grep: sram_owner|SRAM_OWNER|hw_status"}
+{"t": "2026-11-10T20:38:12Z", "event": "  \u2192 Grep: sram_owner|SRAM_OWNER|HW_STATUS|hw_status"}
+{"t": "2026-11-10T20:38:15Z", "event": "  \u2192 Grep: OWNER_NONE|SRAM_OWNER_NONE"}
+{"t": "2026-11-10T20:38:15Z", "event": "  \u2192 Grep: precedence"}
+{"t": "2026-11-10T20:38:19Z", "event": "  \u2192 Grep: mci_mbox_ownership_flow|mci_comm_flow"}
+{"t": "2026-11-10T20:38:20Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh"}
+{"t": "2026-11-10T20:38:22Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh"}
+{"t": "2026-11-10T20:38:23Z", "event": "Checking is nearly done. The NONE-owner item is covered by a directed test. The cmd_status precedence item looks untested. I'll submit now."}
+{"t": "2026-11-10T20:38:30Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:38:33Z", "event": "I submitted the verdict. The finding stands for one of its two items and is withdrawn for the other.\n\n- **`cr_a89b498a6610` (hardware takes precedence on `mbox_cmd_status.status`): verified as untested.** I found no test that makes a hardware clear and a software write hit the field at the same time, and none that checks hardware wins. The `precedence=hw` property is declared at `src/mci/rtl/mcu_mbox_csr.rdl:146`.\n- **`cr_14efe156ee91` (`sram_owner` NONE means no software agent owns the SRAM): withdrawn.** The mailbox ownership-flow test (`mci_mbox_ownership_flow.svh`) ends a transaction and then checks `sram_owner` reads NONE. The check logs an error on a mismatch, and the test is in the nightly directed regression lists.\n\nI did not open the regression files to confirm the test is actually enabled in the nightly run, only that it is listed there."}
+{"t": "2026-11-10T20:38:33Z", "event": "[11 turns, $0.0825]"}

@@ -1,0 +1,73 @@
+finding_hash: 03a42cfd88257b84
+started_at: '2026-11-10T21:05:54Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The hmac scoreboard predicts status.fifo_empty, fifo_full and fifo_depth from a model of the
+    FIFO write and read counts. On every status read it checks the read-back fifo_depth and raises uvm_error
+    on a mismatch. The sequences poll status and the smoke test runs with this scoreboard. The "planned
+    only" classification is therefore wrong for all four items. I did not read the sequence code that
+    reads status, and the fifo_full/fifo_empty check relies on the generic read-compare, which I assumed
+    rather than read.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 383
+    line_end: 387
+    quote: hmac_status_data = (hmac_idle       << HmacStaIdle)         |
+    role: refutes
+    note: Status (empty, full, depth) is predicted from the FIFO model on each status read.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 510
+    line_end: 514
+    quote: if ((`gmv(ral.status.fifo_depth)   != rd_fifo_depth) &&
+    role: refutes
+    note: Explicit fifo_depth check that raises uvm_error on mismatch, with a +1 tolerance.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 671
+    line_end: 673
+    quote: hmac_fifo_depth = hmac_wr_cnt - hmac_rd_cnt;
+    role: context
+    note: The model computes depth, full and empty from the write and read counts.
+  searches:
+  - what: fifo_depth/fifo_full/fifo_empty in hmac dv
+    where: hw/ip/hmac/dv
+    found: Scoreboard prediction and checking, status_cg coverage, and a csr_spinwait on status.fifo_depth
+      in hmac_base_vseq.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 95
+    line_end: 102
+    why_not: This is coverage only, not a check. The checking is done by the scoreboard.
+  items:
+  - id: cr_0bd7f7a859d0
+    outcome: withdrawn
+    reason: The scoreboard compares the read fifo_depth against the model and errors on a mismatch.
+    evidence:
+    - 1
+    - 2
+  - id: cr_a0e17a44b5f3
+    outcome: withdrawn
+    reason: fifo_full is predicted in the status data and compared on read. The compare is the generic
+      CSR read check, which I did not read.
+    evidence:
+    - 0
+    - 2
+  - id: cr_cb42c461741a
+    outcome: withdrawn
+    reason: fifo_empty is predicted in the status data and compared on read. The compare is the generic
+      CSR read check, which I did not read.
+    evidence:
+    - 0
+    - 2
+  - id: cr_d7084e0ddaed
+    outcome: withdrawn
+    reason: The externally implemented fifo_depth field is read back and checked by the scoreboard.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.053861200000000005
+error: null

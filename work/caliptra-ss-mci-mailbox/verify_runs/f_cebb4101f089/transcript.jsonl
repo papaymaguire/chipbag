@@ -1,0 +1,13 @@
+{"t": "2026-11-10T20:42:07Z", "event": "  \u2192 Grep: intr_count_incr|count_incr_r"}
+{"t": "2026-11-10T20:42:07Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T20:42:09Z", "event": "Check the tests for the counters."}
+{"t": "2026-11-10T20:42:09Z", "event": "  \u2192 Grep: intr_count_r|_intr_count|count_incr"}
+{"t": "2026-11-10T20:42:11Z", "event": "  \u2192 Grep: count"}
+{"t": "2026-11-10T20:42:12Z", "event": "  \u2192 Grep: count_incr"}
+{"t": "2026-11-10T20:42:13Z", "event": "Check whether the firmware test compares hardware counts."}
+{"t": "2026-11-10T20:42:14Z", "event": "  \u2192 Grep: _hw|INTR_COUNT"}
+{"t": "2026-11-10T20:42:17Z", "event": "  \u2192 Grep: count_hw|ERROR\\b|exit|fail"}
+{"t": "2026-11-10T20:42:23Z", "event": "  \u2192 Grep: MBOX0_ECC_COR_INTR_COUNT_R|MBOX1_ECC_COR_INTR_COUNT_R|CPTRA_MBOX_CMD_AVAIL_INTR_COUNT_R|ERROR_MBOX0_ECC_UNC_TRIG|NOTIF_MBOX0_ECC_COR_TRIG"}
+{"t": "2026-11-10T20:42:30Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:42:34Z", "event": "I submitted the verdict as inconclusive for the finding as a whole. Two items stand and three are withdrawn.\n\nThe firmware test `src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c` triggers interrupts. It then compares the sum of the hardware event counters against the software count. On a mismatch it kills the sim (lines 201 and 256). I did not confirm the test is in a regression list.\n\n- **Stand (verified):** `cr_9f969e4a3656` and `cr_abec8d18a27b`. No test writes the pulse field to check that `swwel = false` gates software writes.\n- **Withdrawn:** `cr_a0d938579904`, `cr_a13c9c256e0e` and `cr_a150fb568d22`. A pulse longer than one cycle, a wrong decrement value or a missed increment would all make the counts mismatch and fail the test.\n\nThe withdrawals rest on an implicit check rather than a test aimed at the pulse or `decrvalue`. The counter sums include the MBOX0/MBOX1 ECC_COR and CPTRA_MBOX_CMD_AVAIL counters, but only MBOX0 ECC_COR is triggered in this test.\n\nThe coverpoints in `src/mci/coverage/mci_top_cov_if.sv` only record that the signals were seen, so they don't count as checks."}
+{"t": "2026-11-10T20:42:34Z", "event": "[10 turns, $0.0823]"}

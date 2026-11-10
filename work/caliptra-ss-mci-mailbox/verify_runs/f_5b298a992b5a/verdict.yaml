@@ -1,0 +1,89 @@
+finding_hash: 16f2ecda4d83acbb
+started_at: '2026-11-10T19:42:46Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found a check for only one of the five items, cr_0ff351634ef2. mcu_intr_handler fires each
+    notification trigger once and compares the sum of the hardware INTR_COUNT_R counters to the number
+    of events. That sum includes NOTIF_MBOX0_CMD_AVAIL, NOTIF_CPTRA_MBOX_CMD_AVAIL and NOTIF_MBOX0_ECC_COR,
+    so it covers "increments by 1 per event" for the cmd_avail counter. I found no test that locks an
+    MBOX1_AXI_USER_LOCK slot and then checks it stays read-only. I also found none that checks the incr_r
+    pulse fields as counters, or the swwel gating on incr_r. I did not read the register-access sequence
+    in mci.c that touches these registers, and I did not check any regression or test lists.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 256
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: supports
+    note: Aggregate check of notif counters against fired events. It does not exercise the incr_r pulse
+      fields, swwel gating or counter semantics directly.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 213
+    line_end: 213
+    quote: lsu_read_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_MBOX0_CMD_AVAIL_INTR_COUNT_R      ) +
+    role: refutes
+    note: The cmd_avail counter is included in the summed hardware count that is compared with the firmware
+      count of fired events. This checks the one-increment-per-event behavior in aggregate (cr_0ff351634ef2).
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 1935
+    line_end: 1935
+    quote: // MBOX1_AXI_USER_LOCK_0
+    role: context
+    note: The lock register only appears in register-access mask tables. I found no check of the locked-read-only
+      behavior.
+  searches:
+  - what: MBOX1_AXI_USER_LOCK usage in tests and testbench
+    where: src/integration
+    found: Only the register-access tables in mci.c and the address helper in mci_common_tasks.svh. The
+      helper is used only to lock slots for valid-user setup. No check that a write to a locked register
+      is ignored.
+  - what: INTR_COUNT_INCR_R usage in tests
+    where: src/integration/test_suites
+    found: Only mask entries in mci.c. No test uses the incr_r pulse fields.
+  - what: INTR_COUNT_R checks
+    where: mcu_intr_handler.c
+    found: Sum of counters compared with the number of triggers fired. Covers the cmd_avail event counting.
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 323
+    line_end: 327
+    why_not: Register access table entries. They do not check the lock-once-locked read-only behavior.
+  items:
+  - id: cr_a66dd7732b98
+    outcome: verified
+    reason: No test locks MBOX1_AXI_USER_LOCK and then checks that it stays read-only.
+    evidence:
+    - 2
+  - id: cr_0bf5fbc5013e
+    outcome: verified
+    reason: No test checks that the incr_r pulse field is a counter. The aggregate check covers only the
+      counters (INTR_COUNT_R).
+    evidence:
+    - 0
+  - id: cr_0c3afed8d218
+    outcome: verified
+    reason: No test checks the swwel gating on the incr_r field.
+    evidence:
+    - 0
+  - id: cr_0ff351634ef2
+    outcome: withdrawn
+    reason: mcu_intr_handler fires the cmd_avail notification and checks that the summed hardware counter
+      equals the number of events fired.
+    evidence:
+    - 1
+    - 0
+  - id: cr_105a23c2056d
+    outcome: verified
+    reason: No test checks that the cptra_mbox_cmd_avail incr_r pulse field is a counter.
+    evidence:
+    - 0
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Checks the hardware interrupt counters against the number of events fired.
+submissions: 2
+rejections: []
+turns: 15
+cost_usd: 0.2020837
+error: null

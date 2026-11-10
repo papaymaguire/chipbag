@@ -1,0 +1,55 @@
+finding_hash: ab57b27476920dbc
+started_at: '2026-11-10T21:05:58Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: Item 1 (throughput) has no cycle-accurate test; the scoreboard comment says a future throughput
+    test should check accurate cycles. Item 2 (wide MSG_FIFO window) is exercised by randomized write
+    addresses across the whole window, and the scoreboard checks them. Item 2 is withdrawn; item 1 stands.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 414
+    line_end: 414
+    quote: // future throughput test should check the accurate cycles
+    role: supports
+    note: Throughput cycles are not checked.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 104
+    line_end: 104
+    quote: 'wr_addr inside {[HMAC_MSG_FIFO_BASE : HMAC_MSG_FIFO_LAST_ADDR]};'
+    role: refutes
+    note: 'Stimulus: message writes go to random addresses across the whole FIFO window.'
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 133
+    line_end: 133
+    quote: end else if (!(masked_addr inside {[HMAC_MSG_FIFO_BASE:HMAC_MSG_FIFO_LAST_ADDR]})) begin
+    role: refutes
+    note: 'Check: the scoreboard treats any write in the window as a FIFO push, and the digest comparison
+      would fail if the DUT did not accept them.'
+  searches:
+  - what: throughput / 80 clk / cycle-count checks
+    where: hw/ip/hmac
+    found: Only the scoreboard comment saying a future throughput test is needed.
+  - what: MSG_FIFO window address stimulus and checks
+    where: hw/ip/hmac/dv
+    found: wr_addr is constrained to the whole window, and the scoreboard handles window writes.
+  near_misses: []
+  items:
+  - id: cr_f6528a1e1fc7
+    outcome: verified
+    reason: No test checks the 64 bytes per 80 clocks timing.
+    evidence:
+    - 0
+  - id: cr_4be360be4489
+    outcome: withdrawn
+    reason: Random writes across the full window are scoreboarded and the resulting digest is checked.
+    evidence:
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.058173
+error: null

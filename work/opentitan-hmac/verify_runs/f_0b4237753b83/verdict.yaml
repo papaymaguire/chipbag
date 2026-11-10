@@ -1,0 +1,54 @@
+finding_hash: ef01d96514cc236c
+started_at: '2026-11-10T21:03:56Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The smoke vseq randomizes key_swap and writes it to CFG. The scoreboard swaps the key bytes
+    in its model when CFG.key_swap is set, computes the expected HMAC, and compares it with the DUT digest.
+    A wrong key swap in the RTL would therefore make the digest mismatch and fail the test.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 862
+    line_end: 866
+    quote: if (`gmv(ral.cfg.key_swap)) begin
+    role: refutes
+    note: The scoreboard model swaps the key per key_swap before predicting the HMAC digest, which is
+      then compared with the DUT digest.
+  - path: hw/ip/hmac/rtl/hmac.sv
+    line_start: 251
+    line_end: 251
+    quote: secret_key_d[32*i+:32] = conv_endian32(reg2hw.key[31-i].q, key_swap);
+    role: context
+    note: The RTL swaps the endianness of each key register word when key_swap is set.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 108
+    line_end: 108
+    quote: .digest_swap(digest_swap), .key_swap(key_swap), .digest_size(digest_size),
+    role: supports
+    note: The smoke sequence passes the randomized key_swap into the hmac_init configuration.
+  searches:
+  - what: key_swap usage in the hmac DV and RTL
+    where: hw/ip/hmac
+    found: A randomized key_swap in the base and smoke vseqs, a scoreboard key swap in the prediction,
+      and the RTL conv_endian32 on the key.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 63
+    line_end: 80
+    why_not: This is coverage only. It is not the check, which is the scoreboard digest comparison.
+  items:
+  - id: cr_762d42294038
+    outcome: withdrawn
+    reason: The scoreboard models the key swap and compares the predicted digest, with key_swap randomized
+      in the smoke stimulus.
+    evidence:
+    - 0
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0536094
+error: null

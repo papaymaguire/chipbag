@@ -1,0 +1,81 @@
+finding_hash: d8c66bb0182605d9
+started_at: '2026-11-10T22:07:09Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test for any of the five items. The DV base vseq writes THOLD_LO and then THOLD_HI
+    directly from a randomized 64-bit value. It does not use the guide's three-step safe-write sequence,
+    and no check or assertion covers non-atomicity or hardware leaving the thresholds unchanged. The scoreboard
+    tracks the thresholds only to predict interrupt timing.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 193
+    line_end: 196
+    quote: write_wkup_reg(ral.wkup_thold_lo, wkup_thold[31:0]);
+    role: context
+    note: DV writes LO then HI with the final values directly. It does not first write LO=UINT32_MAX,
+      then HI, then LO, as the guide describes.
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 784
+    line_end: 786
+    quote: wkup_thold[31:0] =  csr.get_mirrored_value();
+    role: context
+    note: The scoreboard only mirrors the threshold to predict interrupt timing. It has no check that
+      hardware leaves the threshold unmodified and no check on atomicity.
+  searches:
+  - what: threshold register usage in the aon_timer dv and data directories (atomic access, item 1)
+    where: hw/ip/aon_timer/{dv,data}
+    found: Only the randomized LO/HI writes in the base vseq and scoreboard prediction. No atomicity check.
+  - what: hardware-does-not-modify check on the thresholds (item 2)
+    where: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    found: The scoreboard mirrors the thresholds for timing prediction only. No explicit unchanged-threshold
+      check.
+  - what: write ordering of THOLD_HI (item 3)
+    where: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    found: HI is written after LO with the final value. It is not the guide's second step.
+  - what: write ordering of THOLD_LO as the last step (item 4)
+    where: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    found: LO is written first with the final value. It is not the guide's third step.
+  - what: UINT32_MAX written to THOLD_LO first (item 5), plus device software tests
+    where: hw/ip/aon_timer/dv and sw/device/tests
+    found: No such sequence. The only software match for WKUP_THOLD was the unrelated rv_core_ibex_mem_test.c.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_smoke_max_thold_vseq.sv
+    line_start: 1
+    line_end: 23
+    why_not: Exercises a maximum threshold value, but not the write-ordering sequence.
+  items:
+  - id: cr_f0d34bc61b8f
+    outcome: verified
+    reason: No test or check covers non-atomic 64-bit access.
+    evidence:
+    - 1
+  - id: cr_13a3d2eb44cf
+    outcome: verified
+    reason: No explicit check that hardware leaves the threshold unchanged. The scoreboard only uses the
+      mirrored value.
+    evidence:
+    - 1
+  - id: cr_40aa3bfcebb9
+    outcome: verified
+    reason: DV does not follow the guide's write sequence, and nothing checks the intermediate state.
+    evidence:
+    - 0
+  - id: cr_64e15132845f
+    outcome: verified
+    reason: The LO write happens, but not as the final step of the guide's sequence, and nothing checks
+      the sequence's property.
+    evidence:
+    - 0
+  - id: cr_7e6da13c8b08
+    outcome: verified
+    reason: No test writes UINT32_MAX to LO first as a safe-update step.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 7
+cost_usd: 0.07108579999999999
+error: null

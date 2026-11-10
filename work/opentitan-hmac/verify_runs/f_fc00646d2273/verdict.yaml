@@ -1,0 +1,61 @@
+finding_hash: 13de2c5436d3ede2
+started_at: '2026-11-10T20:52:55Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No spec text defines what a blocked start does beyond the error. Other docs only repeat that
+    start is blocked and ERR_CODE reports SwInvalidConfig. The details of the abort case (digest cleared,
+    FIFO cleared, no done) are specified only for a key revoked mid-operation, not for a blocked start.
+    Nothing covers MSG_FIFO writes, MSG_LENGTH, a following hash_process, or DIGEST contents after a blocked
+    start.
+  evidence:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 154
+    line_end: 154
+    quote: Triggering `CMD.hash_start` or `CMD.hash_continue` while the key is invalid is blocked, and
+      [`ERR_CODE`](registers.md#err_code) reports `SwInvalidConfig`.
+    role: supports
+    note: Same vague wording; no state details.
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 156
+    line_end: 157
+    quote: The SHA-2 engine is disabled, which clears its internal state and the digest, the message packer
+      and the message FIFO are cleared
+    role: context
+    note: Detail given only for the abort-mid-operation case, not for a blocked start.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 123
+    line_end: 123
+    quote: Starting while it is still invalid is blocked with the same error.
+    role: supports
+    note: Again no behavior beyond the error.
+  searches:
+  - what: SwInvalidConfig / invalid key / blocked wording
+    where: hw/ip/hmac docs and hjson
+    found: Only the same 'blocked + error' statements in the programmer's guide, theory of operation,
+      registers.md Key_None, and the error table.
+  - what: error and recovery text in the programmer's guide
+    where: hw/ip/hmac/doc/programmers_guide.md
+    found: Recovery steps cover the abort case only; nothing on MSG_FIFO, process or DIGEST after a blocked
+      start.
+  near_misses:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 155
+    line_end: 157
+    why_not: Describes the key revoked during an operation, not a blocked start.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 118
+    line_end: 125
+    why_not: Recovery from an abort only; says nothing about FIFO writes or digest after a blocked start.
+  items: []
+  new_sources: []
+  resolution: Spec should state that a blocked hash_start is dropped and the engine stays idle. It should
+    also say whether MSG_FIFO writes are rejected with SwPushMsgWhenDisallowed, whether MSG_LENGTH changes,
+    whether hash_process is ignored or errors, and whether DIGEST is unchanged. RTL or tests could confirm
+    the actual behavior.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.046776500000000006
+error: null

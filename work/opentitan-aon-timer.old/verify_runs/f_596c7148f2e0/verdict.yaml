@@ -1,0 +1,43 @@
+finding_hash: 139f22254890deb3
+started_at: '2026-11-10T22:07:16Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks that the real WKUP_COUNT_LO register holds count bits [31:0]. The only check
+    is the software unit test with mocked register reads. The DV scoreboard reads wkup_count_lo/hi by
+    backdoor only to compute expected wake-up timing and to sample coverage, and it never compares them
+    against the counter.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 997
+    line_end: 999
+    quote: csr_rd(.ptr(ral.wkup_count_lo), .value(rtl_count[31:0]), .backdoor(1));
+    role: context
+    note: Backdoor read used only to sample coverage; no comparison or check. The upper half is also read
+      from wkup_count_lo (likely a typo).
+  searches:
+  - what: WKUP_COUNT_LO usage in DV
+    where: hw/ip/aon_timer/dv
+    found: Scoreboard timing and coverage reads, sequence writes; no check of LO against count bits [31:0]
+  - what: WKUP_COUNT_LO usage in sw
+    where: sw/
+    found: Only the DIF, the DIF unit test (mocked) and the host HAL
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 913
+    line_end: 914
+    why_not: Backdoor reads feed the wake-up timing calculation; they do not check that LO holds count
+      bits [31:0].
+  items:
+  - id: cr_fe9918a1d87a
+    outcome: verified
+    reason: No hardware-level check found that WKUP_COUNT_LO equals count bits [31:0].
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0551506
+error: null

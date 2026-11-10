@@ -1,0 +1,59 @@
+finding_hash: 62959bc18c655e86
+started_at: '2026-11-10T22:06:09Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'Other spec text answers the comparison and immediate-firing questions: the README says the
+    outputs go high when the count is at or above the threshold, on a prescaler tick. The programmer''s
+    guide also covers combining the HI and LO halves as one 64-bit value and the non-atomic write hazard.
+    Exact CDC latency in clk_aon cycles is not stated, but the main ambiguity is resolved.'
+  evidence:
+  - path: hw/ip/aon_timer/README.md
+    line_start: 35
+    line_end: 35
+    quote: 'Each time the pre-scaler completes when the count is at or above the threshold, two outputs
+      become high:'
+    role: refutes
+    note: Specifies >= comparison, evaluated on each prescaler tick. So a threshold at or below the current
+      count fires at the next tick.
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    line_start: 93
+    line_end: 93
+    quote: remains above the threshold after clearing the interrupt or wakeup event and the timer remains
+      enabled, the interrupt and wakeup event will trigger again at the next clock tick.
+    role: refutes
+    note: Confirms level-style, re-triggering behaviour on the next tick. The count is treated as one
+      64-bit value.
+  - path: hw/ip/aon_timer/rtl/aon_timer_core.sv
+    line_start: 68
+    line_end: 68
+    quote: assign wkup_intr_o = wkup_incr & (wkup_count >= wkup_thold);
+    role: context
+    note: RTL uses >= gated by the prescaler tick, which matches the README.
+  searches:
+  - what: threshold comparison wording in aon_timer docs
+    where: hw/ip/aon_timer/**/*.md
+    found: README says 'at or above the threshold'; the programmer's guide covers 64-bit access and the
+      interim threshold value.
+  - what: '>= in RTL'
+    where: hw/ip/aon_timer/rtl
+    found: wkup_count >= wkup_thold
+  near_misses:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    line_start: 208
+    line_end: 208
+    why_not: This is the cited text. It is vague on its own, but other spec documents resolve it.
+  items: []
+  new_sources:
+  - path: hw/ip/aon_timer/README.md
+    reason: States the at-or-above comparison and the prescaler-tick timing.
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    reason: Covers the 64-bit threshold access and the non-atomic write hazard.
+  resolution: The design asserts when count >= threshold, on a prescaler tick. The spec could add the
+    CDC latency in clk_aon cycles to the hjson description.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0426252
+error: null

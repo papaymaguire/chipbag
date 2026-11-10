@@ -1,0 +1,80 @@
+finding_hash: 0e31a195ca6757fe
+started_at: '2026-11-10T19:44:13Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: A directed test, mcu_intr_handler, does exercise the interrupt counters. It fires each event
+    once through software trigger registers, sums the *_INTR_COUNT_R registers and fails if the sum differs
+    from the number of events. It does not read the *_count_incr_r pulse registers, so most items remain
+    unverified. The one real overlap is "increments by 1 per event", which is partly covered, but only
+    for the trigger path. I did not open the test's RTL path to confirm the trigger drives the same pulse.
+    I also did not look at assertions, UVM tests or other directories beyond one repo-wide grep. That
+    grep found counter-register references only in the register RTL, the UVM register model, the coverage
+    interface and this test.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: context
+    note: The test compares the firmware-tracked event count against the summed hardware counters and
+      kills the sim on mismatch. It uses software trigger registers, not the hardware input signal.
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1548
+    line_end: 1549
+    quote: This is implemented as a down-counter (1-bit) that will
+    role: supports
+    note: No test reads the pulse register or checks the down-counter or pulse behaviour directly.
+  searches:
+  - what: Tests or checkers referencing intr_count_incr pulse registers
+    where: whole repo, non-rdl files
+    found: Only the register RTL, the UVM register model and the coverage interface (coverpoints only,
+      no checks).
+  - what: Tests of the interrupt counters
+    where: whole repo
+    found: mcu_intr_handler.c sums the counters and compares against a firmware count. It is listed in
+      the nightly regressions.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    why_not: This checks the counter total against the number of events, so it covers 'increments by 1
+      per event' in part. It uses software trigger registers rather than the hardware input signal. It
+      does not check pulse width, swwel or the down-counter.
+  items:
+  - id: cr_9b97309f0dd7
+    outcome: verified
+    reason: No test checks the pulse signal or the same-input relationship. The test only triggers events
+      through software registers.
+    evidence:
+    - 1
+  - id: cr_9f969e4a3656
+    outcome: verified
+    reason: No test checks swwel on the pulse field.
+    evidence:
+    - 1
+  - id: cr_a0d938579904
+    outcome: verified
+    reason: No test checks the down-counter or pulse behaviour directly.
+    evidence:
+    - 1
+  - id: cr_a13c9c256e0e
+    outcome: verified
+    reason: No test checks decrvalue directly. It is only exercised indirectly.
+    evidence:
+    - 1
+  - id: cr_a150fb568d22
+    outcome: inconclusive
+    reason: mcu_intr_handler checks that the summed counters equal the number of software-triggered events.
+      That partly covers incrementing by 1 per event, but not for hardware-input events.
+    evidence:
+    - 0
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Directed test that checks the interrupt counters.
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.1131788
+error: null

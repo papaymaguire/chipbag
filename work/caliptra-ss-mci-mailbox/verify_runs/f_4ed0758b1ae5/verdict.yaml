@@ -1,0 +1,58 @@
+finding_hash: e757400149b5532e
+started_at: '2026-11-10T20:35:20Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No other spec text says what happens to an MCU write to CMD_STATUS, or what a read returns,
+    when MCU holds the lock. The other passages only repeat that CMD_STATUS is "not used" in that case.
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1534
+    line_end: 1534
+    quote: '| `CMD_STATUS` | Unused | RW |'
+    role: supports
+    note: '''Unused'' is the only statement for the MCU-holds-lock case. It does not say whether writes
+      are blocked or accepted, or what a read returns.'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1436
+    line_end: 1437
+    quote: '`CMD_STATUS` is not used when MCU is the Requester, because there is no
+
+      external Requester to serve.'
+    role: supports
+    note: Repeats the same vague wording. It says nothing about write blocking or the read value.
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 147
+    line_end: 147
+    quote: sw=rw; hw=r; swwe=valid_root_req; encode = mbox_status_e; hwclr; precedence=hw;} status[4]=0;
+    role: context
+    note: The register definition gates writes on valid_root_req only, with no condition on who holds
+      the lock. This is RTL, not spec. It suggests a write may land, but it does not settle the point.
+  searches:
+  - what: cmd_status, case-insensitive, in md/rdl/rst/txt files
+    where: whole repo
+    found: Hits are the hardware spec (lines 1365-1534), the integration spec sequence diagrams (2362-2416)
+      and mcu_mbox_csr.rdl. None defines write or read behavior when MCU holds the lock.
+  near_misses:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1436
+    line_end: 1437
+    why_not: Says 'not used' when MCU is the Requester, but does not define write blocking or the read
+      value.
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 140
+    line_end: 140
+    why_not: The field description says 'Not used when MCU is itself the Requester', which is the same
+      vague wording.
+  items: []
+  new_sources: []
+  resolution: 'The RDL gates writes with swwe=valid_root_req, which does not depend on the lock holder.
+    This suggests an MCU write is accepted and stored, with no functional effect while MCU is the Requester.
+    The spec should say so explicitly: either "writes are ignored and reads return the last value or 0"
+    or "writes are accepted but have no effect".'
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.040872
+error: null

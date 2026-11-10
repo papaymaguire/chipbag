@@ -1,0 +1,65 @@
+finding_hash: 5a54adc12261a48a
+started_at: '2026-11-10T20:38:06Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Mixed result. Item cr_14efe156ee91 (sram_owner NONE) is tested: mci_mbox_ownership_flow checks
+    sram_owner reads NONE after release. It runs in the nightly directed regression. Item cr_a89b498a6610
+    (hw precedence on simultaneous hw/sw update of cmd_status.status) has no test that creates a simultaneous
+    hw clear and sw write, so it stays untested. The outcome is verified overall because one item stands;
+    the NONE item is withdrawn.'
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 93
+    line_end: 95
+    quote: "    mcu_mbox_write(mci_comm_flow_execute_addr, user, 0);\n    mci_comm_flow_check_phase(\"\
+      released\", MCU_MBOX_OWNER_NONE);"
+    role: refutes
+    note: Releases the mailbox, then checks sram_owner == NONE via mcu_mbox_check_sram_owner, which errors
+      on mismatch.
+  - path: src/integration/testbench/sv_tests/mci/mci_common_tasks.svh
+    line_start: 461
+    line_end: 470
+    quote: // Counts an error unless MBOX_HW_STATUS.sram_owner reads `exp`.
+    role: context
+    note: The checker fails the test if the owner value differs.
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 146
+    line_end: 146
+    quote: sw=rw; hw=r; swwe=valid_root_req; encode = mbox_status_e; hwclr; precedence=hw;} status[4]=0;
+    role: supports
+    note: The hw-precedence property is declared here; no test was found that races a hw clear against
+      a sw write.
+  searches:
+  - what: sram_owner NONE checks in tests
+    where: src/integration
+    found: mci_mbox_ownership_flow.svh checks NONE in the 'released' phase; it is in the nightly regression
+      lists
+  - what: tests exercising simultaneous hw clear and sw write of cmd_status
+    where: src/integration test_suites and sv_tests
+    found: none; only ordinary cmd_status accesses
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 79
+    line_end: 81
+    why_not: Touches HW_STATUS but does not test cmd_status hw/sw collision.
+  items:
+  - id: cr_a89b498a6610
+    outcome: verified
+    reason: No test creates a simultaneous hw clear and sw write to cmd_status.status, and none checks
+      that hw wins.
+    evidence:
+    - 2
+  - id: cr_14efe156ee91
+    outcome: withdrawn
+    reason: mci_mbox_ownership_flow checks sram_owner == NONE after release, and the check errors on mismatch.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.08247200000000002
+error: null

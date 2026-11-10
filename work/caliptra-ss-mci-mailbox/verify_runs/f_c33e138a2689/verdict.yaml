@@ -1,0 +1,63 @@
+finding_hash: 7a78acfe986d9509
+started_at: '2026-11-10T20:35:05Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Other spec text answers the question. The hardware spec says the SRAM is zeroed from 0 to the
+    max DLEN set during the locking period. It says DLEN=0 clears the whole SRAM, and the RDL says DLEN
+    is in bytes. Only dword rounding of a non-aligned DLEN is not stated, but the SRAM is dword-aligned
+    only.
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1462
+    line_end: 1462
+    quote: When the mailbox lock is released the SRAM is zeroed out from 0 to max DLEN set during the
+      locking period.
+    role: refutes
+    note: Defines max DLEN as the largest DLEN set during the locking period, not the final value and
+      not the SRAM size.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1473
+    line_end: 1473
+    quote: '**NOTE**: When DLEN = 0 the entire MBOX SRAM is cleared.'
+    role: refutes
+    note: 'Gives the DLEN=0 case: the whole SRAM is cleared.'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1312
+    line_end: 1312
+    quote: The MCU shall set the DLEN to the size of the SRAM and release the MBOX, causing the SRAM to
+      be zeroed.
+    role: context
+    note: Shows the usage pattern for clearing the whole SRAM.
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 92
+    line_end: 92
+    quote: desc="Data length for mailbox access in bytes.
+    role: refutes
+    note: DLEN is in bytes.
+  searches:
+  - what: max DLEN / clearing text
+    where: docs, rdl
+    found: HW spec section 'MCU Mailbox SRAM Clearing' clarifies max DLEN over the locking period, and
+      the DLEN=0 case.
+  - what: DLEN unit
+    where: mcu_mbox_csr.rdl
+    found: DLEN is in bytes.
+  near_misses:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1458
+    line_end: 1458
+    why_not: Says accesses are dword aligned, but does not state rounding of the clear range. This is
+      a minor residual gap, not enough to keep the finding.
+  items: []
+  new_sources:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    reason: The 'MCU Mailbox SRAM Clearing' section defines the clear range.
+  resolution: 'The RDL desc could cite the hardware spec''s wording: ''max DLEN written while locked,
+    in bytes; DLEN=0 clears the whole SRAM''. It could also state how the range is rounded to dwords.'
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.06668650000000001
+error: null

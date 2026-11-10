@@ -1,0 +1,6 @@
+{"t": "2026-11-10T19:37:38Z", "event": "  \u2192 Grep: SwUpdateSecretKeyInProcess|secret key.*(in process|update)"}
+{"t": "2026-11-10T19:37:40Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/doc/programmers_guide.md"}
+{"t": "2026-11-10T19:37:40Z", "event": "  \u2192 Grep: ERR_CODE|hmac_err"}
+{"t": "2026-11-10T19:37:48Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:37:50Z", "event": "I withdrew the finding: other spec text answers the question the finding says is open.\n\n`hw/ip/hmac/doc/programmers_guide.md` covers the case in two places:\n- **Error code:** it says a KEY update during processing is reported through `ERR_CODE` with `SwUpdateSecretKeyInProcess`, `0x0003`.\n- **Interrupt:** it says HMAC errors are reported via `INTR_STATE.hmac_err`.\n- **Key content:** it says such attempts are discarded, so the key register stays unchanged.\n\nOne gap remains: the guide does not explicitly cover a write while a hash is paused but not idle. That is minor and does not undermine the rest. A cross-reference from the KEY description in `hmac.hjson` to the programmer's guide would close the gap."}
+{"t": "2026-11-10T19:37:50Z", "event": "[5 turns, $0.0379]"}

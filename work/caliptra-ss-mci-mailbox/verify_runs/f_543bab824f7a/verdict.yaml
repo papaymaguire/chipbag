@@ -1,0 +1,32 @@
+finding_hash: c056440c04f20f42
+started_at: '2026-11-10T20:34:09Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The finding misreads the control flow. The code is `if (wait_status_complete(...)) { write_execute(0)
+    } else { FATAL; SEND_STDOUT_CTRL(0x1); while(1); }`. The fatal branch is the else, so it runs on timeout.
+    This matches the comment and the log message. The wait helper itself was not read (my grep failed),
+    so the assumption that it returns true on success comes from the surrounding code, not the helper's
+    source.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/cptra_smoke_test_mcu_mbox_usr_lock_out.c
+    line_start: 285
+    line_end: 291
+    quote: "if (caliptra_ss_mcu_mbox_wait_status_complete(mbox_num, 200)) {\n            caliptra_ss_mcu_mbox_write_execute(mbox_num,\
+      \ 0);    \n        } else {\n            VPRINTF(FATAL, \"CALIPTRA: Timed out waiting for MBOX%x\
+      \ complete\\n\", mbox_num);"
+    role: refutes
+    note: Fatal message sits in the else branch, so it runs on timeout.
+  searches:
+  - what: read code around line 285
+    where: cptra_smoke_test_mcu_mbox_usr_lock_out.c
+    found: success path in the if branch, fatal in the else branch
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.0248573
+error: null

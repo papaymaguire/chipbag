@@ -1,0 +1,41 @@
+finding_hash: c0f59c1ffaad8f03
+started_at: '2026-11-10T20:34:29Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The Caliptra helper really does write CMD when it is allowed, and it checks that the write
+    took effect. It then restores CMD to 0xFADECAFE, so the MCU side sees only SRAM and DLEN changed.
+    The two comments describe different observation points and do not conflict.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c
+    line_start: 153
+    line_end: 167
+    quote: 'error = (can_write) ? (mbox_rd_data != 0xDEADBEEF) : (mbox_rd_data == 0xDEADBEEF);'
+    role: refutes
+    note: With can_write true the CMD write must succeed (the read-back must be 0xDEADBEEF), which matches
+      the Caliptra-side comment. The following lines restore CMD to 0xFADECAFE.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c
+    line_start: 161
+    line_end: 164
+    quote: // Restore CMD so MCU sees only SRAM and DLEN changed.
+    role: refutes
+    note: The helper explicitly restores CMD, so the MCU check k5 (CMD still 0xFADECAFE) is consistent
+      with the CMD write having succeeded.
+  searches:
+  - what: Helper cptra_mcu_mbox_target_write_sram_and_csrs and its CMD handling
+    where: cptra_smoke_test_mcu_mbox_target_user.c
+    found: CMD write is verified as successful when can_write is true, then restored to 0xFADECAFE
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 59
+    line_end: 63
+    why_not: The MCU check that CMD equals 0xFADECAFE passes because the Caliptra side restores the value.
+      It does not show that the CMD write was blocked.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0443794
+error: null

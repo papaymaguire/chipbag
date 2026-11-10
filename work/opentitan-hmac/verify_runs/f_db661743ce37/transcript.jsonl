@@ -1,0 +1,5 @@
+{"t": "2026-11-10T20:51:59Z", "event": "  \u2192 Bash: sed -n 38,46p hw/ip/hmac/README.md; sed -n 485,500p hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:52:01Z", "event": "The spec says DIGEST_0-DIGEST_12 (13 words), but 384 bits is 12 words (DIGEST_0-11). The test checks idx<12. This is a spec typo, not a test problem."}
+{"t": "2026-11-10T20:52:05Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:52:07Z", "event": "I submitted the verdict as verified: the finding stands, but the README is the side that's wrong.\n\nThe README (line 41) says SHA-2 384 is read from DIGEST_0-DIGEST_12, which is 13 words. A 384-bit digest is only 12 words, so the range should end at DIGEST_11. The scoreboard (`hmac_scoreboard.sv:493`) checks only `digest_idx < 12` for SHA-2 384, which matches 12 words.\n\nThe fix is to change the README to DIGEST_0-DIGEST_11 for SHA-2 384. The test and scoreboard need no change. I did not check the RTL or the register documentation."}
+{"t": "2026-11-10T20:52:07Z", "event": "[3 turns, $0.0436]"}

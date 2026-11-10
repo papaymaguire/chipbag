@@ -1,0 +1,92 @@
+finding_hash: 68a57549b5773a66
+started_at: '2026-11-10T20:39:23Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The finding is half right. Item cp_d1a3175f448b is implemented by smoke_test_mcu_mbox, which
+    I confirmed. Item cp_7e15eab8e3fc has no test, and the finding stands for it. The finding is verified
+    at the finding level, but only the SOC Data available item is a real gap. The DEFAULT_USER item should
+    be withdrawn.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/smoke_test_mcu_mbox.c
+    line_start: 164
+    line_end: 165
+    quote: "    // Setting Caliptra to DEFAULT user\n    mcu_cptra_init_d(.cfg_cptra_dma_axi_user=true,\
+      \ .cptra_dma_axi_user=0xFFFFFFFF);"
+    role: refutes
+    note: The test sets Caliptra's AXI user to 0xFFFFFFFF. It does not configure any mbox valid user,
+      so DEFAULT_USER is not set via the VALID USER parameter or CSR.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/smoke_test_mcu_mbox.c
+    line_start: 52
+    line_end: 56
+    quote: "    if(!mcu_mbox_wait_for_user_lock(mbox_num, user_axi_id, 10000)) {\n        VPRINTF(FATAL,\
+      \ \"MCU: Mbox%x Caliptra did not acquire lock and set execute\\n\", mbox_num);"
+    role: refutes
+    note: The test fails if the 0xFFFFFFFF user cannot lock the mailbox. It then checks the data written
+      by that user, so the check can fail.
+  - path: src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c
+    line_start: 151
+    line_end: 157
+    quote: '        // Wait for SOC Data Available Interrupt (sample hitless FW image will be written
+      from BFM sequence mcu_mbox_soc_agent_write_fw_image.svh)'
+    role: context
+    note: The data-available interrupt is exercised here, but the SoC BFM sets EXECUTE, not the MCU holding
+      the lock. This does not match the plan item.
+  - path: src/mci/rtl/mcu_mbox.sv
+    line_start: 392
+    line_end: 393
+    quote: assign soc_mbox_data_available = hwif_out.mbox_execute.execute.value && (hwif_out.mbox_user.user.value
+      != strap_root_axi_user);
+    role: context
+    note: 'RTL: the SoC data-available condition is EXECUTE set while the user is not the root (MCU) user.'
+  searches:
+  - what: DEFAULT_USER / 0xFFFFFFFF user usage
+    where: whole repo, excluding xlsx
+    found: smoke_test_mcu_mbox.c uses 0xFFFFFFFF as the Caliptra user with no valid user configured, and
+      checks lock and data.
+  - what: soc data avail interrupt tests
+    where: src/integration/test_suites
+    found: Only smoke_test_mcu_hitless waits on it, and there the SoC side sets EXECUTE. No test has the
+      MCU hold the lock, set EXECUTE and check the SoC data-available interrupt.
+  - what: soc_req_while_mcu_lock tests
+    where: src/integration/test_suites
+    found: Used in valid_user and target_user tests, but that is a different interrupt (SoC request while
+      MCU holds the lock).
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+    line_start: 233
+    line_end: 239
+    why_not: Checks the soc_req_while_mcu_lock interrupt, not the SOC data-available interrupt set by
+      the MCU's own EXECUTE.
+  - path: src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c
+    line_start: 152
+    line_end: 156
+    why_not: Waits for the SOC data-available interrupt, but it is triggered by the SoC BFM writing EXECUTE,
+      not by the MCU holding the lock.
+  items:
+  - id: cp_7e15eab8e3fc
+    outcome: verified
+    reason: No test has the MCU hold the lock, set EXECUTE and check the SOC data-available interrupt.
+      The hitless test only covers the SoC-set EXECUTE case.
+    evidence:
+    - 2
+    - 3
+  - id: cp_d1a3175f448b
+    outcome: withdrawn
+    reason: smoke_test_mcu_mbox uses 0xFFFFFFFF as Caliptra's user with no valid user configured. It fails
+      if the user cannot lock the mailbox, and it then checks the data.
+    evidence:
+    - 0
+    - 1
+  new_sources:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/smoke_test_mcu_mbox.c
+    reason: Implements the DEFAULT_USER plan item.
+  resolution: For cp_7e15eab8e3fc, add a test in which the MCU acquires the lock, sets EXECUTE, and a
+    SoC agent or the test checks that the SOC data-available interrupt status is set. For cp_d1a3175f448b,
+    map the plan item to smoke_test_mcu_mbox.
+submissions: 1
+rejections: []
+turns: 13
+cost_usd: 0.1337825
+error: null

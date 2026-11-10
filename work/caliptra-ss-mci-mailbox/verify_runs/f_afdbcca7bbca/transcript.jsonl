@@ -1,0 +1,14 @@
+{"t": "2026-11-10T19:46:38Z", "event": "  \u2192 Grep: MBOX1_VALID_AXI_USER|MBOX1_AXI_USER_LOCK|mbox1_axi_user_lock|mbox1_valid_axi_user"}
+{"t": "2026-11-10T19:46:39Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T19:46:41Z", "event": "  \u2192 Grep: MBOX1_(VALID_AXI_USER|AXI_USER_LOCK)|mbox1_(valid_axi_user|axi_user_lock)"}
+{"t": "2026-11-10T19:46:42Z", "event": "  \u2192 Grep: AXI_USER_LOCK|VALID_AXI_USER"}
+{"t": "2026-11-10T19:46:45Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_common_tasks.svh"}
+{"t": "2026-11-10T19:46:46Z", "event": "  \u2192 Grep: axi_user_lock|AXI_USER_LOCK|valid_axi_user"}
+{"t": "2026-11-10T19:46:48Z", "event": "  \u2192 Grep: get_mcu_mbox_(valid_axi_user|axi_user_lock)_address"}
+{"t": "2026-11-10T19:46:48Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_axi_param/smoke_test_mcu_mbox_axi_param.c"}
+{"t": "2026-11-10T19:46:51Z", "event": "  \u2192 Grep: swwel|locked|lock.*(write|ro|read-only)"}
+{"t": "2026-11-10T19:46:53Z", "event": "Still checking: I found no test that writes MBOX1's valid-user or lock registers after locking and checks the result. I'm submitting the verdict now."}
+{"t": "2026-11-10T19:47:00Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:47:08Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:47:11Z", "event": "I verified the finding: all 5 items stand, because no test checks the lock behaviour of the MBOX1 valid-user or lock registers.\n\n- **What the tests do:** the tests only program and lock these registers through a library helper, or check reset values in `mci.c`. `smoke_test_mcu_mbox_axi_param` does this and then does nothing further. The testbench address helpers are only used to configure the registers.\n- **What is missing:**\n  - No test writes `AXI_USER` or `LOCK` after locking and checks that the write is ignored.\n  - No test checks that a user is accepted only once locked.\n  - No test checks the RW1-S behaviour of the lock bit.\n\nThe verdict was accepted on the second submission. The first was rejected for a quote that didn't match the file and for too few recorded searches."}
+{"t": "2026-11-10T19:47:11Z", "event": "[12 turns, $0.1217]"}

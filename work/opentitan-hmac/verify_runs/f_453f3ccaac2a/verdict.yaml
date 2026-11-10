@@ -1,0 +1,73 @@
+finding_hash: ebe11bf9ac8e4f15
+started_at: '2026-11-10T21:10:25Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks any of the four items. The wipe sequence and scoreboard only check
+    that digests differ after a wipe. The scoreboard checks SHA-384 digests only for DIGEST_0–11, not
+    DIGEST_12. Nothing checks the wipe-value replication, the message FIFO being unreadable by SW, or
+    the FIFO surviving a wipe.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 482
+    line_end: 483
+    quote: // If wipe_secret is triggered, ensure the predicted value does not match the read out
+    role: context
+    note: After a wipe the scoreboard only checks that the digest differs from the prediction. It does
+      not check the replicated 64-bit wipe value and does not check the message FIFO.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 491
+    line_end: 491
+    quote: // only check till digest_idx = 7 for SHA-2 256 and till digest_idx = 11 for SHA-2 384
+    role: supports
+    note: For SHA-2 384 the scoreboard checks DIGEST_0–11 only. The spec's DIGEST_0-DIGEST_12 is not checked,
+      and the range differs from the spec text.
+  searches:
+  - what: wipe tests and checks in the HMAC DV environment
+    where: hw/ip/hmac/dv
+    found: hmac_wipe_secret_vseq and the scoreboard's DV_CHECK_NE of the digest after a wipe. Nothing
+      on the replicated wipe value or the message FIFO.
+  - what: SW tests that use wipe_secret
+    where: sw/device/tests/hmac_secure_wipe_test.c
+    found: It only processes a message and polls for the FIFO to be empty. It has no check on replication,
+      FIFO read-back or FIFO contents after a wipe.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 482
+    line_end: 489
+    why_not: It checks only that the digest changes after a wipe. It does not check the wipe value, the
+      replication, or the message FIFO.
+  - path: sw/device/tests/hmac_secure_wipe_test.c
+    line_start: 51
+    line_end: 55
+    why_not: It checks FIFO emptiness after processing a message. It does not check that a wipe leaves
+      the FIFO untouched.
+  items:
+  - id: cr_1c762e6535de
+    outcome: verified
+    reason: No check that the wipe value is the 32-bit value replicated to 64 bits. The scoreboard only
+      checks that the digest differs after a wipe.
+    evidence:
+    - 0
+  - id: cr_4282db4ce90a
+    outcome: verified
+    reason: I found no test or assertion that checks SW cannot read the message FIFO.
+    evidence:
+    - 0
+  - id: cr_4977ddf1d188
+    outcome: verified
+    reason: The scoreboard checks SHA-384 digests only for DIGEST_0–11. DIGEST_12 is not covered.
+    evidence:
+    - 1
+  - id: cr_8e41a2412a72
+    outcome: verified
+    reason: No test checks that the message FIFO is left intact after a wipe.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0722648
+error: null

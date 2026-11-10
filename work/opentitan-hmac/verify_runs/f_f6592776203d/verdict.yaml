@@ -1,0 +1,36 @@
+finding_hash: 356086e182768f0f
+started_at: '2026-11-10T20:51:56Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The programmer's guide says SwPushMsgWhenShaDisabled (0x1) is not used in the current IP. The
+    IP reports SwPushMsgWhenDisallowed (0x5) instead, so the test's check matches the design. The comment's
+    scenario is accurate and the expected code is correct. The finding's claim that a different code is
+    expected is wrong.
+  evidence:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 179
+    line_end: 179
+    quote: This error code is not used in the current version of the IP. Instead `SwPushMsgWhenDisallowed`
+      is reported.
+    role: refutes
+    note: Spec states that pushing when SHA is disabled reports SwPushMsgWhenDisallowed.
+  - path: sw/device/tests/hmac_error_conditions_test.c
+    line_start: 157
+    line_end: 157
+    quote: TRY_CHECK(hmac_err_reg == kErrorSwPushMsgWhenDisallowed,
+    role: context
+    note: Test expects the code the IP actually reports.
+  searches:
+  - what: error code names
+    where: repo
+    found: SwPushMsgWhenShaDisabled documented as unused in programmers_guide.md and prim_sha2_pkg.sv
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.05343490000000001
+error: null

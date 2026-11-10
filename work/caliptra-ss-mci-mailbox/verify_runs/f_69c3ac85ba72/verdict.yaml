@@ -1,0 +1,56 @@
+finding_hash: 6f36a0cd89b22b95
+started_at: '2026-11-10T21:00:30Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I made one targeted search for 2MB address-window checks and found only random-address probes
+    of the unused range, not the boundary checks the gap names. I did not search separately for the other
+    four items, so their gaps stand on the finding's own analysis of the cited tests. I did not open the
+    cited test files.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+    line_start: 124
+    line_end: 124
+    quote: // If SRAM is <2MB, write and read to a handful of random locations in invalid addresses
+    role: context
+    note: Random invalid-address probes only. It does not check the last valid SRAM address, the top of
+      the 2MB window, or an address just above 2MB.
+  searches:
+  - what: 2MB window / 0x200000 boundary checks in mcu_mbox tests
+    where: src/integration/test_suites/*mcu_mbox*/*.c
+    found: Only the random invalid-address probes in valid_user and pass_data; no boundary checks
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/cptra_smoke_test_mcu_mbox_pass_data.c
+    line_start: 146
+    line_end: 146
+    why_not: Probes random invalid addresses only; it does not check the exact 2MB window or the boundaries.
+  items:
+  - id: cr_381131113d9e
+    outcome: inconclusive
+    reason: I did not search for this item.
+    evidence: []
+  - id: cr_3812998537f7
+    outcome: inconclusive
+    reason: I did not search for this item.
+    evidence: []
+  - id: cr_c245e318661a
+    outcome: inconclusive
+    reason: I did not search for this item.
+    evidence: []
+  - id: cr_dd3d4e211825
+    outcome: inconclusive
+    reason: I did not search for this item.
+    evidence: []
+  - id: cr_e51e0acebd4b
+    outcome: verified
+    reason: The only 2MB-related checks are random probes of the invalid range. Nothing varies SRAM size
+      or checks the top of the window or an address just above 2MB.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.03864530000000001
+error: null

@@ -1,0 +1,7 @@
+{"t": "2026-11-10T19:38:32Z", "event": "  \u2192 Grep: message length|msg_length|MSG_LENGTH"}
+{"t": "2026-11-10T19:38:32Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/data/hmac.hjson"}
+{"t": "2026-11-10T19:38:34Z", "event": "Nothing else answers readback behavior. Quickly noting \"Message is byte granularity\" is the only extra."}
+{"t": "2026-11-10T19:38:39Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:38:44Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:38:48Z", "event": "I submitted a verdict of **verified**: the finding stands. I found no other specification text that says whether bits [2:0] of `MSG_LENGTH_LOWER` read back as written or as zero.\n\nThe only relevant text is in `hw/ip/hmac/data/hmac.hjson`. It says \"Message is byte granularity. Lower 3 bits [2:0] are ignored.\" The generated `registers.md` repeats it, and the theory of operation and programmer's guide don't mention those bits. None of them says whether the hardware-updated value always has the bits clear, or whether the padding computation excludes them.\n\nI didn't read the RTL, so the resolution I submitted is only a spec fix. Add text saying whether writes to bits [2:0] are stored and read back, or read as zero, and whether the hardware length and padding computation ignore them."}
+{"t": "2026-11-10T19:38:48Z", "event": "[5 turns, $0.0409]"}

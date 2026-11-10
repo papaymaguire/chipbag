@@ -1,0 +1,20 @@
+{"t": "2026-11-10T20:38:36Z", "event": "  \u2192 Grep: mbox0_ecc_unc_intr_count_incr|mbox0_target_done_intr_count_incr|mbox1_ecc_cor_intr_count_incr|mbox0_ecc_cor_intr_count_incr"}
+{"t": "2026-11-10T20:38:37Z", "event": "  \u2192 Grep: intr_count_incr"}
+{"t": "2026-11-10T20:38:39Z", "event": "  \u2192 Grep: intr_count_incr"}
+{"t": "2026-11-10T20:38:39Z", "event": "  \u2192 Grep: intr_count|intr_block_rf"}
+{"t": "2026-11-10T20:38:41Z", "event": "Coverage only; check tests for count_incr / counter registers."}
+{"t": "2026-11-10T20:38:42Z", "event": "  \u2192 Grep: COUNT_INCR|count_incr"}
+{"t": "2026-11-10T20:38:42Z", "event": "  \u2192 Grep: COUNT_R|_count_r\\b|intr_count"}
+{"t": "2026-11-10T20:38:44Z", "event": "  \u2192 Grep: count_incr|COUNT_INCR"}
+{"t": "2026-11-10T20:38:45Z", "event": "  \u2192 Grep: MBOX0_ECC_UNC|MBOX0_TARGET_DONE|MBOX[01]_ECC_COR|mbox[01]_ecc_(unc|cor)"}
+{"t": "2026-11-10T20:38:49Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T20:38:53Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T20:38:53Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T20:38:58Z", "event": "  \u2192 Grep: notif_mbox0_ecc_cor_intr_count_incr_r"}
+{"t": "2026-11-10T20:39:02Z", "event": "  \u2192 Grep: notif_mbox0_ecc_cor_intr_count_incr_r|notif_mbox0_ecc_cor_sts"}
+{"t": "2026-11-10T20:39:05Z", "event": "I'm checking whether the software trigger in `mcu_intr_handler` reaches the counter's `hwset` input in `mci_top`. If it does, that test is a candidate refuter."}
+{"t": "2026-11-10T20:39:06Z", "event": "  \u2192 Grep: notif_mbox0_ecc_cor_sts\\.hwset|notif_mbox0_target_done_sts\\.hwset|error_mbox0_ecc_unc_sts\\.hwset"}
+{"t": "2026-11-10T20:39:23Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:39:34Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:39:38Z", "event": "I submitted the verdict as verified: the repository has no test that checks any of the five items.\n\n- **What the one candidate test does:** `mcu_intr_handler.c` is the only test that reads the interrupt count registers. It raises interrupts by writing the software trigger bits. In `mci_reg.sv` the incrementor pulse is set only by the `hwset` input, which `mci_reg_top.sv` wires to real hardware events (e.g. `mbox0_sram_double_ecc_error`). So that test never reaches the pulse and can't check it.\n- **Other hits:** `libs/mci/mci.c` only registers a mask for these fields. `mci_top_cov_if.sv` has coverpoints, which check nothing.\n\nI didn't confirm what happens to `mcu_intr_handler`'s own firmware-versus-hardware count comparison when only trigger writes are used. The pulse is set only by `hwset`, so that comparison may be failing or may not be run as a check."}
+{"t": "2026-11-10T20:39:38Z", "event": "[17 turns, $0.1868]"}

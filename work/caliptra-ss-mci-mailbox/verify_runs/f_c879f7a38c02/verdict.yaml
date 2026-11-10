@@ -1,0 +1,80 @@
+finding_hash: 21ab0a0994ebdec1
+started_at: '2026-11-10T20:42:03Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: Only the "increments by 1 per event" item is covered. mcu_intr_handler triggers each notif
+    event (including MBOX0_CMD_AVAIL, CPTRA_MBOX_CMD_AVAIL and MBOX0_ECC_COR) and fails if the summed
+    hardware counters differ from the firmware count. That check is aggregate and trigger-driven. The
+    counter, decrvalue and swwel attributes have no direct test; counter and decrvalue are only exercised
+    implicitly by that count check. No test attempts software writes to the incr pulse field.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: context
+    note: Error counters are compared with the firmware count and the sim is killed on mismatch.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 213
+    line_end: 216
+    quote: lsu_read_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_MBOX0_CMD_AVAIL_INTR_COUNT_R      ) +
+    role: refutes
+    note: The notif counters are summed and compared with the firmware count of triggered events (the
+      count-by-1 check).
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1554
+    line_end: 1557
+    quote: default decrvalue = 1;
+    role: context
+    note: The counter, decrvalue and swwel attributes are RDL properties with no direct test.
+  searches:
+  - what: tests referencing the three notif incr registers
+    where: repo-wide
+    found: Only the RTL, the UVM model and the coverage interface mention them; no test accesses *_count_incr_r
+      directly.
+  - what: tests exercising the notif counters
+    where: src/integration/test_suites
+    found: mcu_intr_handler, which is listed in the nightly regression.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 206
+    line_end: 220
+    why_not: The check is an aggregate sum over all notif counters. It does not check each of the three
+      registers individually, and it does not check the counter, decrvalue or swwel attributes.
+  items:
+  - id: cr_0bf5fbc5013e
+    outcome: inconclusive
+    reason: Only implicitly exercised by the count-sum check; there is no direct test.
+    evidence:
+    - 1
+  - id: cr_0c3afed8d218
+    outcome: verified
+    reason: No test attempts software writes to the incr pulse field.
+    evidence:
+    - 2
+  - id: cr_0ff351634ef2
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers each event and the summed counts must equal the firmware count,
+      so it checks increment by 1 per event.
+    evidence:
+    - 1
+  - id: cr_105a23c2056d
+    outcome: inconclusive
+    reason: Only implicitly exercised by the count-sum check; there is no direct test.
+    evidence:
+    - 1
+  - id: cr_134b9577da6e
+    outcome: inconclusive
+    reason: The decrement is only implicitly exercised by the count-sum check; there is no direct test.
+    evidence:
+    - 2
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Checks the notif interrupt counters against the firmware count of triggered events.
+submissions: 2
+rejections: []
+turns: 11
+cost_usd: 0.1201837
+error: null

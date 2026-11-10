@@ -1,0 +1,9 @@
+{"t": "2026-11-10T20:55:50Z", "event": "  \u2192 Grep: back_pressure|csr_hw_reset|csr_mem_rw_with_rand_reset|regwen_val_when_new_value_written"}
+{"t": "2026-11-10T20:55:51Z", "event": "  \u2192 Grep: csr_hw_reset|csr_mem_rw_with_rand_reset"}
+{"t": "2026-11-10T20:55:53Z", "event": "  \u2192 Grep: csr_tests|csr_testplan|NO_ISSUES_PENDING"}
+{"t": "2026-11-10T20:55:54Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan; sed -n 1,30p hw/dv/tools/dvsim/tests/csr_tests.hjson; sed -n 55,70p hw/dv/tools/dvsim/tests/csr_tests.hjson; grep -rn \"regwen_val_when\" hw/dv --in"}
+{"t": "2026-11-10T20:55:57Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan; grep -n \"regwen_val\" -B3 -A8 hw/dv/tools/dvsim/testplans/csr_testplan.hjson; grep -n \"name: hmac_back_pressure\" -B2 -A4 hw/ip/hmac/dv/hmac_sim_cfg"}
+{"t": "2026-11-10T20:56:04Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:56:11Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:56:14Z", "event": "I've submitted the verdict, and it was accepted. I withdrew the finding because tests do exist for three of the five items:\n\n- **`csr_hw_reset`:** `hmac_csr_hw_reset` exists through the shared `csr_tests.hjson`, which the HMAC sim config imports.\n- **`csr_mem_rw_with_rand_reset`:** `hmac_csr_mem_rw_with_rand_reset` comes from the same shared file.\n- **`back_pressure`:** `hmac_back_pressure` is defined in `hmac_sim_cfg.hjson` with `+zero_delays=1`.\n\nI marked the other two inconclusive. `regwen_val_when_new_value_written_cg` is a covergroup in the testplan, not a test. `NO_ISSUES_PENDING` is a checklist status entry that says \"Done\", so no test is expected for it.\n\nI didn't open the test sequences to confirm that the CSR tests have checks that can fail, or that the back-pressure test actually reaches FIFO_FULL."}
+{"t": "2026-11-10T20:56:14Z", "event": "[8 turns, $0.0680]"}

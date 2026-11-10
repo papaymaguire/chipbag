@@ -1,0 +1,17 @@
+{"t": "2026-11-10T19:46:38Z", "event": "  \u2192 Grep: CMD_STATUS|TARGET_STATUS|SRAM_OWNER|cmd_status|target_status"}
+{"t": "2026-11-10T19:46:40Z", "event": "  \u2192 Grep: CMD_STATUS|TARGET_STATUS|SRAM_OWNER"}
+{"t": "2026-11-10T19:46:41Z", "event": "  \u2192 Grep: CMD_STATUS|TARGET_STATUS|SRAM_OWNER|MBOX_OWNER"}
+{"t": "2026-11-10T19:46:44Z", "event": "  \u2192 Grep: SRAM_OWNER|STATUS_FAILURE|TARGET_STATUS_BUSY|STATUS_BUSY|OWNER_NONE|SRAM_OWNER_"}
+{"t": "2026-11-10T19:46:47Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh"}
+{"t": "2026-11-10T19:46:47Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c"}
+{"t": "2026-11-10T19:46:50Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh"}
+{"t": "2026-11-10T19:46:51Z", "event": "  \u2192 Grep: mci_comm_flow|mci_mbox_ownership_flow"}
+{"t": "2026-11-10T19:46:51Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_common_tasks.svh"}
+{"t": "2026-11-10T19:46:56Z", "event": "I'm checking whether the ownership-flow test is in the regression and whether any test covers the MCU-as-Requester case."}
+{"t": "2026-11-10T19:46:56Z", "event": "  \u2192 Grep: comm_flow|ownership_flow"}
+{"t": "2026-11-10T19:46:57Z", "event": "  \u2192 Grep: MCU.*Requester|mcu_mbox_wait_for_target_status|read_target_status"}
+{"t": "2026-11-10T19:47:02Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_csrs_warm_rst/smoke_test_mcu_mbox_csrs_warm_rst.c"}
+{"t": "2026-11-10T19:47:15Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:47:26Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:47:30Z", "event": "I submitted the verdict as inconclusive overall. Three of the five items are covered by the nightly ownership-flow test (`mci_mbox_ownership_flow.svh`, run as `mci_mbox0_ownership_flow` and `mci_mbox1_ownership_flow`), or partly so. Two have no test.\n\n- **`SRAM_OWNER` value 0 means no owner:** withdrawn. After `EXECUTE=0` the test checks that `HW_STATUS.SRAM_OWNER` reads NONE.\n- **Value 3 encodes FAILURE:** withdrawn. The test runs a full transaction for each terminal status from 1 to 3 and checks the ownership transitions in every phase.\n- **Value 0 encodes BUSY:** inconclusive. The warm-reset test only checks that `TARGET_STATUS` reads 0 after reset, and no test checks that 0 means BUSY at Target handoff.\n- **Terminal Target status not visible as completion until MCU writes `CMD_STATUS`:** verified as untested. The flow only checks that the owner stays Root; nothing reads `CMD_STATUS` as the Requester at that point.\n- **`CMD_STATUS` not used when MCU is the Requester:** verified as untested. I found no test that makes the MCU the Requester."}
+{"t": "2026-11-10T19:47:30Z", "event": "[15 turns, $0.1879]"}

@@ -1,0 +1,65 @@
+finding_hash: d1df9510a3273b12
+started_at: '2026-11-10T19:42:57Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Both interrupts are checked by the HMAC DV scoreboard on every intr_state read, and the stock
+    intr_test suite is included. The smoke and error vseqs supply the stimulus. I did not check the Event/Status
+    classification itself as a separate property.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 391
+    line_end: 392
+    quote: bit intr_state_empty = fifo_empty_intr | last_intr_test_wr[HmacMsgFifoEmpty];
+    role: refutes
+    note: The scoreboard predicts the fifo_empty interrupt state on each intr_state read and compares
+      it with the DUT value.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 693
+    line_end: 694
+    quote: if (fifo_full_detected && hmac_fifo_empty) begin
+    role: refutes
+    note: The model follows the spec conditions for raising fifo_empty. Its stimulus comes from the smoke
+      and long-message sequences.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1048
+    line_end: 1048
+    quote: void'(ral.intr_state.hmac_err.predict(.value(1), .kind(UVM_PREDICT_DIRECT)));
+    role: refutes
+    note: The scoreboard predicts the hmac_err interrupt when an error occurs. The error vseq creates
+      the stimulus.
+  searches:
+  - what: fifo_empty and hmac_err interrupt handling in the DV environment
+    where: hw/ip/hmac/dv
+    found: Scoreboard prediction and checking for both interrupts. The smoke vseq enables the interrupts,
+      and hmac_error_vseq exists for the error case.
+  - what: intr_test in the sim cfg
+    where: hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    found: Includes the generic intr_test.hjson.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 209
+    line_end: 217
+    why_not: A comment in hmac_smoke_vseq.sv says some corner cases of fifo_empty timing are hard to align
+      with the scoreboard. That is a limitation on those corner cases only, not an absence of checking.
+  items:
+  - id: cr_eb1d91a4dabf
+    outcome: withdrawn
+    reason: hmac_err is raised by error stimulus, and the scoreboard predicts and checks intr_state.hmac_err.
+      The generic intr_test also covers it.
+    evidence:
+    - 2
+  - id: cr_ec58bab546a9
+    outcome: withdrawn
+    reason: The scoreboard models the spec conditions for fifo_empty and checks intr_state.fifo_empty
+      on every read.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.050602900000000006
+error: null

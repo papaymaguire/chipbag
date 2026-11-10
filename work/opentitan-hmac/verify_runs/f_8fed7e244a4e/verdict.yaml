@@ -1,0 +1,33 @@
+finding_hash: 44218793b785b6da
+started_at: '2026-11-10T19:37:57Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No other spec text defines the value of DIGEST_8..15 in SHA-256 mode. The register description
+    repeats that they are "irrelevant and should not be read out", which leaves the value undefined. It
+    doesn't say what they hold after a prior SHA-512 operation.
+  evidence:
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 503
+    line_end: 503
+    quote: '{DIGEST8 - DIGEST15} are irrelevant and should not be read out.'
+    role: supports
+    note: 'Register description: says the registers are irrelevant but gives no value.'
+  searches:
+  - what: DIGEST_8, irrelevant, redundant in hmac md and hjson files
+    where: hw/ip/hmac
+    found: Only the same 'irrelevant / should not be read out' wording. No value is specified.
+  near_misses:
+  - path: hw/ip/hmac/doc/registers.md
+    line_start: 422
+    line_end: 423
+    why_not: This is generated from the hjson and repeats the 'irrelevant' wording. It doesn't define
+      a value.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0292701
+error: null

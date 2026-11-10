@@ -1,0 +1,9 @@
+{"t": "2026-11-10T20:37:22Z", "event": "  \u2192 Grep: count_incr_r|intr_count_incr"}
+{"t": "2026-11-10T20:37:23Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T20:37:24Z", "event": "Only RTL/coverage hits. Check tests quickly."}
+{"t": "2026-11-10T20:37:25Z", "event": "  \u2192 Grep: mbox[01]_(soc_req_lock|target_done|ecc_unc)_intr_count|notif_mbox._soc_req_lock_intr_count"}
+{"t": "2026-11-10T20:37:30Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:37:34Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:37:40Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:37:43Z", "event": "I submitted the verdict as verified for all five items: I found no test that checks any of them.\n\nOutside the generated register files (`mci_reg.sv`, `mci_reg_uvm.sv`), the only reference to these `count_incr` registers is `src/mci/coverage/mci_top_cov_if.sv`. That is a coverage interface, so it records the registers being touched but has no pass/fail check. I found no stimulus-plus-check on the pulse, the `swwel = false` behavior or the decrement by 1.\n\nI ran one repo-wide search for the register names and one for the specific mailbox names. I did not read any test directories individually. A test that reaches these registers under a different name would have escaped both searches."}
+{"t": "2026-11-10T20:37:43Z", "event": "[7 turns, $0.0548]"}

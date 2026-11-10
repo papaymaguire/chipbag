@@ -1,0 +1,14 @@
+{"t": "2026-11-10T21:05:52Z", "event": "  \u2192 Grep: key_length|key_len"}
+{"t": "2026-11-10T21:05:53Z", "event": "Scoreboard lines 165-180 and 360-375 handle this."}
+{"t": "2026-11-10T21:05:54Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:05:54Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:05:57Z", "event": "  \u2192 Grep: invalid_cfg|Key_1024|key_length"}
+{"t": "2026-11-10T21:05:57Z", "event": "  \u2192 Grep: invalid_cfg"}
+{"t": "2026-11-10T21:05:59Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:06:00Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv"}
+{"t": "2026-11-10T21:06:02Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T21:06:03Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv"}
+{"t": "2026-11-10T21:06:05Z", "event": "  \u2192 Grep: SwInvalidConfig|err_code"}
+{"t": "2026-11-10T21:06:12Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:06:15Z", "event": "I've submitted the verdict and it was accepted. I withdrew the finding.\n\nThe HMAC scoreboard does check the key-length limit, so the requirement isn't covered only by coverage. For HMAC with SHA-256 and a 1024-bit key, the scoreboard expects an invalid-configuration error. It compares that against the design's error code and interrupt state. The random smoke sequence doesn't exclude that combination, so the test reaches it.\n\nI'm not doing anything further on this."}
+{"t": "2026-11-10T21:06:15Z", "event": "[12 turns, $0.0939]"}

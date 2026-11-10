@@ -1,0 +1,55 @@
+finding_hash: e60d82504f39d55c
+started_at: '2026-11-10T20:34:48Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The hardware specification has a dedicated MCU Mailbox SRAM Clearing section and an ownership
+    table that define what releasing the mailbox does. They give the zeroization range, the lock timing,
+    the completion indication and the ownership change. Which other registers are reset on release is
+    not stated, and no interrupt is tied to release. The core of the finding still falls away.
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1462
+    line_end: 1469
+    quote: When the mailbox lock is released the SRAM is zeroed out from 0 to max DLEN set during the
+      locking period.
+    role: refutes
+    note: Defines the zeroization range, the ordering (release, clear, unlock) and that the lock is held
+      until clearing ends.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1473
+    line_end: 1473
+    quote: '**NOTE**: When DLEN = 0 the entire MBOX SRAM is cleared.'
+    role: refutes
+    note: Resolves the whole-SRAM versus dlen-range question.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1401
+    line_end: 1404
+    quote: '| SRAM owner writes `EXECUTE=0` | None, and hardware begins zeroization |'
+    role: refutes
+    note: States that EXECUTE=0 starts zeroization and that LOCK clears when it completes. SRAM_OWNER
+      reads 0 (None) in the meantime.
+  searches:
+  - what: zeroiz / release the mailbox in docs and rdl
+    where: repo
+    found: HW spec sections on MCU Mailbox SRAM Clearing and the ownership table fully describe the release
+      behaviour
+  near_misses:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1475
+    line_end: 1481
+    why_not: The interrupt table lists no interrupt for release or zeroize-done. That is a small residual
+      gap, but it is not the ambiguity the finding claims.
+  items: []
+  new_sources:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    reason: Contains the MCU mailbox release, zeroization and ownership description.
+  resolution: The spec text in the HW specification (MCU Mailbox SRAM Clearing and the ownership table)
+    defines the behaviour. Optionally cross-reference it from the mbox_execute description in the RDL,
+    and state which registers (target_user, dlen, cmd) are cleared on unlock.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.043954099999999996
+error: null

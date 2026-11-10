@@ -1,0 +1,70 @@
+finding_hash: e66caa47b04d8caa
+started_at: '2026-11-10T20:42:04Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: The mcu_intr_handler firmware test triggers interrupts and checks that the summed hardware
+    event counters equal the software count, killing the sim on mismatch. That implicitly covers the 1-pulse,
+    increment-by-1 and decrvalue=1 behaviour. Nothing tests swwel=false, so those two items stand.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 258
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: refutes
+    note: Check fails the sim if hardware counters (sum of per-event counts) differ from the expected
+      one-per-event count.
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1557
+    line_end: 1557
+    quote: field {desc = "Pulse mirrors interrupt event occurrence"; swwel = false;} pulse = 1'b0;
+    role: context
+    note: swwel gating not exercised by any test found.
+  searches:
+  - what: count_incr / intr_count references outside RTL
+    where: repo
+    found: Only mci_top_cov_if.sv (coverpoints), mcu_intr_handler.c, docs
+  - what: firmware check of event counters
+    where: mcu_intr_handler.c
+    found: Counts compared to expected at lines 201 and 256, including the MBOX0/MBOX1 ECC_COR and CPTRA_MBOX_CMD_AVAIL
+      counters.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4800
+    line_end: 4810
+    why_not: Coverpoints only; no check.
+  items:
+  - id: cr_9f969e4a3656
+    outcome: verified
+    reason: No test writes the pulse field to check swwel gating.
+    evidence:
+    - 1
+  - id: cr_a0d938579904
+    outcome: withdrawn
+    reason: A pulse longer than 1 cycle would make the counts mismatch in mcu_intr_handler.
+    evidence:
+    - 0
+  - id: cr_a13c9c256e0e
+    outcome: withdrawn
+    reason: decrvalue=1 is implicitly checked by the exact event count in mcu_intr_handler.
+    evidence:
+    - 0
+  - id: cr_a150fb568d22
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers one event each and checks the counter sums match, including NOTIF_MBOX0_ECC_COR.
+    evidence:
+    - 0
+  - id: cr_abec8d18a27b
+    outcome: verified
+    reason: No test checks swwel behaviour.
+    evidence:
+    - 1
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Firmware test that checks the interrupt event counters.
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.0823024
+error: null

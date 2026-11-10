@@ -1,0 +1,17 @@
+{"t": "2026-11-10T21:01:23Z", "event": "  \u2192 Grep: data_avail|cmd_avail|CMD_AVAIL"}
+{"t": "2026-11-10T21:01:24Z", "event": "  \u2192 Grep: mcu_mbox.*(data_avail|cmd_avail)|mbox._data_avail"}
+{"t": "2026-11-10T21:01:27Z", "event": "  \u2192 Grep: data_avail|cmd_avail|CMD_AVAIL|DATA_AVAIL"}
+{"t": "2026-11-10T21:01:27Z", "event": "  \u2192 Grep: SRAM_SIZE|sram_size|MBOX_SRAM|2MB|byte.*mbox"}
+{"t": "2026-11-10T21:01:29Z", "event": "Check the main candidates for cmd_avail/data_avail checks."}
+{"t": "2026-11-10T21:01:30Z", "event": "  \u2192 Grep: data_avail|cmd_avail|CMD_AVAIL_STS|DATA_AVAIL"}
+{"t": "2026-11-10T21:01:31Z", "event": "  \u2192 Grep: data_avail|cmd_avail"}
+{"t": "2026-11-10T21:01:34Z", "event": "  \u2192 Grep: AVAIL"}
+{"t": "2026-11-10T21:01:34Z", "event": "  \u2192 Grep: cmd_avail"}
+{"t": "2026-11-10T21:01:37Z", "event": "  \u2192 Grep: task automatic mcu_mbox_wait_clear_notif"}
+{"t": "2026-11-10T21:01:38Z", "event": "  \u2192 Grep: data_avail"}
+{"t": "2026-11-10T21:01:42Z", "event": "  \u2192 Grep: mci_comm_flow|mci_mbox_ownership"}
+{"t": "2026-11-10T21:01:46Z", "event": "  \u2192 Grep: data_avail"}
+{"t": "2026-11-10T21:01:46Z", "event": "  \u2192 Grep: MBOX.*(SRAM_SIZE|SRAM_DEPTH)|sram_size|SRAM_SIZE"}
+{"t": "2026-11-10T21:01:59Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:02:02Z", "event": "I've submitted the verdict, and the system accepted it, so I'm done.\n\nThe finding stands as \"verified\" overall. Four of the five items have no test with a check that can fail:\n- **Byte accesses, 2MB maximum SRAM size, 0 minimum SRAM size:** I found no test or assertion for any of them.\n- **`cptra_ss_soc_mcu_mbox*_data_avail` pin:** it is only sampled by coverpoints. Nothing checks it against MCU lock and EXECUTE.\n\nThe `notif_mbox*_cmd_avail` item (cr_12dbdc943d69) I withdrew. The nightly `mci_mbox_ownership_flow` tests have a SOC requester set EXECUTE, then call `mcu_mbox_wait_clear_notif`. That task fatals if CMD_AVAIL never sets."}
+{"t": "2026-11-10T21:02:02Z", "event": "[15 turns, $0.1196]"}

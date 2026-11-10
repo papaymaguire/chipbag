@@ -1,0 +1,58 @@
+finding_hash: c64cb72796657058
+started_at: '2026-11-10T22:06:11Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The aon_timer README says the comparison is "at or above", so it is >=. The programmer's guide
+    confirms that a count that stays above the threshold re-triggers on the next tick. The latency in
+    clk cycles is not stated, but the finding's main ambiguity is resolved.
+  evidence:
+  - path: hw/ip/aon_timer/README.md
+    line_start: 35
+    line_end: 35
+    quote: 'Each time the pre-scaler completes when the count is at or above the threshold, two outputs
+      become high:'
+    role: refutes
+    note: Defines the comparison as >=, evaluated on each prescaler tick, so a threshold below the current
+      count fires on the next tick.
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    line_start: 93
+    line_end: 93
+    quote: the interrupt and wakeup event will trigger again at the next clock tick.
+    role: refutes
+    note: Confirms level/above behaviour and that triggering happens at the next tick.
+  - path: hw/ip/aon_timer/rtl/aon_timer_core.sv
+    line_start: 68
+    line_end: 68
+    quote: assign wkup_intr_o = wkup_incr & (wkup_count >= wkup_thold);
+    role: context
+    note: The RTL uses >=, matching the README.
+  searches:
+  - what: threshold comparison wording in the aon_timer docs
+    where: hw/ip/aon_timer/**/*.md
+    found: README says 'at or above the threshold'. The programmer's guide describes re-trigger at the
+      next tick.
+  - what: the comparison in the RTL
+    where: hw/ip/aon_timer/rtl
+    found: The comparison is >=.
+  near_misses:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 30
+    line_end: 34
+    why_not: It covers 64-bit access, not the comparison. The exact CDC latency in cycles is still unspecified,
+      but that is a minor part of the finding.
+  items: []
+  new_sources:
+  - path: hw/ip/aon_timer/README.md
+    reason: States the >= trigger condition.
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    reason: Describes re-trigger while the count stays above the threshold.
+  resolution: The design fires when count >= threshold, checked on each prescaler tick. The register description
+    could say "at or above" to match the README. A stated CDC latency bound would close the remaining
+    gap.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0430332
+error: null

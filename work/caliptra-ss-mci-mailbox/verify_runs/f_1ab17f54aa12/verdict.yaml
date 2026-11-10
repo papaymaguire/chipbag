@@ -1,0 +1,61 @@
+finding_hash: 5770e52914d171d1
+started_at: '2026-11-10T20:35:09Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Other spec text answers the data question. The Integration spec says a double-bit error gives
+    unpredictable data. The Hardware spec says agents must check the interrupt or status registers to
+    know whether read data is valid. So the data is don't-care and a test should check the interrupt,
+    the status bit and HW_NON_FATAL, not the data value. The AXI response for a mailbox read is not stated
+    anywhere I found; the SLVERR text covers the MCU SRAM, not the mailbox.
+  evidence:
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 874
+    line_end: 874
+    quote: Double-bit or uncorrectable errors would cause unpredictable data to be returned to Caliptra
+      Subsystem.
+    role: refutes
+    note: Defines the returned data as unpredictable (don't-care), and says no correct operation is expected
+      afterwards.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1507
+    line_end: 1507
+    quote: Whenever an agent reads data from the SRAM they either need to consume the Double Bit ECC interrupt
+      wire or check the MCU Mailbox status registers to know if the data they received is valid.
+    role: refutes
+    note: Validity is signalled by the interrupt/status, not by the data value, so the data cannot be
+      checked.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1579
+    line_end: 1579
+    quote: '- AXI SLVERR response to the initiator'
+    role: context
+    note: This is for the MCU SRAM double-bit case, not the mailbox, so the mailbox AXI response stays
+      unspecified.
+  searches:
+  - what: double bit / invalid data / SLVERR in docs
+    where: docs/
+    found: Hardware spec 1505, 1507, 1579; Integration spec 874, 2022
+  - what: mailbox ECC fields in the register definitions
+    where: src/mci/rtl/mci_reg.rdl
+    found: Only status, enable and trigger bit descriptions; nothing on the returned data
+  near_misses:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1577
+    line_end: 1580
+    why_not: The SLVERR and fatal-error actions are listed for MCU SRAM, not for the MCU mailbox, so they
+      do not settle the mailbox response.
+  items: []
+  new_sources:
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    reason: Error detection and logging section says double-bit errors return unpredictable data.
+  resolution: The data value is unspecified (don't-care), so a scoreboard should check the double-bit
+    error interrupt, the status bit and the HW_NON_FATAL output, not the data. A spec update should say
+    explicitly that mailbox reads with a double-bit error return don't-care data, and whether the AXI
+    response is OKAY or SLVERR.
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0546075
+error: null

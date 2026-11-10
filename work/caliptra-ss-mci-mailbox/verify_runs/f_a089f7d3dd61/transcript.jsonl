@@ -1,0 +1,10 @@
+{"t": "2026-11-10T19:46:02Z", "event": "  \u2192 Grep: (?i)target_status|TARGET_STATUS"}
+{"t": "2026-11-10T19:46:04Z", "event": "  \u2192 Grep: (?i)target_status"}
+{"t": "2026-11-10T19:46:05Z", "event": "  \u2192 Grep: (?i)target_status"}
+{"t": "2026-11-10T19:46:06Z", "event": "Check for handoff reset to BUSY and DATA_READY checks."}
+{"t": "2026-11-10T19:46:07Z", "event": "  \u2192 Grep: TARGET_STATUS_(BUSY|DATA_READY|CMD_BUSY)|STATUS_BUSY|DATA_READY"}
+{"t": "2026-11-10T19:46:10Z", "event": "  \u2192 Grep: MCU_MBOX_TARGET_STATUS_\\w+"}
+{"t": "2026-11-10T19:46:12Z", "event": "  \u2192 Grep: (?i)target_status"}
+{"t": "2026-11-10T19:46:22Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:46:25Z", "event": "I submitted the verdict as verified: I found no test that checks any of the five `mbox_target_status` items.\n\n- **What the tests do:** `TARGET_STATUS` is only written with COMPLETE (in the `smoke_test_mcu_mbox_target_user` test) and FAILURE (in `smoke_test_mcu_mbox_write_user_lock`). The only read-back is `mcu_mbox_wait_for_target_status`, which waits for COMPLETE.\n- **Hardware clear and hardware precedence:** nothing creates a simultaneous hardware and software update, and nothing checks `hwclr`.\n- **Reset to BUSY on handoff:** no test reads `TARGET_STATUS` after a handoff to see whether it is BUSY.\n- **CMD_BUSY:** it is defined in `caliptra_ss_lib.h` but never driven or checked.\n- **DATA_READY:** every use I found is for `CMD_STATUS` or the Caliptra mailbox, not `TARGET_STATUS`.\n\nThe generic CSR reset and mask test in `libs/mci/mci.c` lists the register but does not exercise any of this behaviour.\n\nMy search covered the integration test suites, their libraries and the testbench sequences. I did not look through assertion or formal property files separately."}
+{"t": "2026-11-10T19:46:25Z", "event": "[8 turns, $0.0726]"}

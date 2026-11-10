@@ -1,0 +1,12 @@
+{"t": "2026-11-10T20:38:34Z", "event": "  \u2192 Grep: count_incr_r"}
+{"t": "2026-11-10T20:38:35Z", "event": "  \u2192 Grep: mbox[01]_ecc_(unc|cor)_intr_count_incr|soc_req_lock_intr_count_incr"}
+{"t": "2026-11-10T20:38:36Z", "event": "  \u2192 Grep: intr_count_incr"}
+{"t": "2026-11-10T20:38:38Z", "event": "Only coverage, no checks. Quick check of tests for the register names."}
+{"t": "2026-11-10T20:38:39Z", "event": "  \u2192 Grep: (?i)intr_count_incr|COUNT_INCR_R"}
+{"t": "2026-11-10T20:38:40Z", "event": "  \u2192 Grep: (?i)intr_count_incr"}
+{"t": "2026-11-10T20:38:43Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/libs/mci/mci.c"}
+{"t": "2026-11-10T20:38:44Z", "event": "Just a register-mask table for generic reset/access tests; no pulse behavior checks."}
+{"t": "2026-11-10T20:38:51Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:38:59Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:39:02Z", "event": "I submitted the verdict as verified: all five items remain untested. No test creates the pulse condition and checks the counter, the decrement by 1, the write-enable (`swwel`) behavior or the 1-bit down-counter.\n\nThe `*_intr_count_incr_r` registers appear in only two kinds of place:\n- **Coverage:** coverpoints in `src/mci/coverage/mci_top_cov_if.sv`, which sample the field but have no pass/fail check.\n- **Mask table:** entries in `src/integration/test_suites/libs/mci/mci.c` for the error registers, which only list the bit masks for generic register tests.\n\nThe `notif` mbox0 `soc_req_lock` and mbox1 `ecc_cor` registers have no mask-table entries.\n\nI did not read the tests that use the mask table, so I can't fully rule out a check there. Nothing in the searches suggested one."}
+{"t": "2026-11-10T20:39:02Z", "event": "[9 turns, $0.0836]"}

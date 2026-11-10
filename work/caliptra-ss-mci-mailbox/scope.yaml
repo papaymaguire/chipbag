@@ -1,0 +1,84 @@
+note: Spec sections this workspace was extracted from (exact heading paths, glob-escaped).
+sections:
+- Manufacturer Control Interface (MCI) > MCI Feature Descriptions > MCU Mailbox
+- Manufacturer Control Interface (MCI) > MCI Feature Descriptions > MCU Mailbox > MCU Mailbox Limited Trusted AXI users
+- Manufacturer Control Interface (MCI) > MCI Feature Descriptions > MCU Mailbox > MCU Mailbox Locking
+- Manufacturer Control Interface (MCI) > MCI Feature Descriptions > MCU Mailbox > MCU Mailbox Target User
+- Manufacturer Control Interface (MCI) > MCI Feature Descriptions > MCU Mailbox > MCU Mailbox SRAM Ownership
+- Manufacturer Control Interface (MCI) > MCI Feature Descriptions > MCU Mailbox > MCU Mailbox Status Registers
+- Manufacturer Control Interface (MCI) > MCI Feature Descriptions > MCU Mailbox > MCU Mailbox Fully addressable SRAM
+- Manufacturer Control Interface (MCI) > MCI Feature Descriptions > MCU Mailbox > MCU Mailbox SRAM Clearing
+- Manufacturer Control Interface (MCI) > MCI Feature Descriptions > MCU Mailbox > MCU Mailbox Interrupts
+- Manufacturer Control Interface (MCI) > MCI Feature Descriptions > MCU Mailbox > MCU Mailbox Errors
+- Manufacturer Control Interface (MCI) > MCI Feature Descriptions > MCU Mailbox > MCU Mailbox MCU Access
+- Manufacturer Control Interface (MCI) > MCI Feature Descriptions > MCU Mailbox > MCU Mailbox Address Map
+- MCI > MCI Integration Requirements > MCU MBOX SRAM Sizing Requirements
+- MCI > Programming interface > MCU Mailbox
+- MCI > Programming interface > MCU Mailbox > MCU Mailbox Limited Trusted AXI users
+- MCI > Programming interface > MCU Mailbox > Reset
+- MCI > Programming interface > MCU Mailbox > MCU Mailbox Doorbell Command DLEN
+- MCI > Programming interface > MCU Mailbox > MCU to SOC Target Flow
+- MCI > Programming interface > MCU Mailbox > SOC Requester to MCU Flow
+- MCI > Programming interface > MCU Mailbox > SOC Requester to SOC Target Communication Flow (MCU as intermediary)
+- mci_reg > MBOX0_VALID_AXI_USER
+- mci_reg > MBOX0_AXI_USER_LOCK
+- mci_reg > MBOX1_VALID_AXI_USER
+- mci_reg > MBOX1_AXI_USER_LOCK
+- mci_reg > error_mbox0_ecc_unc_intr_count_r
+- mci_reg > error_mbox1_ecc_unc_intr_count_r
+- mci_reg > notif_mbox0_target_done_intr_count_r
+- mci_reg > notif_mbox1_target_done_intr_count_r
+- mci_reg > notif_mbox0_cmd_avail_intr_count_r
+- mci_reg > notif_mbox1_cmd_avail_intr_count_r
+- mci_reg > notif_cptra_mbox_cmd_avail_intr_count_r
+- mci_reg > notif_mbox0_ecc_cor_intr_count_r (part 1/2)
+- mci_reg > notif_mbox0_ecc_cor_intr_count_r (part 2/2)
+- mci_reg > notif_mbox1_ecc_cor_intr_count_r (part 1/2)
+- mci_reg > notif_mbox1_ecc_cor_intr_count_r (part 2/2)
+- mci_reg > notif_mbox0_soc_req_lock_intr_count_r (part 1/2)
+- mci_reg > notif_mbox0_soc_req_lock_intr_count_r (part 2/2)
+- mci_reg > notif_mbox1_soc_req_lock_intr_count_r (part 1/2)
+- mci_reg > notif_mbox1_soc_req_lock_intr_count_r (part 2/2)
+- mci_reg > error_mbox0_ecc_unc_intr_count_incr_r (part 1/2)
+- mci_reg > error_mbox0_ecc_unc_intr_count_incr_r (part 2/2)
+- mci_reg > error_mbox1_ecc_unc_intr_count_incr_r (part 1/2)
+- mci_reg > error_mbox1_ecc_unc_intr_count_incr_r (part 2/2)
+- mci_reg > notif_mbox0_target_done_intr_count_incr_r (part 1/3)
+- mci_reg > notif_mbox0_target_done_intr_count_incr_r (part 2/3)
+- mci_reg > notif_mbox0_target_done_intr_count_incr_r (part 3/3)
+- mci_reg > notif_mbox1_target_done_intr_count_incr_r (part 1/3)
+- mci_reg > notif_mbox1_target_done_intr_count_incr_r (part 2/3)
+- mci_reg > notif_mbox1_target_done_intr_count_incr_r (part 3/3)
+- mci_reg > notif_mbox0_cmd_avail_intr_count_incr_r (part 1/3)
+- mci_reg > notif_mbox0_cmd_avail_intr_count_incr_r (part 2/3)
+- mci_reg > notif_mbox0_cmd_avail_intr_count_incr_r (part 3/3)
+- mci_reg > notif_mbox1_cmd_avail_intr_count_incr_r (part 1/3)
+- mci_reg > notif_mbox1_cmd_avail_intr_count_incr_r (part 2/3)
+- mci_reg > notif_mbox1_cmd_avail_intr_count_incr_r (part 3/3)
+- mci_reg > notif_cptra_mbox_cmd_avail_intr_count_incr_r (part 1/3)
+- mci_reg > notif_cptra_mbox_cmd_avail_intr_count_incr_r (part 2/3)
+- mci_reg > notif_cptra_mbox_cmd_avail_intr_count_incr_r (part 3/3)
+- mci_reg > notif_mbox0_ecc_cor_intr_count_incr_r (part 1/3)
+- mci_reg > notif_mbox0_ecc_cor_intr_count_incr_r (part 2/3)
+- mci_reg > notif_mbox0_ecc_cor_intr_count_incr_r (part 3/3)
+- mci_reg > notif_mbox1_ecc_cor_intr_count_incr_r (part 1/3)
+- mci_reg > notif_mbox1_ecc_cor_intr_count_incr_r (part 2/3)
+- mci_reg > notif_mbox1_ecc_cor_intr_count_incr_r (part 3/3)
+- mci_reg > notif_mbox0_soc_req_lock_intr_count_incr_r (part 1/3)
+- mci_reg > notif_mbox0_soc_req_lock_intr_count_incr_r (part 2/3)
+- mci_reg > notif_mbox0_soc_req_lock_intr_count_incr_r (part 3/3)
+- mci_reg > notif_mbox1_soc_req_lock_intr_count_incr_r (part 1/3)
+- mci_reg > notif_mbox1_soc_req_lock_intr_count_incr_r (part 2/3)
+- mci_reg > notif_mbox1_soc_req_lock_intr_count_incr_r (part 3/3)
+- mcu_mbox_csr > MBOX_SRAM
+- mcu_mbox_csr > mbox_lock
+- mcu_mbox_csr > mbox_user
+- mcu_mbox_csr > mbox_target_user
+- mcu_mbox_csr > mbox_target_user_valid
+- mcu_mbox_csr > mbox_cmd
+- mcu_mbox_csr > mbox_dlen
+- mcu_mbox_csr > mbox_execute
+- mcu_mbox_csr > mbox_target_status
+- mcu_mbox_csr > mbox_cmd_status
+- mcu_mbox_csr > mbox_hw_status
+- mcu_mbox_csr > (lines 1-36)

@@ -1,0 +1,31 @@
+finding_hash: 140b086f533f8225
+started_at: '2026-11-10T19:37:12Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The assertion's else branch is only a $display, so a violation prints a message and nothing
+    more. No other file in the repository references the "SVA ERROR" string, so nothing appears to scan
+    logs for it and fail the test.
+  evidence:
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    line_start: 226
+    line_end: 227
+    quote: '  ) else $display("SVA ERROR: all_error_fatal for mcu_sram_ecc_unc is asserted unexpectedly");'
+    role: supports
+    note: The failure action is only $display, with no $error or $fatal, and the message text is only
+      printed.
+  searches:
+  - what: '"SVA ERROR" outside *_sva.sv files, as a log-scanning check'
+    where: whole repo, sv/svh/v/yml/py/sh/tcl/mk files
+    found: no matches
+  near_misses: []
+  items: []
+  new_sources: []
+  resolution: Use $error (or $fatal) in the else branch, or add a log scan for "SVA ERROR" to the regression,
+    so a violation fails the test.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0400251
+error: null

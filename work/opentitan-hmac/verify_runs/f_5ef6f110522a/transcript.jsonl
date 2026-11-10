@@ -1,0 +1,16 @@
+{"t": "2026-11-10T20:53:52Z", "event": "  \u2192 Grep: hash_continue|SwInvalidConfig|SwInvalidConfig"}
+{"t": "2026-11-10T20:53:52Z", "event": "  \u2192 Grep: SwInvalidConfig"}
+{"t": "2026-11-10T20:53:54Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:53:55Z", "event": "  \u2192 Grep: hash_continue|hash_stop|key_length|sideload"}
+{"t": "2026-11-10T20:53:57Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:53:58Z", "event": "  \u2192 Grep: HMAC_CMD.*(CONTINUE|STOP)|hash_continue|hash_stop|kHmacCfg|key_length"}
+{"t": "2026-11-10T20:54:00Z", "event": "  \u2192 Grep: sideload|key_valid|HASH_CONTINUE"}
+{"t": "2026-11-10T20:54:01Z", "event": "  \u2192 Grep: sideload|key_valid"}
+{"t": "2026-11-10T20:54:02Z", "event": "  \u2192 Grep: sideload|key_valid"}
+{"t": "2026-11-10T20:54:03Z", "event": "  \u2192 Grep: byte_mask|a_mask|write_mask|sub.?word|\\bmask\\b"}
+{"t": "2026-11-10T20:54:05Z", "event": "Checking whether the HMAC DV sequence randomizes write masks, which would cover the sub-word packing item."}
+{"t": "2026-11-10T20:54:06Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T20:54:07Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T20:54:16Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:54:18Z", "event": "I submitted the verdict as verified overall. Items 1\u20134 stand as only partly tested, and item 5 is withdrawn.\n\n- **Items 1\u20134 (sideloaded key):** The HMAC block-level DV forces `cfg.sideload` to 0 (TODO #31634), so it never reaches these cases. The only sideload test is the chip-level `keymgr_dpe_sideload_hmac_test`, and it only tries `hash_stop`. I found no test that issues `hash_continue` with a sideloaded key or sets a conflicting `CFG.key_length` before the sideloaded run.\n- **Item 5 (packer):** `hmac_base_vseq` sends message writes with random contiguous byte masks, so partial-word writes do occur. The scoreboard checks the resulting digest, so wrong packing would fail the test."}
+{"t": "2026-11-10T20:54:18Z", "event": "[14 turns, $0.0783]"}

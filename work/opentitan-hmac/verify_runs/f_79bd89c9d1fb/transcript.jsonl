@@ -1,0 +1,6 @@
+{"t": "2026-11-10T19:36:39Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/sw/device/tests/hmac_enc_test.c"}
+{"t": "2026-11-10T19:36:39Z", "event": "  \u2192 Grep: chip_sw_hmac_enc"}
+{"t": "2026-11-10T19:36:46Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:36:52Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:36:56Z", "event": "I submitted the verdict as verified: the finding stands, because the test's code doesn't verify the FIFO empty interrupt the plan asks for.\n\n- **Plan:** `chip_sw_hmac_enc` in `hw/top_earlgrey/data/ip/chip_hmac_testplan.hjson` says to \"Verify the HMAC done and FIFO empty interrupts as a part of this test.\" The plan item lists `//sw/device/tests:hmac_enc_test`, so the link to this test is stated in the repository.\n- **Test:** `hmac_enc_test.c` enables the FIFO empty interrupt (lines 63-70) but never checks it. Its only interrupt check is `CHECK(irq_serviced == expected_irq)` at line 98, which expects HMAC done, and it runs only after the key-hashing step.\n- **Final operation:** the HMAC over the reference data is finished by polling, so no interrupt is checked for it.\n\nMy first submit attempt failed because the tool wasn't available, so I resubmitted through the verify tool, which accepted it."}
+{"t": "2026-11-10T19:36:56Z", "event": "[5 turns, $0.0474]"}

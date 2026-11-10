@@ -1,0 +1,81 @@
+finding_hash: a1d596b75423c956
+started_at: '2026-11-10T19:45:32Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'I found no test that checks any of the 5 items. The searches turned up only tests that touch
+    nearby behavior: CSR STRBW writes, SRAM-size-parameterized loops, and an interrupt-status poll. None
+    checks the SRAM size limits, the size-0 case, SRAM byte access, or the data_avail output.'
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c
+    line_start: 152
+    line_end: 152
+    quote: if(!mcu_mbox_wait_for_soc_data_avail_interrupt(mbox_num, 100000)) {
+    role: context
+    note: This polls the MCI interrupt status register, not the cptra_ss_soc_mcu_mbox*_data_avail output,
+      and it does not check the MCU-lock and EXECUTE condition.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_strb_wr_csr/smoke_test_mcu_mbox_strb_wr_csr.c
+    line_start: 58
+    line_end: 58
+    quote: '// MBOX: Write and check STRBWs of DLEN'
+    role: context
+    note: STRBW is exercised on CSRs only. SRAM byte access is not tested.
+  searches:
+  - what: data_avail in test suites and testbench (item cr_4620abd4f768)
+    where: src/integration/test_suites, src/integration/testbench
+    found: Only the interrupt-status polling helpers in caliptra_ss_lib, one hitless test that uses them,
+      and forces in tb_services. No check of the output signal.
+  - what: SRAM size 0 / not instantiated (item cr_52fe20427e16)
+    where: src/integration/test_suites/*mcu_mbox*, MBOX_SRAM_SIZE references repo-wide
+    found: Only parameter plumbing in RTL and the testbench package, plus tests that use sram_size_kb
+      as a loop bound. No size-0 test.
+  - what: SRAM byte access / strobe (item cr_6e68d4291d35)
+    where: src/integration/test_suites/*mcu_mbox*
+    found: The strb_wr_csr test covers CSRs only. No test does a byte access to the SRAM.
+  - what: SRAM max size 2MB (item cr_8ea60cdfbb2b)
+    where: src/integration/test_suites/*mcu_mbox*
+    found: Tests read the configured size but do not sweep sizes or check the 2MB maximum.
+  - what: SRAM min size 0 (item cr_e0684916d838)
+    where: src/integration/test_suites/*mcu_mbox*
+    found: No test configures a minimum size of 0.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c
+    line_start: 152
+    line_end: 152
+    why_not: It checks the interrupt register, not the data_avail output tied to the MCU lock and EXECUTE
+      condition.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_strb_wr_csr/smoke_test_mcu_mbox_strb_wr_csr.c
+    line_start: 58
+    line_end: 58
+    why_not: It exercises STRBW on CSRs only, not on the SRAM.
+  items:
+  - id: cr_52fe20427e16
+    outcome: verified
+    reason: No test configures the SRAM size as 0 or checks that the mailbox is not instantiated.
+    evidence: []
+  - id: cr_6e68d4291d35
+    outcome: verified
+    reason: The STRBW test covers CSRs only. No test checks byte access to the SRAM.
+    evidence:
+    - 1
+  - id: cr_8ea60cdfbb2b
+    outcome: verified
+    reason: No test sweeps SRAM size or checks the 2MB maximum.
+    evidence: []
+  - id: cr_e0684916d838
+    outcome: verified
+    reason: No test configures a minimum size of 0.
+    evidence: []
+  - id: cr_4620abd4f768
+    outcome: verified
+    reason: Only the interrupt-status register is polled. The data_avail output is not checked, apart
+      from coverpoints that only sample it.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.0857002
+error: null

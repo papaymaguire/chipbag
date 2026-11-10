@@ -1,0 +1,89 @@
+finding_hash: fa7bc285db165141
+started_at: '2026-11-10T20:56:34Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The finding treats these items as plan-only, but the HMAC DV environment implements them. The
+    base vseq issues random CFG and KEY writes during message write, and the scoreboard predicts them
+    as discarded. Save and restore keeps and restores the key. The scoreboard flags SwPushMsgWhenDisallowed
+    for message pushes before start. I could not confirm which specific test hits the push-before-start
+    case.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 398
+    line_end: 399
+    quote: "          // randomly change key, config regs during msg wr, should trigger error or be discarded\n\
+      \          write_discard_config_and_key(wr_config_during_hash, wr_key_during_hash);"
+    role: refutes
+    note: 'Stimulus: random CFG/KEY writes during message write.'
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 319
+    line_end: 325
+    quote: "          if (hmac_start) begin\n            if (cfg.en_cov) cov.wr_key_during_hash_cg.sample(1);\n\
+      \            update_err_intr_code(SwUpdateSecretKeyInProcess);\n            return;"
+    role: refutes
+    note: Scoreboard model discards the key write during processing and expects the error code.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 147
+    line_end: 148
+    quote: "        if ((!sha_en) || (!hmac_start && !hmac_continue)) begin\n          update_err_intr_code(SwPushMsgWhenDisallowed);"
+    role: refutes
+    note: SwPushMsgWhenDisallowed expected when pushing before start.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 300
+    line_end: 302
+    quote: "          if (hmac_start) begin\n            if (cfg.en_cov) cov.wr_config_during_hash_cg.sample(1);\n\
+      \            return; // won't update configs if hash start"
+    role: refutes
+    note: CFG writes during processing are modelled as discarded.
+  searches:
+  - what: DV stimulus and checks for CFG/KEY writes during hash, SwPushMsgWhenDisallowed, key restore
+      in S&R
+    where: hw/ip/hmac/dv
+    found: hmac_base_vseq write_discard_config_and_key, scoreboard discard and error modelling, key_bak
+      and secret_key probe in S&R, hmac_error test
+  near_misses:
+  - path: hw/ip/hmac/data/hmac_testplan.hjson
+    line_start: 148
+    line_end: 148
+    why_not: Plan item only; implementation is in the DV env.
+  items:
+  - id: cr_054bcd09af81
+    outcome: withdrawn
+    reason: Random CFG/KEY writes during hash, discarded in scoreboard.
+    evidence:
+    - 0
+    - 3
+  - id: cr_1fd1c346462a
+    outcome: withdrawn
+    reason: Same stimulus and model.
+    evidence:
+    - 0
+    - 3
+  - id: cr_2e50e5c9df75
+    outcome: withdrawn
+    reason: KEY write during hash discarded and flagged.
+    evidence:
+    - 1
+  - id: cr_f2fbfe521519
+    outcome: withdrawn
+    reason: S&R in the base vseq keeps key_bak and probes secret_key; digest checked by the scoreboard.
+      Only skimmed.
+    evidence:
+    - 0
+  - id: cr_1a2c6204640b
+    outcome: withdrawn
+    reason: Scoreboard expects the error for pushes before start. The specific test was not pinned down.
+    evidence:
+    - 2
+  new_sources:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    reason: Implements the discard and S&R stimulus.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    reason: Checks the discard and error behavior.
+submissions: 2
+rejections: []
+turns: 11
+cost_usd: 0.12381899999999998
+error: null

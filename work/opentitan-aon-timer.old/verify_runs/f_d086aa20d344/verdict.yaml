@@ -1,0 +1,51 @@
+finding_hash: 2bb84ff9777d60c9
+started_at: '2026-11-10T22:05:44Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The theory_of_operation.md line 32 says bits[31:0] are in WKUP_THOLD_HI, although its link
+    target is wkup_thold_lo. Line 31 of the same file and the hjson say HI holds bits 63:32. This is a
+    documentation typo, not a real ambiguity, but the text does contradict itself.
+  evidence:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 32
+    line_end: 32
+    quote: Bits[31:0] in registers [`WKUP_COUNT_LO`](registers.md#wkup_count_lo) and [`WKUP_THOLD_HI`](registers.md#wkup_thold_lo).
+    role: supports
+    note: Text names THOLD_HI for bits 31:0, but the link anchor is wkup_thold_lo (typo).
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 31
+    line_end: 31
+    quote: Bits[63:32] in registers [`WKUP_COUNT_HI`](registers.md#wkup_count_hi) and [`WKUP_THOLD_HI`](registers.md#wkup_thold_hi).
+    role: supports
+    note: The previous line puts THOLD_HI at bits 63:32, so the two lines conflict.
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    line_start: 200
+    line_end: 211
+    quote: "{ name: \"WKUP_THOLD_HI\",\n      desc: \"Wakeup Timer Threshold Register (bits 63 - 32)\"\
+      ,"
+    role: context
+    note: The register description says HI holds bits 63-32. Its field 31:0 is the position within the
+      register, not within the 64-bit threshold.
+  searches:
+  - what: WKUP_THOLD_HI/LO definitions and the doc description
+    where: aon_timer.hjson, doc/theory_of_operation.md
+    found: 'The hjson is consistent: HI holds bits 63-32 and LO holds bits 31-0. Doc line 32 has a typo
+      naming THOLD_HI.'
+  near_misses:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    line_start: 206
+    line_end: 206
+    why_not: The field bits 31:0 is the position within the register; it does not conflict with HI holding
+      threshold bits 63:32.
+  items: []
+  new_sources: []
+  resolution: The intended mapping is WKUP_THOLD_LO = threshold bits [31:0] and WKUP_THOLD_HI = threshold
+    bits [63:32]. The hjson and the link anchor agree with this. I did not check the RTL. Fix the doc
+    by changing the visible text on line 32 of theory_of_operation.md from `WKUP_THOLD_HI` to `WKUP_THOLD_LO`.
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.050897399999999995
+error: null

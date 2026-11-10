@@ -1,0 +1,9 @@
+{"t": "2026-11-10T20:34:15Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_csrs_warm_rst/smoke_test_mcu_mbox_csrs_warm_rst.c"}
+{"t": "2026-11-10T20:34:16Z", "event": "  \u2192 Grep: smoke_test_mcu_mbox_csrs_warm_rst|HW_ERROR_NON_FATAL for SOC"}
+{"t": "2026-11-10T20:34:17Z", "event": "Check whether the plan row ties to this test and whether other tests cover it."}
+{"t": "2026-11-10T20:34:18Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss; python3 -I -c \" import openpyxl wb=openpyxl.load_workbook('docs/Caliptra_Gen2_SS_TestPlan.xlsx') ws=wb['Subsystem Test Plan'] for r in ws.iter_r"}
+{"t": "2026-11-10T20:34:21Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss; grep -rln \"ECC_DOUBLE_ERROR\\|DOUBLE_ECC\" src/integration/test_suites | head; grep -n \"interrupt\\|NON_FATAL\\|notif\" src/integration/test_suites/s"}
+{"t": "2026-11-10T20:34:24Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_ecc; grep -n -i \"NON_FATAL\\|intr\\|interrupt\\|DOUBLE\" *.c | head -30"}
+{"t": "2026-11-10T20:34:31Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:34:34Z", "event": "I withdrew the finding. The plan row it cites (DB ECC sets the status bit, raises the MCU error interrupt and sets `HW_ERROR_NON_FATAL` for the SOC) is covered by a different test, `smoke_test_mcu_mbox_ecc`, which checks the DB ECC interrupt and `HW_ERROR_NON_FATAL`.\n\n`smoke_test_mcu_mbox_csrs_warm_rst` only checks the HW status double-error bit, as a precondition before triggering the warm reset. Nothing in the repo links plan row 123 to it, so the link looks inferred by the analysis.\n\nThe verdict was accepted. I added `smoke_test_mcu_mbox_ecc.c` as a new source."}
+{"t": "2026-11-10T20:34:34Z", "event": "[7 turns, $0.0554]"}

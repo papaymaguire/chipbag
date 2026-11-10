@@ -1,0 +1,89 @@
+finding_hash: 105c630b04066c3a
+started_at: '2026-11-10T20:58:03Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test covers any of the five items. The HMAC DV disables sideloading outright. Digest writes
+    in the sequences only happen with SHA disabled, so the lock under sha_en is never stimulated. I did
+    not look at the generic CSR tests or firmware tests, and I found nothing that checks the "finalized
+    once" or "no further error while pending" behavior.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 211
+    quote: '  // TODO(#31634): Disable sideloading for now.'
+    role: supports
+    note: Sideloading is forced off in random config, so key-invalidation behavior (items 1-2) is never
+      stimulated.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 618
+    line_end: 618
+    quote: '  // Disable SHA so we can write digest and message length.'
+    role: supports
+    note: Digest writes in sequences are made only with SHA disabled; no stimulus tries writing while
+      sha_en is set (item 4).
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 339
+    line_end: 339
+    quote: '          // Predict updated value coming from write iff SHA core is disabled.'
+    role: context
+    note: The scoreboard models the lock, but no sequence drives a digest write with sha_en set, so the
+      model's lock branch is not exercised by a deliberate stimulus.
+  searches:
+  - what: digest clearing when key becomes invalid after completion (item 1)
+    where: hw/ip/hmac/dv
+    found: Sideload agent is wired in but sideload is forced off in sequences. No check of digest clearing.
+  - what: no error reported when key becomes invalid after completion (item 2)
+    where: hw/ip/hmac/dv
+    found: No stimulus makes the key invalid. The only predicted error code is SwInvalidConfig.
+  - what: ERR_CODE held while hmac_err pending (item 3)
+    where: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    found: update_err_intr_code predicts ERR_CODE with no check of the 'held while pending' behavior.
+  - what: digest writes while sha_en set (item 4)
+    where: hw/ip/hmac/dv/env/seq_lib
+    found: csr_wr_digest is only called after SHA is disabled. The scoreboard models the lock but has
+      no directed stimulus.
+  - what: hash_process finalizing once (item 5)
+    where: hw/ip/hmac/dv/env/seq_lib
+    found: hash_process only appears as a trigger flag. No check of 'finalized once'.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 336
+    line_end: 341
+    why_not: The scoreboard models the digest write lock, but no directed stimulus writes digests while
+      sha_en is set, so it is not a real test of item 4.
+  items:
+  - id: cr_c8ea510e0e76
+    outcome: verified
+    reason: Sideload is disabled in DV, and nothing checks digest clearing.
+    evidence:
+    - 0
+  - id: cr_cf99e411151d
+    outcome: verified
+    reason: No stimulus makes the key invalid after completion, and nothing checks that no error is reported.
+    evidence:
+    - 0
+  - id: cr_ea4b652641c0
+    outcome: verified
+    reason: No check of ERR_CODE being held while hmac_err is pending.
+    evidence:
+    - 0
+  - id: cr_51fc8f2304d3
+    outcome: verified
+    reason: Sequences write digests only with SHA disabled. The scoreboard models the lock but has no
+      deliberate stimulus.
+    evidence:
+    - 1
+    - 2
+  - id: cr_d2c659d4c60b
+    outcome: verified
+    reason: No test checks that finalization is done only once.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.10530209999999998
+error: null

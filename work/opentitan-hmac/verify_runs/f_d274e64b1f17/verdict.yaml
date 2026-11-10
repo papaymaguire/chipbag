@@ -1,0 +1,71 @@
+finding_hash: 5b157452090fed1c
+started_at: '2026-11-10T19:43:48Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Mixed result. Three items (sha_en=0, key_swap=0 big-endian, byte-wise MSG_FIFO writes) are
+    exercised by randomized DV stimulus with scoreboard checks, so the finding is wrong for them. The
+    two hwqe items have no direct test, so they stand. I did not read the RTL.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 212
+    line_end: 215
+    quote: "            if (!sha_en && !invalid_cfg) begin\n              // so long as configuration\
+      \ is valid\n              update_err_intr_code(SwHashStartWhenShaDisabled);"
+    role: refutes
+    note: With sha_en=0 the scoreboard expects an error and no compression.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 867
+    line_end: 869
+    quote: "  end else begin\n    `uvm_info(`gfn, \"Keep the key in big-endian\", UVM_HIGH)\n    big_endian_key\
+      \ = key;"
+    role: refutes
+    note: The digest model keeps the key as-is when key_swap=0 and compares the result to the DUT digest.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 358
+    line_end: 358
+    quote: '        `DV_CHECK_FATAL(randomize(wr_addr, wr_mask) with {$countones(wr_mask) <= msg_q.size();})'
+    role: refutes
+    note: MSG_FIFO writes use random byte masks, including single-byte writes. The scoreboard applies
+      endian_swap per mask and checks the digest.
+  searches:
+  - what: endian_swap/key_swap/sha_en usage
+    where: hw/ip/hmac/dv
+    found: Used in vseqs, scoreboard and coverage. The scoreboard predicts digests with these settings.
+  - what: hwqe/write-qualifier checks on CFG
+    where: hw/ip/hmac/dv
+    found: No direct check. Only implicit effect through the config taking effect.
+  near_misses: []
+  items:
+  - id: cr_cd581c0937a0
+    outcome: withdrawn
+    reason: The scoreboard expects an error and no compression when sha_en=0 (the check_error_code calls
+      in trigger_hash and wr_msg exercise it).
+    evidence:
+    - 0
+  - id: cr_d00d322b1664
+    outcome: verified
+    reason: No test directly checks the hwqe pulse for key_swap.
+    evidence: []
+  - id: cr_d34d2d2c8448
+    outcome: withdrawn
+    reason: The scoreboard model uses the key unswapped when key_swap=0 and compares the DUT digest against
+      it.
+    evidence:
+    - 1
+  - id: cr_f37acb3d81a3
+    outcome: withdrawn
+    reason: Random write masks include single-byte writes, and the scoreboard compares the resulting digest.
+    evidence:
+    - 2
+  - id: cr_f7398c7e530f
+    outcome: verified
+    reason: No test directly checks the hwqe pulse for endian_swap.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 12
+cost_usd: 0.1047704
+error: null

@@ -1,0 +1,89 @@
+finding_hash: 2adf76dcb7ce1a99
+started_at: '2026-11-10T19:41:13Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks the saturation, counter nature or increment-by-1 behaviour of the mbox0/mbox1
+    notification interrupt count registers. The only test reads are the mcu_intr_handler.c sum, which
+    is an aggregate comparison, and a register-list table in libs/mci/mci.c. Saturation is never stimulated.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 211
+    line_end: 212
+    quote: lsu_read_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_MBOX0_TARGET_DONE_INTR_COUNT_R    ) +
+    role: context
+    note: The counter is read only as part of a sum of all notification counters, compared against a firmware
+      total. It is not a per-register, increment-by-1 or saturation check.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 582
+    line_end: 582
+    quote: '{ SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_MBOX0_TARGET_DONE_INTR_COUNT_R, "NOTIF_MBOX0_TARGET_DONE_INTR_COUNT_R"'
+    role: context
+    note: A reset-value or sticky register table entry. It does not check counting or saturation.
+  searches:
+  - what: Names of the mbox0/mbox1 notification interrupt count registers, case-insensitive, outside src/mci/rtl
+    where: whole repo
+    found: Only the covergroup generator, coverage interface, address-map defines, mcu_intr_handler.c
+      and libs/mci/mci.c.
+  - what: Saturation or overflow tests of the interrupt counters (item cr_43b0313d0b42)
+    where: src/integration/test_suites
+    found: None. No test pre-loads a counter to its maximum.
+  - what: Saturation or overflow check for notif_mbox1_soc_req_lock count (item cr_4e89639f30e9)
+    where: src/integration/test_suites, MBOX1_SOC_REQ_LOCK_INTR_COUNT
+    found: Only the aggregate read in mcu_intr_handler.c and the table entry in mci.c.
+  - what: Per-register counter check for notif_mbox1_soc_req_lock (item cr_477eab914e6b)
+    where: whole repo
+    found: Only the aggregate sum and the table entry.
+  - what: Increment-by-1 check for notif_mbox0_cmd_avail count (item cr_62bc300d529d)
+    where: src/integration/test_suites
+    found: Only the aggregate sum, which does not isolate a single counter's step size.
+  - what: Counter check for notif_mbox0_ecc_cor (item cr_647ed59beb3f)
+    where: src/integration/test_suites
+    found: Only the aggregate sum and the table entry.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 206
+    line_end: 224
+    why_not: The check compares an aggregate sum of all notification counters with the firmware handler
+      count. It does not verify per-register increment by 1, and never reaches saturation.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 582
+    line_end: 592
+    why_not: A register table used for reset or sticky checks only. It does not check counting behaviour.
+  items:
+  - id: cr_43b0313d0b42
+    outcome: verified
+    reason: No test drives the counter to its maximum or checks that it saturates.
+    evidence:
+    - 0
+    - 1
+  - id: cr_477eab914e6b
+    outcome: verified
+    reason: No per-register check that the field behaves as a counter. Only the aggregate sum is compared.
+    evidence:
+    - 0
+  - id: cr_4e89639f30e9
+    outcome: verified
+    reason: No overflow or saturation stimulus exists anywhere in the repo.
+    evidence:
+    - 0
+    - 1
+  - id: cr_62bc300d529d
+    outcome: verified
+    reason: No check that the mbox0 command-available counter increments by exactly 1. The aggregate sum
+      check does not isolate it.
+    evidence:
+    - 0
+  - id: cr_647ed59beb3f
+    outcome: verified
+    reason: No dedicated check of the mbox0 ECC-correctable counter field. It is only included in the
+      aggregate sum.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 10
+cost_usd: 0.10969579999999998
+error: null

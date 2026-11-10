@@ -1,0 +1,7 @@
+{"t": "2026-11-10T20:44:00Z", "event": "  \u2192 Grep: 2MB|0x1F_FFFF|200000|MCU_MBOX.*SRAM.*SIZE"}
+{"t": "2026-11-10T20:44:01Z", "event": "  \u2192 Grep: invalid SRAM|beyond.*SRAM|SRAM_SIZE"}
+{"t": "2026-11-10T20:44:03Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c"}
+{"t": "2026-11-10T20:44:04Z", "event": "Random addresses up to max size; exact 2MB boundary and above-2MB not checked."}
+{"t": "2026-11-10T20:44:08Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:44:11Z", "event": "I submitted the verdict as verified: the gap in the finding stands.\n\nThe only test that touches this is `smoke_test_mcu_mbox_valid_user`. When the SRAM is smaller than the 2MB maximum, it writes to five random addresses between the end of the SRAM and the 2MB maximum, then fails if any read-back isn't 0.\n\nNothing checks the exact 2MB top, the last valid SRAM word, or that an address just above 2MB is not claimed by the MBOX. I saw no test that varies the SRAM size. I did not read the RTL or look in detail at the other test directories."}
+{"t": "2026-11-10T20:44:11Z", "event": "[5 turns, $0.0324]"}

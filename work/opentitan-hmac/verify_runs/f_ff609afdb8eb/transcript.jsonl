@@ -1,0 +1,8 @@
+{"t": "2026-11-10T21:06:01Z", "event": "  \u2192 Grep: throughput|80 clk|msg_fifo.*(window|range|wide)|MSG_FIFO_BASE|msg_fifo_base|HMAC_MSG_FIFO"}
+{"t": "2026-11-10T21:06:03Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T21:06:04Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:06:04Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:06:12Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T21:06:17Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:06:21Z", "event": "I submitted the verdict with an overall outcome of inconclusive, because the two items came out differently.\n\n- **Item 1, SHA-2 256 throughput (64 bytes per 80 clocks): verified as untested.** No test checks cycle counts. The HMAC scoreboard has a comment at `hmac_scoreboard.sv:414` saying a future throughput test should check the accurate cycles.\n- **Item 2, MSG_FIFO as a wide address range: withdrawn.** The base sequence constrains message write addresses to anywhere in the FIFO window (`hmac_base_vseq.sv:104`). The scoreboard (`hmac_scoreboard.sv:133`) treats any write in that window as a FIFO push and raises a fatal error for an address that is neither a register nor in the window. If the DUT did not accept those writes, the digest comparison would fail.\n\nThe first submit attempt failed because the tool wasn't available. The second one was accepted."}
+{"t": "2026-11-10T21:06:21Z", "event": "[7 turns, $0.0582]"}

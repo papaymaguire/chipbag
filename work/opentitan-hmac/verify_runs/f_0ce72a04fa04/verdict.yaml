@@ -1,0 +1,81 @@
+finding_hash: 7f39b16ae67acfc5
+started_at: '2026-11-10T19:40:16Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no directed test for any of the five items. The scoreboard predicts MSG_LENGTH, models
+    FIFO-full state and checks hmac_done only when SHA is enabled, but nothing stimulates and checks the
+    specific gaps. I did not search the chip-level, keymgr or software tests, so those items rest on the
+    HMAC DV tree alone.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1035
+    line_end: 1038
+    quote: "function void hmac_scoreboard::update_wr_msg_length(int size_bytes);\n  uint64 size_bits =\
+      \ size_bytes * 8;\n  void'(ral.msg_length_upper.predict(size_bits[TL_DW*2-1:TL_DW]));\n  void'(ral.msg_length_lower.predict(size_bits[TL_DW-1:0]));"
+    role: context
+    note: MSG_LENGTH is predicted and checked on CSR reads, but only for whatever message size the random
+      stimulus produces. Nothing forces an empty message with SHA-256.
+  searches:
+  - what: msg_length checks (item 1, empty message with SHA-256)
+    where: hw/ip/hmac/dv
+    found: Scoreboard predicts MSG_LENGTH, but no directed empty-message SHA-256 test.
+  - what: fifo_full state (item 2, back-pressure)
+    where: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    found: FIFO-full is modelled, but there is no explicit check that writes were stalled rather than
+      dropped.
+  - what: empty-message and zero-padding checks (item 3)
+    where: hw/ip/hmac/dv/env/seq_lib
+    found: Only random messages and NIST vectors; no explicit 0-length SHA-256 padding test.
+  - what: key_length and invalid_config (item 4)
+    where: hw/ip/hmac/dv/env/seq_lib
+    found: key_length appears in the base, smoke and test-vector sequences, all randomised. No per-digest
+      key-length matrix and no directed invalid-combination check.
+  - what: hmac_done handling (item 5, abort)
+    where: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    found: hmac_done is predicted only when SHA is enabled. No test aborts an operation mid-run and checks
+      that hmac_done stays low.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 672
+    line_end: 718
+    why_not: The scoreboard models the FIFO-full status and the full-to-empty sequence, but it does not
+      assert that writes were back-pressured rather than dropped. The final digest check would catch dropped
+      writes only indirectly.
+  items:
+  - id: cr_20469c978538
+    outcome: verified
+    reason: The scoreboard checks MSG_LENGTH, but an empty message with SHA-256 is not guaranteed by the
+      random stimulus.
+    evidence:
+    - 0
+  - id: cr_26f0103d3cea
+    outcome: verified
+    reason: The scoreboard models FIFO-full state, but there is no explicit check that writes were stalled
+      rather than dropped.
+    evidence:
+    - 0
+  - id: cr_ca5dcee32a08
+    outcome: verified
+    reason: No test stimulates an empty message with SHA-256 to verify the 13 zero-padding words specifically.
+    evidence:
+    - 0
+  - id: cr_a65819a54cf2
+    outcome: verified
+    reason: I found no directed key-length by digest-size matrix and no invalid-combination check in the
+      HMAC DV sequences.
+    evidence:
+    - 0
+  - id: cr_0f006fc77258
+    outcome: verified
+    reason: I found no test that aborts an operation while it is running and checks that hmac_done stays
+      low.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.084944
+error: null

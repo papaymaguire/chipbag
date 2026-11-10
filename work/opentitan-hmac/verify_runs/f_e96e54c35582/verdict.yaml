@@ -1,0 +1,56 @@
+finding_hash: dc00c28097e18e3b
+started_at: '2026-11-10T19:38:28Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The DIGEST register description says that for SHA-2 384, DIGEST12..15 are truncated, irrelevant
+    and should not be read out. A test writer can take that as: only DIGEST_0..11 are specified and the
+    rest are not checked. The theory of operation also says SHA-384 drops the last 128 bits of the SHA-512
+    output, so the finding''s question is answered in the spec.'
+  evidence:
+  - path: hw/ip/hmac/doc/registers.md
+    line_start: 423
+    line_end: 423
+    quote: For SHA-2 384, {DIGEST12-DIGEST15} are truncated; they are irrelevant and should not be read
+      out.
+    role: refutes
+    note: The register description says DIGEST12..15 are irrelevant in SHA-2 384 mode, so their content
+      is unspecified and DV should exclude them from comparison.
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 25
+    line_end: 25
+    quote: SHA-2 384 is a truncated version of SHA-2 512 where the last 128 bits of the final digest output
+      are truncated to reduce the digest size to 384 bits.
+    role: refutes
+    note: The digest is 384 bits, so DIGEST_0..11 form the output.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 44
+    line_end: 44
+    quote: For SHA-2 384, only `DIGEST_0`..`11` should be read out, the rest should be truncated out by
+      not being read by the SW.
+    role: context
+    note: The cited sentence. It is consistent with the register description.
+  searches:
+  - what: Search for 384 in the HMAC docs and hjson
+    where: hw/ip/hmac
+    found: The DIGEST register description in hmac.hjson and registers.md says DIGEST12..15 are irrelevant
+      and should not be read out in SHA-2 384 mode.
+  near_misses:
+  - path: hw/ip/hmac/README.md
+    line_start: 42
+    line_end: 42
+    why_not: It says DIGEST_0-DIGEST_12 for SHA-384, which looks like an off-by-one inconsistency. It
+      does not change the point that DIGEST12..15 are irrelevant.
+  items: []
+  new_sources:
+  - path: hw/ip/hmac/data/hmac.hjson
+    reason: The DIGEST register description states DIGEST12..15 are irrelevant for SHA-2 384.
+  resolution: The spec already says DIGEST12..15 are irrelevant in SHA-2 384 mode, so DV should compare
+    only DIGEST_0..11. A wording fix would replace 'should' with 'must' and state that DIGEST12..15 contents
+    are unspecified. The README's 'DIGEST_0-DIGEST_12' for SHA-384 should also be corrected to DIGEST_0-DIGEST_11.
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0531688
+error: null

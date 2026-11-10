@@ -1,0 +1,81 @@
+finding_hash: 8df9a2245e2405bf
+started_at: '2026-11-10T21:09:51Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four of the five items stand. The key-length item (cr_a65819a54cf2) is withdrawn because the
+    random vseq and scoreboard sweep key length against digest size and check the invalid pair. Nothing
+    found checks back-pressure or FIFO-full behaviour, revocation during an operation, or hash_continue
+    with an invalid key.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 173
+    line_end: 177
+    role: refutes
+    note: Scoreboard predicts invalid_cfg for SHA2_256 combined with Key_1024; SwInvalidConfig is predicted
+      at lines 198-199.
+    quote: invalid_cfg = (`gmv(ral.cfg.digest_size) == SHA2_None) |
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 178
+    line_end: 179
+    role: refutes
+    note: The sequence randomises key length and digest size, and flags the SHA2_256 plus Key_1024 combination
+      as invalid.
+    quote: ((cast_digest_size == SHA2_256) && (cast_key_length == Key_1024) && hmac_en)) begin
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 217
+    line_end: 219
+    role: context
+    note: The scoreboard predicts SwInvalidConfig for hash_start or hash_continue, but only for configuration-driven
+      invalid_cfg. It does not cover an invalid sideload key during hash_continue.
+    quote: end else if (invalid_cfg) begin
+  searches:
+  - what: hash_continue / SwInvalidConfig in the hmac dv directory
+    where: hw/ip/hmac/dv
+    found: Only configuration-driven invalid_cfg handling; no sideload-key-invalid continue test
+  - what: FIFO-full and back-pressure checks
+    where: hw/ip/hmac/dv
+    found: hmac_back_pressure_vseq only sets do_back_pressure. There is only a coverpoint on the FIFO-full
+      status bit and no check that back-pressure is applied.
+  - what: sideload tests that use hmac
+    where: hw/top_earlgrey/dv/env/seq_lib
+    found: Only chip_sw_keymgr_dpe_sideload_hmac_vseq, which covers hash_start
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_back_pressure_vseq.sv
+    line_start: 8
+    line_end: 18
+    why_not: Does not guarantee the FIFO becomes full, and does not check that interconnect back-pressure
+      is applied.
+  items:
+  - id: cr_26f0103d3cea
+    outcome: verified
+    reason: No test checks that back-pressure is applied when the FIFO is full.
+    evidence: []
+  - id: cr_a65819a54cf2
+    outcome: withdrawn
+    reason: Random key-length and digest-size sweep, with SHA2_256 plus Key_1024 predicted invalid by
+      the scoreboard and checked for SwInvalidConfig, plus key-length/digest coverage.
+    evidence:
+    - 0
+    - 1
+  - id: cr_605b3802525f
+    outcome: verified
+    reason: No test revokes the key during an operation in progress or measures latency.
+    evidence: []
+  - id: cr_75181956206e
+    outcome: verified
+    reason: hash_continue with an invalid sideload key is not exercised.
+    evidence:
+    - 2
+  - id: cr_b5bc42e67d01
+    outcome: verified
+    reason: Only hash_start is blocked with an invalid sideload key in tests.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.0877071
+error: null

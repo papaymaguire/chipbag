@@ -1,0 +1,76 @@
+finding_hash: 2ddabcb22479651f
+started_at: '2026-11-10T19:46:00Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks any of the five items. Target status is only written with COMPLETE (target_user
+    tests) and FAILURE (write_user_lock). It is only read back to wait for COMPLETE. Nothing checks the
+    reset to BUSY on handoff, the hwclr/hw-precedence behaviour, or the CMD_BUSY/DATA_READY encodings.
+  evidence:
+  - path: src/integration/test_suites/libs/caliptra_ss_lib/caliptra_ss_lib.c
+    line_start: 594
+    line_end: 598
+    quote: bool mcu_mbox_wait_for_target_status(uint32_t mbox_num, enum mcu_mbox_target_status status,
+      uint32_t attempt_count) {
+    role: context
+    note: The only read of TARGET_STATUS is a wait for a terminal code (COMPLETE); it does not check BUSY
+      or the handoff reset.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c
+    line_start: 320
+    line_end: 320
+    quote: cptra_mcu_mbox_set_target_status(mbox_num, MCU_MBOX_TARGET_STATUS_COMPLETE);
+    role: context
+    note: The test only writes COMPLETE; no hw/sw simultaneous-update case and no reset-to-BUSY check.
+  searches:
+  - what: TARGET_STATUS references across the repo and in tests
+    where: whole repo
+    found: Only COMPLETE/FAILURE writes and a wait for COMPLETE. The generic CSR reset/mask tests in libs/mci/mci.c
+      don't check handoff behaviour.
+  - what: MCU_MBOX_TARGET_STATUS_* enum use
+    where: src/integration/test_suites
+    found: CMD_BUSY and READY are defined in caliptra_ss_lib.h but never used in a check.
+  - what: DATA_READY use
+    where: src/integration
+    found: All hits are for CMD_STATUS or the Caliptra mbox, not TARGET_STATUS.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/smoke_test_mcu_mbox_pass_data.c
+    line_start: 162
+    line_end: 162
+    why_not: DATA_READY here is written to CMD_STATUS, not TARGET_STATUS.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 298
+    line_end: 298
+    why_not: Generic CSR reset/mask register test; it does not exercise handoff reset, hwclr or hw precedence.
+  items:
+  - id: cr_b97504c83bee
+    outcome: verified
+    reason: No test exercises or checks hwclr of TARGET_STATUS.
+    evidence:
+    - 1
+  - id: cr_c466f1401b85
+    outcome: verified
+    reason: No test reads TARGET_STATUS after a handoff to check it is BUSY.
+    evidence:
+    - 0
+  - id: cr_d48ef4f510ee
+    outcome: verified
+    reason: DATA_READY is only used for CMD_STATUS, not TARGET_STATUS.
+    evidence:
+    - 0
+  - id: cr_ea1bed14203c
+    outcome: verified
+    reason: No simultaneous hw/sw update test exists.
+    evidence:
+    - 1
+  - id: cr_f9cc76302a6a
+    outcome: verified
+    reason: CMD_BUSY is defined but never driven or checked.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0725506
+error: null

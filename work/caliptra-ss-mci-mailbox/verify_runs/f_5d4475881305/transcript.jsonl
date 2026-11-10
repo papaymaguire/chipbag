@@ -1,0 +1,11 @@
+{"t": "2026-11-10T19:42:50Z", "event": "  \u2192 Grep: MBOX_DLEN|mbox_dlen"}
+{"t": "2026-11-10T19:42:50Z", "event": "  \u2192 Grep: CMD_STATUS|cmd_status"}
+{"t": "2026-11-10T19:42:53Z", "event": "  \u2192 Grep: BUSY|DLEN|entire|erase|zero"}
+{"t": "2026-11-10T19:42:54Z", "event": "  \u2192 Grep: CMD_STATUS_BUSY|CMD_BUSY|STATUS_BUSY|\\bBUSY\\b"}
+{"t": "2026-11-10T19:42:55Z", "event": "  \u2192 Grep: interrupt|data_avail|sideband"}
+{"t": "2026-11-10T19:42:58Z", "event": "  \u2192 Grep: DLEN.*0\\)|dlen = 0|dlen=0|DLEN to 0|DLEN.*, 0\\)"}
+{"t": "2026-11-10T19:42:58Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c"}
+{"t": "2026-11-10T19:43:01Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero; sed -n 85,170p smoke_test_mcu_mbox_usr_lock_out_zero.c; grep -n \"dlen\\|zero\" c"}
+{"t": "2026-11-10T19:43:11Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:43:15Z", "event": "I've submitted the verdict: **verified**, and the system accepted it, so the finding stands. I found no test that both creates the condition and fails if the behavior is wrong, for any of the five items.\n\n- **DLEN=0 erase-all:** the zeroize test only checks zeroing up to a non-zero max DLEN. The usr_lock_out test uses DLEN 0 on the Caliptra side but checks lock-out during zeroization, not SRAM contents.\n- **CMD_STATUS BUSY:** the only mention of BUSY in the MCU mailbox tests is a comment in the write_user_lock test. Nothing reads CMD_STATUS and compares it to BUSY.\n- **No interrupt or data-avail wire on handoff to the Target:** the target_user test checks the lock-request and target-done interrupts. Nothing checks that no wire asserts on handoff.\n- **Sideband notification (MCU to Target):** no test checks it. I did not search for it separately beyond the target_user test.\n\nI searched `src/integration/test_suites` for the first three items; the sideband items rest on the target_user test only. I did not check the regression lists or assertion and formal property files.\n\nI changed nothing in the repository."}
+{"t": "2026-11-10T19:43:15Z", "event": "[10 turns, $0.0910]"}

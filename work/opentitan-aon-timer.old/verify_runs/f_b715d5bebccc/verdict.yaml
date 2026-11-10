@@ -1,0 +1,43 @@
+finding_hash: 8fb466e47906902f
+started_at: '2026-11-10T22:07:58Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Tests do write INTR_TEST.wdog_timer_bark, and the scoreboard checks the resulting effect. The
+    hwqe pulse is what sets intr_state in RTL, so a missing pulse would fail the intr_state/interrupt-pin
+    checks.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 841
+    line_end: 847
+    quote: "if (intr_test_val[WDOG]) begin\n          intr_status_exp[WDOG] = 1'b1;"
+    role: refutes
+    note: The scoreboard predicts intr_state/interrupt for each INTR_TEST wdog write and compares it with
+      the DUT.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_custom_intr_vseq.sv
+    line_start: 38
+    line_end: 38
+    quote: csr_utils_pkg::csr_wr(ral.intr_test, intr_test_value);
+    role: refutes
+    note: 'Stimulus: a nonzero random value is written to intr_test, which can set bit 1 (wdog_timer_bark).'
+  searches:
+  - what: intr_test usage in the aon_timer DV env
+    where: hw/ip/aon_timer/dv/env
+    found: scoreboard prediction, custom_intr vseq, stress_all (common intr_test seq), alternating_enable
+      vseq
+  near_misses: []
+  items:
+  - id: cr_c7a8017fc4d7
+    outcome: withdrawn
+    reason: Stimulus writes intr_test; the scoreboard predicts intr_state and the interrupt output and
+      checks them. This indirectly checks the hwqe pulse.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.040655399999999994
+error: null

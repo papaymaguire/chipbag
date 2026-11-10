@@ -1,0 +1,96 @@
+finding_hash: 7ef89b6f686e7b72
+started_at: '2026-11-10T19:40:18Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The finding cites a test, hmac_error_conditions_test, that does not exist in the repository.
+    The HMAC DV scoreboard does check all three items. It predicts ERR_CODE on the error conditions, and
+    the read of err_code is compared against that prediction because the read check is not disabled for
+    it. Directed stimulus in the smoke and error vseqs creates the conditions. I did not inspect the test
+    list or confirm that these vseqs run in regression.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 211
+    line_end: 222
+    quote: update_err_intr_code(SwHashStartWhenShaDisabled);
+    role: refutes
+    note: Scoreboard predicts ERR_CODE=2 for a start/continue while SHA is disabled, and ERR_CODE=4 (SwHashStartWhenActive)
+      in the else branch.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 554
+    line_end: 557
+    quote: '`DV_CHECK_EQ(item.d_data, `gmv(csr), csr_name)'
+    role: refutes
+    note: The err_code case only samples coverage and leaves do_read_check at 1, so the DUT read is compared
+      with the predicted value and a mismatch fails the test.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 225
+    line_end: 229
+    quote: if (invalid_cfg || !`gmv(ral.cfg.sha_en)) begin
+    role: supports
+    note: 'Stimulus: trigger_hash with SHA disabled, followed by check_error_code, which reads ERR_CODE.'
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 195
+    line_end: 198
+    quote: if (do_hash_start_when_active && do_hash_start) begin
+    role: supports
+    note: 'Stimulus: HASH_START issued while the HMAC is active, which gives ERR_CODE=4.'
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 148
+    line_end: 148
+    quote: update_err_intr_code(SwPushMsgWhenDisallowed);
+    role: refutes
+    note: A message push with SHA disabled is predicted as code 5, never code 1. The checked read therefore
+      confirms SwPushMsgWhenShaDisabled is unused.
+  searches:
+  - what: hmac_error_conditions_test and err_code_cg
+    where: whole repo
+    found: The test does not exist. err_code_cg is only a covergroup in the HMAC env and in OTP.
+  - what: Error code names
+    where: hw/ip/hmac
+    found: Scoreboard predictions for codes 2, 4 and 5. Code 1 only appears in a commented-out coverage
+      bin.
+  - what: Read check on err_code
+    where: hmac_scoreboard.sv
+    found: do_read_check stays 1 for err_code, so the read is compared with the predicted value.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 545
+    line_end: 546
+    why_not: check_error_code reads err_code with csr_rd and does not compare it itself. The comparison
+      comes from the scoreboard.
+  items:
+  - id: cr_47667860f7b3
+    outcome: withdrawn
+    reason: The scoreboard predicts ERR_CODE=2 and the read check compares it. trigger_hash with SHA disabled
+      provides the stimulus.
+    evidence:
+    - 0
+    - 1
+    - 2
+  - id: cr_7dfdcbbea1e4
+    outcome: withdrawn
+    reason: The scoreboard predicts ERR_CODE=4, and smoke's trigger_hash_when_active provides the stimulus.
+      The read is checked.
+    evidence:
+    - 0
+    - 1
+    - 3
+  - id: cr_8809cda789fa
+    outcome: withdrawn
+    reason: The scoreboard predicts SwPushMsgWhenDisallowed (5) for a push with SHA disabled. The checked
+      read would fail if the DUT reported code 1.
+    evidence:
+    - 4
+    - 1
+  new_sources:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    reason: Predicts ERR_CODE and checks reads of it.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    reason: Stimulus for the hash-start-when-active and SHA-disabled errors.
+submissions: 1
+rejections: []
+turns: 14
+cost_usd: 0.10672620000000001
+error: null

@@ -1,0 +1,9 @@
+{"t": "2026-11-10T19:36:36Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/top_earlgrey/data/ip/chip_hmac_testplan.hjson"}
+{"t": "2026-11-10T19:36:36Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/sw/device/tests/hmac_smoketest.c"}
+{"t": "2026-11-10T19:36:37Z", "event": "  \u2192 Grep: hmac_smoketest"}
+{"t": "2026-11-10T19:36:39Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/top_earlgrey/data/chip_testplan.hjson"}
+{"t": "2026-11-10T19:36:39Z", "event": "  \u2192 Grep: hmac_enc_test\""}
+{"t": "2026-11-10T19:36:41Z", "event": "The plan item is realized by hmac_enc_test, not hmac_smoketest."}
+{"t": "2026-11-10T19:36:46Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:36:50Z", "event": "I withdrew the finding. The plan item that promises the HMAC done and FIFO empty interrupts checks (`chip_sw_hmac_enc`) is linked to `hmac_enc_test`, not to `hmac_smoketest`. The link between that item and the smoketest was inferred by the analysis; nothing in the repository states it.\n\n- **Plan item:** in `hw/top_earlgrey/data/ip/chip_hmac_testplan.hjson`, `chip_sw_hmac_enc` lists `//sw/device/tests:hmac_enc_test` as its bazel test.\n- **Smoketest:** `hmac_smoketest` appears only under the generic `chip_sw_smoketest` item in `hw/top_earlgrey/data/chip_testplan.hjson`. That item only says each IP is alive and can be actuated by the DIF, and makes no interrupt promise.\n- **Polling:** it is true that `hmac_smoketest.c` polls and never enables interrupts. With no plan item tying it to interrupt checks, that is not a disagreement.\n\nI did not open `hmac_enc_test.c`, so I haven't confirmed that it actually exercises the interrupts. I listed it as a new source for the analysis."}
+{"t": "2026-11-10T19:36:50Z", "event": "[7 turns, $0.0556]"}

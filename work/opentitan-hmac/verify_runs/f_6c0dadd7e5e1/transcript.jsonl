@@ -1,0 +1,5 @@
+{"t": "2026-11-10T19:41:34Z", "event": "  \u2192 Grep: ALL_TODOS_RESOLVED|PRE_VERIFIED_SUB_MODULES_V3"}
+{"t": "2026-11-10T19:41:36Z", "event": "These are process checklist items, not testable behaviors."}
+{"t": "2026-11-10T19:41:40Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:42Z", "event": "I withdrew the finding. Both items are process rows in `hw/ip/hmac/doc/checklist.md`, not design behaviors, so no test could implement them.\n\n- **`ALL_TODOS_RESOLVED`:** The checklist marks it Done, with the note \"Remaining TODOs have a linked issue and are not required for verification completion\". It's a sign-off about code TODOs.\n- **`PRE_VERIFIED_SUB_MODULES_V3`:** The checklist marks it N/A, so no test is expected.\n\nI searched `hw/ip/hmac` for both names. They appear only as checklist rows and link definitions, with no tests."}
+{"t": "2026-11-10T19:41:42Z", "event": "[3 turns, $0.0226]"}

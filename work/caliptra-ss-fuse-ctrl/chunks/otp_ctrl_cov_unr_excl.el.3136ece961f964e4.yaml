@@ -1,0 +1,23 @@
+path: src/fuse_ctrl/dv/cov/otp_ctrl_cov_unr_excl.el
+scope:
+  kind: whole_file
+model: claude-sonnet-5-5
+cost_usd: 0.0232347
+file_kind: generated_data
+chunks:
+- title_path: otp_ctrl_cov_unr_excl > header
+  kind: other
+  line_start: 1
+  line_end: 13
+- title_path: otp_ctrl_cov_unr_excl > tb.dut.gen_alert_tx[4].u_prim_alert_sender
+  kind: entry
+  line_start: 14
+  line_end: 22
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[0].u_part_unbuf ecc_dec[0]
+  kind: entry
+  line_start: 23
+  line_end: 48
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[1].u_part_unbuf ecc_dec[0]
+  kind: entry
+  line_start: 49
+  line_end: 60

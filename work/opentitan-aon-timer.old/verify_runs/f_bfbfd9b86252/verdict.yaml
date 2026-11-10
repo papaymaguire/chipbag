@@ -1,0 +1,38 @@
+finding_hash: c667f5d575f99888
+started_at: '2026-11-10T22:06:30Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No spec text in the aon_timer docs or register descriptions bounds the delay. The only guarantee
+    is that a read-back completes all earlier writes. The spec gives no cycle count.
+  evidence:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 26
+    line_end: 28
+    quote: This means that writes can complete before the data has reached its underlying register in
+      the slow clock domain.
+    role: supports
+    note: States the behaviour and the read-back ordering guarantee, but gives no latency bound.
+  searches:
+  - what: slow clock, cycles, synchron
+    where: hw/ip/aon_timer md/hjson
+    found: Only the cited lines and generic DV README mentions. No bound.
+  - what: read-back, take effect, latency
+    where: hw/ip/aon_timer md/hjson
+    found: Only the cited read-back sentence.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/README.md
+    line_start: 36
+    line_end: 36
+    why_not: Only says there is synchronisation logic between the clock domains. It is a verification
+      doc and gives no bound.
+  items: []
+  new_sources: []
+  resolution: The spec should state a maximum latency, for example in AON and SYS clock cycles. Alternatively
+    it should say explicitly that read-back ordering is the only guarantee.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.028996799999999996
+error: null

@@ -1,0 +1,17 @@
+{"t": "2026-11-10T20:41:16Z", "event": "  \u2192 Grep: count_incr_r|intr_count_incr|\\.pulse"}
+{"t": "2026-11-10T20:41:16Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T20:41:17Z", "event": "Check for tests on interrupt counters."}
+{"t": "2026-11-10T20:41:18Z", "event": "  \u2192 Grep: notif_mbox[01]_(soc_req_lock|target_done|ecc_cor)_intr_count|intr_count_r|_intr_count"}
+{"t": "2026-11-10T20:41:20Z", "event": "  \u2192 Grep: _intr_count"}
+{"t": "2026-11-10T20:41:21Z", "event": "  \u2192 Grep: _intr_count"}
+{"t": "2026-11-10T20:41:24Z", "event": "  \u2192 Grep: intr_count_hw|COUNT_R|ERROR_STATUS|fail|exit"}
+{"t": "2026-11-10T20:41:27Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler; grep -n -i \"mbox[01]_\\(soc_req\\|target\\|ecc_cor\\)\\|mci_notif_intr_count\\b\\|_hw *[!=]=\\|!=\" mcu_intr"}
+{"t": "2026-11-10T20:41:29Z", "event": "Now the check on the counts."}
+{"t": "2026-11-10T20:41:29Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler; sed -n 195,300p mcu_intr_handler.c | cut -c1-200 | grep -v \"lsu_read_32(SOC_MCI\""}
+{"t": "2026-11-10T20:41:33Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src; grep -n \"SOC_REQ_LOCK_INTR_COUNT_R\\|MBOX1_TARGET_DONE_INTR_COUNT_R\\|MBOX[01]_ECC_COR_INTR_COUNT_R\" integration/test_suites/mcu_intr_handler/"}
+{"t": "2026-11-10T20:41:36Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl; sed -n 22270,22284p mci_reg.sv; grep -n \"notif_mbox0_ecc_cor_intr_count_incr_r.pulse.next\\|notif_mbox0_ecc_cor_sts.*next\" mci_reg.sv"}
+{"t": "2026-11-10T20:41:49Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:41:51Z", "event": "  \u2192 Grep: if \\(mci_notif_intr_count != "}
+{"t": "2026-11-10T20:42:00Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:42:03Z", "event": "I submitted the verdict as verified overall, but two of the five items were withdrawn because a test does cover them.\n\n- **Withdrawn (cr_6afa6a396511, cr_701e3a3d1a92):** `mcu_intr_handler.c` writes each notif trigger bit once. It sums the notif counters, including the mbox0/1 `soc_req_lock` and mbox1 `target_done` ones, and kills the sim if the sum differs from the software count. That checks \"increments by 1 per event\" for the trigger path.\n- **Inconclusive (cr_6b0e6ce5d2b8):** The one-cycle pulse is only covered indirectly by that same sum, because a stuck pulse would over-count. No test checks it directly.\n- **Verified untested (cr_72ef5cfc7830):** No test writes the pulse field, so `swwel = false` is never checked.\n- **Verified untested (cr_73c6e4152180):** The test only uses the software trigger bits, not the real hardware input, so the \"same input sets the event and pulses\" behavior for `mbox0_ecc_cor` is not exercised."}
+{"t": "2026-11-10T20:42:03Z", "event": "[14 turns, $0.1519]"}

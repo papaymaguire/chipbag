@@ -1,0 +1,8 @@
+{"t": "2026-11-10T20:34:53Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mcu_mbox_csr.rdl"}
+{"t": "2026-11-10T20:34:53Z", "event": "  \u2192 Grep: TARGET_USER_VALID"}
+{"t": "2026-11-10T20:34:55Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/docs/CaliptraSSHardwareSpecification.md"}
+{"t": "2026-11-10T20:34:57Z", "event": "  \u2192 Grep: non-owner|not the (current )?(SRAM )?owner|SRAM access.*(error|denied)"}
+{"t": "2026-11-10T20:34:58Z", "event": "  \u2192 mcu_mbox_dummy: "}
+{"t": "2026-11-10T20:35:06Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:35:09Z", "event": "I submitted the verdict: withdrawn. The finding doesn't stand, because the hardware spec answers the ownership question.\n\n- **Ownership mapping:** `docs/CaliptraSSHardwareSpecification.md` (section \"MCU Mailbox SRAM Ownership\", around line 1356) gives a precedence-ordered decision tree. It covers LOCK, release/zeroization, EXECUTE, TARGET_USER_VALID and CMD_STATUS, and an event table lists who becomes owner on each write.\n- **Non-owner behaviour:** The illegal-access table at line 1503 says reads return 0 and writes are dropped.\n- **HW_STATUS owner values:** The `MBOX_HW_STATUS.SRAM_OWNER` encoding table is at line 1441.\n\nThe RDL line at `src/mci/rtl/mcu_mbox_csr.rdl:40` is terse on its own, but the hardware spec fills in what the finding says is missing. I did not check the RTL or tests. Nothing further is needed from me."}
+{"t": "2026-11-10T20:35:09Z", "event": "[7 turns, $0.0570]"}

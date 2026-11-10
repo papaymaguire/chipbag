@@ -1,0 +1,16 @@
+{"t": "2026-11-10T19:45:28Z", "event": "  \u2192 Grep: intr_count_incr|incrsaturate|_intr_count_r"}
+{"t": "2026-11-10T19:45:28Z", "event": "  \u2192 Grep: mbox0_ecc_cor_intr_count|notif_mbox1_target_done_intr_count"}
+{"t": "2026-11-10T19:45:30Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:45:31Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:45:31Z", "event": "  \u2192 Grep: intr_count|intr_trig|_intr_r"}
+{"t": "2026-11-10T19:45:33Z", "event": "Check for tests touching counters/incr."}
+{"t": "2026-11-10T19:45:33Z", "event": "  \u2192 Grep: intr_count|count_incr|INTR_COUNT"}
+{"t": "2026-11-10T19:45:34Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T19:45:37Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T19:45:38Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T19:45:39Z", "event": "Those are unrelated local variables. Only coverage hits the real registers (coverage, not a check)."}
+{"t": "2026-11-10T19:45:44Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:45:49Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:45:56Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:46:00Z", "event": "I found no test that verifies any of the five items, so the finding stands for all of them and I submitted a verified verdict.\n\n- **What references the registers:** the real interrupt count and incr registers appear only in generated code and the coverage interface (`src/mci/coverage/mci_top_cov_if.sv`). The coverpoints there sample counter values but check nothing, so they can't fail a test.\n- **Unrelated hits:** the `intr_count` matches in the integration test C files are an unrelated local variable, for example `src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c:28`.\n- **Per item:** I found no check for the 1-cycle incr pulse (`cr_73c6e4152180`, `cr_81ffd1fa635f`), the rising-edge trigger (`cr_77c7ae0b431e`), the increment by 1 per event (`cr_7a8284f75705`), or saturation (`cr_84e8df210e83`).\n\nMy searches were text searches over the repo for the register and signal names. I did not trace the regression lists or open every test directory."}
+{"t": "2026-11-10T19:46:00Z", "event": "[13 turns, $0.0908]"}

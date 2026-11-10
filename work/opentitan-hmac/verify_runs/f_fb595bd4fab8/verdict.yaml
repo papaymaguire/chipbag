@@ -1,0 +1,84 @@
+finding_hash: e7675e04b021d140
+started_at: '2026-11-10T19:44:34Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: All five items are false positives. Three are project checklist entries (N/A or Done) that
+    no test can implement. The other two (TLUL assertions and sec_cm_bus_integrity) are covered by the
+    shared test infrastructure that HMAC imports.
+  evidence:
+  - path: hw/ip/hmac/dv/sva/hmac_bind.sv
+    line_start: 7
+    line_end: 14
+    quote: "  bind hmac tlul_assert #(\n    .EndpointType(\"Device\")\n  ) tlul_assert_device ("
+    role: refutes
+    note: tlul_assert is bound to the HMAC DUT; hmac_bind is in sim_tops so it runs with every sim test.
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 20
+    line_end: 23
+    quote: '      name: "{name}_tl_intg_err"'
+    role: refutes
+    note: Shared hmac_tl_intg_err test, imported by hmac_sim_cfg.hjson, implements sec_cm_bus_integrity.
+  - path: hw/ip/hmac/doc/checklist.md
+    line_start: 245
+    line_end: 245
+    quote: Tests         | [FPV_ASSERTIONS_PROVEN_AT_V3][]   | N/A         |
+    role: refutes
+    note: Checklist status entry, N/A. It is not a test plan item that needs a test.
+  - path: hw/ip/hmac/doc/checklist.md
+    line_start: 246
+    line_end: 246
+    quote: 'Regression    | [SIM_NIGHTLY_REGRESSION_AT_V3][]  | Done        | Documented in issue #25215'
+    role: refutes
+    note: Governance checklist entry marked Done, not a test.
+  - path: hw/ip/hmac/doc/checklist.md
+    line_start: 243
+    line_end: 243
+    quote: Documentation | [DESIGN_DELTAS_CAPTURED_V3][]     | Done        |
+    role: refutes
+    note: Documentation checklist entry marked Done, not a test.
+  searches:
+  - what: tl_intg_err and tlul_assert in hmac
+    where: hw/ip/hmac, hw/dv/tools/dvsim
+    found: Shared tl_access_tests.hjson defines {name}_tl_intg_err; the HMAC sim cfg imports it. tlul_assert
+      is bound in hmac_bind.sv.
+  - what: checklist items
+    where: hw/ip/hmac/doc/checklist.md
+    found: FPV is N/A; design deltas and nightly regression are Done. These are governance entries, not
+      testable items.
+  near_misses: []
+  items:
+  - id: cp_0109a157f576
+    outcome: withdrawn
+    reason: Checklist item marked N/A, not something a test implements.
+    evidence:
+    - 2
+  - id: cp_031ea423d23d
+    outcome: withdrawn
+    reason: Documentation checklist item marked Done, not a test item.
+    evidence:
+    - 4
+  - id: cp_1bd460af41bb
+    outcome: withdrawn
+    reason: tlul_assert is bound in hmac_bind.sv, so protocol checks run in every sim.
+    evidence:
+    - 0
+  - id: cp_2508a6285c55
+    outcome: withdrawn
+    reason: Regression-process checklist item, documented in an issue, not a test item.
+    evidence:
+    - 3
+  - id: cp_26bbdb5d691d
+    outcome: withdrawn
+    reason: hmac_tl_intg_err comes from the shared tl_access_tests.hjson that HMAC imports.
+    evidence:
+    - 1
+  new_sources:
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    reason: Defines the shared tl_intg_err test that HMAC imports.
+submissions: 2
+rejections: []
+turns: 10
+cost_usd: 0.0761521
+error: null

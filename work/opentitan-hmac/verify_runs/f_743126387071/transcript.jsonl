@@ -1,0 +1,11 @@
+{"t": "2026-11-10T21:04:44Z", "event": "  \u2192 Grep: sideload|key_valid|revoke"}
+{"t": "2026-11-10T21:04:46Z", "event": "  \u2192 Grep: sideload|key_valid|revoke"}
+{"t": "2026-11-10T21:04:47Z", "event": "Sideloading is disabled in DV; no tests."}
+{"t": "2026-11-10T21:04:52Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:04:54Z", "event": "  \u2192 Grep: digest.*(clear|zero)|key_invalid|abort"}
+{"t": "2026-11-10T21:04:55Z", "event": "  \u2192 Grep: digest.*(clear|zero)|key_invalid|abort"}
+{"t": "2026-11-10T21:04:57Z", "event": "Those concern disabling SHA, not key revocation or abort."}
+{"t": "2026-11-10T21:05:02Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:05:10Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:05:14Z", "event": "I verified the finding: none of the five sideload requirements is covered by a test in the HMAC DV tree.\n\n- **Sideload disabled:** `hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv:211-212` forces `CFG.sideload` to 0 (TODO #31634), so sideloaded keys are never used. The sideload agent is wired into the environment, but it is never started.\n- **Key revoked during an operation / key invalid after completion:** nothing in the DV stimulates key revocation or invalidation. The only digest-clearing check is in `hw/ip/hmac/dv/env/hmac_scoreboard.sv:307`, and that is for disabling SHA, not for a key becoming invalid.\n- **Valid indication held for the whole operation and sideload ignored for SHA-2-only:** neither can be exercised while sideload is forced to 0.\n- **CFG retained across an abort:** a case-insensitive search for \"abort\" in the DV tree found no abort-related test or check. I searched only the HMAC DV directory for this item.\n\nThe first verdict submission attempts were rejected for not recording one search per item, so the accepted submission records five searches."}
+{"t": "2026-11-10T21:05:14Z", "event": "[8 turns, $0.0751]"}

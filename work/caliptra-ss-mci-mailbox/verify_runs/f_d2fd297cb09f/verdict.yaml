@@ -1,0 +1,43 @@
+finding_hash: 3a683c8b51171d93
+started_at: '2026-11-10T21:08:46Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The integration spec's parameter table says each mailbox is removed on its own when its size
+    is 0. That settles the "each or both" referent question. The spec does not say what accesses to a
+    removed mailbox return, but that is a separate gap from the one the finding names.
+  evidence:
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 1806
+    line_end: 1806
+    quote: If set to 0 the entire MBOX0 is removed from MCI.
+    role: refutes
+    note: 'Per-mailbox removal: MBOX0 is removed independently of MBOX1.'
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 1809
+    line_end: 1809
+    quote: If set to 0 the entire MBOX1 is removed from MCI.
+    role: refutes
+    note: Same for MBOX1, so only the zero-sized mailbox is removed.
+  searches:
+  - what: removal/instantiation wording for mailboxes
+    where: docs/
+    found: Per-mailbox parameter descriptions in the integration spec; no text on the access response
+      for a removed mailbox
+  near_misses:
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2263
+    line_end: 2263
+    why_not: The 'they' wording is ambiguous on its own, but the parameter table at lines 1806 and 1809
+      resolves it.
+  items: []
+  new_sources: []
+  resolution: The referent is settled by the parameter table. The response to accesses to a removed mailbox
+    (error or read-as-zero) remains unspecified. A spec change that states it would close that separate
+    gap.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.029140400000000004
+error: null

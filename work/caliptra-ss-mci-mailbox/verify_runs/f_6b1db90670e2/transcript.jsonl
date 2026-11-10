@@ -1,0 +1,13 @@
+{"t": "2026-11-10T19:39:58Z", "event": "  \u2192 Grep: mcu_mbox0.*(lock|LOCK)"}
+{"t": "2026-11-10T19:39:59Z", "event": "Check the main smoke test for MCU lock."}
+{"t": "2026-11-10T19:40:00Z", "event": "  \u2192 Grep: LOCK|USER"}
+{"t": "2026-11-10T19:40:01Z", "event": "  \u2192 Grep: LOCK|USER"}
+{"t": "2026-11-10T19:40:03Z", "event": "  \u2192 Grep: MBOX_LOCK"}
+{"t": "2026-11-10T19:40:06Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/smoke_test_mcu_mbox_usr_lock_out_zero.c"}
+{"t": "2026-11-10T19:40:09Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/cptra_smoke_test_mcu_mbox_usr_lock_out.c"}
+{"t": "2026-11-10T19:40:12Z", "event": "  \u2192 Grep: acquire_lock|locked out|lock"}
+{"t": "2026-11-10T19:40:14Z", "event": "  \u2192 Grep: acquire_lock|FATAL"}
+{"t": "2026-11-10T19:40:19Z", "event": "Status: I've read the MCU mailbox lock tests and I'm submitting a verdict now."}
+{"t": "2026-11-10T19:40:25Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:40:28Z", "event": "I withdrew the finding, and the verdict was accepted.\n\nThe finding says the case where the MCU holds the lock is not covered. That is wrong: `smoke_test_mcu_mbox_usr_lock_out_zero` exercises it, in `smoke_test_mcu_mbox_usr_lock_out_zero.c` on the MCU side and `cptra_smoke_test_mcu_mbox_usr_lock_out.c` on the Caliptra side.\n\n- **MCU acquires the lock:** it checks that USER becomes the MCU ID and fails the test otherwise.\n- **External requester locked out:** the Caliptra side expects its lock attempts to fail while the MCU holds the lock, and prints a FATAL if one succeeds. It also checks that USER is not changed.\n\nI did not find a separate test for every sub-case in the gap, such as another user reading LOCK or USER while the MCU holds the lock. A dedicated release-then-re-acquire test with the MCU holding the lock may also be missing. I withdrew because the main claim, that the MCU-holds-lock case is untested, is contradicted by the tests above."}
+{"t": "2026-11-10T19:40:28Z", "event": "[10 turns, $0.0891]"}

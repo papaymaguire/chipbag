@@ -1,0 +1,50 @@
+finding_hash: d1bafdd4bbd43a47
+started_at: '2026-11-10T21:10:30Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The hmac_tl_intg_err test exists. HMAC's sim cfg imports the common tl_access_tests.hjson,
+    which defines "{name}_tl_intg_err". That test injects TL-UL integrity errors and checks that the fatal
+    alert fires repeatedly and that the status CSR field is set. I did not confirm that the HMAC testbench
+    sets cfg.tl_intg_alert_name to fatal_fault. The item is therefore tested, not planned only.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 18
+    line_end: 24
+    quote: '      name: "{name}_tl_intg_err"'
+    role: refutes
+    note: Common test is generated for hmac via import in hmac_sim_cfg.hjson; runs +run_tl_intg_err.
+  - path: hw/dv/sv/cip_lib/seq_lib/cip_base_vseq__tl_errors.svh
+    line_start: 478
+    line_end: 478
+    quote: '  // Check both alert and CSR status update'
+    role: refutes
+    note: check_tl_intg_error_response waits for the fatal alert to trigger repeatedly and checks the
+      status CSR; it fails if the alert does not fire.
+  searches:
+  - what: tl_intg_err in hmac dir
+    where: hw/ip/hmac
+    found: Only the sec_cm testplan mapping; the test is generated from the common import.
+  - what: common test implementation
+    where: hw/dv/sv/cip_lib
+    found: run_tl_intg_err_vseq injects errors and checks the alert and the CSR status.
+  near_misses: []
+  items:
+  - id: cr_7351afa1afa3
+    outcome: withdrawn
+    reason: The common hmac_tl_intg_err test injects integrity errors and checks that the fatal alert
+      fires and that the status CSR field is set.
+    evidence:
+    - 0
+    - 1
+  new_sources:
+  - path: hw/dv/sv/cip_lib/seq_lib/cip_base_vseq__tl_errors.svh
+    reason: Common TL integrity error test and its alert check.
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    reason: Defines the generated {name}_tl_intg_err test.
+submissions: 2
+rejections: []
+turns: 11
+cost_usd: 0.0723588
+error: null

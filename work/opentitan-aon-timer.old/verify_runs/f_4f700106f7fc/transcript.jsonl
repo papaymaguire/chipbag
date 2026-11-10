@@ -1,0 +1,7 @@
+{"t": "2026-11-10T22:06:26Z", "event": "  \u2192 Grep: bark"}
+{"t": "2026-11-10T22:06:26Z", "event": "  \u2192 Grep: wdog_count.*thold|thold.*wdog_count|>="}
+{"t": "2026-11-10T22:06:28Z", "event": "README answers the >= question; latency partly. Check lines."}
+{"t": "2026-11-10T22:06:28Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/README.md"}
+{"t": "2026-11-10T22:06:34Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T22:06:37Z", "event": "I withdrew the finding. The aon_timer README answers the main question the finding raises.\n\n`hw/ip/aon_timer/README.md` line 55 says there is a \"bark\" on every AON clock tick, while the timer is enabled, when the count is at least `WDOG_BARK_THOLD`. That means `>=`, not equality. A count written above the threshold, or a threshold lowered below the count, therefore barks. The RTL agrees: `aon_timer_core.sv:83` compares with `>=`.\n\nThe README does not give an exact cycle latency from the condition to the interrupt asserting, including the clock-domain crossing from `clk_aon_i` to the bus clock. `theory_of_operation.md` only says the interrupt outputs are driven on the SYS domain. That latency part of the finding stays unspecified. I treated it as secondary and withdrew the finding anyway. If you want the latency pinned down, the fix is a spec sentence giving the cycle count including the crossing."}
+{"t": "2026-11-10T22:06:37Z", "event": "[5 turns, $0.0360]"}

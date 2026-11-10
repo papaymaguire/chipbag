@@ -1,0 +1,70 @@
+finding_hash: 2b4ed0421abb55f1
+started_at: '2026-11-10T20:53:20Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Items 1 and 3 stand. Only the secret key and the digest are checked after a wipe. Item 2 is
+    withdrawn: the smoke sequence randomizes all 32 key words and the scoreboard model uses only the words
+    within the configured key length. The finding as a whole stands because of items 1 and 3.'
+  evidence:
+  - path: hw/ip/hmac/rtl/hmac.sv
+    line_start: 1054
+    line_end: 1055
+    quote: "`ASSERT(WipeSecretKeyAssert,\n          wipe_secret |=> (secret_key == {($bits(secret_key)/$bits(wipe_v)){$past(wipe_v)}}))"
+    role: context
+    note: An assertion checks that secret_key equals the wipe value after a wipe. It covers only the key,
+      not the intermediate hash state or the message schedule.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 26
+    line_end: 26
+    quote: rand bit [31:0]         key[NUM_KEYS];
+    role: refutes
+    note: The sequences randomize all 32 key words, including those beyond the configured key length.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 880
+    line_end: 880
+    quote: cryptoc_dpi_pkg::sv_dpi_get_hmac_sha256(big_endian_key[0:7], msg_i, exp_digest[0:7]);
+    role: refutes
+    note: The reference model uses only the first 8 key words for a 256-bit key. A DUT that consumed extra
+      key words would mismatch the model's digest.
+  searches:
+  - what: wipe_secret and WIPE_SECRET in the hmac dv directory and rtl
+    where: hw/ip/hmac
+    found: Only the digest-corruption check in the scoreboard. In the RTL, an assertion on secret_key.
+      Nothing probes the intermediate hash state or the message schedule.
+  - what: key length handling in the dv env
+    where: hw/ip/hmac/dv/env
+    found: The sequence randomizes all 32 key words and the scoreboard model slices key[0:N] by key_length.
+  near_misses:
+  - path: hw/ip/hmac/rtl/hmac.sv
+    line_start: 1054
+    line_end: 1055
+    why_not: It covers the secret key only. It does not cover the intermediate hash state or the message
+      schedule array.
+  items:
+  - id: cr_03340331c331
+    outcome: verified
+    reason: Only the secret key (assertion) and the digest are checked. No check covers the intermediate
+      hash state or the message schedule array.
+    evidence:
+    - 0
+  - id: cr_9f6c9dac2641
+    outcome: withdrawn
+    reason: Unused key words are random in smoke, and the model uses only the relevant words. A digest
+      mismatch would fail the test.
+    evidence:
+    - 1
+    - 2
+  - id: cr_aab3a12796d4
+    outcome: verified
+    reason: The secret key reset to the wipe value is covered by the assertion. The intermediate hash
+      state and the message schedule are not checked.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.08580669999999999
+error: null

@@ -1,0 +1,16 @@
+{"t": "2026-11-10T19:45:10Z", "event": "  \u2192 Grep: notif_mbox[01]_(soc_req_lock|target_done|ecc_cor)_intr_count_incr"}
+{"t": "2026-11-10T19:45:10Z", "event": "  \u2192 Grep: intr_count_incr"}
+{"t": "2026-11-10T19:45:13Z", "event": "  \u2192 Grep: intr_count_incr"}
+{"t": "2026-11-10T19:45:13Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT|intr_block_rf"}
+{"t": "2026-11-10T19:45:16Z", "event": "  \u2192 Grep: COUNT_INCR|count_incr"}
+{"t": "2026-11-10T19:45:17Z", "event": "  \u2192 Grep: COUNT_INCR|count_incr"}
+{"t": "2026-11-10T19:45:18Z", "event": "  \u2192 Grep: COUNT_INCR|count_incr"}
+{"t": "2026-11-10T19:45:21Z", "event": "  \u2192 Grep: NOTIF_MBOX[01]_(SOC_REQ_LOCK|TARGET_DONE|ECC_COR)"}
+{"t": "2026-11-10T19:45:23Z", "event": "Checking whether the interrupt-handler test actually compares the event counters against the number of triggers."}
+{"t": "2026-11-10T19:45:23Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:45:27Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T19:45:27Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:45:38Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:45:47Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:45:51Z", "event": "I submitted the verdict as inconclusive overall. Of the five items, two are withdrawn and three stand as untested.\n\n- **Withdrawn (`cr_6afa6a396511`, `cr_701e3a3d1a92`):** the event counter incrementing by 1 per interrupt event is checked in `mcu_intr_handler.c`. That test triggers each notif interrupt once. It then sums the `NOTIF_*_INTR_COUNT_R` registers, including the MBOX0 soc_req_lock and MBOX1 target_done ones, and ends the sim with an error if the sum differs from the number of triggers. The test is in both nightly directed regressions. The check is aggregate, so it would not catch two counters going wrong in opposite directions.\n- **Still untested (`cr_6883bed01f38`, `cr_6b0e6ce5d2b8`, `cr_72ef5cfc7830`):** no test reads or writes the `notif_mbox*_intr_count_incr_r` registers. The decrement-by-1 pulse, the 1-bit down-counter pulse and `swwel = false` therefore have no check. The only test-side mention of these registers is a reset-value mask list in `libs/mci/mci.c`, and it covers only the error_* ones.\n\nI couldn't run anything here, so all of this comes from reading the code."}
+{"t": "2026-11-10T19:45:51Z", "event": "[14 turns, $0.1421]"}

@@ -1,0 +1,95 @@
+finding_hash: e38eb2cac0e63558
+started_at: '2026-11-10T19:44:22Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: None of the five items has a test that both creates the condition and checks the result. The
+    HMAC DV forces CFG.sideload to 0. The only sideload test is a firmware test. It covers blocked start,
+    hash_stop rejection and a normal sideload run, but not these five behaviors.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: '// TODO(#31634): Disable sideloading for now.'
+    role: supports
+    note: DV never enables sideload.
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    line_start: 204
+    line_end: 206
+    quote: // Clear the sideloaded HMAC key
+    role: context
+    note: The key is cleared after the digest has been read and the cleared state is not checked. The
+      test never reads the digest after the clear and never checks that no error was raised.
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    line_start: 214
+    line_end: 216
+    quote: // Starting HMAC with an invalid sideload key must be blocked.
+    role: context
+    note: Tests blocked start, not mid-operation revocation.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1042
+    line_end: 1042
+    quote: if (!`gmv(ral.intr_state.hmac_err)) begin
+    role: context
+    note: Generic scoreboard model of no new ERR_CODE while hmac_err is pending. Not a sideload scenario,
+      and it only updates the prediction.
+  searches:
+  - what: key revoked mid-operation / abort / digest cleared
+    where: hw/ip/hmac/dv, sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    found: No stimulus revokes the key during an operation, and no check that the digest is cleared.
+  - what: digest after key invalidation and no error
+    where: keymgr_dpe_sideload_hmac_test.c
+    found: The key is cleared after the digest is read. There is no post-clear digest read and no no-error
+      check.
+  - what: CFG retained after abort
+    where: same
+    found: No abort scenario. CFG is rewritten to 0 after a blocked start and no retention check exists.
+  - what: ERR_CODE masking while hmac_err pending
+    where: hw/ip/hmac/dv scoreboard and vseqs
+    found: Only the generic scoreboard prediction. No sideload-abort recovery test.
+  near_misses:
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    line_start: 214
+    line_end: 222
+    why_not: Covers start with an invalid key only, not revocation during or after an operation.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1041
+    line_end: 1057
+    why_not: Generic error model, no sideload stimulus.
+  items:
+  - id: cr_4311569af12c
+    outcome: verified
+    reason: No mid-operation revocation test.
+    evidence:
+    - 0
+    - 2
+  - id: cr_90db0cc9a415
+    outcome: verified
+    reason: No abort and CFG-retention check.
+    evidence:
+    - 0
+    - 2
+  - id: cr_c8ea510e0e76
+    outcome: verified
+    reason: The key is cleared after the digest read, and the digest is not read back afterwards.
+    evidence:
+    - 1
+  - id: cr_cf99e411151d
+    outcome: verified
+    reason: No check that no error is raised after a late key invalidation.
+    evidence:
+    - 1
+  - id: cr_ea4b652641c0
+    outcome: verified
+    reason: Only a generic scoreboard model exists. No sideload test checks ERR_CODE masking.
+    evidence:
+    - 3
+  new_sources:
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    reason: Only sideload HMAC test, near miss
+submissions: 2
+rejections: []
+turns: 11
+cost_usd: 0.09858009999999999
+error: null

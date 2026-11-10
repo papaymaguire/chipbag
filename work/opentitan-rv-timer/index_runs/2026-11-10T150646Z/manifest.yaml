@@ -1,0 +1,303 @@
+topic: rv_timer
+repo_root: targets/opentitan
+repo_commit: b84154c71810e853c0b37c00e96bb830804dd9f4
+generated_at: '2026-11-10T15:06:46Z'
+model: claude-sonnet-5-5
+confirmed: false
+sources:
+- path: hw/ip/rv_timer/README.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: rv_timer overview
+  units: 1
+  sha256: c84fcbcfd2783af1aa2725173409346e1584590a53fddc1bf7523235c3f75817
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  role: spec
+  scope:
+    kind: whole_file
+  reason: register definitions
+  units: 1
+  sha256: ec10b5ea1df2c193eead23012a9551c211523f6c05a34c7f9c39b49714fb06ae
+- path: hw/ip/rv_timer/doc/interfaces.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: interfaces
+  units: 1
+  sha256: d3118493d1b9b0533dd95ecc14b22a33d331fdee032dd6b207af9b91dc7fa4be
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: programmer's guide
+  units: 1
+  sha256: 99922babdc50d04ea5509eb5b2789d85c324780a080444a140ef915858f0330e
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: theory of operation
+  units: 1
+  sha256: 5a80f6ed7e71c07a3ecfe6191c87efd889e0d51b0c44251289a6a146b411dd5c
+- path: hw/dv/tools/dvsim/testplans/alert_test_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared imported plan
+  units: 1
+  sha256: d528544ca88a548a3de099fcfeddb832c0e016214d865e83f5c2368c1fc45500
+- path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared CSR testplan imported
+  units: 1
+  sha256: 017ecfde886312665da88ac9f4b31e7e640ef3ca3d656ae24f57d300348f538f
+- path: hw/dv/tools/dvsim/testplans/intr_test_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared imported plan
+  units: 1
+  sha256: be7ba0d65e58a8a9cc94eb30b4b5acb20a9716f0a5967abbf52ee10739e4eed7
+- path: hw/dv/tools/dvsim/testplans/stress_all_with_reset_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared imported plan
+  units: 1
+  sha256: aab1d8b00b2816514dc8cc40c3b3050fbff7b2a6392aa6be06c73ffdf35b6fea
+- path: hw/dv/tools/dvsim/testplans/tl_device_access_types_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared imported plan
+  units: 1
+  sha256: a24dad965c7b7c5eaa591acc1ed8bb1e02be1dd0181cdac84d048c5217e61db1
+- path: hw/ip/rv_timer/data/rv_timer_sec_cm_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: sec countermeasure testplan
+  units: 1
+  sha256: 718161df5dded8798510c6dfef9421df24ce44a9de0fdc1246c34bffde8a5c07
+- path: hw/ip/rv_timer/data/rv_timer_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: block testplan with shared imports
+  units: 1
+  sha256: 54152a3766982b359d6690991ea79e9f5ff318b8127286c0dcefcb3ae77a859e
+- path: hw/ip/rv_timer/dv/cov/rv_timer_racl_exclusions.el
+  role: verification
+  scope:
+    kind: whole_file
+  reason: coverage exclusions
+  units: 1
+  sha256: bba5f621711f34cf690c7d0e01b4715d933730a792d2ab22ef56700a2ab9f215
+- path: hw/ip/rv_timer/dv/cov/rv_timer_unr_excl.el
+  role: verification
+  scope:
+    kind: whole_file
+  reason: coverage exclusions
+  units: 1
+  sha256: e3bf97fd6247b3445bba3bf511e595c2fd00dc984189827bacd107714461591c
+- path: hw/ip/rv_timer/dv/env/rv_timer_env_cfg.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: test config class
+  units: 1
+  sha256: 5dbfc019a62d27f4a7dc6e798e9ddf29564d62fd572ee007c16b3c8298206489
+- path: hw/ip/rv_timer/dv/env/rv_timer_env_cov.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: coverage
+  units: 1
+  sha256: 87bec24931a29e0aab74d5e9564059826f7df063cd054ad16b454252a8af8059
+- path: hw/ip/rv_timer/dv/env/rv_timer_scoreboard.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: scoreboard
+  units: 1
+  sha256: 487264f0d80b104e873fb394ed5d31887ffc4fd95911d5faa723addee4115ab0
+- path: hw/ip/rv_timer/dv/env/seq_lib/rv_timer_base_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: base vseq
+  units: 1
+  sha256: cc2e61bdc51f33c6841f4b3bbea3444402bae09c80f4c0bdb834c289ba861273
+- path: hw/ip/rv_timer/dv/env/seq_lib/rv_timer_cfg_update_on_fly_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: aa6fb76a4009888be1b6c086b31afd4ef06765df093a0c211f93fa06681a9b9d
+- path: hw/ip/rv_timer/dv/env/seq_lib/rv_timer_common_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 7aaf2e347011d8f2e934cb92b53f8b8753f54069b22c738436af1565e40d1757
+- path: hw/ip/rv_timer/dv/env/seq_lib/rv_timer_disabled_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: a4317d43502ecbb9707b008558631ed7b101091f937281c52cec0abdf8cb234d
+- path: hw/ip/rv_timer/dv/env/seq_lib/rv_timer_max_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 3593301899ff615a6f288ba57a9888705f8fed54f3725e1725d58089091cbe79
+- path: hw/ip/rv_timer/dv/env/seq_lib/rv_timer_min_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: eb59255f531d9eae7e853506e9d062030fd2dc1566c21ade5f408f48413898fe
+- path: hw/ip/rv_timer/dv/env/seq_lib/rv_timer_random_reset_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 093ca99d654017722dd4609e8ff28506a7676bd4ea07bb74cac115e348d9345f
+- path: hw/ip/rv_timer/dv/env/seq_lib/rv_timer_random_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 78560bc1c9f6c6ef4ed14a83313f1b03f378fdf77fc28aa16e19147527409000
+- path: hw/ip/rv_timer/dv/env/seq_lib/rv_timer_stress_all_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 9e49d5cdb18a4f38f5e00f6083ed0e506113ecb0407094ae7fe65c5e000f62a3
+- path: hw/ip/rv_timer/dv/rv_timer_sim_cfg.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: dvsim config and test list
+  units: 1
+  sha256: 4a2fe436f1383ddc3b75a397f3f3b73b63b56e5fe060da7f86891f3b55b6837f
+- path: hw/ip/rv_timer/dv/sva/rv_timer_bind.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SVA bind
+  units: 1
+  sha256: f8001f289e5937f393500d85e8ed5df6ca672513373653c8c37433a6f898bde8
+- path: hw/ip/rv_timer/dv/tests/rv_timer_base_test.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: base UVM test
+  units: 1
+  sha256: f521f6500eac5a3bc455c28862abdf0985b52f17793549f8bc8bf75aa690663b
+- path: hw/ip/rv_timer/fpv/rv_timer_formal_cfg.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: formal config
+  units: 1
+  sha256: 778e6ea3d8aea57f9df7c94dd5dbf123506f2b353079aac953c8374e9bf869fa
+- path: hw/ip/rv_timer/fpv/tb/rv_timer_bind_fpv.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: FPV bind
+  units: 1
+  sha256: b7ff6551aeb795ea7e46e398890287cfcc7112908733495324317f314501d7db
+- path: hw/ip/rv_timer/fpv/verify.tcl
+  role: verification
+  scope:
+    kind: whole_file
+  reason: formal script
+  units: 1
+  sha256: 73b97b4a5b78f9548b69802c57b6300a112578e40d7d119dc562169125251660
+- path: hw/ip/rv_timer/fpv/vip/rv_timer_core_assert_fpv.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: formal assertions
+  units: 1
+  sha256: 4905e314c4d82be1e7d5a4af26c48ae6e1e89a48e2f93c7f25a5de9840b8a2d1
+- path: hw/ip/rv_timer/fpv/vip/rv_timer_interrupts_assert_fpv.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: formal assertions
+  units: 1
+  sha256: 01abc724400507b89627f1c8141a3cc6981c8920711f2cb2a8e1c00bbc614264
+- path: hw/top_earlgrey/data/ip/chip_rv_timer_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: chip-level rv_timer testplan
+  units: 1
+  sha256: 4dcbb511ecdcd72dc371ad8d101fcc40b763c3a0e3817b7b9825f1bb73904a84
+- path: hw/top_earlgrey/dv/chip_sim_cfg.hjson
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - chip_sw_rv_timer*
+  reason: chip rv_timer test entries
+  units: 3
+  sha256: da85d0e434186e663ef16daea0c32cab1dccb7b6d03b235ca65ff2b294de51eb
+- path: hw/top_earlgrey/dv/chip_smoketests.hjson
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - chip_sw_rv_timer*
+  reason: chip smoke test entry
+  units: 2
+  sha256: a593c3a7a209889f8eaafeafd2df129887011b5826a3a0d364dd5e5e62de2c64
+- path: sw/device/lib/dif/dif_rv_timer_unittest.cc
+  role: verification
+  scope:
+    kind: whole_file
+  reason: DIF unit test
+  units: 1
+  sha256: 909d7a57b3bfc104e0fecfc73db898a0665af4476b8eac3b9d91246ff6f04c0e
+- path: sw/device/tests/rv_timer_smoketest.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: chip SW smoke test
+  units: 1
+  sha256: 352cc80a69c5741d580ea5d49bc3a0cc5ffd9b082e4eb648f6abefa80520fa80
+- path: sw/device/tests/rv_timer_systick_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: chip SW systick test
+  units: 1
+  sha256: c229e5988352416e7291882e999712ade33107f693d91de1d5c87b7d891cf433
+excluded_notable:
+- path: hw/ip/rv_timer/data/rv_timer.hjson.tpl
+  reason: template; rendered copy exists
+- path: hw/ip/rv_timer/doc/registers.md
+  reason: generated
+- path: hw/ip/rv_timer/rtl/rv_timer.sv
+  reason: RTL
+- path: sw/device/tests/aon_timer_irq_test.c
+  reason: tests aon_timer
+incomplete: false
+notes: 'Not separately checked: post-silicon tests, SW tests beyond the two rv_timer-named ones. The checklist.md
+  was not included.'

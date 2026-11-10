@@ -1,0 +1,36 @@
+finding_hash: 94031d986c783f79
+started_at: '2026-11-10T22:06:28Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No other spec text in aon_timer docs specifies which clock tick causes retriggering, the CDC
+    latency, or whether the comparison is >= or >. The theory of operation only mentions the ~200KHz AON
+    clock and async register sync.
+  evidence:
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    line_start: 93
+    line_end: 93
+    quote: the interrupt and wakeup event will trigger again at the next clock tick.
+    role: supports
+    note: Only statement; 'next clock tick' unspecified.
+  searches:
+  - what: tick/prescal/threshold in aon_timer docs
+    where: hw/ip/aon_timer/doc
+    found: No definition of retrigger timing or comparison semantics
+  - what: clock/cycle/>=/reaches in theory_of_operation.md
+    where: hw/ip/aon_timer/doc/theory_of_operation.md
+    found: Only general clock and CDC remarks
+  near_misses:
+  - path: hw/ip/aon_timer/doc/registers.md
+    line_start: 74
+    line_end: 74
+    why_not: '''The count at which a wakeup interrupt should be generated'' does not define retrigger
+      timing or the clock tick.'
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0313053
+error: null

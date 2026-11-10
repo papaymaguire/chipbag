@@ -1,0 +1,84 @@
+finding_hash: 197b6d3a9a3423ad
+started_at: '2026-11-10T20:36:46Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Items 1 and 5 are covered by the ownership-flow testbench and are withdrawn. Items 2, 3 and
+    4 have no test that checks them and stand.
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 94
+    line_end: 95
+    quote: "    mcu_mbox_write(mci_comm_flow_execute_addr, user, 0);\n    mci_comm_flow_check_phase(\"\
+      released\", MCU_MBOX_OWNER_NONE);"
+    role: refutes
+    note: 'Item 1: after release, HW_STATUS SRAM_OWNER is checked to be NONE (0).'
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 83
+    line_end: 84
+    quote: "                if (owner != MCU_MBOX_OWNER_NONE)\n                    mcu_mbox_read_check(addr,\
+      \ users[owner], mci_comm_flow_payload[words[i]]);"
+    role: refutes
+    note: 'Item 5: the SRAM owner re-reads the same words many times across phases and each read must
+      return the original data, so reads are non-destructive.'
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 136
+    line_end: 139
+    quote: '    // Root finalizes the response and DLEN; a non-BUSY CMD_STATUS returns the SRAM to the
+      Requester.'
+    role: context
+    note: Terminal statuses are driven, but no test writes BUSY (0) or checks the encoding; this does
+      not check items 2-4.
+  searches:
+  - what: BUSY encoding, SRAM_OWNER NONE and CMD_STATUS use in tests
+    where: src/integration
+    found: MCU_MBOX_CMD_BUSY and MCU_MBOX_TARGET_STATUS_CMD_BUSY appear only as enum definitions in caliptra_ss_lib.h.
+      No test writes or checks BUSY. OWNER_NONE is checked in the ownership flow.
+  - what: MCU as Requester and CMD_STATUS
+    where: src/integration
+    found: Only mci_mbox_dlen_wrap.svh mentions Root as Requester. It does not check CMD_STATUS being
+      unused.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/cptra_smoke_test_mcu_mbox_usr_lock_out.c
+    line_start: 175
+    line_end: 175
+    why_not: Reads CMD_STATUS expecting 0 as an access-lockout check, not a BUSY-encoding check.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 129
+    line_end: 133
+    why_not: Checks SRAM ownership returns to Root after a terminal TARGET_STATUS. It does not check that
+      the Requester sees no command completion until CMD_STATUS is written.
+  items:
+  - id: cr_1742179d80a0
+    outcome: withdrawn
+    reason: The ownership flow checks SRAM_OWNER == NONE after release.
+    evidence:
+    - 0
+  - id: cr_666421936fb3
+    outcome: verified
+    reason: The BUSY=0 encoding is only an enum; no test checks BUSY behavior.
+    evidence:
+    - 2
+  - id: cr_680e463fd93d
+    outcome: verified
+    reason: Only SRAM ownership and reads are checked. The Requester-visible completion is not checked.
+    evidence:
+    - 2
+  - id: cr_cd3b9f710b55
+    outcome: verified
+    reason: No test covers CMD_STATUS being unused when MCU is the Requester.
+    evidence:
+    - 2
+  - id: cr_499ce5a87381
+    outcome: withdrawn
+    reason: The owner's repeated reads must return the same data in every phase, which checks that reads
+      are non-destructive.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.11898869999999999
+error: null

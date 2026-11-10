@@ -1,0 +1,3519 @@
+generated_at: '2026-11-10T17:43:39Z'
+model: claude-sonnet-5-5
+manifest_commit: 69a8afa1eeb8bc80ed8726da74798273c862c00b
+stats:
+  sections: 19
+  requirements: 109
+  property_requirements: 86
+  by_construction: 61
+  ambiguous_text: 6
+  ambiguous_requirements: 3
+  unclassified: 2
+  dropped: 0
+  mean_coverage: 0.943
+  errors: 0
+  llm_calls: 0
+  cost_usd: 0.0
+skipped_sources: []
+errors: []
+sections:
+- id: sec_653082b45801
+  path: docs/CaliptraSSHardwareSpecification.md
+  heading_path: Manufacturer Control Interface (MCI) > MCI Feature Descriptions > Watchdog Timer
+  kind: section
+  chunker: native
+  lines:
+  - 1272
+  - 1290
+  content_hash: f0795a0a9e1ff6a2f8c72170b36c1ddb9450556c55895b70ba241e44cd02bd9a
+  coverage: 1.0
+  requirements: 9
+  property_requirements: 0
+  by_construction: 0
+  informative: 1
+  references: 0
+  ambiguous: 2
+  unclassified: 0
+  dropped: 0
+- id: sec_40f675b0f78c
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_EN
+  kind: register
+  chunker: native
+  lines:
+  - 682
+  - 686
+  content_hash: 4ac1d16b745a897409d04350d1eb1416795863124bb28e1e686462dd3b193f3b
+  coverage: 1.0
+  requirements: 4
+  property_requirements: 4
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_2f8eee2cab73
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_CTRL
+  kind: register
+  chunker: native
+  lines:
+  - 688
+  - 692
+  content_hash: 02f5735e99781e93e6f8c87b0658a5a33cbd41450fd40cb33b448f1b168b838b
+  coverage: 1.0
+  requirements: 5
+  property_requirements: 5
+  by_construction: 4
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_9ad4b5f47a60
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_TIMEOUT_PERIOD
+  kind: register
+  chunker: native
+  lines:
+  - 694
+  - 698
+  content_hash: 6dc60679114edf55dccd15e70e1d6378b9d46273c3f9836b3972715bb5114aca
+  coverage: 0.569
+  requirements: 4
+  property_requirements: 4
+  by_construction: 3
+  informative: 2
+  references: 1
+  ambiguous: 0
+  unclassified: 1
+  dropped: 0
+- id: sec_f436db9bf44d
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_EN
+  kind: register
+  chunker: native
+  lines:
+  - 701
+  - 705
+  content_hash: cebcb69094eaf7e6526f3a5a77d89487927e27ff27c5c6b437ae83f661c88ae0
+  coverage: 0.971
+  requirements: 6
+  property_requirements: 4
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_192b9760d000
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_CTRL
+  kind: register
+  chunker: native
+  lines:
+  - 707
+  - 711
+  content_hash: d809e11c9ee9064c3c849799fdbaa527b066db08834fa1c53fb954ff48ef56f1
+  coverage: 1.0
+  requirements: 5
+  property_requirements: 5
+  by_construction: 4
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_8d80b25bb68d
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_TIMEOUT_PERIOD
+  kind: register
+  chunker: native
+  lines:
+  - 713
+  - 717
+  content_hash: 10788ab55e320be9cdf7bf0b1d3598f0b13c5e61f09ff606c528c99a4ee84373
+  coverage: 0.569
+  requirements: 4
+  property_requirements: 4
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 1
+  dropped: 0
+- id: sec_4ea259a8e025
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_STATUS
+  kind: register
+  chunker: native
+  lines:
+  - 720
+  - 725
+  content_hash: 4f4d7c8b1d222384ea2d5aa400ff4277f66cd078be0b7acd81032130be41574b
+  coverage: 1.0
+  requirements: 6
+  property_requirements: 6
+  by_construction: 6
+  informative: 1
+  references: 0
+  ambiguous: 2
+  unclassified: 0
+  dropped: 0
+- id: sec_7dea5ec96823
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_CFG
+  kind: register
+  chunker: native
+  lines:
+  - 728
+  - 732
+  content_hash: 4fd8ef6cf8f0ef1abb0ae530919e1c22965564374af3b7b6fbd0a2673e23216e
+  coverage: 1.0
+  requirements: 3
+  property_requirements: 3
+  by_construction: 3
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_122ec9f939dc
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_TIMER_CONFIG
+  kind: register
+  chunker: native
+  lines:
+  - 736
+  - 742
+  content_hash: af5121982a32b338c19f9057c04e1eb7061cc7d3e4bb57866458ba04c5a97a91
+  coverage: 1.0
+  requirements: 4
+  property_requirements: 3
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 1
+  unclassified: 0
+  dropped: 0
+- id: sec_65085ba59ae6
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_L
+  kind: register
+  chunker: native
+  lines:
+  - 744
+  - 749
+  content_hash: e943409aed44c5395982df32cfb074c6648a2011e5611444a28c52c7766d1217
+  coverage: 0.968
+  requirements: 8
+  property_requirements: 8
+  by_construction: 4
+  informative: 2
+  references: 1
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_8e3a5e42a5aa
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_H
+  kind: register
+  chunker: native
+  lines:
+  - 751
+  - 756
+  content_hash: b54b3f570d85008eae142c0a565924bc3ae2536e1fb02db5e173940cc2f4c1a1
+  coverage: 0.968
+  requirements: 8
+  property_requirements: 8
+  by_construction: 4
+  informative: 2
+  references: 1
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_bdb3c795b94d
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_L
+  kind: register
+  chunker: native
+  lines:
+  - 758
+  - 762
+  content_hash: f54d88c7ab7dfd4ea60fdc8fd983c8ef0bef6a5ce06d656113cb83fe99b9e295
+  coverage: 1.0
+  requirements: 4
+  property_requirements: 4
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_4a743eda7095
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_H
+  kind: register
+  chunker: native
+  lines:
+  - 764
+  - 768
+  content_hash: 7383628890c7eb040682c479a5bc38d9a7260146e0f2b97e45c56f9a63e2dbf3
+  coverage: 1.0
+  requirements: 4
+  property_requirements: 4
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_1fc83d29a163
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > RESET_REQUEST
+  kind: register
+  chunker: native
+  lines:
+  - 773
+  - 777
+  content_hash: b93164ab37b9d7ffdc266875452a0a4f6a5e75370271868f6f4005d33a5bc2e6
+  coverage: 1.0
+  requirements: 9
+  property_requirements: 6
+  by_construction: 3
+  informative: 3
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_c455978e88f8
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCI_BOOTFSM_GO
+  kind: register
+  chunker: native
+  lines:
+  - 780
+  - 785
+  content_hash: f1204665cfb541393bc297a87db9b7eca16bbdf3189d22439bc15b3cf7889ed7
+  coverage: 1.0
+  requirements: 6
+  property_requirements: 4
+  by_construction: 3
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_8ea8b5bff8f0
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > CPTRA_BOOT_GO
+  kind: register
+  chunker: native
+  lines:
+  - 787
+  - 792
+  content_hash: 4d6f569fff9a02204bd02a11febcda982e354f5579cb6566e9a01b3312711506
+  coverage: 0.949
+  requirements: 6
+  property_requirements: 4
+  by_construction: 3
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_94fbf3f4a3f5
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  kind: register
+  chunker: native
+  lines:
+  - 794
+  - 799
+  content_hash: 514a5c50bad25078928d74a158c4ebf607de6c0cb5347fdfc76741b903852282
+  coverage: 0.975
+  requirements: 7
+  property_requirements: 5
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_0907979a767f
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_NMI_VECTOR
+  kind: register
+  chunker: native
+  lines:
+  - 800
+  - 807
+  content_hash: 27e6253a3363922a18f0b111e4b2129724e49f42363d354790b7a2febe31aa8d
+  coverage: 0.947
+  requirements: 7
+  property_requirements: 5
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 1
+  unclassified: 0
+  dropped: 0
+requirements:
+- id: req_74aacbc9cfef
+  path: docs/CaliptraSSHardwareSpecification.md
+  heading_path: Manufacturer Control Interface (MCI) > MCI Feature Descriptions > Watchdog Timer
+  section_id: sec_653082b45801
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The watchdog timer contains two timers.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The Watchdog timer contains two different timers.
+    lines:
+    - 1274
+    - 1274
+    chars:
+    - 119916
+    - 119965
+  quote_hash: bb869832851a
+- id: req_a1b5b6b02612
+  path: docs/CaliptraSSHardwareSpecification.md
+  heading_path: Manufacturer Control Interface (MCI) > MCI Feature Descriptions > Watchdog Timer
+  section_id: sec_653082b45801
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The two timers can be configured in either Cascade or Independent mode.
+  aspect: configuration
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'These timers can be configured in two different modes:'
+    lines:
+    - 1274
+    - 1274
+    chars:
+    - 119966
+    - 120020
+  - text: Cascade
+    lines:
+    - 1276
+    - 1276
+    chars:
+    - 120025
+    - 120032
+  - text: Independent
+    lines:
+    - 1277
+    - 1277
+    chars:
+    - 120036
+    - 120047
+  quote_hash: 744ba7fbecb9
+- id: req_a96f88e1b894
+  path: docs/CaliptraSSHardwareSpecification.md
+  heading_path: Manufacturer Control Interface (MCI) > MCI Feature Descriptions > Watchdog Timer
+  section_id: sec_653082b45801
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: In cascade mode, timer 1 timeout triggers an error interrupt.
+  aspect: interrupt
+  condition: Cascade mode, Timer 1 times out
+  ambiguity: null
+  quotes:
+  - text: 'In cascade mode when the first timer reaches a timeout two things will happen:'
+    lines:
+    - 1279
+    - 1279
+    chars:
+    - 120049
+    - 120127
+  - text: An error interrupt will be triggered
+    lines:
+    - 1281
+    - 1281
+    chars:
+    - 120132
+    - 120168
+  quote_hash: 63022ad2e6ae
+- id: req_f90cc6ac2e23
+  path: docs/CaliptraSSHardwareSpecification.md
+  heading_path: Manufacturer Control Interface (MCI) > MCI Feature Descriptions > Watchdog Timer
+  section_id: sec_653082b45801
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: In cascade mode, timer 1 timeout starts Timer 2 counting.
+  aspect: functional
+  condition: Cascade mode, Timer 1 times out
+  ambiguity: null
+  quotes:
+  - text: 'In cascade mode when the first timer reaches a timeout two things will happen:'
+    lines:
+    - 1279
+    - 1279
+    chars:
+    - 120049
+    - 120127
+  - text: Timer 2 will start counting
+    lines:
+    - 1282
+    - 1282
+    chars:
+    - 120172
+    - 120199
+  quote_hash: 97ceaa0d8a62
+- id: req_7dc7351c7eb2
+  path: docs/CaliptraSSHardwareSpecification.md
+  heading_path: Manufacturer Control Interface (MCI) > MCI Feature Descriptions > Watchdog Timer
+  section_id: sec_653082b45801
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: In cascade mode, if the WDT is not serviced before Timer 2 times out, the NMI output pin
+    is asserted.
+  aspect: functional
+  condition: Cascade mode, WDT not serviced before Timer 2 timeout
+  ambiguity: null
+  quotes:
+  - text: 'If the WDT is not serviced before Timer 2 times out two things happen:'
+    lines:
+    - 1284
+    - 1284
+    chars:
+    - 120201
+    - 120271
+  - text: NMI output pin is asserted
+    lines:
+    - 1286
+    - 1286
+    chars:
+    - 120276
+    - 120302
+  quote_hash: 762786b98a3d
+- id: req_92703b044196
+  path: docs/CaliptraSSHardwareSpecification.md
+  heading_path: Manufacturer Control Interface (MCI) > MCI Feature Descriptions > Watchdog Timer
+  section_id: sec_653082b45801
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: In cascade mode, if the WDT is not serviced before Timer 2 times out, NMI HW_ERROR_FATAL
+    is triggered.
+  aspect: error_handling
+  condition: Cascade mode, WDT not serviced before Timer 2 timeout
+  ambiguity:
+    code: WEAK_MODAL
+    note: It says the NMI HW_ERROR_FATAL 'can' assert error_fatal on the MCI port, without stating when
+      it does.
+    question: Under what conditions is error_fatal asserted on the MCI port when NMI HW_ERROR_FATAL is
+      triggered?
+  quotes:
+  - text: 'If the WDT is not serviced before Timer 2 times out two things happen:'
+    lines:
+    - 1284
+    - 1284
+    chars:
+    - 120201
+    - 120271
+  - text: NMI HW_ERROR_FATAL is triggered which can assert an error_fatal on the MCI port.
+    lines:
+    - 1287
+    - 1287
+    chars:
+    - 120306
+    - 120386
+  quote_hash: 76ac44290e67
+- id: req_5ce2aedab7cf
+  path: docs/CaliptraSSHardwareSpecification.md
+  heading_path: Manufacturer Control Interface (MCI) > MCI Feature Descriptions > Watchdog Timer
+  section_id: sec_653082b45801
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: In independent mode, the two timers operate independently of each other.
+  aspect: functional
+  condition: Independent mode
+  ambiguity: null
+  quotes:
+  - text: In Independent mode the two timers are completely independent of each other.
+    lines:
+    - 1289
+    - 1289
+    chars:
+    - 120388
+    - 120464
+  quote_hash: d98c63213d71
+- id: req_dba2cab91392
+  path: docs/CaliptraSSHardwareSpecification.md
+  heading_path: Manufacturer Control Interface (MCI) > MCI Feature Descriptions > Watchdog Timer
+  section_id: sec_653082b45801
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: In independent mode, a timer timeout asserts an error interrupt.
+  aspect: interrupt
+  condition: Independent mode
+  ambiguity: null
+  quotes:
+  - text: When they timeout an error interrupt will be asserted.
+    lines:
+    - 1289
+    - 1289
+    chars:
+    - 120465
+    - 120519
+  quote_hash: 451f5287e4e9
+- id: req_1b2fd2cc2388
+  path: docs/CaliptraSSHardwareSpecification.md
+  heading_path: Manufacturer Control Interface (MCI) > MCI Feature Descriptions > Watchdog Timer
+  section_id: sec_653082b45801
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The NMI is never asserted in independent mode.
+  aspect: functional
+  condition: Independent mode
+  ambiguity: null
+  quotes:
+  - text: The NMI will never be asserted while in independent mode.
+    lines:
+    - 1289
+    - 1289
+    chars:
+    - 120520
+    - 120577
+  quote_hash: 8c6a02406815
+- id: req_9362d977dcb5
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_EN
+  section_id: sec_40f675b0f78c
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER1_EN.timer1_en: hardware access is r.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER1_EN.timer1_en
+  property: hw
+  value: r
+  quotes:
+  - text: hw = r
+    lines:
+    - 685
+    - 685
+    chars:
+    - 37733
+    - 37739
+  quote_hash: e401224c08e5
+- id: req_3bc179cb68c7
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_EN
+  section_id: sec_40f675b0f78c
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER1_EN.timer1_en: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER1_EN.timer1_en
+  property: sw
+  value: rw
+  quotes:
+  - text: sw = rw
+    lines:
+    - 685
+    - 685
+    chars:
+    - 37741
+    - 37748
+  quote_hash: 4ff5468f0b2b
+- id: req_ab5e6c18f22d
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_EN
+  section_id: sec_40f675b0f78c
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.WDT_TIMER1_EN.timer1_en: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req
+    is asserted.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER1_EN.timer1_en
+  property: swwe
+  value: mci_reg.axi_mcu_or_mci_soc_config_req
+  quotes:
+  - text: swwe = axi_mcu_or_mci_soc_config_req
+    lines:
+    - 685
+    - 685
+    chars:
+    - 37750
+    - 37786
+  quote_hash: c2bf4c5e1c50
+- id: req_de5b1e7c74d2
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_EN
+  section_id: sec_40f675b0f78c
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER1_EN.timer1_en: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER1_EN.timer1_en
+  property: reset
+  value: '0'
+  quotes:
+  - text: timer1_en = 1'b0
+    lines:
+    - 685
+    - 685
+    chars:
+    - 37814
+    - 37830
+  quote_hash: 72e4229000b9
+- id: req_253fc8e6f58e
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_CTRL
+  section_id: sec_2f8eee2cab73
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER1_CTRL.timer1_restart: hardware access is r.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER1_CTRL.timer1_restart
+  property: hw
+  value: r
+  quotes:
+  - text: hw = r
+    lines:
+    - 691
+    - 691
+    chars:
+    - 38008
+    - 38014
+  quote_hash: e401224c08e5
+- id: req_40394a0b3cb1
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_CTRL
+  section_id: sec_2f8eee2cab73
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER1_CTRL.timer1_restart: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER1_CTRL.timer1_restart
+  property: sw
+  value: rw
+  quotes:
+  - text: sw = rw
+    lines:
+    - 691
+    - 691
+    chars:
+    - 38016
+    - 38023
+  quote_hash: 4ff5468f0b2b
+- id: req_8c29140158f0
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_CTRL
+  section_id: sec_2f8eee2cab73
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.WDT_TIMER1_CTRL.timer1_restart: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req
+    is asserted.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER1_CTRL.timer1_restart
+  property: swwe
+  value: mci_reg.axi_mcu_or_mci_soc_config_req
+  quotes:
+  - text: swwe = axi_mcu_or_mci_soc_config_req
+    lines:
+    - 691
+    - 691
+    chars:
+    - 38025
+    - 38061
+  quote_hash: c2bf4c5e1c50
+- id: req_9b3a15049c9c
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_CTRL
+  section_id: sec_2f8eee2cab73
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER1_CTRL.timer1_restart: writing 1 produces a single-cycle pulse, then the
+    field clears.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER1_CTRL.timer1_restart
+  property: singlepulse
+  value: 'true'
+  quotes:
+  - text: singlepulse
+    lines:
+    - 691
+    - 691
+    chars:
+    - 38088
+    - 38099
+  quote_hash: df268f5d7915
+- id: req_779ed8ed4842
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_CTRL
+  section_id: sec_2f8eee2cab73
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER1_CTRL.timer1_restart: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER1_CTRL.timer1_restart
+  property: reset
+  value: '0'
+  quotes:
+  - text: timer1_restart = 1'b0
+    lines:
+    - 691
+    - 691
+    chars:
+    - 38102
+    - 38123
+  quote_hash: b5b961654b5f
+- id: req_588761848952
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_TIMEOUT_PERIOD
+  section_id: sec_9ad4b5f47a60
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER1_TIMEOUT_PERIOD[].timer1_timeout_period: hardware access is r.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER1_TIMEOUT_PERIOD[].timer1_timeout_period
+  property: hw
+  value: r
+  quotes:
+  - text: hw = r
+    lines:
+    - 697
+    - 697
+    chars:
+    - 38314
+    - 38320
+  quote_hash: e401224c08e5
+- id: req_ff573bd6e431
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_TIMEOUT_PERIOD
+  section_id: sec_9ad4b5f47a60
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER1_TIMEOUT_PERIOD[].timer1_timeout_period: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER1_TIMEOUT_PERIOD[].timer1_timeout_period
+  property: sw
+  value: rw
+  quotes:
+  - text: sw = rw
+    lines:
+    - 697
+    - 697
+    chars:
+    - 38322
+    - 38329
+  quote_hash: 4ff5468f0b2b
+- id: req_817f20547f64
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_TIMEOUT_PERIOD
+  section_id: sec_9ad4b5f47a60
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.WDT_TIMER1_TIMEOUT_PERIOD[].timer1_timeout_period: software writes take effect only
+    when mci_reg.axi_mcu_or_mci_soc_config_req is asserted.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER1_TIMEOUT_PERIOD[].timer1_timeout_period
+  property: swwe
+  value: mci_reg.axi_mcu_or_mci_soc_config_req
+  quotes:
+  - text: swwe = axi_mcu_or_mci_soc_config_req
+    lines:
+    - 697
+    - 697
+    chars:
+    - 38331
+    - 38367
+  quote_hash: c2bf4c5e1c50
+- id: req_c19e7eab7ca7
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_TIMEOUT_PERIOD
+  section_id: sec_9ad4b5f47a60
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER1_TIMEOUT_PERIOD[].timer1_timeout_period: reset value is 0xffffffff.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER1_TIMEOUT_PERIOD[].timer1_timeout_period
+  property: reset
+  value: '0xffffffff'
+  quotes:
+  - text: timer1_timeout_period[32] = 32'hFFFFFFFF
+    lines:
+    - 697
+    - 697
+    chars:
+    - 38395
+    - 38435
+  quote_hash: 077e6b918ea2
+- id: req_ca638ffb3b96
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_EN
+  section_id: sec_f436db9bf44d
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER2_EN.timer2_en: hardware access is r.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER2_EN.timer2_en
+  property: hw
+  value: r
+  quotes:
+  - text: hw = r
+    lines:
+    - 704
+    - 704
+    chars:
+    - 38803
+    - 38809
+  quote_hash: e401224c08e5
+- id: req_9ee972031ad7
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_EN
+  section_id: sec_f436db9bf44d
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER2_EN.timer2_en: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER2_EN.timer2_en
+  property: sw
+  value: rw
+  quotes:
+  - text: sw = rw
+    lines:
+    - 704
+    - 704
+    chars:
+    - 38811
+    - 38818
+  quote_hash: 4ff5468f0b2b
+- id: req_daea1c2a0d26
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_EN
+  section_id: sec_f436db9bf44d
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.WDT_TIMER2_EN.timer2_en: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req
+    is asserted.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER2_EN.timer2_en
+  property: swwe
+  value: mci_reg.axi_mcu_or_mci_soc_config_req
+  quotes:
+  - text: swwe = axi_mcu_or_mci_soc_config_req
+    lines:
+    - 704
+    - 704
+    chars:
+    - 38820
+    - 38856
+  quote_hash: c2bf4c5e1c50
+- id: req_464d73b6635e
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_EN
+  section_id: sec_f436db9bf44d
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER2_EN.timer2_en: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER2_EN.timer2_en
+  property: reset
+  value: '0'
+  quotes:
+  - text: timer2_en = 1'b0
+    lines:
+    - 704
+    - 704
+    chars:
+    - 38884
+    - 38900
+  quote_hash: fc0435b9973b
+- id: req_df92b206476c
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_EN
+  section_id: sec_f436db9bf44d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Setting timer2_en to 1 disables the default cascaded mode of the watchdog timers.
+  aspect: functional
+  condition: WDT_TIMER2_EN is set to 1
+  ambiguity: null
+  quotes:
+  - text: 'Note: Setting this to 1 will disable the default cascaded mode'
+    lines:
+    - 703
+    - 703
+    chars:
+    - 38648
+    - 38710
+  quote_hash: dbcf594abbbd
+- id: req_bf832e3be0ad
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_EN
+  section_id: sec_f436db9bf44d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Setting timer2_en to 1 makes both watchdog timers count independently.
+  aspect: functional
+  condition: WDT_TIMER2_EN is set to 1
+  ambiguity: null
+  quotes:
+  - text: will have both timers count independently
+    lines:
+    - 703
+    - 703
+    chars:
+    - 38715
+    - 38756
+  quote_hash: ceb532d96a8c
+- id: req_4a2901ffeee9
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_CTRL
+  section_id: sec_192b9760d000
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER2_CTRL.timer2_restart: hardware access is r.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER2_CTRL.timer2_restart
+  property: hw
+  value: r
+  quotes:
+  - text: hw = r
+    lines:
+    - 710
+    - 710
+    chars:
+    - 39072
+    - 39078
+  quote_hash: e401224c08e5
+- id: req_45a44c42a834
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_CTRL
+  section_id: sec_192b9760d000
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER2_CTRL.timer2_restart: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER2_CTRL.timer2_restart
+  property: sw
+  value: rw
+  quotes:
+  - text: sw = rw
+    lines:
+    - 710
+    - 710
+    chars:
+    - 39080
+    - 39087
+  quote_hash: 4ff5468f0b2b
+- id: req_b4f18cd906f6
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_CTRL
+  section_id: sec_192b9760d000
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.WDT_TIMER2_CTRL.timer2_restart: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req
+    is asserted.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER2_CTRL.timer2_restart
+  property: swwe
+  value: mci_reg.axi_mcu_or_mci_soc_config_req
+  quotes:
+  - text: swwe = axi_mcu_or_mci_soc_config_req
+    lines:
+    - 710
+    - 710
+    chars:
+    - 39089
+    - 39125
+  quote_hash: c2bf4c5e1c50
+- id: req_b9e5d64e3525
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_CTRL
+  section_id: sec_192b9760d000
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER2_CTRL.timer2_restart: writing 1 produces a single-cycle pulse, then the
+    field clears.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER2_CTRL.timer2_restart
+  property: singlepulse
+  value: 'true'
+  quotes:
+  - text: singlepulse
+    lines:
+    - 710
+    - 710
+    chars:
+    - 39152
+    - 39163
+  quote_hash: df268f5d7915
+- id: req_d8be4a9a2388
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_CTRL
+  section_id: sec_192b9760d000
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER2_CTRL.timer2_restart: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER2_CTRL.timer2_restart
+  property: reset
+  value: '0'
+  quotes:
+  - text: timer2_restart = 1'b0
+    lines:
+    - 710
+    - 710
+    chars:
+    - 39166
+    - 39187
+  quote_hash: 589d36a325f2
+- id: req_d8af4729fb0f
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_TIMEOUT_PERIOD
+  section_id: sec_8d80b25bb68d
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER2_TIMEOUT_PERIOD[].timer2_timeout_period: hardware access is r.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER2_TIMEOUT_PERIOD[].timer2_timeout_period
+  property: hw
+  value: r
+  quotes:
+  - text: hw = r
+    lines:
+    - 716
+    - 716
+    chars:
+    - 39378
+    - 39384
+  quote_hash: e401224c08e5
+- id: req_8790f5b120aa
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_TIMEOUT_PERIOD
+  section_id: sec_8d80b25bb68d
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER2_TIMEOUT_PERIOD[].timer2_timeout_period: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER2_TIMEOUT_PERIOD[].timer2_timeout_period
+  property: sw
+  value: rw
+  quotes:
+  - text: sw = rw
+    lines:
+    - 716
+    - 716
+    chars:
+    - 39386
+    - 39393
+  quote_hash: 4ff5468f0b2b
+- id: req_b06672c6227e
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_TIMEOUT_PERIOD
+  section_id: sec_8d80b25bb68d
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.WDT_TIMER2_TIMEOUT_PERIOD[].timer2_timeout_period: software writes take effect only
+    when mci_reg.axi_mcu_or_mci_soc_config_req is asserted.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER2_TIMEOUT_PERIOD[].timer2_timeout_period
+  property: swwe
+  value: mci_reg.axi_mcu_or_mci_soc_config_req
+  quotes:
+  - text: swwe = axi_mcu_or_mci_soc_config_req
+    lines:
+    - 716
+    - 716
+    chars:
+    - 39395
+    - 39431
+  quote_hash: c2bf4c5e1c50
+- id: req_5ada9984bf6a
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_TIMEOUT_PERIOD
+  section_id: sec_8d80b25bb68d
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_TIMER2_TIMEOUT_PERIOD[].timer2_timeout_period: reset value is 0xffffffff.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_TIMER2_TIMEOUT_PERIOD[].timer2_timeout_period
+  property: reset
+  value: '0xffffffff'
+  quotes:
+  - text: timer2_timeout_period[32] = 32'hFFFFFFFF
+    lines:
+    - 716
+    - 716
+    chars:
+    - 39459
+    - 39499
+  quote_hash: 95e3549e6c34
+- id: req_1e1d02ba30af
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_STATUS
+  section_id: sec_4ea259a8e025
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_STATUS.t1_timeout: hardware access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_STATUS.t1_timeout
+  property: hw
+  value: rw
+  quotes:
+  - text: hw = rw
+    lines:
+    - 723
+    - 723
+    chars:
+    - 39766
+    - 39773
+  quote_hash: 0127ea7e2b00
+- id: req_4ac4c0b9f62f
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_STATUS
+  section_id: sec_4ea259a8e025
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_STATUS.t1_timeout: software access is r.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_STATUS.t1_timeout
+  property: sw
+  value: r
+  quotes:
+  - text: sw = r
+    lines:
+    - 723
+    - 723
+    chars:
+    - 39775
+    - 39781
+  quote_hash: 32133a781c20
+- id: req_7a05a81ecfc0
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_STATUS
+  section_id: sec_4ea259a8e025
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_STATUS.t1_timeout: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_STATUS.t1_timeout
+  property: reset
+  value: '0'
+  quotes:
+  - text: t1_timeout = 1'b0
+    lines:
+    - 723
+    - 723
+    chars:
+    - 39810
+    - 39827
+  quote_hash: 5ee45bf7b044
+- id: req_e80125344f19
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_STATUS
+  section_id: sec_4ea259a8e025
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_STATUS.t2_timeout: hardware access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_STATUS.t2_timeout
+  property: hw
+  value: rw
+  quotes:
+  - text: hw = rw
+    lines:
+    - 724
+    - 724
+    chars:
+    - 39871
+    - 39878
+  quote_hash: 0127ea7e2b00
+- id: req_7d2d93c9b1a1
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_STATUS
+  section_id: sec_4ea259a8e025
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_STATUS.t2_timeout: software access is r.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_STATUS.t2_timeout
+  property: sw
+  value: r
+  quotes:
+  - text: sw = r
+    lines:
+    - 724
+    - 724
+    chars:
+    - 39880
+    - 39886
+  quote_hash: 32133a781c20
+- id: req_2b5f6b52f9db
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_STATUS
+  section_id: sec_4ea259a8e025
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_STATUS.t2_timeout: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_STATUS.t2_timeout
+  property: reset
+  value: '0'
+  quotes:
+  - text: t2_timeout = 1'b0
+    lines:
+    - 724
+    - 724
+    chars:
+    - 39914
+    - 39931
+  quote_hash: b36da721fd9f
+- id: req_6860b0ebfd1a
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_CFG
+  section_id: sec_7dea5ec96823
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_CFG[].TIMEOUT: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_CFG[].TIMEOUT
+  property: sw
+  value: rw
+  quotes:
+  - text: sw=rw
+    lines:
+    - 731
+    - 731
+    chars:
+    - 40083
+    - 40088
+  quote_hash: c588624e83ef
+- id: req_970cd010cbfb
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_CFG
+  section_id: sec_7dea5ec96823
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_CFG[].TIMEOUT: hardware access is na.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_CFG[].TIMEOUT
+  property: hw
+  value: na
+  quotes:
+  - text: hw=na
+    lines:
+    - 731
+    - 731
+    chars:
+    - 40090
+    - 40095
+  quote_hash: 2d2c389caf00
+- id: req_532b0623a8d8
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_CFG
+  section_id: sec_7dea5ec96823
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.WDT_CFG[].TIMEOUT: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.WDT_CFG[].TIMEOUT
+  property: reset
+  value: '0'
+  quotes:
+  - text: TIMEOUT[32]=0
+    lines:
+    - 731
+    - 731
+    chars:
+    - 40125
+    - 40138
+  quote_hash: 0dd59e34a898
+- id: req_e3d4ab04d859
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_TIMER_CONFIG
+  section_id: sec_122ec9f939dc
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_TIMER_CONFIG.clk_period: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_TIMER_CONFIG.clk_period
+  property: sw
+  value: rw
+  quotes:
+  - text: sw=rw
+    lines:
+    - 741
+    - 741
+    chars:
+    - 40558
+    - 40563
+  quote_hash: c588624e83ef
+- id: req_a92c9460cd3e
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_TIMER_CONFIG
+  section_id: sec_122ec9f939dc
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_TIMER_CONFIG.clk_period: hardware access is na.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_TIMER_CONFIG.clk_period
+  property: hw
+  value: na
+  quotes:
+  - text: hw=na
+    lines:
+    - 741
+    - 741
+    chars:
+    - 40565
+    - 40570
+  quote_hash: 2d2c389caf00
+- id: req_630f8986ba0a
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_TIMER_CONFIG
+  section_id: sec_122ec9f939dc
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_TIMER_CONFIG.clk_period: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_TIMER_CONFIG.clk_period
+  property: reset
+  value: '0'
+  quotes:
+  - text: clk_period[32] = 32'h0
+    lines:
+    - 741
+    - 741
+    chars:
+    - 40600
+    - 40622
+  quote_hash: 25b148e069c9
+- id: req_ffba0cb6e2ce
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_TIMER_CONFIG
+  section_id: sec_122ec9f939dc
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The clk_period field holds the system clock period as an integer number of picoseconds.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Clock Period is indicated as an integer number of picoseconds.
+    lines:
+    - 740
+    - 740
+    chars:
+    - 40453
+    - 40515
+  quote_hash: 614ebeaeb38b
+- id: req_d40cc7f5463b
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_L
+  section_id: sec_65085ba59ae6
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_L.count_l
+  property: sw
+  value: rw
+  quotes:
+  - text: sw = rw
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40893
+    - 40900
+  quote_hash: 4ff5468f0b2b
+- id: req_533ef52f3562
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_L
+  section_id: sec_65085ba59ae6
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: on simultaneous hardware and software updates, sw takes
+    precedence.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_L.count_l
+  property: precedence
+  value: sw
+  quotes:
+  - text: precedence = sw
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40902
+    - 40917
+  quote_hash: 16187f236187
+- id: req_ea0f8a460270
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_L
+  section_id: sec_65085ba59ae6
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: hardware is notified when software modifies the field.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_L.count_l
+  property: swmod
+  value: 'true'
+  quotes:
+  - text: swmod = true
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40919
+    - 40931
+  quote_hash: ce701fb8d625
+- id: req_966fa159dee9
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_L
+  section_id: sec_65085ba59ae6
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: hardware access is r.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_L.count_l
+  property: hw
+  value: r
+  quotes:
+  - text: hw = r
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40933
+    - 40939
+  quote_hash: e401224c08e5
+- id: req_94df3b248eb1
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_L
+  section_id: sec_65085ba59ae6
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: software writes take effect only when mci_reg.axi_mcu_req
+    is asserted.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_L.count_l
+  property: swwe
+  value: mci_reg.axi_mcu_req
+  quotes:
+  - text: swwe = axi_mcu_req
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40941
+    - 40959
+  quote_hash: b0de188f41ba
+- id: req_990bedf6eac2
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_L
+  section_id: sec_65085ba59ae6
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: the field is a counter.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_L.count_l
+  property: counter
+  value: 'true'
+  quotes:
+  - text: counter = true
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40961
+    - 40975
+  quote_hash: bd7156b2b28b
+- id: req_f5f3dbfb78f2
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_L
+  section_id: sec_65085ba59ae6
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: the counter increments by 1.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_L.count_l
+  property: incrvalue
+  value: '1'
+  quotes:
+  - text: incrvalue = 1
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40977
+    - 40990
+  quote_hash: 4227d47eef37
+- id: req_9950958fde5b
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_L
+  section_id: sec_65085ba59ae6
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_L.count_l
+  property: reset
+  value: '0'
+  quotes:
+  - text: count_l[32] = 32'h0
+    lines:
+    - 748
+    - 748
+    chars:
+    - 41037
+    - 41056
+  quote_hash: ee8cb933c4b2
+- id: req_2707075aacac
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_H
+  section_id: sec_8e3a5e42a5aa
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_H.count_h
+  property: sw
+  value: rw
+  quotes:
+  - text: sw = rw
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41320
+    - 41327
+  quote_hash: 4ff5468f0b2b
+- id: req_8f18902698c6
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_H
+  section_id: sec_8e3a5e42a5aa
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: on simultaneous hardware and software updates, sw takes
+    precedence.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_H.count_h
+  property: precedence
+  value: sw
+  quotes:
+  - text: precedence = sw
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41329
+    - 41344
+  quote_hash: 16187f236187
+- id: req_65f9f57d7d26
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_H
+  section_id: sec_8e3a5e42a5aa
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: hardware is notified when software modifies the field.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_H.count_h
+  property: swmod
+  value: 'true'
+  quotes:
+  - text: swmod = true
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41346
+    - 41358
+  quote_hash: ce701fb8d625
+- id: req_ffa17bd1cc88
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_H
+  section_id: sec_8e3a5e42a5aa
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: hardware access is r.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_H.count_h
+  property: hw
+  value: r
+  quotes:
+  - text: hw = r
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41360
+    - 41366
+  quote_hash: e401224c08e5
+- id: req_dea41a73cbfa
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_H
+  section_id: sec_8e3a5e42a5aa
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: software writes take effect only when mci_reg.axi_mcu_req
+    is asserted.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_H.count_h
+  property: swwe
+  value: mci_reg.axi_mcu_req
+  quotes:
+  - text: swwe = axi_mcu_req
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41368
+    - 41386
+  quote_hash: b0de188f41ba
+- id: req_d40caa144baf
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_H
+  section_id: sec_8e3a5e42a5aa
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: the field is a counter.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_H.count_h
+  property: counter
+  value: 'true'
+  quotes:
+  - text: counter = true
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41388
+    - 41402
+  quote_hash: bd7156b2b28b
+- id: req_f4173259a0ff
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_H
+  section_id: sec_8e3a5e42a5aa
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: the counter increments by 1.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_H.count_h
+  property: incrvalue
+  value: '1'
+  quotes:
+  - text: incrvalue = 1
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41404
+    - 41417
+  quote_hash: 4227d47eef37
+- id: req_ba85bec7cbbb
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_H
+  section_id: sec_8e3a5e42a5aa
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIME_H.count_h
+  property: reset
+  value: '0'
+  quotes:
+  - text: count_h[32] = 32'h0
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41464
+    - 41483
+  quote_hash: 89108d4f90c9
+- id: req_eb821ec44e34
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_L
+  section_id: sec_bdb3c795b94d
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIMECMP_L.compare_l: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIMECMP_L.compare_l
+  property: sw
+  value: rw
+  quotes:
+  - text: sw = rw
+    lines:
+    - 761
+    - 761
+    chars:
+    - 41683
+    - 41690
+  quote_hash: 4ff5468f0b2b
+- id: req_bc1e93862ce3
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_L
+  section_id: sec_bdb3c795b94d
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIMECMP_L.compare_l: hardware access is r.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIMECMP_L.compare_l
+  property: hw
+  value: r
+  quotes:
+  - text: hw = r
+    lines:
+    - 761
+    - 761
+    chars:
+    - 41692
+    - 41698
+  quote_hash: e401224c08e5
+- id: req_208c4d1bd928
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_L
+  section_id: sec_bdb3c795b94d
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.MCU_RV_MTIMECMP_L.compare_l: software writes take effect only when mci_reg.axi_mcu_req
+    is asserted.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIMECMP_L.compare_l
+  property: swwe
+  value: mci_reg.axi_mcu_req
+  quotes:
+  - text: swwe = axi_mcu_req
+    lines:
+    - 761
+    - 761
+    chars:
+    - 41700
+    - 41718
+  quote_hash: b0de188f41ba
+- id: req_ac0031fcd63c
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_L
+  section_id: sec_bdb3c795b94d
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIMECMP_L.compare_l: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIMECMP_L.compare_l
+  property: reset
+  value: '0'
+  quotes:
+  - text: compare_l[32] = 32'h0
+    lines:
+    - 761
+    - 761
+    chars:
+    - 41748
+    - 41769
+  quote_hash: e67263350894
+- id: req_4f3b3f6498b2
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_H
+  section_id: sec_4a743eda7095
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIMECMP_H.compare_h: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIMECMP_H.compare_h
+  property: sw
+  value: rw
+  quotes:
+  - text: sw = rw
+    lines:
+    - 767
+    - 767
+    chars:
+    - 41973
+    - 41980
+  quote_hash: 4ff5468f0b2b
+- id: req_e772796de688
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_H
+  section_id: sec_4a743eda7095
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIMECMP_H.compare_h: hardware access is r.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIMECMP_H.compare_h
+  property: hw
+  value: r
+  quotes:
+  - text: hw = r
+    lines:
+    - 767
+    - 767
+    chars:
+    - 41982
+    - 41988
+  quote_hash: e401224c08e5
+- id: req_378203bc5fa8
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_H
+  section_id: sec_4a743eda7095
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.MCU_RV_MTIMECMP_H.compare_h: software writes take effect only when mci_reg.axi_mcu_req
+    is asserted.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIMECMP_H.compare_h
+  property: swwe
+  value: mci_reg.axi_mcu_req
+  quotes:
+  - text: swwe = axi_mcu_req
+    lines:
+    - 767
+    - 767
+    chars:
+    - 41990
+    - 42008
+  quote_hash: b0de188f41ba
+- id: req_7f5b2b94e6d1
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_H
+  section_id: sec_4a743eda7095
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_RV_MTIMECMP_H.compare_h: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_RV_MTIMECMP_H.compare_h
+  property: reset
+  value: '0'
+  quotes:
+  - text: compare_h[32] = 32'h0
+    lines:
+    - 767
+    - 767
+    chars:
+    - 42038
+    - 42059
+  quote_hash: '925010899106'
+- id: req_b3b96a7e3ba2
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > RESET_REQUEST
+  section_id: sec_1fc83d29a163
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.RESET_REQUEST.mcu_req: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.RESET_REQUEST.mcu_req
+  property: sw
+  value: rw
+  quotes:
+  - text: sw=rw
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42402
+    - 42407
+  quote_hash: c588624e83ef
+- id: req_8c0c49d398ae
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > RESET_REQUEST
+  section_id: sec_1fc83d29a163
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.RESET_REQUEST.mcu_req: hardware access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.RESET_REQUEST.mcu_req
+  property: hw
+  value: rw
+  quotes:
+  - text: hw=rw
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42409
+    - 42414
+  quote_hash: 3a54849fc423
+- id: req_c095ed10889e
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > RESET_REQUEST
+  section_id: sec_1fc83d29a163
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.RESET_REQUEST.mcu_req: hardware can clear the field (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.RESET_REQUEST.mcu_req
+  property: hwclr
+  value: 'true'
+  quotes:
+  - text: hwclr=true
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42416
+    - 42426
+  quote_hash: f4c3161655d2
+- id: req_1d8715e6bb56
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > RESET_REQUEST
+  section_id: sec_1fc83d29a163
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.RESET_REQUEST.mcu_req: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req
+    is asserted.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.RESET_REQUEST.mcu_req
+  property: swwe
+  value: mci_reg.axi_mcu_or_mci_soc_config_req
+  quotes:
+  - text: swwe=axi_mcu_or_mci_soc_config_req
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42428
+    - 42462
+  quote_hash: 93521364c354
+- id: req_aa33d6b6111c
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > RESET_REQUEST
+  section_id: sec_1fc83d29a163
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.RESET_REQUEST.mcu_req: hardware writes take effect only when the write enable is
+    asserted (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.RESET_REQUEST.mcu_req
+  property: we
+  value: 'true'
+  quotes:
+  - text: we
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42487
+    - 42489
+  quote_hash: dc7c811b9561
+- id: req_07a5766ce788
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > RESET_REQUEST
+  section_id: sec_1fc83d29a163
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.RESET_REQUEST.mcu_req: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.RESET_REQUEST.mcu_req
+  property: reset
+  value: '0'
+  quotes:
+  - text: mcu_req=1'b0
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42492
+    - 42504
+  quote_hash: 82dcea2813aa
+- id: req_530c6b38327f
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > RESET_REQUEST
+  section_id: sec_1fc83d29a163
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: When the request field is set, MCI asserts MCU reset.
+  aspect: reset
+  condition: mcu_req is set
+  ambiguity: null
+  quotes:
+  - text: Causes MCU reset to be asserted by MCI.
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42328
+    - 42367
+  quote_hash: 2694014bb693
+- id: req_5d6c9d04cf3c
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > RESET_REQUEST
+  section_id: sec_1fc83d29a163
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The request field is cleared when reset is asserted.
+  aspect: reset
+  condition: reset is asserted
+  ambiguity:
+    code: UNCLEAR_REFERENT
+    note: 'It is not stated which reset clears the field: the MCU reset it causes, or the mci_rst_b reset
+      signal.'
+    question: Does 'reset' mean the MCU reset asserted by MCI as a result of this request, or the mci_rst_b
+      reset of the register block?
+  quotes:
+  - text: Cleared when reset is asserted.
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42368
+    - 42399
+  quote_hash: a30d269d739f
+- id: req_71bf76389b2e
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > RESET_REQUEST
+  section_id: sec_1fc83d29a163
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: TAP has read/write access to this register in debug mode.
+  aspect: access_control
+  condition: debug mode
+  ambiguity: null
+  quotes:
+  - text: 'TAP Access [in debug mode]: RW'
+    lines:
+    - 775
+    - 775
+    chars:
+    - 42245
+    - 42275
+  quote_hash: 177d584528cf
+- id: req_dd644900b2d5
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCI_BOOTFSM_GO
+  section_id: sec_c455978e88f8
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCI_BOOTFSM_GO.go: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCI_BOOTFSM_GO.go
+  property: sw
+  value: rw
+  quotes:
+  - text: sw=rw
+    lines:
+    - 784
+    - 784
+    chars:
+    - 42780
+    - 42785
+  quote_hash: c588624e83ef
+- id: req_ee177df5209c
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCI_BOOTFSM_GO
+  section_id: sec_c455978e88f8
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCI_BOOTFSM_GO.go: hardware access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCI_BOOTFSM_GO.go
+  property: hw
+  value: rw
+  quotes:
+  - text: hw = rw
+    lines:
+    - 784
+    - 784
+    chars:
+    - 42787
+    - 42794
+  quote_hash: 0127ea7e2b00
+- id: req_b9a29f796616
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCI_BOOTFSM_GO
+  section_id: sec_c455978e88f8
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.MCI_BOOTFSM_GO.go: hardware writes take effect only when the write enable is asserted
+    (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCI_BOOTFSM_GO.go
+  property: we
+  value: 'true'
+  quotes:
+  - text: we
+    lines:
+    - 784
+    - 784
+    chars:
+    - 42796
+    - 42798
+  quote_hash: dc7c811b9561
+- id: req_6999989f91f2
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCI_BOOTFSM_GO
+  section_id: sec_c455978e88f8
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCI_BOOTFSM_GO.go: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCI_BOOTFSM_GO.go
+  property: reset
+  value: '0'
+  quotes:
+  - text: go=1'b0
+    lines:
+    - 784
+    - 784
+    chars:
+    - 42801
+    - 42808
+  quote_hash: c9864f173eb5
+- id: req_cf4ea3224cab
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCI_BOOTFSM_GO
+  section_id: sec_c455978e88f8
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Writing the GO field requests the MCI BootFSM to continue past the breakpoint, allowing MCU
+    and Caliptra to be brought out of reset.
+  aspect: functional
+  condition: null
+  ambiguity:
+    code: MISSING_DETAIL
+    note: The text does not state which value or write action constitutes the request, or whether it is
+      a level or a pulse.
+    question: Does writing 1 to GO release the BootFSM, and must the bit remain set or is it a one-time
+      request?
+  quotes:
+  - text: Request MCI BootFSM to continue past the breakpoint allowing MCU and Caliptra to be brought
+      out of reset.
+    lines:
+    - 782
+    - 782
+    chars:
+    - 42596
+    - 42701
+  quote_hash: 0d090454c29f
+- id: req_21d8f0d28695
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCI_BOOTFSM_GO
+  section_id: sec_c455978e88f8
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: TAP access to the MCI_BOOTFSM_GO register is read-write when debug intent is set.
+  aspect: access_control
+  condition: TAP access with debug intent set
+  ambiguity: null
+  quotes:
+  - text: '[br]TAP Access [with debug intent set]: RW'
+    lines:
+    - 783
+    - 783
+    chars:
+    - 42719
+    - 42761
+  quote_hash: 2de14f20d387
+- id: req_e6979854eecc
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > CPTRA_BOOT_GO
+  section_id: sec_8ea8b5bff8f0
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.CPTRA_BOOT_GO.go: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.CPTRA_BOOT_GO.go
+  property: sw
+  value: rw
+  quotes:
+  - text: sw=rw
+    lines:
+    - 791
+    - 791
+    chars:
+    - 43025
+    - 43030
+  quote_hash: c588624e83ef
+- id: req_d2931efa1bff
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > CPTRA_BOOT_GO
+  section_id: sec_8ea8b5bff8f0
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.CPTRA_BOOT_GO.go: hardware access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.CPTRA_BOOT_GO.go
+  property: hw
+  value: rw
+  quotes:
+  - text: hw = rw
+    lines:
+    - 791
+    - 791
+    chars:
+    - 43032
+    - 43039
+  quote_hash: 0127ea7e2b00
+- id: req_ebfc53f269a5
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > CPTRA_BOOT_GO
+  section_id: sec_8ea8b5bff8f0
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.CPTRA_BOOT_GO.go: hardware writes take effect only when the write enable is asserted
+    (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.CPTRA_BOOT_GO.go
+  property: we
+  value: 'true'
+  quotes:
+  - text: we
+    lines:
+    - 791
+    - 791
+    chars:
+    - 43041
+    - 43043
+  quote_hash: dc7c811b9561
+- id: req_0fbdd1281054
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > CPTRA_BOOT_GO
+  section_id: sec_8ea8b5bff8f0
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.CPTRA_BOOT_GO.go: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.CPTRA_BOOT_GO.go
+  property: reset
+  value: '0'
+  quotes:
+  - text: go=1'b0
+    lines:
+    - 791
+    - 791
+    chars:
+    - 43046
+    - 43053
+  quote_hash: c9864f173eb5
+- id: req_81d0bc80f190
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > CPTRA_BOOT_GO
+  section_id: sec_8ea8b5bff8f0
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Writing the go field requests the MCI Boot FSM to deassert Caliptra reset.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Request Caliptra Reset to be deasserted by the MCI Boot FSM.
+    lines:
+    - 789
+    - 789
+    chars:
+    - 42894
+    - 42954
+  quote_hash: d34f985a322e
+- id: req_2391abfebe67
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > CPTRA_BOOT_GO
+  section_id: sec_8ea8b5bff8f0
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: TAP has read/write access to CPTRA_BOOT_GO in debug mode.
+  aspect: access_control
+  condition: TAP access while in debug mode
+  ambiguity: null
+  quotes:
+  - text: 'TAP Access [in debug mode]: RW'
+    lines:
+    - 790
+    - 790
+    chars:
+    - 42976
+    - 43006
+  quote_hash: 177d584528cf
+- id: req_e0ad1a79a315
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  section_id: sec_94fbf3f4a3f5
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.FW_SRAM_EXEC_REGION_SIZE.size: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.FW_SRAM_EXEC_REGION_SIZE.size
+  property: sw
+  value: rw
+  quotes:
+  - text: sw=rw
+    lines:
+    - 798
+    - 798
+    chars:
+    - 43386
+    - 43391
+  quote_hash: c588624e83ef
+- id: req_cccfe0d56399
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  section_id: sec_94fbf3f4a3f5
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.FW_SRAM_EXEC_REGION_SIZE.size: hardware access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.FW_SRAM_EXEC_REGION_SIZE.size
+  property: hw
+  value: rw
+  quotes:
+  - text: hw=rw
+    lines:
+    - 798
+    - 798
+    chars:
+    - 43393
+    - 43398
+  quote_hash: 3a54849fc423
+- id: req_9c07cedc7848
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  section_id: sec_94fbf3f4a3f5
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.FW_SRAM_EXEC_REGION_SIZE.size: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req__ss_config_unlock
+    is asserted.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.FW_SRAM_EXEC_REGION_SIZE.size
+  property: swwe
+  value: mci_reg.axi_mcu_or_mci_soc_config_req__ss_config_unlock
+  quotes:
+  - text: swwe=axi_mcu_or_mci_soc_config_req__ss_config_unlock
+    lines:
+    - 798
+    - 798
+    chars:
+    - 43400
+    - 43452
+  quote_hash: 8d3f4a39db38
+- id: req_e66dbc317d3a
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  section_id: sec_94fbf3f4a3f5
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.FW_SRAM_EXEC_REGION_SIZE.size: hardware writes take effect only when the write enable
+    is asserted (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.FW_SRAM_EXEC_REGION_SIZE.size
+  property: we
+  value: 'true'
+  quotes:
+  - text: we
+    lines:
+    - 798
+    - 798
+    chars:
+    - 43454
+    - 43456
+  quote_hash: dc7c811b9561
+- id: req_6deafd3ec77a
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  section_id: sec_94fbf3f4a3f5
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.FW_SRAM_EXEC_REGION_SIZE.size: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.FW_SRAM_EXEC_REGION_SIZE.size
+  property: reset
+  value: '0'
+  quotes:
+  - text: size[16] = 16'h0
+    lines:
+    - 798
+    - 798
+    chars:
+    - 43459
+    - 43475
+  quote_hash: 77827a60ee4e
+- id: req_18b7111243dc
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  section_id: sec_94fbf3f4a3f5
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The size field value is expressed in multiples of 4KiB.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Size (in multiples of 4KiB)
+    lines:
+    - 798
+    - 798
+    chars:
+    - 43356
+    - 43383
+  quote_hash: 1dd35ba0571f
+- id: req_b1ab8afa7487
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  section_id: sec_94fbf3f4a3f5
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: TAP has read/write access to the register in debug mode.
+  aspect: access_control
+  condition: debug mode
+  ambiguity: null
+  quotes:
+  - text: 'TAP Access [in debug mode]: RW'
+    lines:
+    - 797
+    - 797
+    chars:
+    - 43301
+    - 43331
+  quote_hash: 177d584528cf
+- id: req_4a2cef4bb641
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_NMI_VECTOR
+  section_id: sec_0907979a767f
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_NMI_VECTOR.vec: hardware access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_NMI_VECTOR.vec
+  property: hw
+  value: rw
+  quotes:
+  - text: hw = rw
+    lines:
+    - 806
+    - 806
+    chars:
+    - 43937
+    - 43944
+  quote_hash: 0127ea7e2b00
+- id: req_5fb27c7cee2c
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_NMI_VECTOR
+  section_id: sec_0907979a767f
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.MCU_NMI_VECTOR.vec: hardware writes take effect only when the write enable is asserted
+    (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_NMI_VECTOR.vec
+  property: we
+  value: 'true'
+  quotes:
+  - text: we
+    lines:
+    - 806
+    - 806
+    chars:
+    - 43946
+    - 43948
+  quote_hash: dc7c811b9561
+- id: req_d210cf6ca362
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_NMI_VECTOR
+  section_id: sec_0907979a767f
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_NMI_VECTOR.vec: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_NMI_VECTOR.vec
+  property: sw
+  value: rw
+  quotes:
+  - text: sw = rw
+    lines:
+    - 806
+    - 806
+    chars:
+    - 43950
+    - 43957
+  quote_hash: 4ff5468f0b2b
+- id: req_6c709466e2dd
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_NMI_VECTOR
+  section_id: sec_0907979a767f
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'mci_reg.MCU_NMI_VECTOR.vec: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req__ss_config_unlock
+    is asserted.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_NMI_VECTOR.vec
+  property: swwe
+  value: mci_reg.axi_mcu_or_mci_soc_config_req__ss_config_unlock
+  quotes:
+  - text: swwe = axi_mcu_or_mci_soc_config_req__ss_config_unlock
+    lines:
+    - 806
+    - 806
+    chars:
+    - 43959
+    - 44013
+  quote_hash: bdea2c66bdd3
+- id: req_0d28538af2aa
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_NMI_VECTOR
+  section_id: sec_0907979a767f
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'mci_reg.MCU_NMI_VECTOR.vec: reset value is 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: mci_reg.MCU_NMI_VECTOR.vec
+  property: reset
+  value: '0'
+  quotes:
+  - text: vec[32] = 32'h0
+    lines:
+    - 806
+    - 806
+    chars:
+    - 44016
+    - 44031
+  quote_hash: 6044ceecff36
+- id: req_6d737ce5658d
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_NMI_VECTOR
+  section_id: sec_0907979a767f
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Bit [0] of the NMI vector is ignored to enforce half-word alignment of the address.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Bit [0] is ignored to enforce half-word alignment of address.
+    lines:
+    - 804
+    - 804
+    chars:
+    - 43786
+    - 43847
+  quote_hash: 766b9de50040
+- id: req_2ac690f9ad3b
+  path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_NMI_VECTOR
+  section_id: sec_0907979a767f
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: TAP has read/write access to the register when in debug mode.
+  aspect: access_control
+  condition: TAP access while in debug mode
+  ambiguity: null
+  quotes:
+  - text: 'TAP Access [in debug mode]: RW'
+    lines:
+    - 805
+    - 805
+    chars:
+    - 43868
+    - 43898
+  quote_hash: 177d584528cf
+other_text:
+- path: docs/CaliptraSSHardwareSpecification.md
+  heading_path: Manufacturer Control Interface (MCI) > MCI Feature Descriptions > Watchdog Timer
+  section_id: sec_653082b45801
+  label: informative
+  reason: Overview and rationale of the watchdog timer.
+  ambiguity: null
+  quote:
+    text: The Watchdog Timer within the MCI is a crucial component designed to enhance the reliability
+      and robustness of the SoC.
+    lines:
+    - 1273
+    - 1273
+    chars:
+    - 119492
+    - 119611
+- path: docs/CaliptraSSHardwareSpecification.md
+  heading_path: Manufacturer Control Interface (MCI) > MCI Feature Descriptions > Watchdog Timer
+  section_id: sec_653082b45801
+  label: ambiguous
+  reason: Describes system reset triggering with no testable condition for what counts as incorrect functioning.
+  ambiguity:
+    code: VAGUE
+    note: '''Not functioning correctly'' and ''can trigger a system reset'' are not testable, and the
+      later text describes NMI/interrupts rather than reset.'
+    question: Under what precise conditions does the watchdog trigger a system reset, and how does this
+      relate to the interrupt and NMI behavior?
+  quote:
+    text: This timer monitors the operation of the system and can trigger a system reset if it detects
+      that the system is not functioning correctly.
+    lines:
+    - 1273
+    - 1273
+    chars:
+    - 119612
+    - 119750
+- path: docs/CaliptraSSHardwareSpecification.md
+  heading_path: Manufacturer Control Interface (MCI) > MCI Feature Descriptions > Watchdog Timer
+  section_id: sec_653082b45801
+  label: ambiguous
+  reason: Mentions configurability and various timeout periods without specifying values, registers or
+    mechanisms.
+  ambiguity:
+    code: MISSING_DETAIL
+    note: The timeout periods, ranges and control mechanisms are not specified.
+    question: Which CSRs configure the timeouts and what are the supported timeout ranges and control
+      mechanisms?
+  quote:
+    text: The Watchdog Timer is configurable through CSRs and provides various timeout periods and control
+      mechanisms to ensure the system operates within defined parameters.
+    lines:
+    - 1273
+    - 1273
+    chars:
+    - 119751
+    - 119915
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_EN
+  section_id: sec_40f675b0f78c
+  label: informative
+  reason: Describes the register's name/purpose and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Watchdog timer1 enable register
+    lines:
+    - 684
+    - 684
+    chars:
+    - 37656
+    - 37687
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_EN
+  section_id: sec_40f675b0f78c
+  label: informative
+  reason: Labels the field's purpose without stating a testable behavior beyond the already derived properties.
+  ambiguity: null
+  quote:
+    text: WDT timer1 enable
+    lines:
+    - 685
+    - 685
+    chars:
+    - 37713
+    - 37730
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_CTRL
+  section_id: sec_2f8eee2cab73
+  label: informative
+  reason: Describes the register's general purpose and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Watchdog timer1 control register
+    lines:
+    - 690
+    - 690
+    chars:
+    - 37929
+    - 37961
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_CTRL
+  section_id: sec_2f8eee2cab73
+  label: informative
+  reason: Names the field; the behavior (single pulse on write of 1) is already captured by property-derived
+    requirements.
+  ambiguity: null
+  quote:
+    text: WDT timer1 restart
+    lines:
+    - 691
+    - 691
+    chars:
+    - 37987
+    - 38005
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_TIMEOUT_PERIOD
+  section_id: sec_9ad4b5f47a60
+  label: informative
+  reason: Describes the register's purpose only and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Watchdog timer1 timeout register
+    lines:
+    - 696
+    - 696
+    chars:
+    - 38228
+    - 38260
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_TIMEOUT_PERIOD
+  section_id: sec_9ad4b5f47a60
+  label: informative
+  reason: Names the field without stating any testable behavior.
+  ambiguity: null
+  quote:
+    text: WDT timer1 timeout period
+    lines:
+    - 695
+    - 695
+    chars:
+    - 38175
+    - 38200
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_TIMEOUT_PERIOD
+  section_id: sec_9ad4b5f47a60
+  label: reference
+  reason: Only points to a parameter in another file for the array size.
+  ambiguity: null
+  quote:
+    text: This reflects WDT_TIMEOUT_PERIOD_NUM_DWORDS in mci_pkg.sv
+    lines:
+    - 698
+    - 698
+    chars:
+    - 38476
+    - 38533
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_EN
+  section_id: sec_f436db9bf44d
+  label: informative
+  reason: Describes the purpose of the register without stating testable behavior.
+  ambiguity: null
+  quote:
+    text: Watchdog timer2 enable register.
+    lines:
+    - 703
+    - 703
+    chars:
+    - 38615
+    - 38647
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_EN
+  section_id: sec_f436db9bf44d
+  label: informative
+  reason: Field description that restates the field name and does not state specific behavior.
+  ambiguity: null
+  quote:
+    text: WDT timer2 enable
+    lines:
+    - 704
+    - 704
+    chars:
+    - 38783
+    - 38800
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_CTRL
+  section_id: sec_192b9760d000
+  label: informative
+  reason: Describes the register's general purpose and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Watchdog timer2 control register
+    lines:
+    - 709
+    - 709
+    chars:
+    - 38993
+    - 39025
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_CTRL
+  section_id: sec_192b9760d000
+  label: informative
+  reason: Names the field's purpose; the access, pulse and reset behavior are already captured from the
+    properties.
+  ambiguity: null
+  quote:
+    text: WDT timer2 restart
+    lines:
+    - 710
+    - 710
+    chars:
+    - 39051
+    - 39069
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_TIMEOUT_PERIOD
+  section_id: sec_8d80b25bb68d
+  label: informative
+  reason: Describes the register's general purpose and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Watchdog timer2 timeout register
+    lines:
+    - 715
+    - 715
+    chars:
+    - 39292
+    - 39324
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_TIMEOUT_PERIOD
+  section_id: sec_8d80b25bb68d
+  label: informative
+  reason: Names the field without stating any testable behavior.
+  ambiguity: null
+  quote:
+    text: WDT timer2 timeout period
+    lines:
+    - 714
+    - 714
+    chars:
+    - 39239
+    - 39264
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_STATUS
+  section_id: sec_4ea259a8e025
+  label: informative
+  reason: Describes the register's purpose only and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Watchdog timer status register
+    lines:
+    - 722
+    - 722
+    chars:
+    - 39675
+    - 39705
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_STATUS
+  section_id: sec_4ea259a8e025
+  label: ambiguous
+  reason: Field description reads as behavior (set on timer1 timeout and timer2 enabled), but when the
+    bit is set or cleared is not stated.
+  ambiguity:
+    code: MISSING_DETAIL
+    note: It does not say when t1_timeout is set or cleared, or how timer2 is enabled as a result of timer1
+      timing out.
+    question: Under what exact conditions does hardware set and clear t1_timeout, and does timer2 enable
+      automatically when t1_timeout is set?
+  quote:
+    text: Timer1 timed out, timer2 enabled
+    lines:
+    - 723
+    - 723
+    chars:
+    - 39731
+    - 39763
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_STATUS
+  section_id: sec_4ea259a8e025
+  label: ambiguous
+  reason: Field description names an event but does not define when the bit is set or cleared.
+  ambiguity:
+    code: MISSING_DETAIL
+    note: It does not specify the conditions under which t2_timeout is set or cleared.
+    question: Under what exact conditions does hardware set and clear t2_timeout (e.g. on timer2 expiry,
+      cleared by reset only)?
+  quote:
+    text: Timer2 timed out
+    lines:
+    - 724
+    - 724
+    chars:
+    - 39852
+    - 39868
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_CFG
+  section_id: sec_7dea5ec96823
+  label: informative
+  reason: Describes the purpose of the TIMEOUT field (SOC-provided WDT1 timeout count in cycles) without
+    stating a testable behavior beyond the access and reset properties already derived.
+  ambiguity: null
+  quote:
+    text: SOC provided count in cycles for WDT1 timeout.
+    lines:
+    - 730
+    - 730
+    chars:
+    - 40019
+    - 40065
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_TIMER_CONFIG
+  section_id: sec_122ec9f939dc
+  label: informative
+  reason: Describes the purpose of the register; the encoding is covered by the unit statement.
+  ambiguity: null
+  quote:
+    text: Provides the clock period of the system clock.
+    lines:
+    - 738
+    - 738
+    chars:
+    - 40312
+    - 40358
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_TIMER_CONFIG
+  section_id: sec_122ec9f939dc
+  label: ambiguous
+  reason: Reads as a behavioral purpose but does not say how the value affects MTIME, so it cannot be
+    tested as written.
+  ambiguity:
+    code: MISSING_DETAIL
+    note: It is not stated how the clock period value is used to standardize the MTIME count.
+    question: What exact relationship or mechanism ties MCU_TIMER_CONFIG.clk_period to the MTIME count
+      register behavior?
+  quote:
+    text: Used to standardize the RISC-V Standard MTIME count register.
+    lines:
+    - 739
+    - 739
+    chars:
+    - 40375
+    - 40436
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_TIMER_CONFIG
+  section_id: sec_122ec9f939dc
+  label: informative
+  reason: Only restates the unit of picoseconds already given in the register description.
+  ambiguity: null
+  quote:
+    text: Period in (ps)
+    lines:
+    - 741
+    - 741
+    chars:
+    - 40541
+    - 40555
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_L
+  section_id: sec_65085ba59ae6
+  label: informative
+  reason: Describes what the register is, without stating a testable behavior.
+  ambiguity: null
+  quote:
+    text: RISC-V Standard Machine-mode Time Counter, lower 32-bits.
+    lines:
+    - 746
+    - 746
+    chars:
+    - 40709
+    - 40766
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_L
+  section_id: sec_65085ba59ae6
+  label: reference
+  reason: Points to another register field for the counter frequency rather than stating a behavior here.
+  ambiguity: null
+  quote:
+    text: Frequency of counter is indicated in MCU_TIMER_CONFIG.clk_period.
+    lines:
+    - 747
+    - 747
+    chars:
+    - 40787
+    - 40852
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_L
+  section_id: sec_65085ba59ae6
+  label: informative
+  reason: Field label describing the field name only.
+  ambiguity: null
+  quote:
+    text: Counter Low
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40878
+    - 40889
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_H
+  section_id: sec_8e3a5e42a5aa
+  label: informative
+  reason: Describes what the register is and does not state a testable behavior.
+  ambiguity: null
+  quote:
+    text: RISC-V Standard Machine-mode Time Counter, upper 32-bits.
+    lines:
+    - 753
+    - 753
+    chars:
+    - 41136
+    - 41193
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_H
+  section_id: sec_8e3a5e42a5aa
+  label: reference
+  reason: Only points to the MCU_TIMER_CONFIG.clk_period field for the counter frequency.
+  ambiguity: null
+  quote:
+    text: Frequency of counter is indicated in MCU_TIMER_CONFIG.clk_period.
+    lines:
+    - 754
+    - 754
+    chars:
+    - 41214
+    - 41279
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIME_H
+  section_id: sec_8e3a5e42a5aa
+  label: informative
+  reason: Short label for the field, with no behavior stated.
+  ambiguity: null
+  quote:
+    text: Counter High
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41305
+    - 41317
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_L
+  section_id: sec_bdb3c795b94d
+  label: informative
+  reason: Describes what the register holds (the lower 32 bits of the RISC-V mtimecmp value) without stating
+    a testable behavior.
+  ambiguity: null
+  quote:
+    text: RISC-V Standard Machine-mode Time Counter Compare Value, lower 32-bits.
+    lines:
+    - 760
+    - 760
+    chars:
+    - 41565
+    - 41636
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_L
+  section_id: sec_bdb3c795b94d
+  label: informative
+  reason: Field description label that only names the field and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Count Compare Low
+    lines:
+    - 761
+    - 761
+    chars:
+    - 41662
+    - 41679
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_H
+  section_id: sec_4a743eda7095
+  label: informative
+  reason: Describes what the register represents and does not state a testable behavior beyond the derived
+    properties.
+  ambiguity: null
+  quote:
+    text: RISC-V Standard Machine-mode Time Counter Compare Value, upper 32-bits.
+    lines:
+    - 766
+    - 766
+    chars:
+    - 41855
+    - 41926
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_RV_MTIMECMP_H
+  section_id: sec_4a743eda7095
+  label: informative
+  reason: Field label that names the field and does not state a testable behavior.
+  ambiguity: null
+  quote:
+    text: Count Compare High
+    lines:
+    - 767
+    - 767
+    chars:
+    - 41952
+    - 41970
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > RESET_REQUEST
+  section_id: sec_1fc83d29a163
+  label: informative
+  reason: This is the register's display name.
+  ambiguity: null
+  quote:
+    text: Reset Request;
+    lines:
+    - 774
+    - 774
+    chars:
+    - 42210
+    - 42224
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > RESET_REQUEST
+  section_id: sec_1fc83d29a163
+  label: informative
+  reason: This is a short label describing the field.
+  ambiguity: null
+  quote:
+    text: Request.
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42302
+    - 42310
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > RESET_REQUEST
+  section_id: sec_1fc83d29a163
+  label: informative
+  reason: This only restates the software read/write access already derived from the properties.
+  ambiguity: null
+  quote:
+    text: Writable by MCU.
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42311
+    - 42327
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  section_id: sec_94fbf3f4a3f5
+  label: informative
+  reason: Describes the purpose of the register and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Dynamic size assignment for the region of sram that contains executable instructions for MCU.
+    lines:
+    - 796
+    - 796
+    chars:
+    - 43152
+    - 43245
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  section_id: sec_94fbf3f4a3f5
+  label: informative
+  reason: Restates the software write-enable lock already derived from the swwe property.
+  ambiguity: null
+  quote:
+    text: Locked when SS_CONFIG_DONE is set.
+    lines:
+    - 796
+    - 796
+    chars:
+    - 43246
+    - 43280
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_NMI_VECTOR
+  section_id: sec_0907979a767f
+  label: informative
+  reason: Describes the purpose of the register and does not state a testable behavior.
+  ambiguity: null
+  quote:
+    text: 32-bit register providing the jump vector for RISC-V to transition for NMI handling code.
+    lines:
+    - 802
+    - 802
+    chars:
+    - 43568
+    - 43657
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_NMI_VECTOR
+  section_id: sec_0907979a767f
+  label: ambiguous
+  reason: States a default value of the ROM base address, which cannot be tested as written and disagrees
+    with the derived reset value.
+  ambiguity:
+    code: CONFLICT
+    note: The description says the default is the base address of ROM, but the reset value property of
+      vec is 0.
+    question: Is the reset value of MCU_NMI_VECTOR.vec 0, or the ROM base address, and if it is the ROM
+      base address, what is that address?
+  quote:
+    text: Default is the base address of ROM, but may be updated for enhanced handling by runtime images.
+    lines:
+    - 803
+    - 803
+    chars:
+    - 43674
+    - 43769
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > MCU_NMI_VECTOR
+  section_id: sec_0907979a767f
+  label: informative
+  reason: Field name label only, with no behavior stated.
+  ambiguity: null
+  quote:
+    text: NMI Vector
+    lines:
+    - 801
+    - 801
+    chars:
+    - 43539
+    - 43549
+unclassified:
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER1_TIMEOUT_PERIOD
+  section_id: sec_9ad4b5f47a60
+  lines:
+  - 697
+  - 697
+  chars:
+  - 38286
+  - 38311
+  text: WDT timer1 timeout period
+- path: src/mci/rtl/mci_reg.rdl
+  heading_path: mci_reg > WDT_TIMER2_TIMEOUT_PERIOD
+  section_id: sec_8d80b25bb68d
+  lines:
+  - 716
+  - 716
+  chars:
+  - 39350
+  - 39375
+  text: WDT timer2 timeout period
+dropped: []

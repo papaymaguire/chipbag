@@ -1,0 +1,65 @@
+finding_hash: c4de1f32d7f7137d
+started_at: '2026-11-10T20:54:57Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The register attributes hwext/hwqe are exercised functionally. The smoke and vector tests
+    drive CFG.endian_swap and CMD start/process/stop/continue. The scoreboard checks the results: the
+    swapped message bytes and the digest. The finding''s "untested" claim does not hold.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 159
+    line_end: 161
+    quote: // endian_swap bit 1 operates at big endian data
+    role: refutes
+    note: Scoreboard models endian_swap and checks the digest against the DUT.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 233
+    line_end: 251
+    quote: task hmac_base_vseq::trigger_hash_continue();
+    role: refutes
+    note: Sequences drive hash_stop and hash_continue commands.
+  searches:
+  - what: endian_swap, hash_stop, hash_continue in dv
+    where: hw/ip/hmac/dv
+    found: Sequences drive them, the scoreboard models them, and coverage crosses them.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 61
+    line_end: 61
+    why_not: Coverage only; the scoreboard supplies the actual check.
+  items:
+  - id: cr_f7398c7e530f
+    outcome: withdrawn
+    reason: The scoreboard models endian_swap, and the digest comparison fails the test if the DUT behaves
+      differently.
+    evidence:
+    - 0
+  - id: cr_050d2960d9a1
+    outcome: withdrawn
+    reason: trigger_hash_stop is driven by the sequences, and the scoreboard checks the results.
+    evidence:
+    - 1
+  - id: cr_1517fff9b261
+    outcome: withdrawn
+    reason: hash_process is exercised by every hash operation, and the digest is checked.
+    evidence:
+    - 1
+  - id: cr_322bd3d61e3a
+    outcome: withdrawn
+    reason: trigger_hash_continue is exercised by the sequences, and the scoreboard checks the resumed
+      hash.
+    evidence:
+    - 1
+  - id: cr_6ffabed85358
+    outcome: withdrawn
+    reason: hash_start is exercised by every test, and the scoreboard models it (hmac_start).
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0449682
+error: null

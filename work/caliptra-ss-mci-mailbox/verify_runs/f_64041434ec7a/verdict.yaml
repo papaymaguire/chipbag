@@ -1,0 +1,58 @@
+finding_hash: 9717df3ac0bf80ee
+started_at: '2026-11-10T21:08:23Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The hardware spec and integration spec name the notification: the `notif_mbox*_target_done`
+    interrupt, asserted when the Target writes a terminal TARGET_STATUS. The hardware spec also says each
+    interrupt has `_en`, `_sts`, `_trig` and `_intr_count_r` fields in the MCI register block. A test
+    writer therefore knows what to check. An exact cycle latency is not given, but the finding''s main
+    question (which mechanism) is answered.'
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1483
+    line_end: 1483
+    quote: '| Target complete          | `notif_mbox*_target_done` | Asserted when the Target user writes
+      a terminal TARGET_STATUS.         |'
+    role: refutes
+    note: Names the notification signal and its trigger condition.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1485
+    line_end: 1486
+    quote: Each interrupt has a corresponding enable, status, trigger, and
+    role: refutes
+    note: Says where the status bit lives and that it has enable, trigger and count fields.
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2338
+    line_end: 2338
+    quote: 'MBOX-)MCU: notif_mbox*_target_done interrupt'
+    role: refutes
+    note: The integration flow shows the interrupt delivered to MCU after the terminal write, which MCU
+      then reads TARGET_STATUS.
+  searches:
+  - what: target_done and TARGET_STATUS across the repo
+    where: docs, src
+    found: The hardware spec interrupt table and the integration spec sequence diagrams name notif_mbox*_target_done.
+  - what: cycle latency
+    where: HW spec
+    found: No exact cycle count was found.
+  near_misses:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1483
+    line_end: 1486
+    why_not: Exact latency in cycles and the explicit clear mechanism (standard interrupt status clearing)
+      are not stated. This is a minor residual gap, not the mechanism ambiguity the finding claims.
+  items: []
+  new_sources:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    reason: MCU Mailbox Interrupts section names notif_mbox*_target_done.
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    reason: Sequence diagrams show the target_done interrupt flow.
+  resolution: Add a reference in the RDL desc to notif_mbox*_target_done. Optionally state the latency
+    and that the _sts bit is cleared by write-1-to-clear.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.053340700000000005
+error: null

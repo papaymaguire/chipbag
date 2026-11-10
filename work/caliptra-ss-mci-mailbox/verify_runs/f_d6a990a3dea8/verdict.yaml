@@ -1,0 +1,40 @@
+finding_hash: ca7853b2ddbf5e4f
+started_at: '2026-11-10T19:36:17Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The two statements are consistent. LOCK is a 1-bit field with sw=rw and swwel. The RTL wires
+    swwel to the field's own value, so once LOCK is 1 it is read-only. While LOCK is 0, writing 0 changes
+    nothing and writing 1 sets it. That is write-1-to-set behaviour, which is what "RW1-S" describes.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 832
+    line_end: 834
+    quote: '[br]AXI Access:      RW1-S'
+    role: refutes
+    note: The description says RW1-S and 'Read-Only once locked'. The field is sw=rw with swwel, which
+      gives the same behaviour for a 1-bit lock.
+  - path: src/mci/rtl/mci_reg_top.sv
+    line_start: 648
+    line_end: 648
+    quote: mci_reg_hwif_in.MBOX0_AXI_USER_LOCK[i].LOCK.swwel = mci_reg_hwif_out.MBOX0_AXI_USER_LOCK[i].LOCK.value;
+    role: context
+    note: swwel is the field's own value, so writes are blocked once LOCK is set. The bit can only go
+      0 to 1, which is write-1-to-set.
+  searches:
+  - what: swwel wiring for the AXI_USER_LOCK LOCK fields
+    where: src/mci/rtl
+    found: swwel is driven by the LOCK value itself in mci_reg_top.sv, and mci_reg.sv blocks software
+      writes when swwel is high
+  near_misses: []
+  items: []
+  new_sources: []
+  resolution: No change is needed. The RDL 'sw=rw; swwel' with swwel tied to the field's own value is
+    how this design implements RW1-S for a sticky lock bit. A comment in the RDL noting this would remove
+    the apparent mismatch.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0361468
+error: null

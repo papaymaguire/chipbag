@@ -1,0 +1,3042 @@
+block: opentitan-hmac
+generated_at: '2026-11-10T19:45:32Z'
+verified_findings: 44
+by_category:
+  4. spec_test_mismatch: 1
+  2. spec_contradiction: 1
+  3. test_inconsistency: 2
+  1. spec_ambiguity: 12
+  5. untested: 28
+verify_stats:
+  findings: 85
+  by_status:
+    withdrawn: 35
+    verified: 44
+    inconclusive: 6
+  by_category:
+    spec_test_mismatch:
+      withdrawn: 1
+      verified: 1
+    spec_contradiction:
+      withdrawn: 1
+      verified: 1
+    test_inconsistency:
+      verified: 2
+      withdrawn: 5
+    spec_ambiguity:
+      withdrawn: 12
+      verified: 12
+    untested:
+      verified: 28
+      withdrawn: 16
+      inconclusive: 6
+  group_items:
+    verified: 81
+    withdrawn: 105
+    inconclusive: 24
+  cost_usd_this_run: 5.4353
+  cost_usd_total: 5.4353
+findings:
+- id: f_0f6922a39519
+  category: 4. spec_test_mismatch
+  type: partial_contradiction
+  severity: medium
+  title: 'hmac_test_vectors_sha_vseq expects otherwise: For SHA-2 384 the digest is read from DIGEST_0-DIGEST_12.'
+  what: The test expects a 384-bit digest to be checked only on DIGEST_0 to DIGEST_11 (idx<12). The requirement
+    states the range DIGEST_0 to DIGEST_12, so a DIGEST_12 read is never checked.
+  spec:
+  - path: hw/ip/hmac/README.md
+    lines:
+    - 42
+    - 42
+    text: or from DIGEST_0-DIGEST_12 for SHA-2 384
+  test_code:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_test_vectors_sha_vseq.sv
+    lines:
+    - 61
+    - 61
+    text: digest_size inside {SHA2_256, SHA2_384, SHA2_512};
+    kind: stimulus
+    statement: If no plusarg was given, randomize the digest size among the valid values.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_test_vectors_sha_vseq.sv
+    lines:
+    - 137
+    - 137
+    text: rd_digest();
+    kind: stimulus
+    statement: Read the digest registers, which triggers the scoreboard comparison.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    lines:
+    - 496
+    - 496
+    text: '`DV_CHECK_EQ(real_digest_val, exp_digest[digest_idx])'
+    kind: checker_check
+    statement: Read digest word must equal exp_digest for the expected digest size (SHA-2 256 idx<8, 384 idx<12,
+      512 all) when not stopped and no wipe.
+    fails_test: 'yes'
+  verify:
+    summary: The README says SHA-2 384 digest is read from DIGEST_0-DIGEST_12, which is 13 words. The scoreboard
+      checks only idx<12 (DIGEST_0-11). A 384-bit digest is 12 words, so the README is almost certainly off by one,
+      and the test is right. The mismatch is real, but the spec is the likely wrong side.
+    resolution: 'The README range is likely an off-by-one typo. 384 bits is 12 words, so the digest occupies DIGEST_0-DIGEST_11,
+      and the scoreboard''s idx<12 is correct. Fix: change README.md line 42 to DIGEST_0-DIGEST_11 for SHA-2 384.
+      I did not read the RTL digest output logic, so I did not confirm what DIGEST_12 holds for 384.'
+    evidence:
+    - path: hw/ip/hmac/README.md
+      lines:
+      - 42
+      - 42
+      role: supports
+      quote: or from [`DIGEST_0-DIGEST_12`](doc/registers.md#digest) for SHA-2 384
+      note: Spec states range through DIGEST_12 (13 words) for 384-bit digest.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 494
+      - 494
+      role: supports
+      quote: ((expected_digest_size == SHA2_384) && (digest_idx < 12)) ||
+      note: Scoreboard checks only DIGEST_0-11 for 384; DIGEST_12 is never compared.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 491
+      - 492
+      role: context
+      quote: // only check till digest_idx = 7 for SHA-2 256 and till digest_idx = 11 for SHA-2 384
+      note: The comment says the remaining digest values are irrelevant for 384, matching 12 words = 384 bits.
+    searches: 2
+  reviewer:
+    verdict: duplicate
+    note: Same issue as f_f7e6f870b119 (DIGEST_12), seen from the test side. Report once.
+- id: f_f7e6f870b119
+  category: 2. spec_contradiction
+  type: description_vs_definition
+  severity: high
+  title: A 384-bit digest is twelve 32-bit words (DIGEST_0-DIGEST_11), but the text gives DIGEST_0-DIGEST_12, which
+    is thirteen r
+  what: A 384-bit digest is twelve 32-bit words (DIGEST_0-DIGEST_11), but the text gives DIGEST_0-DIGEST_12, which
+    is thirteen registers.
+  question_for_architect: Is the SHA-2 384 digest read from DIGEST_0-DIGEST_11 or DIGEST_0-DIGEST_12?
+  spec:
+  - path: hw/ip/hmac/README.md
+    lines:
+    - 42
+    - 42
+    text: or from DIGEST_0-DIGEST_12 for SHA-2 384
+  verify:
+    summary: The README gives DIGEST_0-DIGEST_12 for SHA-2 384. A 384-bit digest is twelve 32-bit words, so the
+      range should be DIGEST_0-DIGEST_11. The same sentence uses DIGEST_0-DIGEST_7 for 256 bits (8 words) and DIGEST_0-DIGEST_15
+      for 512 bits (16 words), so the 384 case is the odd one out. I did not read the RTL or the generated register
+      code. I did check the hjson, which defines a DIGEST register array and says nothing more specific about SHA-2
+      384.
+    resolution: The correct range is DIGEST_0-DIGEST_11 (12 words × 32 bits = 384 bits). Change "DIGEST_12" to "DIGEST_11"
+      in hw/ip/hmac/README.md:42. I did not check what the RTL does, so this is based on the word-count arithmetic
+      and the DIGEST_0-DIGEST_15 array in the hjson.
+    evidence:
+    - path: hw/ip/hmac/README.md
+      lines:
+      - 42
+      - 42
+      role: supports
+      quote: or from [`DIGEST_0-DIGEST_12`](doc/registers.md#digest) for SHA-2 384
+      note: Gives 13 registers for a 384-bit digest, which is inconsistent with 384/32 = 12 words.
+    searches: 2
+  reviewer:
+    verdict: confirmed
+    note: README.md:42 says DIGEST_0-DIGEST_12 for SHA-2 384; 384/32 = 12 words, so DIGEST_0-11. The scoreboard
+      (hmac_scoreboard.sv:494, idx<12) is right. A real spec typo.
+- id: f_7414e0033b45
+  category: 3. test_inconsistency
+  type: check_cannot_fail
+  severity: high
+  title: 'hmac_error_conditions_test: The test is described as checking that each illegal usage reports its specific
+    error code (p2.k1, an'
+  what: The test is described as checking that each illegal usage reports its specific error code (p2.k1, and the
+    summary). Every error-code comparison uses TRY_CHECK, which only returns an error status, and the callers or
+    test_main discard that status. A wrong or missing error code therefore never fails the test. Only the push-message,
+    FIFO-empty and DIF start status checks can fail it, and none of those verify an error code.
+  test_prose:
+  - path: hw/top_earlgrey/data/ip/chip_hmac_testplan.hjson
+    lines:
+    - 186
+    - 186
+    text: Verify reporting of HMAC errors
+    kind: plan
+    statement: HMAC errors are reported for the listed error conditions.
+  - path: hw/ip/hmac/data/hmac_testplan.hjson
+    lines:
+    - 184
+    - 184
+    text: Push message when sha is disabled.
+    kind: plan
+    statement: Push message when sha disabled
+  - path: hw/ip/hmac/data/hmac_testplan.hjson
+    lines:
+    - 185
+    - 185
+    text: Hash starts when sha is disabled.
+    kind: plan
+    statement: Hash starts when sha disabled
+  - path: hw/ip/hmac/data/hmac_testplan.hjson
+    lines:
+    - 186
+    - 186
+    text: Update secret key when hash is in progress.
+    kind: plan
+    statement: Update secret key during hash
+  test_code:
+  - path: sw/device/tests/hmac_error_conditions_test.c
+    lines:
+    - 317
+    - 317
+    text: TRY_CHECK(hmac_err_reg == kErrorSwHashStartWhenActive,
+    kind: check
+    statement: Error code register equals kErrorSwHashStartWhenActive (0x04). TRY_CHECK returns an error status,
+      but test_main discards the return value.
+    fails_test: 'no'
+  - path: sw/device/tests/hmac_error_conditions_test.c
+    lines:
+    - 157
+    - 157
+    text: TRY_CHECK(hmac_err_reg == kErrorSwPushMsgWhenDisallowed,
+    kind: check
+    statement: Error code register equals kErrorSwPushMsgWhenDisallowed (0x05). TRY_CHECK returns an error status,
+      but test_main discards the return value of this function.
+    fails_test: 'no'
+  - path: sw/device/tests/hmac_error_conditions_test.c
+    lines:
+    - 244
+    - 244
+    text: TRY_CHECK(hmacerr_reg == kErrorSwInvalidConfig,
+    kind: check
+    statement: Error code register equals kErrorSwInvalidConfig (0x06). TRY_CHECK returns an error status, but test_main
+      discards the return value.
+    fails_test: 'no'
+  - path: sw/device/tests/hmac_error_conditions_test.c
+    lines:
+    - 176
+    - 176
+    text: TRY_CHECK(hmac_err_reg == kErrorSwPushMsgWhenDisallowed,
+    kind: check
+    statement: Error code register equals kErrorSwPushMsgWhenDisallowed (0x05). TRY_CHECK returns an error status,
+      but test_main discards the return value.
+    fails_test: 'no'
+  verify:
+    summary: Every error-code comparison in the test uses TRY_CHECK, which only returns an INTERNAL status after
+      logging an error. All seven run_test_* functions return status_t, and test_main calls them without checking
+      the result and then returns true. A wrong error code therefore does not fail the test. Only the CHECK_STATUS_OK
+      and CHECK_DIF_OK calls can fail it, and none of those verify an error code.
+    resolution: Replace TRY_CHECK with CHECK in the run_test_* functions, or wrap the calls in test_main with CHECK_STATUS_OK
+      so the error status is propagated.
+    evidence:
+    - path: sw/device/lib/testing/test_framework/check.h
+      lines:
+      - 76
+      - 79
+      role: supports
+      quote: '#define TRY_CHECK(condition, ...) TRY(CHECK_IMPL(condition, ##__VA_ARGS__))'
+      note: TRY_CHECK only returns a status. It does not call test_status_set(kTestStatusFailed), unlike CHECK.
+    - path: sw/device/tests/hmac_error_conditions_test.c
+      lines:
+      - 330
+      - 332
+      role: supports
+      quote: '  run_test_pushmsg_when_shadisabled(&hmac, kData, sizeof(kData), NULL,'
+      note: The returned status_t is discarded here. The same holds for every later run_test_* call, and test_main
+        finishes with return true.
+    - path: sw/device/tests/hmac_error_conditions_test.c
+      lines:
+      - 317
+      - 318
+      role: supports
+      quote: '  TRY_CHECK(hmac_err_reg == kErrorSwHashStartWhenActive,'
+      note: A representative error-code check that cannot fail the test.
+    searches: 2
+  reviewer:
+    verdict: confirmed
+    note: 'Read hmac_error_conditions_test.c: every error-code compare is TRY_CHECK inside status_t functions, and
+      test_main (lines ~328-352) calls them and discards the results. A wrong ERR_CODE cannot fail the test.'
+- id: f_79bd89c9d1fb
+  category: 3. test_inconsistency
+  type: plan_vs_test
+  severity: medium
+  title: 'chip_sw_hmac_enc: The plan says the test verifies both the HMAC done and FIFO empty interrupts. The test
+    only checks t'
+  what: The plan says the test verifies both the HMAC done and FIFO empty interrupts. The test only checks that
+    the serviced IRQ is HMAC done, and only for the SHA256 key-hashing step (k3). It never checks a FIFO empty interrupt.
+    The final HMAC operation over the reference data is completed by polling, so no interrupt is verified for it.
+  test_prose:
+  - path: hw/top_earlgrey/data/ip/chip_hmac_testplan.hjson
+    lines:
+    - 13
+    - 14
+    text: Verify the HMAC done and FIFO empty interrupts as a part of this test.
+    kind: plan
+    statement: HMAC done and FIFO empty interrupts are verified.
+  test_code:
+  - path: sw/device/tests/hmac_enc_test.c
+    lines:
+    - 98
+    - 98
+    text: CHECK(irq_serviced == expected_irq);
+    kind: check
+    statement: The serviced IRQ is the HMAC done IRQ.
+    fails_test: 'yes'
+  - path: sw/device/tests/hmac_enc_test.c
+    lines:
+    - 111
+    - 111
+    text: hmac_testutils_finish_and_check_polled(&hmac, &kHmacRefExpectedDigest)
+    kind: stimulus
+    statement: Poll for completion of the HMAC operation.
+  verify:
+    summary: The plan item chip_sw_hmac_enc is explicitly linked to this test. It says the HMAC done and FIFO empty
+      interrupts are verified. The test enables both IRQs but only checks irq_serviced == HMAC done, once, after
+      the key-hash step. It never checks a FIFO empty IRQ, and the final HMAC is completed by polling with no interrupt
+      check.
+    resolution: null
+    evidence:
+    - path: sw/device/tests/hmac_enc_test.c
+      lines:
+      - 98
+      - 98
+      role: supports
+      quote: CHECK(irq_serviced == expected_irq);
+      note: The only interrupt check, and it expects HMAC done.
+    - path: sw/device/tests/hmac_enc_test.c
+      lines:
+      - 110
+      - 111
+      role: supports
+      quote: "return status_ok(\n      hmac_testutils_finish_and_check_polled(&hmac, &kHmacRefExpectedDigest));"
+      note: The final HMAC operation is completed by polling, with no interrupt verification.
+    - path: hw/top_earlgrey/data/ip/chip_hmac_testplan.hjson
+      lines:
+      - 14
+      - 14
+      role: supports
+      quote: the HMAC done and FIFO empty interrupts as a part of this test.
+      note: The plan requires verifying both interrupts.
+    searches: 2
+  reviewer:
+    verdict: confirmed
+    note: chip_hmac_testplan.hjson:14 says 'Verify the HMAC done and FIFO empty interrupts'. hmac_enc_test.c checks
+      only irq_serviced == expected_irq once (line 98), and the final HMAC completes by polling. FIFO empty is never
+      checked.
+- id: f_08abef58a364
+  category: 1. spec_ambiguity
+  type: vague
+  severity: medium
+  title: 'The module can wipe internal variables such as the secret key, intermediate hash results, digest and message
+    scheduling '
+  what: The 'such as' list does not state exactly which internal variables are wiped.
+  question_for_architect: Exactly which internal state and software-visible registers does a WIPE_SECRET write overwrite?
+    Specifically, are MSG_LENGTH_LOWER/UPPER, the internal message length counter, CFG, STATUS and the save/restore
+    context state affected, and if so, to what value? What happens if WIPE_SECRET is written while a hash is in
+    progress?
+  test_impact: The listed items (key, intermediate hash, digest, message schedule) are reset to the written value,
+    and the message FIFO is explicitly excluded. Other software-visible state is not covered. For example, MSG_LENGTH_LOWER/UPPER,
+    the internal message bit counter, CFG, STATUS and an in-progress hash. One engineer would check that MSG_LENGTH
+    reads back unchanged after a wipe and that a running hash still completes. Another would expect these cleared
+    or the operation aborted. This leads to different scoreboard models and expected register values after WIPE_SECRET.
+  spec:
+  - path: hw/ip/hmac/README.md
+    lines: &id004
+    - 59
+    - 59
+    text: is able to wipe internal variables such as the secret key, intermediate hash results, digest and the internal
+      message scheduling array.
+  verify:
+    summary: The register description and README use the same "such as" wording. Neither says whether MSG_LENGTH,
+      CFG, STATUS or the save/restore context are affected, or what happens if WIPE_SECRET is written during a hash.
+    resolution: The spec should list the wiped state explicitly. It should say whether MSG_LENGTH, CFG, STATUS and
+      the save/restore context are untouched. It should also say what happens when WIPE_SECRET is written during
+      an in-progress hash.
+    evidence:
+    - path: hw/ip/hmac/doc/registers.md
+      lines:
+      - 337
+      - 338
+      role: supports
+      quote: If the CPU writes a value into the register, the value is used to clear some internal variables such
+        as the secret key, intermediate hash results, digest and internal message scheduling array.
+      note: Register doc repeats the same non-exhaustive list.
+    searches: 1
+  reviewer:
+    verdict: plausible
+    note: The question is real and test-relevant. I did not re-search the whole spec myself; the verify agent's
+      search record says no other spec text answers it.
+- id: f_099bc6608b8a
+  category: 1. spec_ambiguity
+  type: missing_detail
+  severity: medium
+  title: When a sideloaded key is used, CMD.hash_stop and CMD.hash_continue are rejected (saving and restoring the
+    context is not
+  what: It is not stated what 'rejected' means for the command (ignored, state unchanged, etc.).
+  question_for_architect: When CMD.hash_stop or CMD.hash_continue is issued with a sideloaded key, is the command
+    simply ignored (the ongoing operation continues unaffected, and further message input plus hash_process still
+    produce the correct final digest)? Or does the rejection abort or alter the operation? Also, which status, interrupt
+    and register fields (besides ERR_CODE=SwInvalidConfig and the error interrupt) change?
+  test_impact: The existing test checks only the interrupt and ERR_CODE. A DV engineer still has to decide what
+    the scoreboard predicts after the rejection, and two engineers could reasonably predict different things. One
+    might expect the operation to carry on and the final digest to stay correct, so the test keeps feeding the message
+    and compares the digest against the reference. Another might expect the hash to stop or abort, so the test checks
+    the hmac_done/idle status and does not expect a digest. A further difference is whether hash_continue is rejected
+    only while an operation is in progress, or also when issued with no operation running while key_sideload is
+    set.
+  spec:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    lines: &id002
+    - 102
+    - 102
+    text: Saving and restoring the context is not available
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    lines: &id003
+    - 102
+    - 102
+    text: CMD.hash_stop and CMD.hash_continue are rejected
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    lines: &id001
+    - 164
+    - 164
+    text: 'saving and restoring the context is not available with a sideloaded key: `CMD.hash_stop` and `CMD.hash_continue`
+      are rejected'
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    lines: *id001
+    text: 'saving and restoring the context is not available with a sideloaded key: `CMD.hash_stop` and `CMD.hash_continue`
+      are rejected'
+  verify:
+    summary: No spec text defines what "rejected" means for hash_stop or hash_continue with a sideloaded key. The
+      only statements are the programmer's guide and theory of operation lines, which say ERR_CODE reports SwInvalidConfig.
+      The register descriptions for hash_stop and hash_continue do not mention the restriction.
+    resolution: 'Add to the spec what a rejected command does: for example, the command is ignored, the operation
+      continues and the final digest is correct, and only ERR_CODE and the error interrupt change. State whether
+      hash_continue is also rejected when issued with no operation running and key_sideload set.'
+    evidence:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 164
+      - 164
+      role: supports
+      quote: '`CMD.hash_stop` and `CMD.hash_continue` are rejected, and [`ERR_CODE`](registers.md#err_code) reports
+        `SwInvalidConfig`.'
+      note: Only says rejected plus ERR_CODE; no statement on whether the ongoing operation continues or aborts.
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 155
+      - 155
+      role: context
+      quote: The key manager deasserting the valid indication while an operation is in progress aborts that operation
+        and reports the same error.
+      note: The invalid-key case explicitly says abort. The hash_stop/hash_continue rejection has no such statement,
+        which highlights the gap.
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 396
+      - 396
+      role: context
+      quote: When 1 is written to this field, SHA-2 or HMAC will afterwards set the `hmac_done` interrupt as soon
+        as the current block has been hashed.
+      note: The register description does not mention the sideload exception.
+    searches: 1
+  reviewer:
+    verdict: plausible
+    note: The question is real and test-relevant. I did not re-search the whole spec myself; the verify agent's
+      search record says no other spec text answers it.
+- id: f_13ebd67552c8
+  category: 1. spec_ambiguity
+  type: weak_modal
+  severity: medium
+  title: Software may write the DIGEST registers when STATUS.hmac_idle is 1.
+  what: '''may be written'' does not state whether writes must take effect in this window.'
+  question_for_architect: When STATUS.hmac_idle=1, under exactly which configurations (digest_size value including
+    SHA2_None or invalid, sha_en/hmac_en state) does a software write to DIGEST update the readable value? What
+    does a read return otherwise?
+  test_impact: The tag says writes do not reach the CSRs when digest_mode is SHA2_None, even though the description
+    implies writes during idle take effect. A write-read check in idle with an unconfigured or invalid digest size,
+    or with sha_en in various states, would expect the written value from one engineer and the old value from another.
+  spec:
+  - path: hw/ip/hmac/data/hmac.hjson
+    lines:
+    - 507
+    - 507
+    text: When `STATUS.hmac_idle` is 1, these registers may be written to by software.
+  verify:
+    summary: Other spec text only partly answers the question. The programmer's guide says restore happens with
+      sha_en disabled and CFG written first, and that enabling sha_en locks DIGEST writes. No spec text says what
+      a DIGEST write or read does when digest_mode is SHA2_None or invalid. The hjson tag shows writes are not stored
+      in some modes, and no spec text explains that.
+    resolution: 'Add to the DIGEST description or the programmer''s guide the exact conditions under which a write
+      takes effect. These are: hmac_idle=1, sha_en=0, and a valid digest_size, with a statement on whether SHA2_None
+      or an invalid digest size ignores the write. Also say what a read returns in the cases where the write is
+      dropped.'
+    evidence:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 166
+      - 166
+      role: context
+      quote: 1. Enable `sha_en` of `CFG`, which enables HMAC again and locks down writing to the `DIGEST_0`..`15`
+        registers from SW.
+      note: 'Partly answers the sha_en part: writes are expected with sha_en=0, and sha_en=1 locks them. It says
+        nothing about digest_mode None or invalid.'
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 519
+      - 521
+      role: supports
+      quote: // to CSRs when digest_mode is SHA2_None.
+      note: The register definition admits that writes do not take effect in some modes, but the spec never says
+        what a read returns then.
+    searches: 1
+  reviewer:
+    verdict: plausible
+    note: The question is real and test-relevant. I did not re-search the whole spec myself; the verify agent's
+      search record says no other spec text answers it.
+- id: f_1f0bad59c809
+  category: 1. spec_ambiguity
+  type: weak_modal
+  severity: medium
+  title: they are irrelevant and should not be read out.
+  what: '''should not be read out'' does not say what a read returns or whether it is prohibited.'
+  question_for_architect: In SHA-2 384 mode, what value must DIGEST12-DIGEST15 return on read (0, the truncated
+    internal state words, or undefined)? Is reading them an error?
+  test_impact: In SHA-2 384 mode, the expected read value of DIGEST12-15 is unknown. Engineers would differ between
+    checking for 0, checking for the untruncated SHA-512-style internal state, or skipping these words entirely.
+  spec:
+  - path: hw/ip/hmac/data/hmac.hjson
+    lines:
+    - 504
+    - 504
+    text: they are irrelevant and should not be read out.
+  verify:
+    summary: No other spec text defines what DIGEST12-15 return in SHA-2 384 mode. Every document repeats the same
+      "irrelevant / should not be read" wording, and none gives a value or says whether a read is an error.
+    resolution: 'The spec should state what DIGEST12-15 return in SHA-2 384 mode: 0, the truncated internal state
+      words, or undefined and not checked. It should also say whether reading them is an error. The RTL was not
+      inspected.'
+    evidence:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 504
+      - 504
+      role: supports
+      quote: For SHA-2 384, {DIGEST12-DIGEST15} are truncated; they are irrelevant and should not be read out.
+      note: The cited text gives no read value and does not say whether a read is prohibited.
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 44
+      - 44
+      role: supports
+      quote: For SHA-2 384, only `DIGEST_0`..`11` should be read out, the rest should be truncated out by not being
+        read by the SW.
+      note: This is software guidance only. It does not define the value a read returns.
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 43
+      - 43
+      role: supports
+      quote: the remaining digest registers are redundant and would hold irrelevant values.
+      note: For SHA-2 256 it says the registers 'hold irrelevant values' without defining them.
+    searches: 1
+  reviewer:
+    verdict: plausible
+    note: 'Real: the value of the unused DIGEST words is unspecified for SHA-2 384. Overlaps the SHA-2 256 variant
+      below.'
+- id: f_2ab2710b6d0c
+  category: 1. spec_ambiguity
+  type: missing_detail
+  severity: medium
+  title: The position of these zeros depends on the endianness, thus on the programmed CFG.key_swap.
+  what: The position of the padding zeros for each key_swap value is not stated.
+  question_for_architect: For key_swap=0 and key_swap=1, in which bytes/bits of the KEY_* registers must the zero
+    padding be placed (e.g., trailing bytes in the last partial word, at the MSB or LSB end)?
+  test_impact: A test with a non-standard key length and key_swap=1 must place the zero padding in KEY_* registers
+    at specific byte positions to match the reference HMAC digest. Engineers could choose different positions (e.g.,
+    MSBs vs LSBs of the last word) and so produce different expected digests.
+  spec:
+  - path: hw/ip/hmac/data/hmac.hjson
+    lines:
+    - 311
+    - 311
+    text: The position of these zeros depends on the endianness, thus on the programmed CFG.key_swap.
+  verify:
+    summary: No spec text states where the zero padding goes in the KEY_* registers for each key_swap value. The
+      only related text repeats the same sentence and gives an 80-bit example without saying which bytes of which
+      register hold the zeros. The inner/outer pad formulas imply trailing zeros in the big-endian stream, but they
+      do not map that to register bytes.
+    resolution: 'Add an explicit statement or table of padding positions. For example: with key_swap=0, the key
+      bytes fill KEY_0.. in order, and the padding goes in the low-order bytes of the last partial word and in the
+      following words. With key_swap=1, give the equivalent byte positions after the per-word byte swap.'
+    evidence:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 123
+      - 126
+      role: supports
+      quote: The position of these zeros depends on the endianness, thus on the programmed [`CFG.key_swap`](registers.md#cfg--key_swap).
+      note: The same vague statement is repeated here. The example gives no byte positions.
+    - path: hw/ip/hmac/doc/registers.md
+      lines:
+      - 234
+      - 234
+      role: context
+      quote: If 1 the endianness of each KEY_* register is swapped. Default value (value 0) is big endian representation
+        of the KEY_* CSRs.
+      note: This is the only key_swap definition. It does not say which bytes of a partial word hold the zeros.
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 107
+      - 107
+      role: context
+      quote: inner_pad_key = {key[255:0], 256'h0} ^ {64{8'h36}} // big-endian
+      note: This implies trailing zeros after the key in the big-endian byte stream. It does not map them to register
+        bytes for either key_swap value.
+    searches: 2
+  reviewer:
+    verdict: plausible
+    note: The question is real and test-relevant. I did not re-search the whole spec myself; the verify agent's
+      search record says no other spec text answers it.
+- id: f_2f0738731f9b
+  category: 1. spec_ambiguity
+  type: missing_detail
+  severity: medium
+  title: hmac_idle indicates HMAC idle status.
+  what: The conditions that define the HMAC as idle are not stated.
+  question_for_architect: 'What exact conditions make STATUS.hmac_idle read 0 and 1, and with what latency? Specifically:
+    does it deassert on CMD.hash_start or hash_continue, or on the first FIFO write? Does it reassert at hash_done,
+    or after hash_stop once the current block finishes? Does a non-empty message FIFO keep it at 0? What does it
+    read when HMAC is disabled or while the configuration is changing?'
+  test_impact: A scoreboard predicting hmac_idle needs to know exactly when it deasserts and reasserts. One engineer
+    might expect idle=0 from the start/continue command until hash_done. Another might expect it to stay 0 while
+    the FIFO holds data, or to go low on the first msg_fifo write before start. A third might expect it to go high
+    right after a stop, before the digest is written back. These different models give different expected values
+    cycle by cycle, which matters because the description ties idle to whether the DIGEST and MSG_LENGTH registers
+    are writable for context restore.
+  spec:
+  - path: hw/ip/hmac/data/hmac.hjson
+    lines:
+    - 417
+    - 417
+    text: HMAC idle status.
+  verify:
+    summary: No spec text defines exactly when STATUS.hmac_idle deasserts or reasserts. The other docs only repeat
+      the register description or say loosely that idle signals an operation has completed.
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 170
+      - 170
+      role: context
+      quote: polling on the `STATUS.hmac_idle` bit) to indicate the ongoing operation has completed
+      note: Loose hint that idle is high after the operation completes. It gives no start condition, no latency,
+        and nothing on FIFO, stop or disable.
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 417
+      - 418
+      role: supports
+      quote: 'desc: ''''''HMAC idle status.'
+      note: The register description only says 'HMAC idle status' and adds that DIGEST and MSG_LENGTH are writable
+        when idle. It gives no exact conditions.
+    searches: 1
+  reviewer:
+    verdict: plausible
+    note: The question is real and test-relevant. I did not re-search the whole spec myself; the verify agent's
+      search record says no other spec text answers it.
+- id: f_7cebd576a1f3
+  category: 1. spec_ambiguity
+  type: missing_detail
+  severity: medium
+  title: The position of these zeros depends on the endianness, thus on the programmed CFG.key_swap.
+  what: The zero position for each CFG.key_swap value is not specified.
+  question_for_architect: For an N-bit key padded to the next supported key length, which KEY register words and
+    bytes must hold the key bits and which must hold the zero padding, for CFG.key_swap=0 and for CFG.key_swap=1?
+    For example, for an 80-bit key with key_length=128, give the exact KEY_0..KEY_3 contents.
+  test_impact: Arbitrary-length key tests (e.g. an 80-bit key configured as 128-bit) depend on where the 48 zero
+    bits go in the KEY registers for key_swap=0 and key_swap=1. That placement decides whether the hardware digest
+    matches a reference HMAC computed with the 80-bit key. Two engineers could place the zeros in different words
+    or bytes and expect different digests.
+  spec:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    lines:
+    - 125
+    - 125
+    text: The position of these zeros depends on the endianness, thus on the programmed CFG.key_swap.
+  verify:
+    summary: The same sentence appears in registers.md (CFG.key_length) and in hmac.hjson. No document gives the
+      KEY_n word or byte positions of the zero padding for either key_swap value. The only other text says key_swap
+      swaps the endianness of each KEY_* register and that the default is big endian. That does not say which KEY
+      words hold the key bits and which hold zeros.
+    resolution: The spec should list the exact KEY_0..KEY_n contents for key_swap=0 and key_swap=1. For an 80-bit
+      key with key_length=128, that means saying whether the zero padding goes in the trailing KEY words or in the
+      low bytes of the last used word. I did not check the RTL for what the design does.
+    evidence:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 125
+      - 126
+      role: supports
+      quote: The position of these zeros depends on the endianness, thus on the programmed [`CFG.key_swap`](registers.md#cfg--key_swap).
+      note: Says the position depends on key_swap, but gives no positions.
+    - path: hw/ip/hmac/doc/registers.md
+      lines:
+      - 234
+      - 234
+      role: context
+      quote: If 1 the endianness of each KEY_* register is swapped. Default value (value 0) is big endian representation
+        of the KEY_* CSRs.
+      note: Describes only the per-register byte swap. It does not say which KEY words hold the key bits and which
+        hold the zeros.
+    - path: hw/ip/hmac/doc/registers.md
+      lines:
+      - 197
+      - 198
+      role: supports
+      quote: The position of these zeros depends on the endianness, thus on the programmed [`CFG.key_swap`](registers.md#cfg--key_swap).
+      note: Repeats the same vague sentence in the register description. The 80-bit example gives no register layout.
+    searches: 1
+  reviewer:
+    verdict: duplicate
+    note: Same sentence as f_2ab2710b6d0c (key padding position vs key_swap), flagged from registers.md and hmac.hjson.
+      Report once.
+- id: f_8fed7e244a4e
+  category: 1. spec_ambiguity
+  type: weak_modal
+  severity: medium
+  title: For SHA-2 256, only DIGEST_0..7 should be read out, the remaining digest registers are redundant and would
+    hold irreleva
+  what: '''should be read out'' and ''irrelevant values'' do not state a testable requirement on the hardware.'
+  question_for_architect: In SHA-2 256 mode, what value must DIGEST_8..15 read back after a hash completes (zero,
+    unchanged/stale, or undefined and excluded from checking)? Does this also hold after switching from a SHA-2
+    384/512 operation?
+  test_impact: A scoreboard or CSR-read check that reads all 16 DIGEST registers in SHA-256 mode needs an expected
+    value for DIGEST_8..15. One engineer would predict zero, another would mask them as don't-care, and a third
+    might predict stale values left by a prior SHA-512 operation. Those choices give different pass criteria. Placement
+    of the 256-bit digest in DIGEST_0..7 is clear enough from context.
+  spec:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    lines:
+    - 43
+    - 43
+    text: For SHA-2 256, only DIGEST_0..7 should be read out, the remaining digest registers are redundant and would
+      hold irrelevant values.
+  verify:
+    summary: No other spec text defines the value of DIGEST_8..15 in SHA-256 mode. The register description repeats
+      that they are "irrelevant and should not be read out", which leaves the value undefined. It doesn't say what
+      they hold after a prior SHA-512 operation.
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 503
+      - 503
+      role: supports
+      quote: '{DIGEST8 - DIGEST15} are irrelevant and should not be read out.'
+      note: 'Register description: says the registers are irrelevant but gives no value.'
+    searches: 1
+  reviewer:
+    verdict: plausible
+    note: The question is real and test-relevant. I did not re-search the whole spec myself; the verify agent's
+      search record says no other spec text answers it.
+- id: f_9a81ae17a9b7
+  category: 1. spec_ambiguity
+  type: vague
+  severity: medium
+  title: Outside of this window, writes can cause unpredictable behavior.
+  what: '"Unpredictable behavior" is not testable and does not say whether such writes are forbidden, ignored or
+    undefined.'
+  question_for_architect: When STATUS.hmac_idle is 0 and software writes MSG_LENGTH_UPPER, what must happen? Is
+    the write ignored, applied immediately, or architecturally undefined? If undefined, should verification exclude
+    such writes from stimulus, or must the design at least guarantee no hang or alert?
+  test_impact: One engineer would treat non-idle writes as illegal and exclude them from stimulus (or mark the result
+    as don't-care in the scoreboard). Another would expect them to be ignored and check that MSG_LENGTH and the
+    digest stay unchanged. A third would expect them to take effect and model the new length. These lead to different
+    scoreboard expectations and different constrained-random legality rules.
+  spec:
+  - path: hw/ip/hmac/data/hmac.hjson
+    lines:
+    - 546
+    - 546
+    text: Outside of this window, writes can cause unpredictable behavior.
+  verify:
+    summary: No other specification text defines what happens when MSG_LENGTH_UPPER is written while hmac_idle is
+      0. The STATUS description and the programmer's guide only say when writing is permitted (idle, for context
+      restore). The register doc repeats the same "unpredictable behavior" sentence.
+    resolution: The spec should say whether a non-idle write is ignored, applied, or architecturally undefined,
+      and whether verification may exclude such writes. It should also say whether the design must still avoid a
+      hang or alert. I did not read the RTL, so I can't say what the design does.
+    evidence:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 545
+      - 546
+      role: supports
+      quote: "When `STATUS.hmac_idle` is 1, this register may be written by software.\n            Outside of this\
+        \ window, writes can cause unpredictable behavior."
+      note: Source text; it does not say whether the write is ignored, applied or illegal.
+    - path: hw/ip/hmac/doc/registers.md
+      lines:
+      - 316
+      - 316
+      role: context
+      quote: When IDLE, the `DIGEST` and the `MSG_LENGTH_LOWER`/`MSG_LENGTH_UPPER` can be written to from SW which
+        enables restoring context (to support context switching).
+      note: Says when writing is allowed, but nothing about writes outside idle.
+    searches: 2
+  reviewer:
+    verdict: plausible
+    note: The question is real and test-relevant. I did not re-search the whole spec myself; the verify agent's
+      search record says no other spec text answers it.
+- id: f_c9d86b452dad
+  category: 1. spec_ambiguity
+  type: weak_modal
+  severity: medium
+  title: and {DIGEST8 - DIGEST15} are irrelevant and should not be read out.
+  what: '''should not be read out'' does not say what a read returns or whether it is prohibited.'
+  question_for_architect: In SHA-2 256 mode, what value must DIGEST8-DIGEST15 return on read (0, the previous contents,
+    or undefined)? Does reading them raise any error response or alert?
+  test_impact: In SHA-2 256 mode, a scoreboard or CSR test that reads all 16 DIGEST words needs an expected value
+    for DIGEST8-15. One engineer would predict 0, another stale or unmodeled data, and a third would exclude these
+    words from comparison. Whether reading them may raise an error also changes the pass criteria.
+  spec:
+  - path: hw/ip/hmac/data/hmac.hjson
+    lines:
+    - 503
+    - 503
+    text: and {DIGEST8 - DIGEST15} are irrelevant and should not be read out.
+  verify:
+    summary: No other spec text defines what DIGEST8-15 return in SHA-2 256 mode or whether reading them errors.
+      The programmer's guide only says they are redundant and hold irrelevant values.
+    resolution: The spec should state that the read value of DIGEST8-15 in SHA-2 256 mode is undefined (or specify
+      0 or the previous contents) and that reads raise no error. I did not check the RTL for what it actually returns.
+    evidence:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 43
+      - 43
+      role: supports
+      quote: For SHA-2 256, only `DIGEST_0`..`7` should be read out, the remaining digest registers are redundant
+        and would hold irrelevant values.
+      note: Says the values are irrelevant but gives no value and no error behaviour.
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 503
+      - 503
+      role: supports
+      quote: and {DIGEST8 - DIGEST15} are irrelevant and should not be read out.
+      note: The cited text itself, with no read value or error behaviour defined.
+    searches: 1
+  reviewer:
+    verdict: duplicate
+    note: Same issue as f_8fed7e244a4e (DIGEST8-15 value in SHA-2 256 mode), from another file.
+- id: f_dfa447ca7429
+  category: 1. spec_ambiguity
+  type: unclear_referent
+  severity: medium
+  title: The lower 3 bits [2:0] of the message length are ignored.
+  what: It is unclear whether the ignored bits are ignored on software writes, in the hardware length computation,
+    or in the value read back.
+  question_for_architect: When software writes MSG_LENGTH_LOWER with bits [2:0] nonzero, does readback return those
+    bits or zero? Are bits [2:0] always zero in the hardware-updated value, and are they excluded when the length
+    is used in the padding computation?
+  test_impact: Suppose software writes a value with bits [2:0] nonzero while idle and then reads it back. One engineer
+    would expect the read to return the written value unchanged. Another would expect bits [2:0] to read as zero.
+    Engineers could also disagree on whether hardware-reported lengths always have [2:0] = 0. The readback scoreboard
+    and the digest/length model would differ.
+  spec:
+  - path: hw/ip/hmac/data/hmac.hjson
+    lines: &id005
+    - 529
+    - 529
+    text: Lower 3 bits [2:0] are ignored.
+  verify:
+    summary: No other spec text says whether bits [2:0] of MSG_LENGTH_LOWER read back as written or as zero. Nothing
+      says whether hardware-updated values always have them clear, or whether the padding computation excludes them.
+      The only related text is "Message is byte granularity", which implies the bits carry no information but doesn't
+      settle the readback behavior.
+    resolution: Add spec text stating whether writes to bits [2:0] are stored and read back, or read as zero. It
+      should also say whether the hardware length and padding computation ignore those bits. The RTL was not checked.
+    evidence:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 528
+      - 529
+      role: supports
+      quote: Message is byte granularity.
+      note: The only statement about bits [2:0], next to 'Lower 3 bits [2:0] are ignored.' It gives no readback
+        or write semantics.
+    searches: 1
+  reviewer:
+    verdict: plausible
+    note: The question is real and test-relevant. I did not re-search the whole spec myself; the verify agent's
+      search record says no other spec text answers it.
+- id: f_fc00646d2273
+  category: 1. spec_ambiguity
+  type: missing_detail
+  severity: medium
+  title: Starting an operation while the sideloaded key is invalid is blocked.
+  what: '''Blocked'' does not say how the start command is handled.'
+  question_for_architect: 'When CMD.hash_start is issued while the sideload key is invalid: is the command fully
+    ignored, with the engine staying idle and CFG still writable? Are later MSG_FIFO writes and CMD.hash_process
+    ignored, accepted, or flagged as errors? Are DIGEST and the FIFO contents left unchanged or cleared?'
+  test_impact: The error and the missing hmac_done are specified, but 'blocked' leaves the side effects open. One
+    engineer might check that the engine stays idle and that later MSG_FIFO writes are dropped or raise an error.
+    Another might expect the FIFO to accept data, or a later hash_process to be ignored. Expected values also differ
+    for DIGEST contents (cleared or retained), STATUS (fifo_empty/depth), and whether CFG stays writable after the
+    blocked start. The existing test checks only hmac_err/SwInvalidConfig and the absence of hmac_done.
+  spec:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    lines:
+    - 110
+    - 110
+    text: Starting while the key is invalid is blocked
+  verify:
+    summary: No other spec text defines what a blocked start does. The docs only repeat "blocked" plus the SwInvalidConfig
+      error. The abort and recovery text covers a key revoked mid-operation, not a start that is blocked. It says
+      nothing on the engine state, MSG_FIFO writes, hash_process, DIGEST or STATUS after a blocked start.
+    resolution: 'Add a spec sentence defining a blocked start. For example: the command is ignored, the engine stays
+      idle, CFG stays writable, and MSG_FIFO writes and hash_process are ignored or flagged (say which). Also say
+      whether DIGEST is unchanged or cleared.'
+    evidence:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 154
+      - 154
+      role: supports
+      quote: Triggering `CMD.hash_start` or `CMD.hash_continue` while the key is invalid is blocked, and [`ERR_CODE`](registers.md#err_code)
+        reports `SwInvalidConfig`.
+      note: Same wording as the cited text. It gives no side-effect detail for the blocked start.
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 155
+      - 157
+      role: context
+      quote: The key manager deasserting the valid indication while an operation is in progress aborts that operation
+        and reports the same error.
+      note: The detailed cleanup (FIFO cleared, digest cleared, core idle) is specified only for a mid-operation
+        abort, not for a blocked start.
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 122
+      - 127
+      role: context
+      quote: Starting while it is still invalid is blocked with the same error.
+      note: The recovery steps say CFG is retained across an abort. They do not describe the state after a blocked
+        start.
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 353
+      - 354
+      role: context
+      quote: With this value, when HMAC is triggered to start operation (via `hash_start` or `hash_continue`), it
+        will be blocked from starting and an error is signalled to the SW.
+      note: The register description for Key_None and SHA2_None uses the same "blocked" wording with no side-effect
+        detail.
+    searches: 2
+  reviewer:
+    verdict: plausible
+    note: The question is real and test-relevant. I did not re-search the whole spec myself; the verify agent's
+      search record says no other spec text answers it.
+- id: f_0f94044d8d25
+  category: 5. untested
+  type: partially_tested
+  severity: high
+  title: 'Partially tested: 3 requirement(s) in hw/ip/hmac/doc/theory_of_operation.md > Theory of Operation > Design
+    Details > Key sideloading > Restrictions with a sideloaded key … (2 sections)'
+  items:
+  - id: cr_f3333982706d
+    statement: When a sideloaded key is used, CMD.hash_stop and CMD.hash_continue are rejected (saving and restoring
+      the context is not available).
+    gap: With a sideloaded key, write CMD.hash_continue and check it is rejected with the error interrupt set and
+      ERR_CODE equal to SwInvalidConfig. Also check the operation state is unchanged after either rejected command.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines: *id002
+      text: Saving and restoring the context is not available
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines: *id003
+      text: CMD.hash_stop and CMD.hash_continue are rejected
+    verify_reason: No test writes hash_continue with a sideloaded key. Only hash_stop is covered by the keymgr_dpe
+      sideload test (per the finding; the one search I ran of the top_earlgrey sequences found nothing), and nothing
+      checks that state is unchanged.
+  items_withdrawn_by_verify: 2
+  verify:
+    summary: 'Item 1 stands, since no test writes hash_continue with a sideloaded key. Items 2 and 3 are withdrawn:
+      the HMAC base sequence randomises both sub-word byte masks and the write address across the whole MSG_FIFO
+      window, and the scoreboard digest check covers the result. The finding as a whole is mixed, so the overall
+      outcome is inconclusive.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 103
+      - 105
+      role: refutes
+      quote: 'wr_addr inside {[HMAC_MSG_FIFO_BASE : HMAC_MSG_FIFO_LAST_ADDR]};'
+      note: The write address is randomised across the whole MSG_FIFO range, so writes land at varied offsets.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 358
+      - 358
+      role: refutes
+      quote: '`DV_CHECK_FATAL(randomize(wr_addr, wr_mask) with {$countones(wr_mask) <= msg_q.size();})'
+      note: The stimulus randomises byte-enable masks, so partial (sub-word) writes are issued. The scoreboard digest
+        check compares the result with the reference.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 372
+      - 373
+      role: context
+      quote: tl_access(.addr(cfg.ral.get_addr_from_offset(wr_addr)),
+      note: The randomised address and mask are passed to the TL write. The call continues on the next line with
+        .write(1'b1), .data(word), .mask(wr_mask).
+    searches: 2
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_25bb98538ab2
+  category: 5. untested
+  type: partially_tested
+  severity: high
+  title: 'Partially tested: 4 requirement(s) in hw/ip/hmac/README.md > Overview > Description'
+  items:
+  - id: cr_b8debfc7325d
+    statement: A software/CPU write of a 32-bit value to WIPE_SECRET wipes the internal variables, including the
+      secret key, intermediate hash results, digest and message scheduling array.
+    gap: After a software write to WIPE_SECRET, check the internal state directly (hierarchical probes or bound
+      assertions). The secret key registers, the intermediate hash state, the digest registers and the message schedule
+      array must all no longer hold their pre-wipe values (cleared or overwritten with the wipe value). Do this
+      mid-operation and after completion.
+    spec:
+    - path: hw/ip/hmac/README.md
+      lines:
+      - 61
+      - 61
+      text: The software can wipe the internal variables and secret key by writing a 32-bit random value into WIPE_SECRET
+        register.
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 455
+      - 455
+      text: If the CPU writes a value into the register, the value is used to clear some internal variables such
+        as the secret key, intermediate hash results, digest and internal message scheduling array.
+    verify_reason: Only digest corruption is checked after a wipe. Nothing checks that the key, intermediate hash
+      state or message schedule array are cleared.
+  items_withdrawn_by_verify: 3
+  verify:
+    summary: 'Mixed result. Items 1, 3 and 4 are covered by stimulus plus scoreboard checks, so I withdrew them.
+      Item 2 stands: no test checks the internal state after a WIPE_SECRET write.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 173
+      - 199
+      role: refutes
+      quote: '          invalid_cfg = (`gmv(ral.cfg.digest_size) == SHA2_None) |'
+      note: The scoreboard flags SHA2_256 with Key_1024 as an invalid config. On a start command it predicts the
+        SwInvalidConfig error code and expects the hash not to run (the idle check). Once the key length is no larger
+        than the block size, no other combination can exceed it.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_error_vseq.sv
+      lines:
+      - 21
+      - 21
+      role: refutes
+      quote: '  this.legal_seq_c.constraint_mode(0);'
+      note: The error test randomizes key length and digest size without the legality constraint, so the 1024-bit
+        key with SHA-2 256 combination can occur. The scoreboard checks the resulting error code.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 482
+      - 490
+      role: supports
+      quote: '            // If wipe_secret is triggered, ensure the predicted value does not match the read out'
+      note: Wipe is only checked through digest corruption. Internal state such as the key, intermediate hash and
+        message schedule is not probed.
+    searches: 1
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_33ae019d8e7e
+  category: 5. untested
+  type: partially_tested
+  severity: high
+  title: 'Partially tested: 5 requirement(s) in hw/ip/hmac/doc/theory_of_operation.md > Theory of Operation > Design
+    Details > Key sideloading … (2 sections)'
+  items:
+  - id: cr_605b3802525f
+    statement: Revocation of the key by the key manager takes effect immediately.
+    gap: Clear or revoke the sideloaded key from the key manager while an HMAC operation is in progress, then check
+      that the operation is blocked or errors in the cycle(s) right after revocation and that no digest is produced
+      with the revoked key.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 139
+      - 139
+      text: the key manager revoking the key takes effect immediately
+    verify_reason: No test revokes the key during an operation or measures how quickly revocation takes effect.
+  - id: cr_75181956206e
+    statement: ERR_CODE reports SwInvalidConfig when hash_start or hash_continue is triggered while the key is invalid.
+    gap: With an invalid sideload key, trigger CMD.hash_continue and check that hmac_err is raised and ERR_CODE
+      equals SwInvalidConfig.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 154
+      - 154
+      text: ERR_CODE reports SwInvalidConfig.
+    verify_reason: No test triggers hash_continue with an invalid key.
+  - id: cr_b5bc42e67d01
+    statement: Triggering CMD.hash_start or CMD.hash_continue while the sideloaded key is invalid is blocked.
+    gap: 'With an invalid sideloaded key, issue hash_continue (after a prior hash_stop). Check that the command
+      is blocked: hmac_err is set, hmac_done is not raised, and no processing occurs.'
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 154
+      - 154
+      text: Triggering CMD.hash_start or CMD.hash_continue while the key is invalid is blocked
+    verify_reason: No test checks that hash_continue is blocked with an invalid key.
+  - id: cr_d468d703ae52
+    statement: The sideloaded key length overrides the length configured in CFG.key_length.
+    gap: Set CFG.key_length to a value different from the sideload width (for example KEY_128 or KEY_256), run HMAC
+      with the sideloaded 512-bit key, and compare the digest with the reference computed using the sideload key
+      length. Check that the sideload length is used and the conflicting configured length is ignored.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 141
+      - 141
+      text: so it overrides whatever is configured in CFG.key_length.
+    verify_reason: No test sets a conflicting CFG.key_length before running with the sideloaded key. IP-level sideload
+      is disabled.
+  - id: cr_6bc711c2b717
+    statement: ERR_CODE reports SwInvalidConfig when hash_stop or hash_continue is rejected with a sideloaded key.
+    gap: With a sideloaded key, issue CMD.hash_continue (after a stop or in a state where it is rejected) and check
+      that hmac_err is raised and ERR_CODE equals SwInvalidConfig.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 164
+      - 164
+      text: '[`ERR_CODE`](registers.md#err_code) reports `SwInvalidConfig`'
+    verify_reason: The test issues hash_stop only. hash_continue is never issued with a sideloaded key.
+  items_withdrawn_by_verify: 0
+  verify:
+    summary: The only test that exercises the sideloaded key is the chip-level keymgr_dpe_sideload_hmac_test. It
+      covers hash_start with an invalid key, hash_stop with a sideloaded key, and the KEY_512 readback. It does
+      not cover hash_continue, revocation during an operation, or a conflicting CFG.key_length. The IP-level HMAC
+      DV forces sideload off.
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 211
+      - 212
+      role: context
+      quote: "  // TODO(#31634): Disable sideloading for now.\n  rand_config_value[ral.cfg.sideload.get_lsb_pos()]\
+        \ = 1'b0;"
+      note: The IP-level HMAC DV never enables sideload, so none of the five items is exercised there.
+    - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+      lines:
+      - 143
+      - 143
+      role: context
+      quote: 1u << HMAC_CMD_HASH_STOP_BIT);
+      note: The test exercises only hash_stop. It has no hash_continue reference.
+    searches: 5
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_36a66d891356
+  category: 5. untested
+  type: partially_tested
+  severity: high
+  title: 'Partially tested: 5 requirement(s) in hw/ip/hmac/data/hmac.hjson > hmac > CFG … (4 sections)'
+  items:
+  - id: cr_1089c5d4e1c7
+    statement: While the message FIFO is full, writes to it are blocked until the FIFO has space, causing back-pressure
+      on the interconnect.
+    gap: Stall the engine so the MSG_FIFO fills, then issue further writes. Check the interconnect holds the writes,
+      with no ready/response until space frees. Check that no data is lost or reordered once the FIFO drains. Check
+      the FIFO full status.
+    spec:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 429
+      - 429
+      text: Data written to the FIFO whilst it is full will cause back-pressure on the interconnect
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 207
+      - 207
+      text: Whilst the FIFO is full, the HMAC will block writes until the FIFO has space which will cause back-pressure
+        on the interconnect.
+    verify_reason: No direct check was found that writes are blocked or back-pressured while the FIFO is full.
+  - id: cr_b0906404bd67
+    statement: The clear secret operation overwrites the internal variables with the provided 32-bit value.
+    gap: Run a wipe in SHA-2 384 and SHA-2 512 mode with several different wipe values. Check that the digest words
+      equal the 32-bit value duplicated across the 64-bit words. Add a check that the key and intermediate state
+      are overwritten, for example by continuing or rerunning a hash after the wipe and comparing against a wipe-value
+      model.
+    spec:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 456
+      - 456
+      text: The clear secret operation overwrites the internal variables with the provided 32-bit value.
+    verify_reason: The scoreboard does not model the wipe value. It only checks that the digest differs from the
+      expected one.
+  items_withdrawn_by_verify: 3
+  verify:
+    summary: The DV environment covers three of the five items. The smoke vseq randomizes endian_swap with byte-masked
+      TL writes, and the scoreboard compares the digest. The STATUS register is read and checked against the scoreboard's
+      fifo_empty prediction. Key writes during hashing are discarded and the error code is checked. The wipe_secret
+      and back-pressure items remain gaps.
+    resolution: Add a directed check that the wipe value is observed in the digest and key state. Add a check on
+      TL response timing while the FIFO is full.
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 196
+      - 199
+      role: refutes
+      quote: "  if (do_wr_key) begin\n    write_discard_key();\n    check_error_code(0);\n  end"
+      note: Key written during hashing, then the error code is checked.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 322
+      - 326
+      role: refutes
+      quote: "          if (hmac_start) begin\n            if (cfg.en_cov) cov.wr_key_during_hash_cg.sample(1);\n\
+        \            update_err_intr_code(SwUpdateSecretKeyInProcess);\n            return;\n          end"
+      note: The scoreboard model drops the key write, so the digest comparison uses the original key.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 383
+      - 387
+      role: refutes
+      quote: "      hmac_status_data = (hmac_idle       << HmacStaIdle)         |\n                         (hmac_fifo_empty\
+        \ << HmacStaMsgFifoEmpty) |"
+      note: STATUS fifo_empty is predicted from FIFO depth and checked on STATUS reads.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 373
+      - 373
+      role: refutes
+      quote: '                  .write(1''b1), .data(word), .mask(wr_mask), .blocking(1));'
+      note: Random contiguous byte masks are used for MSG_FIFO writes, so sub-word writes occur with randomized
+        endian_swap.
+    searches: 4
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_4cc9fbe4d727
+  category: 5. untested
+  type: partially_tested
+  severity: high
+  title: 'Partially tested: 5 requirement(s) in hw/ip/hmac/data/hmac.hjson > hmac > CFG'
+  items:
+  - id: cr_403238c02dda
+    statement: key_length value is irrelevant when the key is sideloaded.
+    gap: With a sideloaded key, program several different key_length values (for example 128, 256, 1024, and an
+      invalid one) for the same message. Check that the digest is identical in every case and equals the expected
+      value for the sideloaded key.
+    spec:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 315
+      - 315
+      text: The value of this register is irrelevant when HMAC is used as a plain SHA-2 hash function without a
+        key (i.e., CFG.hmac_en is 0), and when the key is sideloaded from the key manager (see CFG.sideload).
+    verify_reason: No test programs differing key_length values under sideload. Random sideload is disabled, and
+      the only sideload test uses KEY_512.
+  items_withdrawn_by_verify: 3
+  verify:
+    summary: 'The checks cover items 1, 3 and 5 through constrained-random smoke stimulus and a scoreboard. I could
+      not settle whether hash_continue is ever started with Key_None (item 2). Sideloaded key_length irrelevance
+      (item 4) is not tested: random sideload is disabled and only a KEY_512 sideload test exists.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 114
+      - 118
+      role: supports
+      quote: "constraint hmac_base_vseq::key_length_c {\n  $countones(key_length) == 1 dist {\n    1 :/ 4,  // Key_128/Key_256/Key_384/Key_512/Key_1024/Key_None\n\
+        \    0 :/ 1   // Illegal -> should get cast to Key_None in HW"
+      note: Random stimulus drives Key_None and illegal key_length/digest_size encodings.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 198
+      - 199
+      role: refutes
+      quote: "              if (invalid_cfg) begin\n                update_err_intr_code(SwInvalidConfig);"
+      note: The scoreboard expects SwInvalidConfig when hash_start runs with an invalid config, including Key_None
+        with hmac_en.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 217
+      - 219
+      role: context
+      quote: "            end else if (invalid_cfg) begin\n              // otherwise signalling invalid config\
+        \ takes priority\n              update_err_intr_code(SwInvalidConfig);"
+      note: The scoreboard also models an invalid-config start via hash_continue, but I could not confirm that stimulus
+        reaches it.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 211
+      - 212
+      role: supports
+      quote: "  // TODO(#31634): Disable sideloading for now.\n  rand_config_value[ral.cfg.sideload.get_lsb_pos()]\
+        \ = 1'b0;"
+      note: Random sideload is disabled in the base sequence, so key_length irrelevance under sideload is not exercised
+        there.
+    searches: 2
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_c112d3411aad
+  category: 5. untested
+  type: partially_tested
+  severity: high
+  title: 'Partially tested: 5 requirement(s) in hw/ip/hmac/README.md > Overview > Features … (2 sections)'
+  items:
+  - id: cr_03340331c331
+    statement: The module can wipe internal variables such as the secret key, intermediate hash results, digest
+      and message scheduling array.
+    gap: After a wipe_secret or secure wipe, probe the secret key registers, intermediate hash state and message
+      schedule array (backdoor or hierarchical access). Check each holds the wipe value or is cleared. Also check
+      that a hash started afterwards cannot reuse the old key or state.
+    spec:
+    - path: hw/ip/hmac/README.md
+      lines: *id004
+      text: is able to wipe internal variables such as the secret key, intermediate hash results, digest and the
+        internal message scheduling array.
+    verify_reason: No test probes the key, hash state or schedule array after a wipe. Only the digest is checked.
+  - id: cr_419b9981b884
+    statement: A sideloaded key is never exposed to software.
+    gap: During and after a sideloaded HMAC operation, try to read the KEY registers and any other software-visible
+      register or path. Check that the key value never appears and that reads return zero or a defined value.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 77
+      - 77
+      text: The key is then never exposed to software.
+    - path: hw/ip/hmac/README.md
+      lines:
+      - 45
+      - 45
+      text: the key is never exposed to software.
+    verify_reason: I found no check that the sideloaded key cannot be read through the KEY registers or any other
+      path.
+  - id: cr_aab3a12796d4
+    statement: Internal variables and the secret key are reset to the value written to WIPE_SECRET.
+    gap: Write a known value to WIPE_SECRET, then check that the internal state and key are reset to that value.
+      For example, rerun a hash without reprogramming the key after the wipe and compare the digest to a model that
+      uses the wipe value as the key. Also check intermediate state by wiping mid-message and continuing.
+    spec:
+    - path: hw/ip/hmac/README.md
+      lines:
+      - 62
+      - 62
+      text: The internal variables and secret key will be reset to the written value.
+    verify_reason: The tests only check the digest, not that the key or internal state equals the WIPE_SECRET value.
+  items_withdrawn_by_verify: 2
+  verify:
+    summary: 'I could not refute items 3, 2 and 5: no test probes the key, internal state or schedule array directly.
+      Items 1 and 4 look covered by hmac_smoke and its scoreboard, so I withdrew them.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 116
+      - 116
+      role: refutes
+      quote: 1 :/ 4,  // Key_128/Key_256/Key_384/Key_512/Key_1024/Key_None
+      note: Key_1024 is randomly selected in HMAC mode, and the scoreboard model checks the digest.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 885
+      - 885
+      role: refutes
+      quote: end else if (key_length == Key_1024) begin
+      note: The model computes the expected digest for a 1024-bit key. Only the key words within the configured
+        length are passed to it.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 26
+      - 26
+      role: context
+      quote: rand bit [31:0]         key[NUM_KEYS];
+      note: All key registers are randomised, so registers beyond the configured length are normally non-zero.
+    searches: 4
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_f3e146ee6ce0
+  category: 5. untested
+  type: partially_tested
+  severity: high
+  title: 'Partially tested: 5 requirement(s) in hw/ip/hmac/doc/programmers_guide.md > Programmer''s Guide > Triggering
+    HMAC/SHA-2 engine … (3 sections)'
+  items:
+  - id: cr_a382136db259
+    statement: The SHA-2 engine must be enabled via CFG.sha_en.
+    gap: Set CFG.sha_en=0 and issue hash_start with a message. Check that the engine does not run (no hmac_done,
+      digest unchanged) and that the expected error (SwHashStartWhenShaDisabled) is raised in INTR_STATE.hmac_err
+      and ERR_CODE. Then set sha_en=1 and check normal operation.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 41
+      - 41
+      text: In both cases the SHA-2 engine must be enabled using CFG.sha_en
+    verify_reason: The scoreboard predicts the disabled-SHA error, but no check shows the engine does not run without
+      sha_en.
+  - id: cr_a578aba72de1
+    statement: These errors are signalled through INTR_STATE.hmac_err.
+    gap: Start an HMAC operation with a sideloaded key, then have the key manager revoke or invalidate the key mid-operation.
+      Check that INTR_STATE.hmac_err is set and ERR_CODE reports the error.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 112
+      - 112
+      text: In all of these cases the error is signalled through INTR_STATE.hmac_err, as for any other HMAC error.
+    verify_reason: No stimulus revokes the key mid-operation. Sideload is disabled in block-level DV.
+  - id: cr_bd802d2e0596
+    statement: The valid indication of the sideload interface must remain set for the entire operation.
+    gap: Start an HMAC operation with a valid sideloaded key, then deassert or revoke the sideload valid signal
+      mid-operation. Check that the operation aborts, the digest is cleared, and an error is reported. Also check
+      that the operation completes normally when valid stays set throughout.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 106
+      - 106
+      text: This indication has to remain set for the entire operation.
+    verify_reason: Sideload is off in block DV and no mid-operation valid drop is checked.
+  - id: cr_054bcd09af81
+    statement: Attempts to update CFG or KEY while processing are discarded.
+    gap: 'While processing, attempt separate writes to KEY and to CFG (digest size, key length, endianness). Expect
+      both to be discarded: read back the KEY and CFG values and check they are unchanged. Check the in-flight digest
+      still matches the reference.'
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 133
+      - 133
+      text: Such attempts are discarded.
+    verify_reason: The scoreboard only predicts the error and skips the update. There is no explicit read-back of
+      KEY or CFG.
+  - id: cr_1fd1c346462a
+    statement: CFG and KEY registers cannot be updated while the engine is processing messages.
+    gap: While the engine is processing a message, write different values to KEY and to CFG (digest size, key length,
+      endianness). Then read them back and check they are unchanged and that the running message's digest is unaffected.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 132
+      - 132
+      text: The HMAC IP prevents [`CFG`](registers.md#cfg) and [`KEY`](registers.md#key) registers from getting
+        updating while the engine is processing messages.
+    verify_reason: There is no explicit check that KEY or CFG stay unchanged. CFG writes during hash are only sampled
+      for coverage.
+  items_withdrawn_by_verify: 0
+  verify:
+    summary: I found no test that closes any of the five gaps. The HMAC DV disables sideload, so no mid-operation
+      key revoke is driven. The scoreboard only sets up the expected error for a key write during hash, and it skips
+      the mirror update for CFG and KEY writes while a hash is running. No explicit check reads KEY or CFG back
+      after such a write. The sha_en gap is also confirmed, though there is a scoreboard check for the disabled-SHA
+      error. I did not read the chip-level sideload HMAC test or the hmac_error_vseq stimulus, so the cited partial
+      coverage is taken from the finding.
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 211
+      - 212
+      role: supports
+      quote: "  // TODO(#31634): Disable sideloading for now.\n  rand_config_value[ral.cfg.sideload.get_lsb_pos()]\
+        \ = 1'b0;"
+      note: Block-level HMAC DV disables sideload, so no mid-operation valid revoke is exercised.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 322
+      - 326
+      role: context
+      quote: "          if (hmac_start) begin\n            if (cfg.en_cov) cov.wr_key_during_hash_cg.sample(1);\n\
+        \            update_err_intr_code(SwUpdateSecretKeyInProcess);\n            return;"
+      note: A key write during hash only predicts the error code and skips the key update. No explicit read-back
+        check of KEY.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 297
+      - 299
+      role: context
+      quote: "            if (cfg.en_cov) cov.wr_config_during_hash_cg.sample(1);\n            return; // won't\
+        \ update configs if hash start"
+      note: CFG write during hash is only sampled for coverage, with no explicit discard check.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 212
+      - 215
+      role: context
+      quote: "            if (!sha_en && !invalid_cfg) begin\n              // so long as configuration is valid\n\
+        \              update_err_intr_code(SwHashStartWhenShaDisabled);"
+      note: The disabled-SHA error is predicted in the scoreboard, but the finding says there is no direct no-operation
+        check.
+    searches: 5
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_05f5154f055a
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 5 requirement(s) in hw/ip/hmac/doc/theory_of_operation.md > Theory of Operation > Design Details
+    > Key sideloading'
+  items:
+  - id: cr_562194d14c29
+    statement: CFG.key_swap has no effect on the sideloaded key.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 143
+      - 143
+      text: CFG.key_swap has no effect on the sideloaded key, as the key manager delivers it in a fixed order.
+    verify_reason: Sideload is never enabled in DV, so key_swap is never checked against a sideloaded key.
+  - id: cr_7eee2f253918
+    statement: The combined sideloaded key is muxed into the HMAC core and no copy of it is kept inside HMAC.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 139
+      - 139
+      text: The combined key is muxed into the HMAC core rather than latched, so no copy of the sideloaded key is
+        kept inside HMAC
+    verify_reason: No test or assertion checks that no copy of the sideloaded key is kept inside HMAC.
+  - id: cr_89cd9ce85cff
+    statement: CFG.sideload only takes effect for keyed HMAC operations, that is when CFG.hmac_en is set.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 135
+      - 135
+      text: The bit only takes effect for keyed HMAC operations (CFG.hmac_en set)
+    verify_reason: There is no stimulus with sideload set together with hmac_en cleared, and no check on it.
+  - id: cr_aeeb0cb3e0f0
+    statement: On abort, the message packer and the message FIFO are cleared.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 156
+      - 156
+      text: the message packer and the message FIFO are cleared so that no residual message data is carried into
+        the next operation
+    verify_reason: The abort path is not reachable in DV because sideloading is disabled.
+  - id: cr_af28a6129f5c
+    statement: The key manager deasserting the valid indication during an operation aborts that operation.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 155
+      - 155
+      text: The key manager deasserting the valid indication while an operation is in progress aborts that operation
+    verify_reason: The sideload agent never drives valid low during an operation, because sideloading is disabled.
+  items_withdrawn_by_verify: 0
+  verify:
+    summary: 'The HMAC DV environment never exercises sideloading. The base vseq forces CFG.sideload to 0 (TODO
+      #31634), and the sideload agent is created but never driven. No test or checker covers any of the five items.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 211
+      - 212
+      role: supports
+      quote: '// TODO(#31634): Disable sideloading for now.'
+      note: Sideload is forced to 0 in randomized config, so none of the items can be reached.
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 143
+      - 143
+      role: context
+      quote: has no effect on the sideloaded key, as the key manager delivers it in a fixed order.
+      note: Spec statement for the key_swap item.
+    searches: 5
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_0ce72a04fa04
+  category: 5. untested
+  type: partially_tested
+  severity: medium
+  title: 'Partially tested: 5 requirement(s) in hw/ip/hmac/doc/theory_of_operation.md > Theory of Operation > Design
+    Details > SHA-2 message feed and pad … (3 sections)'
+  items:
+  - id: cr_20469c978538
+    statement: For SHA-2 256 an empty message has a 64-bit message length of 0.
+    gap: Run a directed test with digest size SHA-2 256 and an empty message. Check that the 64-bit message length
+      is 0 (for example via the MSG_LENGTH registers) and that the digest equals the SHA-256 empty-message digest.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 71
+      - 71
+      text: For example, for SHA-2 256, if the message is empty, the message length is 64-bit 0.
+    verify_reason: The scoreboard checks MSG_LENGTH, but an empty message with SHA-256 is not guaranteed by the
+      random stimulus.
+  - id: cr_26f0103d3cea
+    statement: When the FIFO is full, writes are blocked, causing interconnect back-pressure rather than being dropped
+      or overwriting FIFO contents.
+    gap: Stall the hash engine and write enough words to fill the FIFO. Check that the FIFO full status is reached,
+      that further writes are back-pressured and not accepted (not dropped), and that the final digest includes
+      every word written.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 34
+      - 34
+      text: If the FIFO is full, the HMAC block will block any writes leading to back-pressure on the interconnect
+        (as opposed to dropping those writes or overwriting existing FIFO contents).
+    verify_reason: The scoreboard models FIFO-full state, but there is no explicit check that writes were stalled
+      rather than dropped.
+  - id: cr_ca5dcee32a08
+    statement: Then the padding logic sends 13 words of 0x00000000 as zero padding.
+    gap: Hash an empty message (length 0), and a message whose length is a multiple of 64 bytes, with SHA-256 in
+      HMAC mode. Check that the padding emits 0x80, 13 words of 0x00000000 and the length words, and that the digest
+      matches the reference value for the empty message.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 73
+      - 73
+      text: Then it sends (512 - 32 - 64)/32, 13 times of 0x00000000 for Padding 0x00.
+    verify_reason: No test stimulates an empty message with SHA-256 to verify the 13 zero-padding words specifically.
+  - id: cr_a65819a54cf2
+    statement: HMAC supports key lengths of 128/256/384/512/1024 bits provided the key length does not exceed the
+      digest block size (max 512-bit key for SHA-2 256).
+    gap: Run a directed test for each digest size (SHA-2 256/384/512) with each key length (128/256/384/512/1024).
+      Check that valid combinations (key length <= block size) produce the correct digest. Check that an invalid
+      combination (e.g. 1024-bit key with SHA-2 256) is rejected with SwInvalidConfig.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 122
+      - 122
+      text: HMAC supports a secret key of length 128/256/384/512/1024-bit, so long as the key length does not exceed
+        the block size of the configured digest, i.e., for SHA-2 256 a maximum length of 512-bit key is supported.
+    verify_reason: I found no directed key-length by digest-size matrix and no invalid-combination check in the
+      HMAC DV sequences.
+  - id: cr_0f006fc77258
+    statement: An aborted operation does not raise the hmac_done interrupt.
+    gap: Start an operation and abort it mid-run, for example by revoking the sideload key or stopping the hash.
+      Check that hmac_done is never set in INTR_STATE and that the done interrupt line stays low.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 113
+      - 113
+      text: An aborted operation does not raise the hmac_done interrupt
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 157
+      - 157
+      text: No `hmac_done` interrupt is raised for an aborted operation.
+    verify_reason: I found no test that aborts an operation while it is running and checks that hmac_done stays
+      low.
+  items_withdrawn_by_verify: 0
+  verify:
+    summary: I found no directed test for any of the five items. The scoreboard predicts MSG_LENGTH, models FIFO-full
+      state and checks hmac_done only when SHA is enabled, but nothing stimulates and checks the specific gaps.
+      I did not search the chip-level, keymgr or software tests, so those items rest on the HMAC DV tree alone.
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 1035
+      - 1038
+      role: context
+      quote: "function void hmac_scoreboard::update_wr_msg_length(int size_bytes);\n  uint64 size_bits = size_bytes\
+        \ * 8;\n  void'(ral.msg_length_upper.predict(size_bits[TL_DW*2-1:TL_DW]));\n  void'(ral.msg_length_lower.predict(size_bits[TL_DW-1:0]));"
+      note: MSG_LENGTH is predicted and checked on CSR reads, but only for whatever message size the random stimulus
+        produces. Nothing forces an empty message with SHA-256.
+    searches: 5
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_3c05374afea6
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 5 requirement(s) in hw/ip/hmac/doc/theory_of_operation.md > Theory of Operation > Design Details
+    > Key sideloading … (2 sections)'
+  items:
+  - id: cr_c4e4f4d945ab
+    statement: CFG.sideload is ignored when only SHA-2 is computed (no key is used); it applies only to keyed HMAC
+      operations.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 135
+      - 135
+      text: it is ignored when only SHA-2 is computed, as that does not use a key.
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 78
+      - 78
+      text: This only applies to keyed HMAC operations; it is ignored when only SHA-2 is computed.
+    verify_reason: DV forces sideload to 0, and I found no test that sets it with SHA-only operation.
+  - id: cr_d882830deff5
+    statement: HMAC does not detect a change of the sideloaded key during an operation.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 148
+      - 148
+      text: Neither HMAC nor the key manager enforces this
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 148
+      - 148
+      text: and HMAC does not detect the change.
+    verify_reason: No sideload stimulus in DV, and no test changes the key mid-operation.
+  - id: cr_2a29e638293c
+    statement: The next 16 x 32-bit message is fetched into the internal message scheduling array only after the
+      current block completes.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 179
+      - 179
+      text: This version of the IP fetches the next 16 x 32-bit message into the internal message scheduling array
+        only after completing the current block.
+    verify_reason: I found no test or assertion for message fetch timing.
+  - id: cr_aeb18e72aa7a
+    statement: SHA-2 256 takes 80 cycles to complete a block.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 180
+      - 180
+      text: As such, it takes 80 cycles to complete a block.
+    verify_reason: I found no cycle-count check for SHA-2 256 blocks.
+  - id: cr_ba453872049c
+    statement: SHA-2 384/512 takes 96 cycles to complete a 1024-bit block.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 185
+      - 185
+      text: It takes 96 cycles to complete a 1024-bit block.
+    verify_reason: I found no cycle-count check for SHA-2 384/512 blocks.
+  items_withdrawn_by_verify: 0
+  verify:
+    summary: 'I found no test with a check for any of the 5 items. HMAC DV forces CFG.sideload to 0 (TODO #31634),
+      and there is no cycle-count check in the HMAC dv or rtl files. I only listed the one firmware test that touches
+      sideloading and did not read it, so the sideload items rest on that gap.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 211
+      - 212
+      role: supports
+      quote: "// TODO(#31634): Disable sideloading for now.\n  rand_config_value[ral.cfg.sideload.get_lsb_pos()]\
+        \ = 1'b0;"
+      note: DV never enables sideload, so neither the SHA-only ignore case nor key-change-during-operation is exercised.
+    searches: 3
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_3fc7728836ce
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 5 requirement(s) in hw/ip/hmac/data/hmac.hjson > hmac > CFG'
+  items:
+  - id: cr_5a80d0a89e9e
+    statement: 'CFG.sideload: hardware receives a write-qualifier pulse on software writes (true).'
+    spec:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 203
+      - 203
+      text: 'hwqe:     "true"'
+    verify_reason: Sideload is explicitly disabled in the DV, so no test writes CFG.sideload.
+  items_withdrawn_by_verify: 0
+  verify:
+    summary: 'The sideload item stands: the DV env explicitly disables sideload writes. The other four items (hmac_en,
+      sha_en and digest_swap, whose hwext/hwqe attributes are implementation details) are exercised by the smoke
+      tests through CFG writes, and the scoreboard checks the resulting digest. That is indirect coverage, so I
+      could not call them clearly untested or clearly tested, and the overall outcome is mixed.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 211
+      - 212
+      role: supports
+      quote: "// TODO(#31634): Disable sideloading for now.\n  rand_config_value[ral.cfg.sideload.get_lsb_pos()]\
+        \ = 1'b0;"
+      note: Sideload is forced off in random CFG writes, so no test exercises CFG.sideload.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 353
+      - 353
+      role: refutes
+      quote: if (`gmv(ral.cfg.digest_swap)) begin
+      note: The scoreboard models digest_swap, so the smoke tests check its effect on the digest.
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 202
+      - 203
+      role: context
+      quote: "hwext:    \"true\",\n      hwqe:     \"true\","
+      note: These are register-implementation attributes, so they can only be tested indirectly.
+    searches: 1
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_55aac6d3ea8d
+  category: 5. untested
+  type: partially_tested
+  severity: medium
+  title: 'Partially tested: 5 requirement(s) in hw/ip/hmac/data/hmac.hjson > hmac > interrupt_list … (2 sections)'
+  items:
+  - id: cr_8532dccc2de0
+    statement: The fifo_empty interrupt is not raised while the HMAC block is running in HMAC mode and performing
+      the second round, i.e. computing the final hash of the outer key and the first-round result obtained with
+      the inner key.
+    gap: In HMAC mode, monitor the fifo_empty interrupt state and pin from the start of the second (outer-key) round
+      until hmac_done, and check that fifo_empty stays low. Use a message that leaves the FIFO empty when the round
+      starts.
+    spec:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 70
+      - 70
+      text: i) The HMAC block is not running in HMAC mode and performing the second round of computing the final
+        hash of the outer key as well as the result of the first round using the inner key.
+    - path: hw/ip/hmac/doc/interfaces.md
+      lines:
+      - 24
+      - 24
+      text: i) The HMAC block is not running in HMAC mode and performing the second round of computing the final
+        hash of the outer key as well as the result of the first round using the inner key.
+    verify_reason: No targeted check that fifo_empty stays low during the HMAC second round.
+  - id: cr_d16dbd9e0ca7
+    statement: The fifo_empty interrupt indicates that the message FIFO is empty.
+    gap: Directed test that fills the message FIFO, with the fifo_empty interrupt enabled, and checks that intr_state.fifo_empty
+      stays 0 while the FIFO holds data. As the FIFO drains to empty, check that the interrupt is raised exactly
+      at that transition. Also check that it clears on a write-1-to-clear and does not fire if the FIFO was never
+      filled.
+    spec:
+    - path: hw/ip/hmac/doc/interfaces.md
+      lines:
+      - 24
+      - 24
+      text: The message FIFO is empty.
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 68
+      - 68
+      text: The message FIFO is empty.
+    verify_reason: The scoreboard model is only an indirect check, and the smoke sequence acknowledges a one-cycle
+      timing misalignment.
+  items_withdrawn_by_verify: 3
+  verify:
+    summary: 'The two fifo_empty items stand: the scoreboard only predicts the interrupt after the FIFO was full
+      and then drained, with no directed check and no specific check during the HMAC second round. The three key-length
+      items are covered by the randomized smoke sequence, which runs every legal key length and digest size pair
+      under the scoreboard digest check. A key_length x digest_size cross measures that coverage. Those three are
+      withdrawn.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 806
+      - 807
+      role: refutes
+      quote: (local::hmac_en) -> (key_length != Key_None);
+      note: Randomization allows every key length with HMAC enabled. Only SHA-256 with a 1024-bit key is excluded,
+        on the next line.
+    - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+      lines:
+      - 87
+      - 87
+      role: refutes
+      quote: 'key_length_x_digest_size: cross key_length, digest_size;'
+      note: A cross covers every key length and digest size pair.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 693
+      - 693
+      role: supports
+      quote: if (fifo_full_detected && hmac_fifo_empty) begin
+      note: The model raises fifo_empty only after the FIFO was full and drained. It has no explicit check for the
+        second round.
+    searches: 2
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_566800bb50a7
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 5 requirement(s) in hw/ip/hmac/data/hmac.hjson > hmac > CFG'
+  items:
+  - id: cr_01eaae6544c4
+    statement: 'CFG.sideload: the register is implemented outside the register block (true).'
+    spec:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 202
+      - 202
+      text: 'hwext:    "true"'
+    verify_reason: sideload is not a field of CFG. The hwext attribute is structural and no test checks it.
+  - id: cr_030b1d53349f
+    statement: 'CFG.digest_swap: hardware receives a write-qualifier pulse on software writes (true).'
+    spec:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 203
+      - 203
+      text: 'hwqe:     "true"'
+    verify_reason: No test checks the hwqe pulse for digest_swap; it is only exercised implicitly.
+  - id: cr_1046bc3a01de
+    statement: 'CFG.key_length: hardware receives a write-qualifier pulse on software writes (true).'
+    spec:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 203
+      - 203
+      text: 'hwqe:     "true"'
+    verify_reason: No test checks the hwqe pulse for key_length; it is only exercised implicitly.
+  - id: cr_2d1b1f596874
+    statement: 'CFG.digest_size: the register is implemented outside the register block (true).'
+    spec:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 202
+      - 202
+      text: 'hwext:    "true"'
+    verify_reason: The hwext attribute for digest_size is not checked by any test.
+  items_withdrawn_by_verify: 1
+  verify:
+    summary: 'Four of the five items stand: they are register-implementation attributes (hwext/hwqe), and I found
+      no test that checks them as such. I withdraw cr_10e98e4908dc. The scoreboard models the digest being cleared
+      when sha_en is disabled, and the smoke sequence reads the digest back afterwards, which compares it against
+      that prediction. I did not confirm that the smoke sequence actually writes sha_en=0 on every path, only that
+      it reads the digest after its disable branch.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 306
+      - 309
+      role: refutes
+      quote: exp_digest   = '{default:0};  // Digest gets cleared on disabling.
+      note: Scoreboard predicts the digest is cleared when sha_en goes 1->0.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 496
+      - 496
+      role: refutes
+      quote: '`DV_CHECK_EQ(real_digest_val, exp_digest[digest_idx])'
+      note: Digest reads are checked against the expected (cleared) value.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+      lines:
+      - 256
+      - 264
+      role: refutes
+      quote: // if disable sha, digest should be cleared
+      note: Smoke sequence reads the digest after the sha-disable branch, which triggers the scoreboard check.
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 202
+      - 203
+      role: supports
+      quote: 'hwext:    "true",'
+      note: hwext/hwqe are implementation attributes with no dedicated check.
+    searches: 2
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_5c24f930a545
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 5 requirement(s) in hw/ip/hmac/data/hmac.hjson > hmac > MSG_LENGTH_LOWER … (2 sections)'
+  items:
+  - id: cr_959451b086ac
+    statement: The lower 3 bits [2:0] of the message length are ignored.
+    spec:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines: *id005
+      text: Lower 3 bits [2:0] are ignored.
+    verify_reason: No test writes a length with nonzero bits [2:0]; restore values are multiples of 1024.
+  items_withdrawn_by_verify: 4
+  verify:
+    summary: Four of five items are exercised by checks that can fail. The scoreboard compares msg_length reads
+      against predictions. The context-restore sequence writes both registers and checks the result. Nothing writes
+      a value with nonzero bits [2:0], so "lower 3 bits ignored" stays untested.
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 726
+      - 726
+      role: refutes
+      quote: '`DV_CHECK_EQ(msg_length_rd, msg_length_rand+msg_b.size()*8)'
+      note: After SW writes MSG_LENGTH_UPPER/LOWER during context restore, the read-back length is checked. This
+        exercises the hwext/hwqe write path.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 703
+      - 705
+      role: supports
+      quote: has to be a multiple of 512/1024 otherwise the DUT won't support it!
+      note: Restore writes only use values that are multiples of 1024, so bits [2:0] are never written nonzero.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 1035
+      - 1038
+      role: refutes
+      quote: function void hmac_scoreboard::update_wr_msg_length(int size_bytes);
+      note: The scoreboard predicts length as size_bytes*8 and compares it on reads, which covers byte-granular
+        counting.
+    searches: 1
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_6c97837d5c0a
+  category: 5. untested
+  type: planned_only
+  severity: medium
+  title: 'Planned but not implemented: 4 requirement(s) in hw/ip/hmac/doc/programmers_guide.md > Programmer''s Guide
+    > Saving and restoring the context … (2 sections)'
+  items:
+  - id: cr_9287ecbc9b5d
+    statement: fifo_empty status bit is lowered for a cycle even when the Message FIFO depth stays 0.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 191
+      - 191
+      text: The Message FIFO's `fifo_empty` status bit, however, is lowered for a cycle.
+    verify_reason: The model has no one-cycle lowering with depth 0; no test checks it.
+  items_withdrawn_by_verify: 3
+  verify:
+    summary: Three items are withdrawn and one stands. The DV env runs save/restore randomly (save_and_restore_pct=20)
+      with digest checking by the scoreboard, which covers items 1 and 2. The scoreboard also predicts and checks
+      the fifo_empty interrupt, which covers item 4. Nothing models or checks the one-cycle fifo_empty lowering
+      while depth stays 0 (item 3). I only skimmed the vseq and did not read its code in depth.
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 693
+      - 693
+      role: refutes
+      quote: if (fifo_full_detected && hmac_fifo_empty) begin
+      note: Scoreboard predicts fifo_empty interrupt after the FIFO was full and runs empty, and checks it against
+        intr_state reads (item 4).
+    - path: hw/ip/hmac/dv/tests/hmac_base_test.sv
+      lines:
+      - 22
+      - 22
+      role: refutes
+      quote: cfg.save_and_restore_pct = 20;
+      note: Random save/restore (including keyed HMAC) is enabled in the base test; the scoreboard compares digests,
+        so a context or key restore failure fails the test (items 1 and 2).
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 673
+      - 673
+      role: supports
+      quote: hmac_fifo_empty = hmac_fifo_depth == 0;
+      note: The model derives fifo_empty purely from depth==0 and has no one-cycle lowering with depth 0 (item 3).
+    searches: 3
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_78aab0dc03f7
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 5 requirement(s) in hw/ip/hmac/doc/interfaces.md > Hardware Interfaces … (2 sections)'
+  items:
+  - id: cr_179a3654a746
+    statement: The hmac module has no TL-UL bus host interfaces.
+    spec:
+    - path: hw/ip/hmac/doc/interfaces.md
+      lines:
+      - 8
+      - 8
+      text: 'Bus Host Interfaces (TL-UL): *none*'
+    verify_reason: Static statement; no test checks it.
+  - id: cr_1ce0d9febabc
+    statement: The hmac module uses clk_i as its primary clock.
+    spec:
+    - path: hw/ip/hmac/doc/interfaces.md
+      lines:
+      - 5
+      - 5
+      text: 'Primary Clock: **`clk_i`**'
+    verify_reason: No dedicated check that clk_i is the primary clock.
+  - id: cr_3627dd0601ce
+    statement: The hmac module has no peripheral pins for chip IO.
+    spec:
+    - path: hw/ip/hmac/doc/interfaces.md
+      lines:
+      - 9
+      - 9
+      text: 'Peripheral Pins for Chip IO: *none*'
+    verify_reason: There are no pins, so nothing to test.
+  - id: cr_b923d18300df
+    statement: The hmac module has no other clocks.
+    spec:
+    - path: hw/ip/hmac/doc/interfaces.md
+      lines:
+      - 6
+      - 6
+      text: 'Other Clocks: *none*'
+    verify_reason: Static statement; no test checks it.
+  - id: cr_2677d0527dcb
+    statement: hmac_done is an Event-type interrupt.
+    spec:
+    - path: hw/ip/hmac/doc/interfaces.md
+      lines:
+      - 23
+      - 23
+      text: hmac_done
+    - path: hw/ip/hmac/doc/interfaces.md
+      lines:
+      - 23
+      - 23
+      text: Event
+    verify_reason: The scoreboard checks hmac_done firing but not its Event type. This is weak and could arguably
+      be withdrawn.
+  items_withdrawn_by_verify: 0
+  verify:
+    summary: The scoreboard checks hmac_done interrupt state, but the Event-type property is not explicitly verified.
+      The other four items are static interface declarations, and no test or check exercises them.
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 416
+      - 416
+      role: context
+      quote: void'(ral.intr_state.hmac_done.predict(.value(1), .kind(UVM_PREDICT_READ)));
+      note: Scoreboard predicts hmac_done interrupt state; it checks the interrupt firing, not its Event type.
+    searches: 5
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_807123fe658f
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 4 requirement(s) in hw/ip/hmac/doc/theory_of_operation.md > Theory of Operation > Design Details
+    > Performance in SHA-2 mode and HMAC mode … (2 sections)'
+  items:
+  - id: cr_ed89d1bd86c3
+    statement: HMAC mode adds an extra 240 cycles to complete a HMAC SHA-2 256 digest.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 190
+      - 190
+      text: This adds an extra 240 cycles (80 for the inner key, 80 for the outer key, and 80 for the result of
+        the first round) to complete a HMAC SHA-2 256 digest of a message.
+    verify_reason: No test checks the 240-cycle total. The scoreboard only models the 80-cycle key padding delay,
+      and the cycle constants are used for waits.
+  - id: cr_f6528a1e1fc7
+    statement: SHA-2 256 effective throughput is 64 bytes per 80 clocks, 20% of the maximum throughput.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 181
+      - 181
+      text: The effective throughput considering this is `64 byte / 80 clk` or `16 clk / 80 clk`, 20% of the maximum
+        throughput.
+    verify_reason: The scoreboard comment says a future throughput test should check the accurate cycles, so no
+      such test exists.
+  items_withdrawn_by_verify: 2
+  verify:
+    summary: 'Two of the four items are not verified by any test: the 240-cycle HMAC overhead and the 20% SHA-2
+      256 throughput. The other two are covered by the scoreboard and random-address stimulus, so I withdrew them.
+      The scoreboard comment at line 414 says a future throughput test should check the accurate cycles.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 631
+      - 634
+      role: refutes
+      quote: "// if fifo full, tlul will not write next data until fifo has space again\n      if ((hmac_wr_cnt\
+        \ - hmac_rd_cnt) == HMAC_MSG_FIFO_DEPTH_WR) begin\n        wait((hmac_wr_cnt - hmac_rd_cnt) < HMAC_MSG_FIFO_DEPTH_WR);"
+      note: Scoreboard models the full-FIFO stall and checks the full status and interrupt against the DUT.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 104
+      - 104
+      role: refutes
+      quote: 'wr_addr inside {[HMAC_MSG_FIFO_BASE : HMAC_MSG_FIFO_LAST_ADDR]};'
+      note: Writes go to random addresses across the wide MSG_FIFO window.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 133
+      - 133
+      role: refutes
+      quote: end else if (!(masked_addr inside {[HMAC_MSG_FIFO_BASE:HMAC_MSG_FIFO_LAST_ADDR]})) begin
+      note: Scoreboard checks that every access is within the MSG_FIFO window, with a fatal error otherwise.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 414
+      - 414
+      role: supports
+      quote: // future throughput test should check the accurate cycles
+      note: Throughput and cycle counts are explicitly not checked.
+    searches: 1
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_9288577820e0
+  category: 5. untested
+  type: plan_item_not_implemented
+  severity: medium
+  title: 5 plan item(s) with no implementing test
+  items:
+  - id: cp_9d08f0b2671d
+    statement: SIM_FUNCTIONAL_COVERAGE_AT_100
+    spec: []
+    verify_reason: It is a checklist milestone with no implementing test.
+  - id: cp_b1bfe4a8a32d
+    statement: FPV_CODE_COVERAGE_AT_100
+    spec: []
+    verify_reason: It is marked N/A and no test implements it.
+  - id: cp_b3b4dffd4371
+    statement: Unknown checks on DUT outputs
+    spec: []
+    verify_reason: The README states it, but I found no specific test or assertion implementing the check.
+  items_withdrawn_by_verify: 2
+  verify:
+    summary: 'Two of the five items are tested and are withdrawn: csr_aliasing, which hmac imports from the generic
+      CSR tests, and fifo_empty_status_interrupt, which hmac_smoke and the vector tests cover with scoreboard checks.
+      The other three are checklist or README statements, not tests, so no test implements them. For the unknown-checks
+      item I found no assertion in the HMAC DV or RTL files.'
+    resolution: null
+    evidence:
+    - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+      lines:
+      - 45
+      - 47
+      role: refutes
+      quote: "name: \"{name}_csr_aliasing\"\n      build_mode: \"cover_reg_top\"\n      run_opts: [\"+csr_aliasing\"\
+        ]"
+      note: Generic csr_aliasing test; hmac_sim_cfg imports csr_tests.hjson, so it runs for hmac.
+    - path: hw/ip/hmac/data/hmac_testplan.hjson
+      lines:
+      - 113
+      - 117
+      role: refutes
+      quote: 'name: fifo_empty_status_interrupt'
+      note: Plan item maps to hmac_smoke and vector tests, which are implemented.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 391
+      - 392
+      role: refutes
+      quote: bit intr_state_empty = fifo_empty_intr | last_intr_test_wr[HmacMsgFifoEmpty];
+      note: Scoreboard predicts and checks the fifo_empty interrupt state.
+    - path: hw/ip/hmac/doc/checklist.md
+      lines:
+      - 249
+      - 249
+      role: supports
+      quote: Coverage      | [FPV_CODE_COVERAGE_AT_100][]      | N/A         |
+      note: Checklist milestone, not a test.
+    searches: 3
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_9a1ec2c7e750
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 5 requirement(s) in hw/ip/hmac/doc/theory_of_operation.md > Theory of Operation > Design Details
+    > Key sideloading'
+  items:
+  - id: cr_003bb8525faa
+    statement: On abort, the HMAC core returns to its idle state.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 156
+      - 156
+      text: and the HMAC core returns to its idle state.
+    verify_reason: No test aborts an operation by deasserting valid, so the return to idle is never checked.
+  - id: cr_01801357ac87
+    statement: The sideloaded key stays stable for the entire duration of an operation.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 147
+      - 147
+      text: For the same reason, the key itself has to stay stable for the entire duration of an operation.
+    verify_reason: The key is only held stable in a happy-path test. No test checks the stability requirement, and
+      the doc says it is not enforced.
+  - id: cr_291fea02ab56
+    statement: The key manager replaces the sideloaded key when a new key is generated for HMAC without deasserting
+      the valid indication.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 148
+      - 148
+      text: the key manager replaces the sideloaded key whenever a new key is generated for HMAC, without deasserting
+        the valid indication
+    verify_reason: No test replaces the key without deasserting valid.
+  - id: cr_2bd90963e6d1
+    statement: On abort, the SHA-2 engine is disabled, clearing its internal state and the digest.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 156
+      - 156
+      text: The SHA-2 engine is disabled, which clears its internal state and the digest
+    verify_reason: No test checks that the SHA-2 engine state and digest are cleared on abort.
+  - id: cr_4fa240172006
+    statement: The key manager keeps the valid indication set for the entire duration of an operation.
+    spec:
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 146
+      - 146
+      text: The key manager has to keep it set for the entire duration of an operation
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 146
+      - 146
+      text: 'because the HMAC core uses the key twice: for the inner key padding when the operation starts, and
+        again for the outer key padding after the message has been hashed.'
+    verify_reason: The chip-level test keeps valid set, but it does not check the inner/outer key-pad requirement
+      or what happens when valid drops.
+  items_withdrawn_by_verify: 0
+  verify:
+    summary: No test checks any of the five items. Sideloading is disabled in the HMAC block-level DV, and the only
+      chip-level sideload test is a stable-key happy path that checks the final digest.
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 211
+      - 212
+      role: supports
+      quote: "// TODO(#31634): Disable sideloading for now.\n  rand_config_value[ral.cfg.sideload.get_lsb_pos()]\
+        \ = 1'b0;"
+      note: Block-level DV forces CFG.sideload to 0, so none of the sideload behaviour is exercised.
+    - path: hw/ip/hmac/doc/theory_of_operation.md
+      lines:
+      - 156
+      - 156
+      role: context
+      quote: The SHA-2 engine is disabled, which clears its internal state and the digest
+      note: Abort behaviour (items cr_003bb8525faa and cr_2bd90963e6d1); no test drives the valid indication low
+        mid-operation.
+    - path: hw/top_earlgrey/dv/env/seq_lib/chip_sw_keymgr_dpe_sideload_hmac_vseq.sv
+      lines:
+      - 53
+      - 53
+      role: context
+      quote: cryptoc_dpi_pkg::sv_dpi_get_hmac_sha256(key_words, msg_arr, exp_digest);
+      note: Chip-level test only compares the digest of one operation with a stable key against a reference model.
+    searches: 5
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_9d93b74c40b1
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 3 requirement(s) in hw/ip/hmac/doc/programmers_guide.md > Programmer''s Guide > Errors'
+  items:
+  - id: cr_4eab539dc535
+    statement: SwPushMsgWhenShaDisabled has ERR_CODE value 0x1.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 179
+      - 179
+      text: SwPushMsgWhenShaDisabled
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 179
+      - 179
+      text: '0x1'
+    verify_reason: Nothing in the RTL, scoreboard or sequences produces or checks error code 1, and the coverage
+      bin is commented out.
+  - id: cr_b276172d406a
+    statement: If the sideloaded key becomes invalid (key revoked / valid deasserted) while an operation is in progress,
+      the operation is aborted and ERR_CODE reports SwInvalidConfig.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 111
+      - 111
+      text: and the same error is reported
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 186
+      - 186
+      text: It is also reported for the sideloaded key
+    verify_reason: 'Sideload is disabled in the testbench (TODO #31634) and no sequence invalidates the key mid-operation.'
+  items_withdrawn_by_verify: 0
+  verify:
+    summary: 'Items 1 and 3 have no test. Item 1: the RTL never emits code 1 at all, and the coverage bin for it
+      is commented out. Item 3: sideloading is disabled in the testbench (TODO #31634) and no sequence drives the
+      key valid signal. Item 2 is only partly covered. The scoreboard checks SwPushMsgWhenDisallowed for pushes
+      made when SHA is disabled or before start, but I found no sequence that pushes after CMD.process, so I could
+      not settle it.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/rtl/hmac.sv
+      lines:
+      - 965
+      - 967
+      role: context
+      quote: "      msg_push_not_allowed: begin\n        err_code = SwPushMsgWhenDisallowed;\n      end"
+      note: RTL maps msg pushes while disallowed to code 5. The priority case at lines 951-976 never assigns code
+        1 (SwPushMsgWhenShaDisabled).
+    - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+      lines:
+      - 109
+      - 109
+      role: supports
+      quote: '      // bins push_msg_when_sha_disabled   = {SwPushMsgWhenShaDisabled};'
+      note: The coverage bin for error code 1 is commented out, so nothing checks or covers it.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 211
+      - 212
+      role: supports
+      quote: "  // TODO(#31634): Disable sideloading for now.\n  rand_config_value[ral.cfg.sideload.get_lsb_pos()]\
+        \ = 1'b0;"
+      note: Sideload is forced off in the testbench, so the key-invalidation case is never exercised.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 147
+      - 148
+      role: context
+      quote: "        if ((!sha_en) || (!hmac_start && !hmac_continue)) begin\n          update_err_intr_code(SwPushMsgWhenDisallowed);"
+      note: The scoreboard predicts SwPushMsgWhenDisallowed when SHA is disabled or the hash is not started. This
+        is a near miss for item 2.
+    searches: 3
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_a0ca763cb236
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 3 requirement(s) in hw/ip/hmac/README.md > Overview > Description'
+  items:
+  - id: cr_1c762e6535de
+    statement: For SHA-2 384/512 modes operating on 64-bit words, the 32-bit wipe value is replicated and concatenated
+      to form the 64-bit wipe value.
+    spec:
+    - path: hw/ip/hmac/README.md
+      lines:
+      - 63
+      - 63
+      text: For SHA-2 384/512 modes that operate on 64-bit words, the 32-bit random value is replicated and concatenated
+        to create the 64-bit value.
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 457
+      - 457
+      text: For SHA-2 384/512 that work with 64-bit words, the 32-bit value is duplicated and concatenated to generate
+        the 64-bit value.
+    verify_reason: The only software check covers the 32-bit SHA-256 case. The DV scoreboard does not check the
+      wipe value, and nothing covers the 64-bit replicated value for SHA-2 384/512.
+  - id: cr_4282db4ce90a
+    statement: Software cannot read from the message FIFO.
+    spec:
+    - path: hw/ip/hmac/README.md
+      lines:
+      - 60
+      - 60
+      text: which SW writes the message to (but cannot read from).
+    verify_reason: No test reads the message FIFO and checks that the read is refused.
+  - id: cr_8e41a2412a72
+    statement: Wiping does not clear the message FIFO.
+    spec:
+    - path: hw/ip/hmac/README.md
+      lines:
+      - 60
+      - 60
+      text: It does not wipe the message FIFO
+    verify_reason: No test checks that FIFO contents survive a wipe. The scoreboard does nothing on a wipe write.
+  items_withdrawn_by_verify: 0
+  verify:
+    summary: I found no test that checks any of the three behaviors. The DV wipe test only checks that the digest
+      changes after a wipe. The one software test checks the wipe value in SHA-256 mode only, with 32-bit words.
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 330
+      - 332
+      role: context
+      quote: "\"wipe_secret\": begin\n          // Do nothing"
+      note: The scoreboard does no prediction of the wipe value.
+    - path: sw/device/tests/hmac_secure_wipe_test.c
+      lines:
+      - 82
+      - 82
+      role: context
+      quote: // Secure wipe is kSecureWipeValue overwritten to the digest words.
+      note: The test checks the 32-bit wipe value in SHA-256 mode only. It does not check the 64-bit replicated
+        value for SHA-2 384/512.
+    searches: 3
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_ab0678073e6e
+  category: 5. untested
+  type: partially_tested
+  severity: medium
+  title: 'Partially tested: 2 requirement(s) in hw/ip/hmac/data/hmac.hjson > hmac > DIGEST … (2 sections)'
+  items:
+  - id: cr_a31d2dca5103
+    statement: For SHA-2 384, DIGEST12-DIGEST15 are truncated.
+    gap: After an SHA-2 384 hash completes, read DIGEST12-DIGEST15 and check them against the architected truncated
+      value (not part of the digest, e.g. zero or unchanged). Fail if they carry digest data.
+    spec:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 504
+      - 504
+      text: For SHA-2 384, {DIGEST12-DIGEST15} are truncated
+    verify_reason: The scoreboard compares digest words only up to index 11 for SHA-2 384, so nothing checks DIGEST12-15
+      for truncation.
+  items_withdrawn_by_verify: 1
+  verify:
+    summary: 'Item 1 stands: the scoreboard checks digest words 0..11 only for SHA-2 384, and nothing checks DIGEST12-15.
+      Item 2 is covered: sar_different_context restores a 64-bit length with a non-zero upper word and checks the
+      read-back. I did not confirm that this test runs with SHA-2 256.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 491
+      - 497
+      role: supports
+      quote: // only check till digest_idx = 7 for SHA-2 256 and till digest_idx = 11 for SHA-2 384
+      note: Words 12-15 are explicitly not checked for SHA-2 384.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 726
+      - 726
+      role: refutes
+      quote: '`DV_CHECK_EQ(msg_length_rd, msg_length_rand+msg_b.size()*8)'
+      note: The SAR test restores a length such as 'hFFFF_FFFF_FFFF_A800, so the upper word is non-zero. It then
+        checks that the 64-bit {upper,lower} read-back matches.
+    searches: 1
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_b1ffe291df12
+  category: 5. untested
+  type: weak_only
+  severity: medium
+  title: 'Only weak evidence (non-failing checks, coverage, list entries): 5 requirement(s) in hw/ip/hmac/doc/programmers_guide.md
+    > Programmer''s Guide > Updating the configurations … (3 sections)'
+  items:
+  - id: cr_2bd1d3abeeee
+    statement: Before restoring a context, sha_en in CFG must remain disabled.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 163
+      - 163
+      text: Before restoring context, make sure that sha_en in CFG remains disabled.
+    verify_reason: Stimulus only.
+  - id: cr_9b457cf2a7cd
+    statement: Context switches are possible only at the boundary of complete message blocks.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 144
+      - 144
+      text: Such context switches are possible only at the boundary of complete message blocks
+    verify_reason: Stimulus only.
+  items_withdrawn_by_verify: 3
+  verify:
+    summary: 'Items 1, 4 and 5 (error code values and ERR_CODE storing details) are checked: the DV scoreboard predicts
+      ERR_CODE and compares CSR reads against the mirror, and the hmac_error test stimulates it. Items 2 and 3 have
+      only stimulus, with no check that fails if violated. Overall the finding is partly wrong, but items 2 and
+      3 stand.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 148
+      - 148
+      role: refutes
+      quote: update_err_intr_code(SwPushMsgWhenDisallowed);
+      note: Predicts ERR_CODE 5.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 324
+      - 324
+      role: refutes
+      quote: update_err_intr_code(SwUpdateSecretKeyInProcess);
+      note: Predicts ERR_CODE 3.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 1055
+      - 1055
+      role: refutes
+      quote: void'(ral.err_code.predict(.value(err_code_val), .kind(UVM_PREDICT_DIRECT)));
+      note: ERR_CODE mirror is updated with the details, so reads of ERR_CODE are compared to it.
+    searches: 1
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_d274e64b1f17
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 5 requirement(s) in hw/ip/hmac/data/hmac.hjson > hmac > CFG'
+  items:
+  - id: cr_d00d322b1664
+    statement: 'CFG.key_swap: hardware receives a write-qualifier pulse on software writes (true).'
+    spec:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 203
+      - 203
+      text: 'hwqe:     "true"'
+    verify_reason: No test directly checks the hwqe pulse for key_swap.
+  - id: cr_f7398c7e530f
+    statement: 'CFG.endian_swap: hardware receives a write-qualifier pulse on software writes (true).'
+    spec:
+    - path: hw/ip/hmac/data/hmac.hjson
+      lines:
+      - 203
+      - 203
+      text: 'hwqe:     "true"'
+    verify_reason: No test directly checks the hwqe pulse for endian_swap.
+  items_withdrawn_by_verify: 3
+  verify:
+    summary: Mixed result. Three items (sha_en=0, key_swap=0 big-endian, byte-wise MSG_FIFO writes) are exercised
+      by randomized DV stimulus with scoreboard checks, so the finding is wrong for them. The two hwqe items have
+      no direct test, so they stand. I did not read the RTL.
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 212
+      - 215
+      role: refutes
+      quote: "            if (!sha_en && !invalid_cfg) begin\n              // so long as configuration is valid\n\
+        \              update_err_intr_code(SwHashStartWhenShaDisabled);"
+      note: With sha_en=0 the scoreboard expects an error and no compression.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 867
+      - 869
+      role: refutes
+      quote: "  end else begin\n    `uvm_info(`gfn, \"Keep the key in big-endian\", UVM_HIGH)\n    big_endian_key\
+        \ = key;"
+      note: The digest model keeps the key as-is when key_swap=0 and compares the result to the DUT digest.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 358
+      - 358
+      role: refutes
+      quote: '        `DV_CHECK_FATAL(randomize(wr_addr, wr_mask) with {$countones(wr_mask) <= msg_q.size();})'
+      note: MSG_FIFO writes use random byte masks, including single-byte writes. The scoreboard applies endian_swap
+        per mask and checks the digest.
+    searches: 2
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_d4135d06ef2a
+  category: 5. untested
+  type: plan_item_not_implemented
+  severity: medium
+  title: 5 plan item(s) with no implementing test
+  items:
+  - id: cp_3371bbc48dfa
+    statement: TB_LINT_COMPLETE
+    spec: []
+    verify_reason: This is a lint checklist item with no test. I did not check whether the CI lint results back
+      the 'Done' status.
+  - id: cp_5cecb30c1587
+    statement: tl_intg_err_cg
+    spec: []
+    verify_reason: It is a covergroup with no test mapped to it. I did not look for a separate TL integrity error
+      test, so this is not a firm finding.
+  items_withdrawn_by_verify: 3
+  verify:
+    summary: Three of the five items are implemented by common tests that HMAC imports. The other two (a covergroup
+      and a lint checklist item) are not test items, so "no implementing test" is true but not meaningful. The finding
+      is partly wrong.
+    resolution: null
+    evidence:
+    - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+      lines:
+      - 29
+      - 29
+      role: refutes
+      quote: 'name: "{name}_csr_rw"'
+      note: Common csr_rw test, imported by hmac_sim_cfg.hjson (line 30).
+    - path: hw/dv/tools/dvsim/tests/alert_test.hjson
+      lines:
+      - 13
+      - 13
+      role: refutes
+      quote: 'name: "{name}_alert_test"'
+      note: Common alert_test, imported by hmac_sim_cfg.hjson (line 31).
+    - path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+      lines:
+      - 100
+      - 100
+      role: refutes
+      quote: 'tests: ["{name}{intf}_csr_rw", "{name}{intf}_csr_aliasing"]'
+      note: The regwen testpoint is covered by the common csr_rw and csr_aliasing tests.
+    - path: hw/dv/tools/dvsim/testplans/tl_device_access_types_testplan.hjson
+      lines:
+      - 21
+      - 21
+      role: supports
+      quote: 'name: tl_intg_err_cg'
+      note: This is a covergroup, and no test is attached to it.
+    searches: 2
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_d6a7b7231402
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 5 requirement(s) in hw/ip/hmac/doc/programmers_guide.md > Programmer''s Guide > Updating the
+    configurations … (2 sections)'
+  items:
+  - id: cr_51fc8f2304d3
+    statement: Enabling sha_en locks down SW writes to the DIGEST_0..15 registers.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 166
+      - 166
+      text: locks down writing to the DIGEST_0..15 registers from SW.
+    verify_reason: No stimulus writes DIGEST while sha_en=1. The save/restore flow always clears sha_en first.
+  - id: cr_d2c659d4c60b
+    statement: Each message stream is finalized once by setting CMD.hash_process.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 149
+      - 149
+      text: finalized *once* by setting the CMD.hash_process bit
+    verify_reason: I found no test or check that exercises or enforces a single hash_process per stream.
+  items_withdrawn_by_verify: 1
+  verify:
+    summary: I withdrew item 1, which the DV does test. I verified items 3 and 4 as untested. Items 2 and 5 are
+      inconclusive. Key writes during a hash are issued by the base vseq. The scoreboard discards them and checks
+      the error code and the digest. No test writes DIGEST while sha_en=1. The save/restore flows only write DIGEST
+      after clearing sha_en. I found nothing that checks hash_process being issued only once per stream. Item 2
+      is a software rule that no DUT test can check. For item 5 I found no key-read check, but the generic CSR tests
+      may cover it.
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 321
+      - 326
+      role: refutes
+      quote: "          if (hmac_start) begin\n            if (cfg.en_cov) cov.wr_key_during_hash_cg.sample(1);\n\
+        \            update_err_intr_code(SwUpdateSecretKeyInProcess);\n            return;\n          end"
+      note: The scoreboard models a key write during a hash as ignored, flags an error, and leaves the stored key
+        unchanged. The final digest comparison catches any change to the key.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 196
+      - 199
+      role: refutes
+      quote: "    write_discard_key();\n    check_error_code(0);"
+      note: The stimulus writes a random key register while a message is being written, which is the 'ignore key
+        access mid-process' condition. It is guarded by wr_key_during_hash, which hmac_smoke_vseq constrains to
+        0.
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 618
+      - 624
+      role: context
+      quote: '  csr_wr(.ptr(ral.cfg.sha_en), .value(1''b0));'
+      note: The save/restore flow clears sha_en before it writes the digest, so no test writes DIGEST while sha_en=1.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 335
+      - 342
+      role: context
+      quote: '          do_predict = !sha_en;'
+      note: The scoreboard predicts that a DIGEST write is ignored when sha_en=1. I found no sequence that exercises
+        this case.
+    searches: 3
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_dc90c491bce2
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 5 requirement(s) in hw/ip/hmac/doc/programmers_guide.md > Programmer''s Guide > Using a sideloaded
+    key'
+  items:
+  - id: cr_4311569af12c
+    statement: If the key is revoked during an operation, the digest is cleared.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 111
+      - 111
+      text: the digest is cleared
+    verify_reason: No mid-operation revocation test.
+  - id: cr_90db0cc9a415
+    statement: The CFG configuration is retained across an abort.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 127
+      - 127
+      text: The configuration in CFG is retained across an abort and does not need to be written again.
+    verify_reason: No abort and CFG-retention check.
+  - id: cr_c8ea510e0e76
+    statement: A key becoming invalid after operation completion clears the digest.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 116
+      - 116
+      text: A key that becomes invalid after the operation has completed clears the digest
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 116
+      - 116
+      text: so the digest registers then silently read as zero
+    verify_reason: The key is cleared after the digest read, and the digest is not read back afterwards.
+  - id: cr_cf99e411151d
+    statement: No error is reported when the key becomes invalid after the operation has completed.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 116
+      - 116
+      text: and no error is reported in this case
+    verify_reason: No check that no error is raised after a late key invalidation.
+  - id: cr_ea4b652641c0
+    statement: While INTR_STATE.hmac_err is pending, no further error is reported in ERR_CODE.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 121
+      - 121
+      text: As long as it is pending, no further error is reported in ERR_CODE.
+    verify_reason: Only a generic scoreboard model exists. No sideload test checks ERR_CODE masking.
+  items_withdrawn_by_verify: 0
+  verify:
+    summary: None of the five items has a test that both creates the condition and checks the result. The HMAC DV
+      forces CFG.sideload to 0. The only sideload test is a firmware test. It covers blocked start, hash_stop rejection
+      and a normal sideload run, but not these five behaviors.
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 211
+      - 212
+      role: supports
+      quote: '// TODO(#31634): Disable sideloading for now.'
+      note: DV never enables sideload.
+    - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+      lines:
+      - 204
+      - 206
+      role: context
+      quote: // Clear the sideloaded HMAC key
+      note: The key is cleared after the digest has been read and the cleared state is not checked. The test never
+        reads the digest after the clear and never checks that no error was raised.
+    - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+      lines:
+      - 214
+      - 216
+      role: context
+      quote: // Starting HMAC with an invalid sideload key must be blocked.
+      note: Tests blocked start, not mid-operation revocation.
+    - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+      lines:
+      - 1042
+      - 1042
+      role: context
+      quote: if (!`gmv(ral.intr_state.hmac_err)) begin
+      note: Generic scoreboard model of no new ERR_CODE while hmac_err is pending. Not a sideload scenario, and
+        it only updates the prediction.
+    searches: 4
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).
+- id: f_e9ce8dbfdcba
+  category: 5. untested
+  type: untested
+  severity: medium
+  title: 'Untested: 5 requirement(s) in hw/ip/hmac/doc/programmers_guide.md > Programmer''s Guide > Triggering HMAC/SHA-2
+    engine … (2 sections)'
+  items:
+  - id: cr_09387e293565
+    statement: For a message larger than 512 bits, software waits until the FIFO is not full before writing further
+      bits.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 42
+      - 42
+      text: If the message is larger than 512-bit, the software must wait until the FIFO is not full before writing
+        further bits.
+    verify_reason: This is a software rule. The DV checks the FIFO-full status bit but nothing enforces or checks
+      the wait-before-write behavior.
+  - id: cr_6fdc529bb101
+    statement: CFG.sha_en is set only after all other configuration inputs have been set.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 41
+      - 41
+      text: once all other configuration inputs have been properly set
+    verify_reason: hmac_init writes all of CFG in a single write, and nothing checks the ordering of sha_en against
+      the other configuration.
+  - id: cr_03c30ada2ff4
+    statement: If the key manager revokes the key during an operation, the operation is aborted.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 111
+      - 111
+      text: If the key manager revokes the key while an operation is running, that operation is aborted
+    verify_reason: Sideload is disabled in the DV and no test revokes the key during an operation. Only RTL assertions
+      exist.
+  - id: cr_2afcaa91c549
+    statement: After an abort, the part of the message already written is discarded together with the intermediate
+      hash.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 125
+      - 125
+      text: The part of the message that had been written is discarded together with the intermediate hash, and
+        the context cannot be restored with a sideloaded key.
+    verify_reason: No abort and restart scenario is tested.
+  - id: cr_371670d7ec74
+    statement: The sideloaded key must remain unchanged for the entire operation.
+    spec:
+    - path: hw/ip/hmac/doc/programmers_guide.md
+      lines:
+      - 107
+      - 107
+      text: The key also has to remain unchanged for the entire operation.
+    verify_reason: No test changes the sideloaded key during an operation.
+  items_withdrawn_by_verify: 0
+  verify:
+    summary: 'I found no test that checks any of the 5 items. The DV environment forces sideload off (TODO #31634),
+      so no sideload-abort scenario is ever stimulated. The RTL has the abort logic and two assertions, but the
+      DV never drives a key-invalid condition. The two "Triggering" items are software-procedure rules that the
+      DV does not check as such.'
+    resolution: null
+    evidence:
+    - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+      lines:
+      - 211
+      - 212
+      role: supports
+      quote: "// TODO(#31634): Disable sideloading for now.\n  rand_config_value[ral.cfg.sideload.get_lsb_pos()]\
+        \ = 1'b0;"
+      note: Random configs force sideload off, so no sideload test runs. This covers items 3, 4 and 5.
+    - path: hw/ip/hmac/rtl/hmac.sv
+      lines:
+      - 1061
+      - 1062
+      role: context
+      quote: "`ASSERT(SideloadKeyInvalidBlocksStart_A, sideload_key_invalid |-> !hash_start_or_continue)\n  `ASSERT(SideloadKeyInvalidAborts_A,\
+        \ sideload_key_invalid |-> !sha_en_engine)"
+      note: RTL assertions exist, but nothing in the DV makes the key invalid mid-operation. They do not check that
+        the message and intermediate hash are discarded, or that a key change is handled.
+    searches: 5
+  reviewer:
+    verdict: sampled
+    note: Sampled, not reviewed one by one. Across 10 sampled verified items, the gaps were real (e.g. counter saturation,
+      DIGEST writes while sha_en=1, a Target that never terminates). One or two per block are weak (system-level
+      behavior, or a muddled reason).

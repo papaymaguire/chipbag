@@ -1,0 +1,73 @@
+finding_hash: 34ab965626745b30
+started_at: '2026-11-10T19:47:30Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks the interrupt event-counter increment/pulse behaviour for these
+    registers. The only repo references to the counter registers are address defines and coverage points.
+    The test C files that mention "intr_count" use an unrelated local variable.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1554
+    line_end: 1557
+    quote: default decrvalue = 1;
+    role: context
+    note: Defines the incrementor counter behaviour (decrvalue=1, pulse field) that the items describe.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    line_start: 28
+    line_end: 28
+    quote: volatile uint32_t  intr_count = 0;
+    role: context
+    note: 'Near miss: a local variable, not the MCI counter register.'
+  searches:
+  - what: intr_count_incr_r / intr_count_r references outside the register files
+    where: whole repo
+    found: Only the coverage interface (src/mci/coverage/mci_top_cov_if.sv) and the hardware spec doc.
+  - what: Specific registers (mbox0/1 ecc unc/cor, target_done, cptra_mbox_cmd_avail) intr_count in tests
+    where: src/integration
+    found: No matches.
+  - what: INTR_COUNT_R / intr_count_incr in src/integration
+    where: src/integration
+    found: Only address defines in soc_address_map_defines.svh.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 3960
+    line_end: 3980
+    why_not: Coverpoints only sample the counter storage; they do not check the behaviour.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    line_start: 28
+    line_end: 28
+    why_not: Unrelated local variable named intr_count.
+  items:
+  - id: cr_c120cfb2596c
+    outcome: verified
+    reason: No test checks the counter decrement behaviour.
+    evidence:
+    - 0
+  - id: cr_c1daf87f3285
+    outcome: verified
+    reason: No test checks that the counter increments on the interrupt event.
+    evidence:
+    - 0
+  - id: cr_c43fbab16d30
+    outcome: verified
+    reason: No test checks the pulse field.
+    evidence:
+    - 0
+  - id: cr_c65a366c2f2e
+    outcome: verified
+    reason: No test checks the error_mbox1_ecc_unc counter.
+    evidence:
+    - 0
+  - id: cr_c79bd4ac60ff
+    outcome: verified
+    reason: No test checks the notif_mbox1_ecc_cor counter.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.0582407
+error: null

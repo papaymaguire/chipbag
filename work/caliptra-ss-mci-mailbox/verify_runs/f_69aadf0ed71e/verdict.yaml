@@ -1,0 +1,78 @@
+finding_hash: 9729200390e8a134
+started_at: '2026-11-10T20:38:53Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks any of the 5 items. The target_user smoke test exercises target ownership, SRAM/CSR
+    access and the target-done interrupt. It does not check BUSY reads, a sideband notification, absence
+    of an interrupt on handoff, or MCU validation of command, range and target identity.
+  evidence:
+  - path: src/integration/test_suites/libs/caliptra_ss_lib/caliptra_ss_lib.h
+    line_start: 239
+    line_end: 239
+    quote: MCU_MBOX_CMD_BUSY        = 0x0,
+    role: context
+    note: BUSY is only an enum definition; no test reads or checks it.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 220
+    line_end: 220
+    quote: if(!is_mcu_mbox_target_done_interrupt_set(mbox_num)) {
+    role: context
+    note: The test checks the target-done interrupt, not the absence of an interrupt on handoff, a sideband
+      notification, or MCU validation.
+  searches:
+  - what: 'Item cr_bb57badd8526: sideband notification to Target, in mcu_mbox tests'
+    where: src/integration/test_suites
+    found: No sideband notification check; the target_user test waits for TARGET_USER_VALID instead
+  - what: 'Item cr_dc1a3093f007: BUSY read from CMD_STATUS'
+    where: src/integration/test_suites
+    found: Only enum definitions in caliptra_ss_lib.h
+  - what: 'Item cr_1d6b75b3d49f: no interrupt or data-avail on handoff'
+    where: smoke_test_mcu_mbox_target_user
+    found: Only positive checks of the soc_req_while_mcu_lock and target_done interrupts; no negative
+      check
+  - what: 'Item cr_1e471e967ac0: MCU sideband notification to the Target'
+    where: src/integration/test_suites
+    found: None found
+  - what: 'Item cr_d628ab084b9b: MCU validation of command, range and target identity'
+    where: src/integration/test_suites
+    found: No such check in any test
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c
+    line_start: 195
+    line_end: 212
+    why_not: Checks that the Target cannot write the TARGET_USER and TARGET_USER_VALID registers. It does
+      not check the validation flow or sideband notification.
+  items:
+  - id: cr_bb57badd8526
+    outcome: verified
+    reason: No test of a sideband notification to the Target.
+    evidence:
+    - 1
+  - id: cr_dc1a3093f007
+    outcome: verified
+    reason: BUSY is never read or checked in any test.
+    evidence:
+    - 0
+  - id: cr_1d6b75b3d49f
+    outcome: verified
+    reason: No check that the interrupt and data-avail wires stay deasserted at handoff.
+    evidence:
+    - 1
+  - id: cr_1e471e967ac0
+    outcome: verified
+    reason: No sideband notification is checked.
+    evidence:
+    - 1
+  - id: cr_d628ab084b9b
+    outcome: verified
+    reason: No test checks MCU validation of command, range and target identity.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.0768632
+error: null

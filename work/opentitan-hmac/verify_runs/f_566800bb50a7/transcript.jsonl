@@ -1,0 +1,15 @@
+{"t": "2026-11-10T19:40:56Z", "event": "  \u2192 Grep: digest_swap|key_length|digest_size|sideload"}
+{"t": "2026-11-10T19:40:56Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/data/hmac.hjson"}
+{"t": "2026-11-10T19:40:57Z", "event": "Check digest clearing and sideload in the scoreboard."}
+{"t": "2026-11-10T19:40:58Z", "event": "  \u2192 Grep: sha_en|sideload|digest_size|key_length|digest_swap"}
+{"t": "2026-11-10T19:41:00Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:41:02Z", "event": "  \u2192 Grep: sha_en|exp_digest"}
+{"t": "2026-11-10T19:41:02Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:41:05Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T19:41:06Z", "event": "  \u2192 Grep: read_digest|rd_digest|digest_0|digest_[0-9]"}
+{"t": "2026-11-10T19:41:08Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T19:41:09Z", "event": "  \u2192 Grep: digest.*clear|clear.*digest|sha_en.*0"}
+{"t": "2026-11-10T19:41:10Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv"}
+{"t": "2026-11-10T19:41:21Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:25Z", "event": "I submitted the verdict as verified overall. Four items stand as untested and one, the digest clear, is withdrawn. The cited line for that item is in `hw/ip/hmac/data/hmac.hjson`.\n\n- **cr_10e98e4908dc (digest cleared when SHA-2 is disabled): withdrawn.**\n  - The scoreboard in `hw/ip/hmac/dv/env/hmac_scoreboard.sv` predicts a zeroed digest when `sha_en` goes from 1 to 0.\n  - The smoke sequence in `hmac_smoke_vseq.sv` reads the digest afterwards, and the scoreboard compares it against that prediction with `DV_CHECK_EQ`.\n  - I did not confirm that the smoke sequence actually writes `sha_en=0` on every path. The comment above the digest read says \"if disable sha, digest should be cleared\".\n- **cr_01eaae6544c4, cr_2d1b1f596874 (`hwext`) and cr_030b1d53349f, cr_1046bc3a01de (`hwqe`): verified as untested.** These are register-implementation attributes. The functional tests use the fields, but I found no test that checks them as such. `sideload` is not a field of `CFG`. The finding's `hwext` quote on line 202 sits on the register itself.\n\nThe save-and-restore sequences in `hmac_base_vseq.sv` also disable `sha_en`. They rewrite the digest without reading it in between, so they don't check the clear."}
+{"t": "2026-11-10T19:41:25Z", "event": "[13 turns, $0.1026]"}

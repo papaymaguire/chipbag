@@ -1,0 +1,8 @@
+{"t": "2026-11-10T20:58:03Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/data/hmac.hjson"}
+{"t": "2026-11-10T20:58:04Z", "event": "  \u2192 Grep: hwext|hwqe|hmac_en|cfg_qe|\\.qe"}
+{"t": "2026-11-10T20:58:06Z", "event": "  \u2192 Grep: cfg\\.(hmac_en|digest_size|key_length|endian_swap)|cfg_qe|hwqe|cfg\\.qe|ral\\.cfg"}
+{"t": "2026-11-10T20:58:17Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:58:25Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:58:34Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:58:36Z", "event": "I've submitted the verdict and it was accepted. The finding stands for all five items.\n\nI found no test that checks the `hwext` or `hwqe` attribute of CFG directly. The HMAC DV sequences write CFG through the register model, and the scoreboard checks digests. That only exercises the register's behaviour indirectly.\n\nI did not read the scoreboard or the generic CSR tests in detail. I counted them as near misses, not as checks of these items."}
+{"t": "2026-11-10T20:58:36Z", "event": "[7 turns, $0.0899]"}

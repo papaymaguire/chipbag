@@ -1,0 +1,458 @@
+topic: uart
+repo_root: targets/opentitan
+repo_commit: b84154c71810e853c0b37c00e96bb830804dd9f4
+generated_at: '2026-11-10T16:33:57Z'
+model: claude-sonnet-5-5
+confirmed: true
+sources:
+- path: hw/ip/uart/README.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: UART IP overview
+  units: 1
+  sha256: 7ebe9600a14f0b566dbc02c7af90cc04a3fc58a76047a36fa67f79c5e273d38a
+- path: hw/ip/uart/data/uart.hjson
+  role: spec
+  scope:
+    kind: whole_file
+  reason: UART register definition source
+  units: 1
+  sha256: 4960f3f5bac47c62cccaf928dafc1c6c3dc0cf823da6cdf07b46b51e413394bc
+- path: hw/ip/uart/doc/interfaces.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: UART interfaces, signals, interrupts
+  units: 1
+  sha256: 9f80e12898853fcad49272e7ad6dcac6a837f5265007ec21e559adb66f839d6c
+- path: hw/ip/uart/doc/programmers_guide.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: UART programming guide
+  units: 1
+  sha256: c9cf1517bd3b3c67463a21e09252bdbb821bb9028532180bf3c10e8dee808d58
+- path: hw/ip/uart/doc/theory_of_operation.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: UART theory of operation
+  units: 1
+  sha256: 6f9e15b9af2a77c41ee77717c87287a14635c84f6b3e6f2a7bec708628d77ba6
+- path: hw/dv/sv/uart_agent/uart_agent_cov.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART agent coverage
+  units: 1
+  sha256: 958c9d3dc70cfddf6170374db915b5d4bf5253de69002c2af908fbb9505052b8
+- path: hw/dv/sv/uart_agent/uart_monitor.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART agent monitor
+  units: 1
+  sha256: 2d588b4a133386cb0954fc043106023ead6d026d57c3384d58fdd5e55e4a6a95
+- path: hw/dv/tools/dvsim/testplans/alert_test_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared alert test plan imported by uart
+  units: 1
+  sha256: d528544ca88a548a3de099fcfeddb832c0e016214d865e83f5c2368c1fc45500
+- path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared CSR testplan imported by uart
+  units: 1
+  sha256: 017ecfde886312665da88ac9f4b31e7e640ef3ca3d656ae24f57d300348f538f
+- path: hw/dv/tools/dvsim/testplans/intr_test_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared interrupt test plan imported by uart
+  units: 1
+  sha256: be7ba0d65e58a8a9cc94eb30b4b5acb20a9716f0a5967abbf52ee10739e4eed7
+- path: hw/dv/tools/dvsim/testplans/stress_all_with_reset_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared stress/reset plan imported by uart
+  units: 1
+  sha256: aab1d8b00b2816514dc8cc40c3b3050fbff7b2a6392aa6be06c73ffdf35b6fea
+- path: hw/dv/tools/dvsim/testplans/tl_device_access_types_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: shared TL access plan imported by uart
+  units: 1
+  sha256: a24dad965c7b7c5eaa591acc1ed8bb1e02be1dd0181cdac84d048c5217e61db1
+- path: hw/ip/uart/data/uart_sec_cm_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART security countermeasure testplan
+  units: 1
+  sha256: 0a4a1732359a7b24460ec1dbbffb850661f02592675e49b8cbd9f9188f404013
+- path: hw/ip/uart/data/uart_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART block testplan
+  units: 1
+  sha256: 0c1288ba944faf969aafa8a03f63e4b67e421ecbc28b03870bf1de766e55fcd0
+- path: hw/ip/uart/dv/cov/uart_cov_excl.el
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART coverage exclusions
+  units: 1
+  sha256: d38ac6b09c737c40ba44b14502378e6f566e4312d7a7b3e45e50fb1cbec769ba
+- path: hw/ip/uart/dv/env/seq_lib/uart_base_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART base vseq
+  units: 1
+  sha256: 619c84b679e3ae12dda712533ee796f91e39dee7ee385007c4e2a413ac5accd6
+- path: hw/ip/uart/dv/env/seq_lib/uart_common_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART common vseq
+  units: 1
+  sha256: aded92b1005d1b9957598b7f6b509d3ee0c4665d000557a997d9feade33ad3a7
+- path: hw/ip/uart/dv/env/seq_lib/uart_fifo_full_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: 6c7e1628be964fe9079e5950d1f341fe792636e0058f101d19965941405575bc
+- path: hw/ip/uart/dv/env/seq_lib/uart_fifo_overflow_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: a8e811987818b37979ae76e29665a0f0e5c35db138dff3113da526c99027c077
+- path: hw/ip/uart/dv/env/seq_lib/uart_fifo_reset_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: 4b1ec80fc02c08fbf815d89c1e18f237403cd32f53d558fed931275ee2aab817
+- path: hw/ip/uart/dv/env/seq_lib/uart_intr_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: 658e501828a8cfe0521df1c5f5d5a66b8d072f6f45bd0c0afb12458b51f193bd
+- path: hw/ip/uart/dv/env/seq_lib/uart_long_xfer_wo_dly_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: 90f74cc0834fef9f6dba822bf2815c509843b2dc476f0d01f50ea610a10e4c60
+- path: hw/ip/uart/dv/env/seq_lib/uart_loopback_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: 189882dc2dd1bc507dfcee6fe239b5193e18804906fdbfba7d73fb3e394c3a91
+- path: hw/ip/uart/dv/env/seq_lib/uart_noise_filter_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: 549fc569b9764376e14ea01dddebbe6067906a74f3189fe542711c3ddd3b16d7
+- path: hw/ip/uart/dv/env/seq_lib/uart_perf_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: ded3a3eee64ed313f02cf07ca190cc5cd4bae901a7f41a77835c295b2ad1a56f
+- path: hw/ip/uart/dv/env/seq_lib/uart_rx_oversample_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: bb70d766fb2d2b531881b41f9012ceb054aa4fd3b1579d0b8105142944057294
+- path: hw/ip/uart/dv/env/seq_lib/uart_rx_parity_err_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: d91b515ce9ca17905d40280e0cd1bd1958a9bc726db0dd14b2f4574e6ad7ab00
+- path: hw/ip/uart/dv/env/seq_lib/uart_rx_start_bit_filter_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: d39f4327c1668c708b972ea603b1f0ad482a211a3eed863dc557c58404088f0e
+- path: hw/ip/uart/dv/env/seq_lib/uart_smoke_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: 77dd0c6506c5343e7b83c9995edf78a89d6a944d27f7c1ed0608cbba69dc9297
+- path: hw/ip/uart/dv/env/seq_lib/uart_stress_all_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: 62bcdd6274fd8c236a98a7556e80cc6b2221b6f533f0095ab730328f418833a1
+- path: hw/ip/uart/dv/env/seq_lib/uart_tx_ovrd_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: e10e7f7f488b2d17902b0bbd96beba66682294d472f9c8696ef411c0ef373bb2
+- path: hw/ip/uart/dv/env/seq_lib/uart_tx_rx_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART vseq
+  units: 1
+  sha256: 22d4cc1b47e9b3d4ce061404c8b1cd87394664a390736c3244f8e3517544858f
+- path: hw/ip/uart/dv/env/uart_env_cfg.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART env config
+  units: 1
+  sha256: 7d0925f6f748d8a33b11448d2fba9ac9ce37385a5f070da70b5014c9ccf5fb9c
+- path: hw/ip/uart/dv/env/uart_env_cov.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART functional coverage
+  units: 1
+  sha256: ce0355f0bc2bcc4a0ffdea95a5e745723bcd51e382166b790f6b4544e25c9dce
+- path: hw/ip/uart/dv/env/uart_nf_if.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART noise filter interface for checks/coverage
+  units: 1
+  sha256: e49249643a3f9163842d53533c1c74ca0cbf3a0e49bcc5c2b3dfb2cc8bdbb5b8
+- path: hw/ip/uart/dv/env/uart_scoreboard.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART scoreboard
+  units: 1
+  sha256: b3b1a1fbd367e844e6fc21b91fc7879de0c10b73ba4bb56c4ca138b4e392c63c
+- path: hw/ip/uart/dv/sva/uart_bind.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART assertion bind
+  units: 1
+  sha256: c53521c14754d546485dbf42d44b3339a58977ef2f3b43d09fd2e6503ae776ff
+- path: hw/ip/uart/dv/tests/uart_base_test.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART UVM base test
+  units: 1
+  sha256: b25b3c4de060527cd7c30fe10545df7c20663a823aaf49575e8a926ffd2f9371
+- path: hw/ip/uart/dv/tests/uart_test_pkg.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART test package including tests
+  units: 1
+  sha256: 4a230ce8da8b4acabed6f62df3f70f4ee71d58ed721e91859c75e100888b0fa0
+- path: hw/ip/uart/dv/uart_sim_cfg.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UART dvsim config and test list
+  units: 1
+  sha256: 8bd6dec0a57e06697e0668ec2078a399e19fec2021630fce4dc141b85706a58f
+- path: hw/top_darjeeling/dv/chip_sim_cfg.hjson
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - chip_sw_uart*
+  reason: darjeeling chip regression UART tests
+  units: 5
+  sha256: 633ebb7278ccca9f33bfb0c531f881595ba3c2bf575b58502f1f1f06c11f043a
+- path: hw/top_darjeeling/dv/env/seq_lib/chip_sw_uart_rand_baudrate_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: darjeeling chip UART vseq
+  units: 1
+  sha256: cce8834df12714b5d739e2460c112a9c0aae5fefe16e0868b48bdfb52e6c5043
+- path: hw/top_darjeeling/dv/env/seq_lib/chip_sw_uart_smoke_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: darjeeling chip UART vseq
+  units: 1
+  sha256: a5b63537dc2ebd5fc2d229446fcf69438493fa84fac15a5d599dbd5801b73bc3
+- path: hw/top_darjeeling/dv/env/seq_lib/chip_sw_uart_tx_rx_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: darjeeling chip UART vseq
+  units: 1
+  sha256: c503317e06dbf8805f54aa35c3a176e9bea401b68bc8c9f9638c039faae0e4dd
+- path: hw/top_earlgrey/data/ip/chip_uart_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: chip-level UART testplan
+  units: 1
+  sha256: ec8c008fb11a6cc9be157e5a642738291bc18ba9f9df19923ebf325662b26a10
+- path: hw/top_earlgrey/dv/chip_sim_cfg.hjson
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - chip_sw_uart*
+  reason: earlgrey chip regression UART tests
+  units: 9
+  sha256: da85d0e434186e663ef16daea0c32cab1dccb7b6d03b235ca65ff2b294de51eb
+- path: hw/top_earlgrey/dv/env/seq_lib/chip_sw_uart_rand_baudrate_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: earlgrey chip UART vseq
+  units: 1
+  sha256: d2aead7ef304891971a13b41dec63d5ab3b38e6ca2b931099f9aaaf492d57814
+- path: hw/top_earlgrey/dv/env/seq_lib/chip_sw_uart_smoke_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: earlgrey chip UART vseq
+  units: 1
+  sha256: a5b63537dc2ebd5fc2d229446fcf69438493fa84fac15a5d599dbd5801b73bc3
+- path: hw/top_earlgrey/dv/env/seq_lib/chip_sw_uart_tx_rx_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: earlgrey chip UART vseq
+  units: 1
+  sha256: de53e0c1d5fb98e8b6689e5bc436d73fbd6994ded632664f16b036cc5aa2f037
+- path: hw/top_earlgrey/dv/env/seq_lib/chip_sw_uart_tx_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: earlgrey chip UART vseq
+  units: 1
+  sha256: 60869b625a47c8c26ad63fb07e1565dc6ee8df4667a0b7a261f1ef54c7bf8b66
+- path: sw/device/lib/dif/dif_uart_unittest.cc
+  role: verification
+  scope:
+    kind: whole_file
+  reason: DIF UART unit test
+  units: 1
+  sha256: 14a49763870e9f1a54625ab8eb7d6ae69c4f08810a50abecbaaa5059b199bd9c
+- path: sw/device/silicon_creator/lib/drivers/uart_functest.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: ROM driver UART functest
+  units: 1
+  sha256: b137e1a9d36cb8b56771409194e43bcce34c13a3c782aead233cbd98194a51d2
+- path: sw/device/silicon_creator/lib/drivers/uart_unittest.cc
+  role: verification
+  scope:
+    kind: whole_file
+  reason: ROM driver UART unit test
+  units: 1
+  sha256: 29529fe95707396324b47983e59add59d1ed6d15acc4215afe2098a935c2ef50
+- path: sw/device/tests/uart_baud_rate_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: on-target UART baud test
+  units: 1
+  sha256: 38d6860e2fa052956a90a2961d9e0646b433c1da268d5fc8e2777222391a9c3a
+- path: sw/device/tests/uart_loopback_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: on-target UART loopback test
+  units: 1
+  sha256: f08fa9208b8c1a980596b84bd1277d5119fbbba3097435e12332a16c33e7e35f
+- path: sw/device/tests/uart_parity_break_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: on-target UART parity/break test
+  units: 1
+  sha256: dd7063c6e70a0e9faee4110a5410248cbef8bbc7280fc234d047ab7d800e82cb
+- path: sw/device/tests/uart_smoketest.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: on-target UART smoke test
+  units: 1
+  sha256: a4113934a43cd8b40c19cde22e6fd1f8461e363f7f5de2681cd5ed12e4e23987
+- path: sw/device/tests/uart_tx_rx_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: on-target UART tx/rx test
+  units: 1
+  sha256: b410b1c2d9fc058950830930edb5e3fdc6f4fdcaf6deb8a32781f7c95a1e0323
+- path: sw/host/tests/chip/uart/src/uart_baud_rate.rs
+  role: verification
+  scope:
+    kind: whole_file
+  reason: host-side UART baud test
+  units: 1
+  sha256: 9c3e955383da3ce682d2c5f97d0d6ce0101cad4e625f1b96e1f8d7fda0989fbb
+- path: sw/host/tests/chip/uart/src/uart_loopback.rs
+  role: verification
+  scope:
+    kind: whole_file
+  reason: host-side UART loopback test
+  units: 1
+  sha256: c19e5c90492a537b504fa64b107184545c629d4f3b2ca4faa67e3bc0f2179b48
+- path: sw/host/tests/chip/uart/src/uart_parity_break.rs
+  role: verification
+  scope:
+    kind: whole_file
+  reason: host-side parity/break test
+  units: 1
+  sha256: 7f3215265aca74ddf0a3c2972bad692be97196bbac8826e21bea551a0c63d146
+- path: sw/host/tests/chip/uart/src/uart_tx_rx.rs
+  role: verification
+  scope:
+    kind: whole_file
+  reason: host-side UART tx/rx test
+  units: 1
+  sha256: c36f4f3504d9baf01959bd0cd0fad0e1fdfb555862e266318f5a211901241a2e
+excluded_notable:
+- path: hw/dv/dpi/uartdpi/uartdpi.c
+  reason: DPI UART console model for sims, not a topic check
+- path: hw/ip/uart/doc/registers.md
+  reason: generated from uart.hjson
+- path: hw/ip/uart/lint/uart.waiver
+  reason: lint waiver
+- path: hw/ip/uart/rtl
+  reason: RTL implementation
+incomplete: false
+notes: Did not search for formal/FPV, post-silicon separately; none found for uart. Chip sim cfg scoped
+  by entry name globs (approximate). Checklist doc (hw/ip/uart/doc/checklist.md) and dv/README.md not
+  included.

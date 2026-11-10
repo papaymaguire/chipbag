@@ -1,0 +1,39 @@
+finding_hash: c10c4fcac57ee05d
+started_at: '2026-11-10T19:38:25Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The programmer''s guide states the mechanism: invalid digest size gives ERR_CODE=SwInvalidConfig
+    (0x6), and every HMAC error is signalled through INTR_STATE.hmac_err. The guide does not say explicitly
+    that the engine stays idle, but the error code and interrupt questions are answered.'
+  evidence:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 186
+    line_end: 186
+    quote: The error is reported when HMAC has been configured incorrectly by SW, i.e. invalid digest
+      size for SHA-2/HMAC modes or invalid key length for HMAC mode.
+    role: refutes
+    note: Names SwInvalidConfig (0x6) as the code for an invalid digest size, which includes SHA2_None.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 174
+    line_end: 175
+    quote: When HMAC errors are triggered, the IP reports the error via [`INTR_STATE.hmac_err`](registers.md#intr_state).
+    role: refutes
+    note: Says errors are signalled through the hmac_err interrupt, with the details in ERR_CODE.
+  searches:
+  - what: SwInvalidConfig, SHA2_None and hmac_err in the HMAC docs
+    where: hw/ip/hmac/doc and data
+    found: programmers_guide.md lines 174-186 give the error mechanism and the SwInvalidConfig code
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    reason: Defines the error reporting mechanism and the SwInvalidConfig code.
+  resolution: Cross-reference the programmer's guide Errors section from the SHA2_None field description
+    in hmac.hjson. Also state that the engine stays idle.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.033074900000000004
+error: null

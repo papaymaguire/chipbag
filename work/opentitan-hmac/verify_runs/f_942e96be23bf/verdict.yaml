@@ -1,0 +1,79 @@
+finding_hash: 9243160e70c4ea7a
+started_at: '2026-11-10T19:42:17Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The HMAC DV environment exercises CMD and checks STATUS. Smoke and related vseqs write CMD.hash_process
+    and CMD.hash_stop. The scoreboard predicts STATUS bits (idle, fifo_empty, fifo_full) and checks them
+    on reads. Idle is also checked against the idle pin. The hwext/hwqe items are implementation attributes
+    that these tests exercise functionally.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 382
+    line_end: 387
+    quote: "    if (csr_name == \"status\") begin\n      hmac_status_data = (hmac_idle       << HmacStaIdle)\
+      \         |\n                         (hmac_fifo_empty << HmacStaMsgFifoEmpty) |\n             \
+      \            (hmac_fifo_full  << HmacStaMsgFifoFull)  |\n                         (hmac_fifo_depth\
+      \ << HmacStaMsgFifoDepthLsb);\n      void'(ral.status.predict(.value(hmac_status_data), .kind(UVM_PREDICT_READ)));"
+    role: refutes
+    note: Scoreboard predicts all STATUS fields on read; the generic csr read check compares against this
+      mirror.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1060
+    line_end: 1065
+    quote: "function void hmac_scoreboard::check_idle(bit val);\n  if (cfg.under_reset == 0) begin\n \
+      \   `DV_CHECK_EQ(cfg.hmac_vif.is_idle(), val)\n  end"
+    role: refutes
+    note: Idle is checked against the DUT pin and the STATUS mirror is updated.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 248
+    line_end: 259
+    quote: task hmac_base_vseq::trigger_hash_stop();
+    role: refutes
+    note: Stimulus writing CMD.hash_stop; trigger_process writes CMD.hash_process, with hmac_done and
+      digest checks in the scoreboard.
+  searches:
+  - what: hash_stop/hash_process/status/fifo_* in hmac dv
+    where: hw/ip/hmac/dv
+    found: vseq stimulus plus scoreboard status prediction and checks
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 503
+    line_end: 521
+    why_not: Explicit check covers only fifo_depth, but the other status bits are covered by the generic
+      mirror check (do_read_check stays on) unless sar_skip_ctxt is set. I did not confirm this by running
+      a test.
+  items:
+  - id: cr_94bea331064f
+    outcome: withdrawn
+    reason: CMD writes of hash_process are exercised and the resulting digest/done are checked; hwqe is
+      implicit.
+    evidence:
+    - 2
+  - id: cr_efce56b61414
+    outcome: withdrawn
+    reason: hash_stop is written by the vseqs and the stop/continue behavior is checked by the scoreboard.
+    evidence:
+    - 2
+  - id: cr_05908482e34e
+    outcome: withdrawn
+    reason: fifo_empty is predicted by the scoreboard and compared on STATUS reads.
+    evidence:
+    - 0
+  - id: cr_45e847d688ba
+    outcome: withdrawn
+    reason: fifo_full is predicted by the scoreboard and compared on STATUS reads.
+    evidence:
+    - 0
+  - id: cr_8080aa204252
+    outcome: withdrawn
+    reason: hmac_idle is checked against the idle pin and the STATUS mirror.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.09546669999999999
+error: null

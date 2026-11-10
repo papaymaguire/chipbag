@@ -1,0 +1,11 @@
+{"t": "2026-11-10T20:35:57Z", "event": "  \u2192 Grep: terminal|TARGET_STATUS"}
+{"t": "2026-11-10T20:35:58Z", "event": "  \u2192 Grep: TARGET_STATUS"}
+{"t": "2026-11-10T20:36:00Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/docs/CaliptraSSHardwareSpecification.md"}
+{"t": "2026-11-10T20:36:00Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/docs/CaliptraSSIntegrationSpecification.md"}
+{"t": "2026-11-10T20:36:03Z", "event": "  \u2192 Grep: target_status|TARGET_STATUS|non-BUSY|non-zero"}
+{"t": "2026-11-10T20:36:04Z", "event": "Look at the RDL desc for target status."}
+{"t": "2026-11-10T20:36:05Z", "event": "  \u2192 Grep: Target Status|Mailbox Target Status"}
+{"t": "2026-11-10T20:36:14Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:36:21Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:36:24Z", "event": "I withdrew the finding, and the verdict was accepted. Other repository text does define \"terminal\" for `TARGET_STATUS`.\n\n- **Definition:** The register description in `src/mci/rtl/mcu_mbox_csr.rdl:106` says \"Writing any terminal (non-BUSY) value ends the target's SRAM ownership, clears TARGET_USER and TARGET_USER_VALID, and notifies Root.\" So terminal means any non-BUSY value.\n- **Encodings:** The hardware spec's table (`docs/CaliptraSSHardwareSpecification.md:1421-1426`) lists BUSY=0, DATA_READY=1, COMPLETE=2 and FAILURE=3. BUSY is the only non-terminal value.\n- **RTL (context only):** `src/mci/rtl/mcu_mbox.sv:279` treats a transition from BUSY to non-BUSY as the terminal write.\n\nThe cited sentence at lines 1413-1414 is still vague on its own. The RDL description resolves it, and adding that definition to the ownership section would remove the ambiguity."}
+{"t": "2026-11-10T20:36:24Z", "event": "[9 turns, $0.0725]"}

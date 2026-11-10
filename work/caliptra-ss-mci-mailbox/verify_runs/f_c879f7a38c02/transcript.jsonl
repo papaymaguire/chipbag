@@ -1,0 +1,14 @@
+{"t": "2026-11-10T20:42:06Z", "event": "  \u2192 Grep: notif_mbox0_ecc_cor_intr_count_incr|notif_mbox0_cmd_avail_intr_count_incr|notif_cptra_mbox_cmd_avail_intr_count_incr"}
+{"t": "2026-11-10T20:42:06Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T20:42:08Z", "event": "Look for tests touching intr count incr."}
+{"t": "2026-11-10T20:42:09Z", "event": "  \u2192 Grep: count_incr|intr_count"}
+{"t": "2026-11-10T20:42:09Z", "event": "  \u2192 Grep: count_incr"}
+{"t": "2026-11-10T20:42:12Z", "event": "  \u2192 Grep: notif_mbox0_ecc_cor|notif_mbox0_cmd_avail|notif_cptra_mbox_cmd_avail|NOTIF_MBOX0_ECC_COR|NOTIF_CPTRA_MBOX_CMD_AVAIL|NOTIF_MBOX0_CMD_AVAIL"}
+{"t": "2026-11-10T20:42:14Z", "event": "  \u2192 Grep: notif_mbox0_ecc_cor|notif_mbox0_cmd_avail|notif_cptra_mbox_cmd_avail"}
+{"t": "2026-11-10T20:42:17Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T20:42:20Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T20:42:32Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:42:34Z", "event": "Resubmitting the verdict: the check for the 0ff3 item needs to be tagged as refutes evidence."}
+{"t": "2026-11-10T20:42:40Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:42:44Z", "event": "I submitted the verdict as inconclusive overall. Only one of the five items turned out to be tested.\n\n- **Event counter increments by 1 per interrupt event (`cr_0ff351634ef2`):** withdrawn. `mcu_intr_handler` triggers each notification event, including MBOX0 command available, CPTRA mailbox command available and MBOX0 ECC correctable. It then sums the notification counters and compares them with its own event count. It kills the simulation on a mismatch (the mismatch check I read is the one for the error counters, lines 201\u2013204), and the test is in the nightly regression. The check is an aggregate over all counters, not one per register.\n- **`counter` on the MBOX0 ECC correctable and CPTRA mailbox command available incr registers, and `decrvalue = 1` (`cr_0bf5fbc5013e`, `cr_105a23c2056d`, `cr_134b9577da6e`):** inconclusive. These are register attributes with no direct test. The count-sum check exercises them only implicitly, because it would fail if counting were broken.\n- **`swwel = false` (`cr_0c3afed8d218`):** verified as untested. No test writes to the incr pulse field from software.\n\nNo test reads or writes the three `*_count_incr_r` registers directly. They appear only in the RTL, the UVM model and the coverage interface."}
+{"t": "2026-11-10T20:42:44Z", "event": "[11 turns, $0.1202]"}

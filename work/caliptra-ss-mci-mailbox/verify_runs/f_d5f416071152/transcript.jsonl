@@ -1,0 +1,10 @@
+{"t": "2026-11-10T20:42:41Z", "event": "  \u2192 Grep: cmd_avail|MBOX_SRAM_SIZE|MCU_MBOX.*SRAM_SIZE|mcu_mbox.*sram.*size"}
+{"t": "2026-11-10T20:42:43Z", "event": "  \u2192 Grep: cmd_avail"}
+{"t": "2026-11-10T20:42:44Z", "event": "  \u2192 Grep: SRAM_SIZE|sram_size"}
+{"t": "2026-11-10T20:42:47Z", "event": "  \u2192 Grep: CMD_AVAIL|cmd_avail"}
+{"t": "2026-11-10T20:42:48Z", "event": "Check the valid_user test's interrupt use."}
+{"t": "2026-11-10T20:42:49Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites; grep -n -i \"cmd_avail\\|intr\\|STRB\\|byte\" smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c | head -30;"}
+{"t": "2026-11-10T20:42:52Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites; sed -n 195,235p smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c; grep -n -A12 \"mcu_mbox_clear_mbox_c"}
+{"t": "2026-11-10T20:43:02Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:43:05Z", "event": "I submitted the verdict as verified: all five items stand, because I found no test that both creates the condition and checks the result.\n\n- **SRAM size 0, minimum and maximum (cr_52fe20427e16, cr_e0684916d838, cr_8ea60cdfbb2b):** The MCU mailbox tests only read the configured size through the `get_sram_size_kb` helpers. None sweeps sizes, builds a size-0 or 2MB configuration, or checks that the mailbox is not instantiated.\n- **BYTE accesses (cr_6e68d4291d35):** No test checks that BYTE accesses to the SRAM are rejected.\n- **`notif_mbox*_cmd_avail` (cr_12dbdc943d69):** `smoke_test_mcu_mbox_valid_user.c` only clears the interrupt and checks that it cleared. That check compares the masked value with 1, so it is weak. Nothing checks that the interrupt was set when a SOC agent asserted EXECUTE.\n\nI looked only at the `src/integration` tests and libraries. I did not search the testbench SystemVerilog tests or any assertion or formal property files."}
+{"t": "2026-11-10T20:43:05Z", "event": "[8 turns, $0.0834]"}

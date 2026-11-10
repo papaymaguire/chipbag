@@ -1,0 +1,99 @@
+finding_hash: 9250ce39030aa54b
+started_at: '2026-11-10T19:46:41Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Three items stand as untested: no test creates a simultaneous hardware and software update
+    for lock, target_user or target_user_valid. Two items are covered by the MCI_MBOX0/1_OWNERSHIP_FLOW
+    nightly test (hardware clearing LOCK on release, and a Target write of CMD_FAILURE) and are withdrawn.'
+  evidence:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 53
+    line_end: 53
+    quote: field {rset; sw=r; hw=r; hwset=true; hwclr=true; precedence=hw; swmod=true;} lock=0;
+    role: context
+    note: Lock field declares hwclr and precedence=hw.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 93
+    line_end: 96
+    quote: "mcu_mbox_write(mci_comm_flow_execute_addr, user, 0);\n    mci_comm_flow_check_phase(\"released\"\
+      , MCU_MBOX_OWNER_NONE);\n    mcu_mbox_acquire_lock(mci_comm_flow_mbox, mci_comm_flow_requester);"
+    role: refutes
+    note: Release then re-acquire; acquire_lock requires reading LOCK==0, so the hardware clear is checked
+      (or the test times out with $fatal).
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 131
+    line_end: 133
+    quote: "mcu_mbox_write(mci_comm_flow_target_status_addr, mci_comm_flow_target, status);\n    mcu_mbox_wait_clear_notif(mci_comm_flow_mbox,\
+      \ MCU_MBOX_NOTIF_TARGET_DONE);\n    mci_comm_flow_check_phase(\"root-owns-response\", MCU_MBOX_OWNER_ROOT);"
+    role: refutes
+    note: The Target writes a terminal TARGET_STATUS, and the ownership handoff and TARGET_DONE are checked.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 202
+    line_end: 204
+    quote: "for (int status = mcu_mbox_csr__mbox_cmd_status__status__mbox_status_e__DATA_READY;\n    \
+      \     status <= mcu_mbox_csr__mbox_cmd_status__status__mbox_status_e__CMD_FAILURE; status++)\n \
+      \       mci_comm_flow_transaction(status);"
+    role: refutes
+    note: The loop runs a transaction for each terminal status value, including CMD_FAILURE (3).
+  - path: src/integration/stimulus/testsuites/caliptra_ss_master_test_list.csv
+    line_start: 142
+    line_end: 142
+    quote: mci_mbox0_ownership_flow
+    role: context
+    note: The test is in the nightly regression.
+  searches:
+  - what: simultaneous / precedence / hwclr tests for mbox lock, target_user, target_user_valid
+    where: src/integration
+    found: No test creates a same-cycle hardware and software update.
+  - what: CMD_FAILURE and TARGET_STATUS writes
+    where: src/integration
+    found: The ownership_flow test writes every terminal status as the Target. The write_user_lock test
+      only has Root write FAILURE and expects it to be rejected.
+  - what: regression inclusion of ownership flow
+    where: src/integration/stimulus
+    found: The mbox0 and mbox1 ownership_flow tests are in the L1 nightly lists and the master test list.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 136
+    line_end: 142
+    why_not: Root writes FAILURE and expects it to be dropped. This does not check the CMD_FAILURE enum
+      meaning.
+  items:
+  - id: cr_1090477d2115
+    outcome: verified
+    reason: No test creates a simultaneous hardware set/clear and software read on LOCK.
+    evidence:
+    - 0
+  - id: cr_a7c29b77aa24
+    outcome: withdrawn
+    reason: Hardware clears LOCK on release, and the ownership_flow test checks the release phase and
+      re-acquire reads 0.
+    evidence:
+    - 1
+    - 4
+  - id: cr_a206ba683bb5
+    outcome: verified
+    reason: No test creates a same-cycle hardware clear and software write on TARGET_USER.
+    evidence: []
+  - id: cr_7eea266009ff
+    outcome: verified
+    reason: No test creates a same-cycle hardware clear and software write on TARGET_USER_VALID.
+    evidence: []
+  - id: cr_7e5a73e500a2
+    outcome: withdrawn
+    reason: The Target writes CMD_FAILURE as TARGET_STATUS, and the test checks the ownership handoff
+      to Root and TARGET_DONE.
+    evidence:
+    - 2
+    - 3
+    - 4
+  new_sources:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    reason: Directed test that covers the hardware lock clear and the terminal target status flow.
+submissions: 2
+rejections: []
+turns: 13
+cost_usd: 0.1438635
+error: null

@@ -1,0 +1,11 @@
+{"t": "2026-11-10T19:41:03Z", "event": "  \u2192 Grep: sha_en|digest.*clear|clear.*digest"}
+{"t": "2026-11-10T19:41:03Z", "event": "  \u2192 Grep: hwext|hwqe|reg_test|csr_hw_reset|csr_rw"}
+{"t": "2026-11-10T19:41:06Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv"}
+{"t": "2026-11-10T19:41:06Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:41:08Z", "event": "  \u2192 Grep: exp_digest"}
+{"t": "2026-11-10T19:41:09Z", "event": "  \u2192 Grep: hmac_csr|csr_rw|hw_reset|csr_bit_bash|exclude|excl"}
+{"t": "2026-11-10T19:41:11Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:41:11Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:41:25Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:29Z", "event": "I've submitted the verdict on finding f_57c93487539b, and it was accepted. The outcome is inconclusive overall.\n\n- **Digest clear on `sha_en` 1\u21920 (cr_4bb0aa48a9b1): withdrawn.** The scoreboard sets `exp_digest` to zero when `CFG.sha_en` goes from 1 to 0 (`hmac_scoreboard.sv:306`). Later digest reads are compared against it with `DV_CHECK_EQ` (line 496), so the test fails if the digest isn't cleared.\n- **The other four items: inconclusive.** These are the `hwext`/`hwqe` attributes on KEY and DIGEST (cr_1b082437fa31, cr_993f078123e1, cr_37295a2dec07, cr_ad1ab862f50a). I found no dedicated check for them in the HMAC DV directory. Key writes are exercised indirectly through the digest comparison. Digest writes are predicted and read back by the scoreboard. That doesn't directly verify the write-qualifier pulse or the external implementation, so I couldn't call them tested or clearly untested.\n\nI didn't search outside `hw/ip/hmac/dv` (for example shared CSR test libraries or firmware tests), so a generic register test elsewhere could still cover those four."}
+{"t": "2026-11-10T19:41:29Z", "event": "[10 turns, $0.0822]"}

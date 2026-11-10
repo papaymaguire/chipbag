@@ -1,0 +1,83 @@
+finding_hash: 0f047a1cc9da0936
+started_at: '2026-11-10T19:43:41Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'I found no test for four of the five items: second Target sequencing, the next-Target program
+    after the clear, EXECUTE staying 1 after the terminal TARGET_STATUS, and MCI-reset recovery from a
+    non-responsive Target. The fifth item, no software owner when LOCK is free, is checked by the MCI_MBOX0/1_OWNERSHIP_FLOW
+    tests, so I withdrew it.'
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 94
+    line_end: 95
+    quote: "mcu_mbox_write(mci_comm_flow_execute_addr, user, 0);\n    mci_comm_flow_check_phase(\"released\"\
+      , MCU_MBOX_OWNER_NONE);"
+    role: refutes
+    note: After EXECUTE=0 the LOCK is free. HW_STATUS SRAM_OWNER is checked to be NONE, and non-owner
+      reads must return 0.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 250
+    line_end: 250
+    quote: // Hardware clears both target configuration registers on terminal status.
+    role: context
+    note: The directed test uses one Target only. It checks TARGET_USER_VALID is cleared but does not
+      read EXECUTE, program a second Target, or reset MCI.
+  searches:
+  - what: tests for a second or next Target, or a non-responsive Target recovered by MCI reset
+    where: src/
+    found: No matches. The only 'non-responsive' hits are in pwrmgr docs.
+  - what: EXECUTE read-back after a terminal TARGET_STATUS
+    where: src/integration mbox tests
+    found: mcu_mbox_read_execute is used in write_user_lock, csrs_warm_rst and strb_wr_csr, none of which
+      cover the post-terminal-status case. The target_user test does not read it.
+  - what: owner NONE when LOCK is free
+    where: mci_mbox_ownership_flow.svh
+    found: Checked via mci_comm_flow_check_phase("released", NONE) and mcu_mbox_check_sram_owner.
+  near_misses:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 133
+    line_end: 134
+    why_not: Root owning the SRAM after the terminal status implies EXECUTE is still 1, but the test never
+      reads EXECUTE directly.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 178
+    line_end: 178
+    why_not: This EXECUTE check is not in a Target terminal-status scenario.
+  items:
+  - id: cr_045d5c38ebd5
+    outcome: verified
+    reason: No test has a second Target or a wait for the first Target's terminal status before a second
+      grant.
+    evidence:
+    - 1
+  - id: cr_12643f17b618
+    outcome: verified
+    reason: No test programs and validates a next Target user after the clear. The flow test runs separate
+      transactions but re-checks nothing about a second Target user.
+    evidence:
+    - 1
+  - id: cr_f484f55cbce1
+    outcome: verified
+    reason: No test reads EXECUTE after the terminal TARGET_STATUS. It is only implied through the Root
+      owner check.
+    evidence:
+    - 1
+  - id: cr_3437364f9e35
+    outcome: verified
+    reason: No test makes the Target non-responsive and recovers the mailbox with an MCI reset.
+    evidence:
+    - 1
+  - id: cr_51f02e52744d
+    outcome: withdrawn
+    reason: The ownership flow test checks owner NONE when LOCK is free, with stimulus (EXECUTE=0 release)
+      and a failing check.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.11322290000000002
+error: null

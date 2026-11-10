@@ -1,0 +1,65 @@
+finding_hash: 2f59fa515bff59eb
+started_at: '2026-11-10T19:38:39Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: 'Item 1 stands, since no test writes hash_continue with a sideloaded key. Items 2 and 3 are
+    withdrawn: the HMAC base sequence randomises both sub-word byte masks and the write address across
+    the whole MSG_FIFO window, and the scoreboard digest check covers the result. The finding as a whole
+    is mixed, so the overall outcome is inconclusive.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 103
+    line_end: 105
+    quote: 'wr_addr inside {[HMAC_MSG_FIFO_BASE : HMAC_MSG_FIFO_LAST_ADDR]};'
+    role: refutes
+    note: The write address is randomised across the whole MSG_FIFO range, so writes land at varied offsets.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 358
+    line_end: 358
+    quote: '`DV_CHECK_FATAL(randomize(wr_addr, wr_mask) with {$countones(wr_mask) <= msg_q.size();})'
+    role: refutes
+    note: The stimulus randomises byte-enable masks, so partial (sub-word) writes are issued. The scoreboard
+      digest check compares the result with the reference.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 372
+    line_end: 373
+    quote: tl_access(.addr(cfg.ral.get_addr_from_offset(wr_addr)),
+    role: context
+    note: The randomised address and mask are passed to the TL write. The call continues on the next line
+      with .write(1'b1), .data(word), .mask(wr_mask).
+  searches:
+  - what: hash_continue/hash_stop in the top_earlgrey sideload sequences
+    where: hw/top_earlgrey/dv/env/seq_lib
+    found: No matches.
+  - what: sub-word masks and address randomisation in the HMAC DV
+    where: hw/ip/hmac/dv
+    found: The base vseq randomises wr_mask and wr_addr over the MSG_FIFO range.
+  near_misses: []
+  items:
+  - id: cr_f3333982706d
+    outcome: verified
+    reason: No test writes hash_continue with a sideloaded key. Only hash_stop is covered by the keymgr_dpe
+      sideload test (per the finding; the one search I ran of the top_earlgrey sequences found nothing),
+      and nothing checks that state is unchanged.
+    evidence: []
+  - id: cr_061121ce8d53
+    outcome: withdrawn
+    reason: The base vseq randomises wr_mask with contiguous partial masks, and the scoreboard digest
+      check would fail on wrong packing.
+    evidence:
+    - 1
+  - id: cr_194a75cea966
+    outcome: withdrawn
+    reason: wr_addr is randomised across the full MSG_FIFO range and the digest is checked against the
+      reference.
+    evidence:
+    - 0
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0611254
+error: null

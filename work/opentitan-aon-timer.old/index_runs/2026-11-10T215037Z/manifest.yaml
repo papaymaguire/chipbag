@@ -1,0 +1,340 @@
+topic: AON timer
+repo_root: targets/opentitan
+repo_commit: b84154c71810e853c0b37c00e96bb830804dd9f4
+generated_at: '2026-11-10T21:50:37Z'
+model: claude-sonnet-5-5
+confirmed: false
+sources:
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  role: spec
+  scope:
+    kind: whole_file
+  reason: AON timer register definitions (source)
+  units: 1
+  sha256: c6dbf313837d08fc7a86ebea4e0175a5f485f5a3477c820f04a39493ffa26b3d
+- path: hw/ip/aon_timer/doc/interfaces.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: AON timer interfaces
+  units: 1
+  sha256: 9638a277fd57fb6bb1bc70484b811969d4d764f79eb09c9305f3513059560794
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: AON timer programmer's guide
+  units: 1
+  sha256: c64c9cfd38895401647e29601f830a47205db950e74a8a5e03c4f625682955e5
+- path: hw/ip/aon_timer/doc/theory_of_operation.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: AON timer theory of operation
+  units: 1
+  sha256: 5833526573c0d2ad948c67bd372511bf377d606da1a4d574e30d76b2e565c706
+- path: hw/dv/tools/dvsim/testplans/alert_test_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared alert test plan imported
+  units: 1
+  sha256: d528544ca88a548a3de099fcfeddb832c0e016214d865e83f5c2368c1fc45500
+- path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared CSR testpoints imported by aon_timer plan
+  units: 1
+  sha256: 017ecfde886312665da88ac9f4b31e7e640ef3ca3d656ae24f57d300348f538f
+- path: hw/dv/tools/dvsim/testplans/intr_test_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared interrupt plan imported
+  units: 1
+  sha256: be7ba0d65e58a8a9cc94eb30b4b5acb20a9716f0a5967abbf52ee10739e4eed7
+- path: hw/dv/tools/dvsim/testplans/mem_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared mem plan imported
+  units: 1
+  sha256: 10a7ae38830395dddae5895fdba9623de60141ab9b1f26e656370a998f907606
+- path: hw/dv/tools/dvsim/testplans/stress_all_with_reset_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared stress/reset plan imported
+  units: 1
+  sha256: aab1d8b00b2816514dc8cc40c3b3050fbff7b2a6392aa6be06c73ffdf35b6fea
+- path: hw/dv/tools/dvsim/testplans/tl_device_access_types_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared TL access plan imported
+  units: 1
+  sha256: a24dad965c7b7c5eaa591acc1ed8bb1e02be1dd0181cdac84d048c5217e61db1
+- path: hw/ip/aon_timer/data/aon_timer_sec_cm_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Security countermeasure testplan
+  units: 1
+  sha256: aa39b2dfdfc695459b97c2178e6c360da3421ca687370b37cab9a41e864b07af
+- path: hw/ip/aon_timer/data/aon_timer_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Block DV testplan
+  units: 1
+  sha256: ec8846753c611ee26478882a5ea887b9624d39f726b07a6be89a962bdaaf517a
+- path: hw/ip/aon_timer/dv/README.md
+  role: verification
+  scope:
+    kind: whole_file
+  reason: DV document
+  units: 1
+  sha256: 2d45084cb2c1539c687cb2c1fe7bb2abd56708edb5eac155faa0fab779866dd7
+- path: hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Block dvsim config and test list
+  units: 1
+  sha256: 5a35127657142db1804f7ffac5e0b457ca2c6dcf99410fa5f6aec196ed0da4bb
+- path: hw/ip/aon_timer/dv/cov/aon_timer_unr_excl.el
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Coverage exclusions
+  units: 1
+  sha256: 1c994081fe4d488a66ddac9302830c2f7f89cd288dd2cd837aaa3791e26747d8
+- path: hw/ip/aon_timer/dv/cov/aon_timer_unr_manually_excluded_excl.el
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Coverage exclusions
+  units: 1
+  sha256: 1949fbaa3dbd0aaabb1fdaff96c89c027aa3b0a6e8c8459c4d62075517987738
+- path: hw/ip/aon_timer/dv/cov/aon_timer_unr_non_racl_manually_excluded_excl.el
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Coverage exclusions
+  units: 1
+  sha256: 77014e6726bdb212388a0f9ff606887eb69347664a8d9ab6a4a85e16e3f0e1d8
+- path: hw/ip/aon_timer/dv/cov/rtl_exclusions_pending_rtl_changes.el
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Coverage exclusions
+  units: 1
+  sha256: 0b33767c5fc8649c827c6dfff0df753bfa2ac82239d8d774fe31ac62c0bb197f
+- path: hw/ip/aon_timer/dv/env/aon_timer_env_cfg.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Env configuration class
+  units: 1
+  sha256: 633d60c25d14e271663f7b64ac241347aabd69b0990eba4de2e7e4c1eac33627
+- path: hw/ip/aon_timer/dv/env/aon_timer_env_cov.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Functional coverage
+  units: 1
+  sha256: bfd0bf019198a6f294b853be0c35f808c2f0abdd26d5e7d27521bda3d739dfe9
+- path: hw/ip/aon_timer/dv/env/aon_timer_intr_timed_regs.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Timed interrupt register model used by checking
+  units: 1
+  sha256: 7cd46f89481694a6c2f779aff80427b2f9264f49bfa787eea5fabb838eded997
+- path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Scoreboard
+  units: 1
+  sha256: 237a886db513be298d9c8c579c24faee84cf0b841ec1fa45aa8fe6478ae9914e
+- path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 05aaaf17924e9189fb7401ed96be3a0d7a641286be5bf7e15e0fb0f928b1d36f
+- path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: base vseq with test stimulus
+  units: 1
+  sha256: 0eb191416d29501c4689a10b104b20d1f438cbe9caccebf8834f9dfd9270e992
+- path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_common_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: common vseq
+  units: 1
+  sha256: 0660138e312e9e0bbe9875df7b53987af880550af4a52d495346142dfd07e867
+- path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_custom_intr_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 1c59e6c12ed18b2ee595498ae8e85417c9a433eddc411f5912dd0130b3a7fbce
+- path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_jump_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 700c43a6c2f53620427534dc441891d216113c3308d0556061ddedd0cc685d15
+- path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 2929dcf506b1e96236fea003dbdc88bbec6194f4bb10a7c775be7b8d3a3e2974
+- path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_smoke_max_thold_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: aeddce9253886d44eeb294a12b0559c025d6026a0aba980856525e6a6a39bff3
+- path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_smoke_min_thold_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: c83893920839138d14b0a06b5bd08f384afd6bcef9198c01761e2075f0814aa0
+- path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_smoke_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 837e6b8a7a33778edffd146b348d0cc9b2c0f37d6a865bab5fb5942aa29f9f09
+- path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_stress_all_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 581e7af78fa827c237d64b50fbae131b5613de7e52a8f4bd19e3673aa43d9d1a
+- path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_wkup_count_cdc_hi_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: vseq
+  units: 1
+  sha256: 0ade2f2f9f3a5784c72a584e536ca3553008b65cb4c657d3a50d1481248ff412
+- path: hw/ip/aon_timer/dv/sva/aon_timer_bind.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Assertion bind
+  units: 1
+  sha256: f42cdcf070225645d3d300effbdfd3566f98828909dd9bd6483bff27c4cd30a6
+- path: hw/ip/aon_timer/dv/tests/aon_timer_base_test.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UVM base test
+  units: 1
+  sha256: e6b4698e2687760c55108fcb36eb76d294794436885b91cc97ab54c80c9d14df
+- path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Chip-level AON timer testplan
+  units: 1
+  sha256: 03a4241a11fd31d45ad82f7ec3f44490b07da583f4c321856ab6126d000df99e
+- path: hw/top_earlgrey/dv/chip_sim_cfg.hjson
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - chip_sw_aon_timer_*
+  reason: Chip sim test entries for AON timer
+  units: 4
+  sha256: da85d0e434186e663ef16daea0c32cab1dccb7b6d03b235ca65ff2b294de51eb
+- path: hw/top_earlgrey/dv/chip_smoketests.hjson
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - chip_sw_aon_timer_smoketest
+  reason: Smoke regression entry
+  units: 2
+  sha256: a593c3a7a209889f8eaafeafd2df129887011b5826a3a0d364dd5e5e62de2c64
+- path: hw/top_earlgrey/formal/conn_csvs/aon_timer_rst.csv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Formal connectivity of AON timer resets
+  units: 1
+  sha256: 7b0c4fe31fc5834ed3112ead49ea01c15902370b22c1210026d4d7060f60a11f
+- path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+  role: verification
+  scope:
+    kind: whole_file
+  reason: DIF unit test
+  units: 1
+  sha256: b5adecdc023fa62d1d8ed73e7b736b57a1b22c6f73737f507e2637bfdcbe749b
+- path: sw/device/tests/aon_timer_irq_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Chip SW test
+  units: 1
+  sha256: c563d485b6f15847b0e9e192feb385a24457c4c6c699d56d8a5d2a28ac151b9f
+- path: sw/device/tests/aon_timer_sleep_wdog_sleep_pause_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Chip SW test
+  units: 1
+  sha256: 7ce96fa212c5cdac5b6dc89a190d988b031ba4e792202333168a417e7e3cf18b
+- path: sw/device/tests/aon_timer_smoketest.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Chip SW smoke test
+  units: 1
+  sha256: 8d13cafdfc994c28f815ba79e254bba583d4cd1b57d6551d685168e1e2709299
+- path: sw/device/tests/aon_timer_wdog_bite_reset_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Chip SW test
+  units: 1
+  sha256: 91d199bab8afbb4367ff8e49162e468854b7b64d8bd1fd4857d42266147fb57a
+- path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Chip SW test
+  units: 1
+  sha256: 2d7d1d1f0cf6cbd237ec4b2ed5fe5aca30abeea27c98ecb99a330bafc10f638b
+excluded_notable:
+- path: hw/ip/aon_timer/doc/registers.md
+  reason: generated from hjson
+- path: hw/ip/aon_timer/lint/aon_timer.vlt
+  reason: lint waivers
+- path: hw/ip/aon_timer/rtl
+  reason: RTL implementation
+- path: hw/top_darjeeling/formal/conn_csvs/aon_timer_rst.csv
+  reason: other top
+- path: sw/device/tests/pwrmgr_wdog_reset_reqs_test.c
+  reason: incidental AON timer use, tests pwrmgr
+incomplete: false
+notes: 'Not found: dedicated SVA assertion files beyond bind, formal .sby/JG scripts. Did not read doc/checklist.md
+  or sec_cm test details. Plain .core files and tb/env plumbing excluded.'

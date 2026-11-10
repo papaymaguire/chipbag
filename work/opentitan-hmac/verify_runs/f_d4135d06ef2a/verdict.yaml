@@ -1,0 +1,75 @@
+finding_hash: 47cf9e255057f7a8
+started_at: '2026-11-10T19:43:53Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: Three of the five items are implemented by common tests that HMAC imports. The other two (a
+    covergroup and a lint checklist item) are not test items, so "no implementing test" is true but not
+    meaningful. The finding is partly wrong.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 29
+    line_end: 29
+    quote: 'name: "{name}_csr_rw"'
+    role: refutes
+    note: Common csr_rw test, imported by hmac_sim_cfg.hjson (line 30).
+  - path: hw/dv/tools/dvsim/tests/alert_test.hjson
+    line_start: 13
+    line_end: 13
+    quote: 'name: "{name}_alert_test"'
+    role: refutes
+    note: Common alert_test, imported by hmac_sim_cfg.hjson (line 31).
+  - path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+    line_start: 100
+    line_end: 100
+    quote: 'tests: ["{name}{intf}_csr_rw", "{name}{intf}_csr_aliasing"]'
+    role: refutes
+    note: The regwen testpoint is covered by the common csr_rw and csr_aliasing tests.
+  - path: hw/dv/tools/dvsim/testplans/tl_device_access_types_testplan.hjson
+    line_start: 21
+    line_end: 21
+    quote: 'name: tl_intg_err_cg'
+    role: supports
+    note: This is a covergroup, and no test is attached to it.
+  searches:
+  - what: HMAC imports of common test and testplan hjsons
+    where: hw/ip/hmac/dv/hmac_sim_cfg.hjson, hw/ip/hmac/data/hmac_testplan.hjson
+    found: csr_tests and alert_test hjsons are imported, and the common testplans are imported.
+  - what: regwen testpoint test list
+    where: csr_testplan.hjson
+    found: It maps to csr_rw and csr_aliasing.
+  near_misses: []
+  items:
+  - id: cp_29a612dd0aad
+    outcome: withdrawn
+    reason: hmac_csr_rw runs via the imported csr_tests.hjson.
+    evidence:
+    - 0
+  - id: cp_3371bbc48dfa
+    outcome: verified
+    reason: This is a lint checklist item with no test. I did not check whether the CI lint results back
+      the 'Done' status.
+    evidence: []
+  - id: cp_420ab5b39641
+    outcome: withdrawn
+    reason: hmac_alert_test is run via the imported alert_test.hjson.
+    evidence:
+    - 1
+  - id: cp_5cecb30c1587
+    outcome: verified
+    reason: It is a covergroup with no test mapped to it. I did not look for a separate TL integrity error
+      test, so this is not a firm finding.
+    evidence:
+    - 3
+  - id: cp_5fafd9ef0011
+    outcome: withdrawn
+    reason: The testplan maps it to csr_rw and csr_aliasing, which run for hmac.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0478257
+error: null

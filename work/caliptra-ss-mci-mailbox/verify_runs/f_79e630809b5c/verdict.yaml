@@ -1,0 +1,43 @@
+finding_hash: a974a2bcec384e89
+started_at: '2026-11-10T20:34:46Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The Caliptra-side code reads the MBOX USER register and only prints it with VPRINTF. Nothing
+    compares it with an expected value, so this step cannot fail the test. The MCU-side file only checks
+    that a write to USER leaves it unchanged. That is a separate check and does not validate the Caliptra-side
+    value.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/cptra_smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 66
+    line_end: 68
+    quote: "    // Checking MBOX USER INFO\n    soc_ifc_axi_dma_read_ahb_payload(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_USER\
+      \ + MCU_MBOX_NUM_STRIDE * mbox_num, 0, read_payload, 4, 0);     \n    VPRINTF(LOW, \"CALIPTRA: MCU\
+      \ MBOX%x USER: 0x%x\\n\", mbox_num, read_payload[0]);"
+    role: supports
+    note: The USER value is read and printed only; there is no comparison or failure path.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 105
+    line_end: 107
+    quote: '    lsu_write_32(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_USER + MCU_MBOX_NUM_STRIDE * mbox_num, test_data);'
+    role: context
+    note: The MCU side only checks that USER is read-only. It does not check the value the Caliptra side
+      read.
+  searches:
+  - what: USER references in the test directory
+    where: smoke_test_mcu_mbox_write_user_lock/
+    found: Caliptra side only reads and prints. MCU side only does a read-only write check.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 102
+    line_end: 107
+    why_not: This checks that the USER register is read-only. It does not compare the USER value Caliptra
+      read against an expected user.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0359048
+error: null

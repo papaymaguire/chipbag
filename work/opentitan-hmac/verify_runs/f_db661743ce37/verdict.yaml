@@ -1,0 +1,37 @@
+finding_hash: 7aad858426bad03d
+started_at: '2026-11-10T20:51:56Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The README says SHA-2 384 is read from DIGEST_0-DIGEST_12, which is 13 words. The scoreboard
+    checks only digest_idx < 12, which is DIGEST_0-DIGEST_11, i.e. 384 bits. The two disagree. The README
+    is likely the side that is wrong, since 384 bits is 12 words and DIGEST_12 is not part of a 384-bit
+    digest. I did not check the RTL or the register documentation.
+  evidence:
+  - path: hw/ip/hmac/README.md
+    line_start: 41
+    line_end: 41
+    quote: or from [`DIGEST_0-DIGEST_12`](doc/registers.md#digest) for SHA-2 384
+    role: supports
+    note: Spec gives a range of 13 words for SHA-2 384.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 493
+    line_end: 496
+    quote: ((expected_digest_size == SHA2_384) && (digest_idx < 12)) ||
+    role: supports
+    note: The scoreboard checks only words 0 to 11 for SHA-2 384, which conflicts with the spec's DIGEST_12.
+  searches:
+  - what: README digest range text and the scoreboard's digest check
+    where: hw/ip/hmac/README.md, hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    found: The README says DIGEST_0-DIGEST_12 for SHA-2 384. The scoreboard checks idx<12 for SHA-2 384.
+  near_misses: []
+  items: []
+  new_sources: []
+  resolution: Fix the README to say DIGEST_0-DIGEST_11 for SHA-2 384. The test and scoreboard are correct
+    as written.
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.0435928
+error: null

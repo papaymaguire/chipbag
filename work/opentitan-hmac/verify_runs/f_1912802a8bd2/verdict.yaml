@@ -1,0 +1,69 @@
+finding_hash: 3ab8301e4133210c
+started_at: '2026-11-10T20:53:17Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Item 1 stands. The only msg_length_upper writes are in sar_different_context and the SAR restore
+    path, and nothing reads STATUS.hmac_idle before them. Only one randcase branch checks the length,
+    and that check is on the value after hashing. Item 2 is inconclusive. wr_msg writes to the MSG_FIFO
+    window with a random in-window address and a random contiguous sub-word byte mask, and the scoreboard
+    checks the digest. I could not tell whether tl_access leaves address bits [1:0] non-zero, and the
+    scoreboard predicts from the byte mask rather than from the address. Because of that I can't say the
+    digest check covers the "only bits [1:0] matter" rule.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 673
+    line_end: 673
+    quote: csr_wr(.ptr(ral.cfg.sha_en), .value(1'b0));
+    role: context
+    note: The length write is preceded by disabling SHA, not by a STATUS.hmac_idle read.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 726
+    line_end: 726
+    quote: '`DV_CHECK_EQ(msg_length_rd, msg_length_rand+msg_b.size()*8)'
+    role: supports
+    note: This is the only check of a written length, and it runs in only one randcase branch. The restore
+      write at line 744 is not read back and checked.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 358
+    line_end: 358
+    quote: '`DV_CHECK_FATAL(randomize(wr_addr, wr_mask) with {$countones(wr_mask) <= msg_q.size();})'
+    role: context
+    note: The message writes use a random in-window address and a random sub-word mask. The scoreboard
+      checks the digest end to end. It is unclear whether address bits [1:0] are ever non-zero.
+  searches:
+  - what: msg_length_upper writes, and a hmac_idle read before them, in the hmac dv sequences
+    where: hw/ip/hmac/dv
+    found: Writes happen only in sar_different_context and the restore path. No hmac_idle read precedes
+      them.
+  - what: sub-word and unaligned writes to the MSG_FIFO window
+    where: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv and hw/dv/sv/tl_agent/tl_seq_item.sv
+    found: wr_addr and wr_mask are randomized, but tl_seq_item constrains addresses to be naturally aligned.
+      I could not confirm that address bits [1:0] are ever non-zero.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 103
+    line_end: 112
+    why_not: Random address and mask constraints create sub-word writes. They don't show the offset depends
+      only on address bits [1:0], and the scoreboard predicts from the mask.
+  items:
+  - id: cr_ce024c03a454
+    outcome: verified
+    reason: No STATUS.hmac_idle read before the MSG_LENGTH_UPPER write, and only one branch checks the
+      written value.
+    evidence:
+    - 0
+    - 1
+  - id: cr_5dc8e5c046fb
+    outcome: inconclusive
+    reason: Random sub-word masks and random in-window addresses exist, with a digest check. I could not
+      confirm whether address bits [1:0] are non-zero, because tl_access may align the address.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 12
+cost_usd: 0.10185559999999999
+error: null

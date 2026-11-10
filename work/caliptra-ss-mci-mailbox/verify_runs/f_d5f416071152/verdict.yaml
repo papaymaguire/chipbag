@@ -1,0 +1,82 @@
+finding_hash: 90f2be92275782eb
+started_at: '2026-11-10T20:42:38Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks any of the five items. Existing MCU mailbox tests only read the
+    configured SRAM size and never sweep it or build a size-0 configuration. No test checks that BYTE
+    accesses to the SRAM are rejected. The CMD_AVAIL interrupt is only cleared and checked for clearing
+    (weakly), and nothing asserts that it was set on SOC EXECUTE.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+    line_start: 224
+    line_end: 225
+    quote: "// Clear the CMD_AVAIL interrupt and check that it gets cleared\n    mcu_mbox_clear_mbox_cmd_avail_interrupt(mbox_num);"
+    role: context
+    note: Only the clear of CMD_AVAIL is checked. Nothing checks that it was asserted when the SOC set
+      EXECUTE.
+  - path: src/integration/test_suites/libs/caliptra_ss_lib/caliptra_ss_lib.c
+    line_start: 367
+    line_end: 369
+    quote: "// Check that Mailbox cmd available from SOC interrupt has been cleared\n    if((lsu_read_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R)\
+      \ & "
+    role: context
+    note: This is a clear check only. It compares the masked value with 1, which is weak, and there is
+      no assertion check.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/cptra_smoke_test_mcu_mbox_axi_param.c
+    line_start: 109
+    line_end: 110
+    quote: uint32_t sram_size_kb = cptra_mcu_mbox_get_sram_size_kb(mbox_num);
+    role: context
+    note: Tests only read the configured SRAM size. They do not sweep sizes or build a size-0 configuration.
+  searches:
+  - what: cmd_avail in the integration tests and test libraries
+    where: src/integration
+    found: Only the clear helper and the ISR enable mask. No check that the interrupt asserts on SOC EXECUTE.
+  - what: SRAM size configuration and sweep tests
+    where: src/integration/test_suites/*mcu_mbox*
+    found: Tests only read the size through get_sram_size_kb. No size-0 or 2MB configuration test, and
+      no check that the mailbox is not instantiated.
+  - what: BYTE or strobe access to the SRAM
+    where: smoke_test_mcu_mbox_valid_user
+    found: Nothing.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+    line_start: 126
+    line_end: 130
+    why_not: Accesses the range above the configured size, but does not cover size 0, the 2MB maximum,
+      or non-instantiation.
+  items:
+  - id: cr_52fe20427e16
+    outcome: verified
+    reason: No test configures the size as 0 or checks that the mailbox is not instantiated.
+    evidence:
+    - 2
+  - id: cr_6e68d4291d35
+    outcome: verified
+    reason: No test checks that BYTE accesses to the SRAM are rejected.
+    evidence:
+    - 2
+  - id: cr_8ea60cdfbb2b
+    outcome: verified
+    reason: No test builds or exercises a 2MB size configuration.
+    evidence:
+    - 2
+  - id: cr_e0684916d838
+    outcome: verified
+    reason: No test builds a size-0 configuration.
+    evidence:
+    - 2
+  - id: cr_12dbdc943d69
+    outcome: verified
+    reason: Only the clear of the interrupt is checked. Assertion on SOC EXECUTE is never checked.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.08340800000000001
+error: null

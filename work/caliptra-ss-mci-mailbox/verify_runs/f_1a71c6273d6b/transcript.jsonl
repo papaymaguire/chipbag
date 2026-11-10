@@ -1,0 +1,13 @@
+{"t": "2026-11-10T19:41:16Z", "event": "  \u2192 Grep: notif_mbox[01]_(soc_req_lock|cmd_avail|ecc_cor|target_done)_intr_count"}
+{"t": "2026-11-10T19:41:16Z", "event": "  \u2192 Grep: intr_count_r"}
+{"t": "2026-11-10T19:41:18Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T19:41:19Z", "event": "Likely generic usage of the macro. Check mbox-specific counters."}
+{"t": "2026-11-10T19:41:20Z", "event": "  \u2192 Grep: NOTIF_MBOX[01]_(SOC_REQ_LOCK|CMD_AVAIL|ECC_COR|TARGET_DONE)_INTR_COUNT|notif_mbox[01]_\\w*count"}
+{"t": "2026-11-10T19:41:22Z", "event": "Only coverage/address defs; no test checks. Quick check for tests using these defines."}
+{"t": "2026-11-10T19:41:23Z", "event": "  \u2192 Grep: MBOX[01]_(SOC_REQ_LOCK|CMD_AVAIL|ECC_COR|TARGET_DONE)_INTR_COUNT"}
+{"t": "2026-11-10T19:41:24Z", "event": "  \u2192 Grep: MBOX[01]_(SOC_REQ_LOCK|CMD_AVAIL|ECC_COR|TARGET_DONE)_INTR_COUNT"}
+{"t": "2026-11-10T19:41:27Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:41:37Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:46Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:50Z", "event": "I submitted the verdict as verified for all five items: no test in the repository checks saturation, counter behaviour or increment-by-1 for these four mbox0/mbox1 interrupt count registers.\n\n- **What touches them:** `src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c` reads them only as part of one sum of all notification counters, compared against the firmware's own interrupt count. `src/integration/test_suites/libs/mci/mci.c` lists them in a register table for reset/sticky checks.\n- **Why that isn't enough:** the sum check doesn't isolate any single counter's step size, and nothing in the test suites pre-loads a counter to its maximum to check saturation.\n- **Limit of the search:** it was limited to names of the four registers and to saturation/overflow stimulus. I did not trace which interrupts the `mcu_intr_handler` test actually triggers."}
+{"t": "2026-11-10T19:41:50Z", "event": "[10 turns, $0.1097]"}

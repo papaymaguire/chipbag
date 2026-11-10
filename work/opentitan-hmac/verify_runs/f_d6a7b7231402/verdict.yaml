@@ -1,0 +1,93 @@
+finding_hash: 6f31cfafed2e4836
+started_at: '2026-11-10T19:44:14Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I withdrew item 1, which the DV does test. I verified items 3 and 4 as untested. Items 2 and
+    5 are inconclusive. Key writes during a hash are issued by the base vseq. The scoreboard discards
+    them and checks the error code and the digest. No test writes DIGEST while sha_en=1. The save/restore
+    flows only write DIGEST after clearing sha_en. I found nothing that checks hash_process being issued
+    only once per stream. Item 2 is a software rule that no DUT test can check. For item 5 I found no
+    key-read check, but the generic CSR tests may cover it.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 321
+    line_end: 326
+    quote: "          if (hmac_start) begin\n            if (cfg.en_cov) cov.wr_key_during_hash_cg.sample(1);\n\
+      \            update_err_intr_code(SwUpdateSecretKeyInProcess);\n            return;\n          end"
+    role: refutes
+    note: The scoreboard models a key write during a hash as ignored, flags an error, and leaves the stored
+      key unchanged. The final digest comparison catches any change to the key.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 196
+    line_end: 199
+    quote: "    write_discard_key();\n    check_error_code(0);"
+    role: refutes
+    note: The stimulus writes a random key register while a message is being written, which is the 'ignore
+      key access mid-process' condition. It is guarded by wr_key_during_hash, which hmac_smoke_vseq constrains
+      to 0.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 618
+    line_end: 624
+    quote: '  csr_wr(.ptr(ral.cfg.sha_en), .value(1''b0));'
+    role: context
+    note: The save/restore flow clears sha_en before it writes the digest, so no test writes DIGEST while
+      sha_en=1.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 335
+    line_end: 342
+    quote: '          do_predict = !sha_en;'
+    role: context
+    note: The scoreboard predicts that a DIGEST write is ignored when sha_en=1. I found no sequence that
+      exercises this case.
+  searches:
+  - what: key write during hash, in the scoreboard and vseqs
+    where: hw/ip/hmac/dv/env
+    found: The scoreboard handles it, and write_discard_key is called from the base vseq.
+  - what: DIGEST writes made while sha_en=1
+    where: hw/ip/hmac/dv/env/seq_lib
+    found: csr_wr_digest is only called after sha_en is cleared.
+  - what: hash_process-once check and key-read check
+    where: hw/ip/hmac/dv
+    found: No dedicated check for either. I did not examine the generic CSR tests.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 335
+    line_end: 342
+    why_not: The scoreboard models the DIGEST lock, but no stimulus writes DIGEST with sha_en=1.
+  items:
+  - id: cr_2e50e5c9df75
+    outcome: withdrawn
+    reason: Key writes during hashing are stimulated and the scoreboard checks the ignored write and the
+      error code.
+    evidence:
+    - 0
+    - 1
+  - id: cr_256623d9e484
+    outcome: inconclusive
+    reason: This is a software rule, so no DUT behaviour can be checked. The save/restore vseq does re-write
+      config, but that is not a check on the rule.
+    evidence:
+    - 2
+  - id: cr_51fc8f2304d3
+    outcome: verified
+    reason: No stimulus writes DIGEST while sha_en=1. The save/restore flow always clears sha_en first.
+    evidence:
+    - 2
+    - 3
+  - id: cr_d2c659d4c60b
+    outcome: verified
+    reason: I found no test or check that exercises or enforces a single hash_process per stream.
+    evidence: []
+  - id: cr_fc9c477b91bc
+    outcome: inconclusive
+    reason: I found no dedicated key-read check. The generic CSR tests may cover this for write-only registers,
+      and I did not confirm that.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0827318
+error: null

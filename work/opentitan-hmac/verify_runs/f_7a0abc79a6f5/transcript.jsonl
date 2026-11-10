@@ -1,0 +1,7 @@
+{"t": "2026-11-10T21:04:58Z", "event": "  \u2192 Grep: fifo_empty|hmac_err"}
+{"t": "2026-11-10T21:05:00Z", "event": "  \u2192 Grep: fifo_empty|hmac_err|intr_state|intr_test"}
+{"t": "2026-11-10T21:05:03Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:05:11Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:05:17Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:05:20Z", "event": "I've submitted the verdict and it was accepted: all three items stand as untested.\n\n- **fifo_empty during the second round (cr_8532dccc2de0):** The scoreboard only repeats the spec condition in a comment. The code under it predicts the interrupt from \"FIFO was full and is now empty\" and has no second-round term.\n- **hmac_err is Event-type (cr_eb1d91a4dabf):** The testbench handles hmac_err only through generic `intr_state` prediction. Nothing checks the interrupt type.\n- **fifo_empty is Status-type (cr_ec58bab546a9):** The scoreboard predicts it as an ordinary `intr_state` bit. Nothing checks the Status behavior.\n\nI found no tests elsewhere in the repository that cover these items. I changed no files."}
+{"t": "2026-11-10T21:05:20Z", "event": "[6 turns, $0.0741]"}

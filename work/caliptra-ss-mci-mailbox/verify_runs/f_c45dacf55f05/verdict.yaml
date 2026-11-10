@@ -1,0 +1,51 @@
+finding_hash: b6536afa9507f22a
+started_at: '2026-11-10T20:34:21Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'The plan says the response status is DATA_READY (1). Both sides of the test use CMD_COMPLETE
+    (2): the SOC side polls for status 2, and the MCU firmware writes 0x2. No DATA_READY wait exists.
+    The finding''s claim that no data is read afterward is partly wrong, because the test does read MCU
+    data through caliptra_ss_mcu_mbox_get_data. The status mismatch still stands.'
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/cptra_ss_mcu_mbox_test.c
+    line_start: 233
+    line_end: 234
+    quote: "reg = caliptra_ss_mcu_mbox_wait_status_complete(mbox_num, 200);\n        if (reg == 2) {"
+    role: supports
+    note: The test waits only for status 2 (CMD_COMPLETE), not DATA_READY (1).
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 112
+    line_end: 117
+    quote: DATA_READY = 4'd1 {
+    role: context
+    note: DATA_READY is encoded as 1, distinct from CMD_COMPLETE = 2.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/cptra_ss_mcu_mbox_test.c
+    line_start: 242
+    line_end: 242
+    quote: fail = caliptra_ss_mcu_mbox_get_data(mbox_num);
+    role: context
+    note: The test does read data afterward, so the 'no new data read' part of the finding is overstated.
+  searches:
+  - what: DATA_READY usage in the smoke test
+    where: src/integration/test_suites/smoke_test_mcu_mbox
+    found: No DATA_READY wait. Only status 0x2 is polled and written.
+  - what: Status enum encoding
+    where: src/mci/rtl/mcu_mbox_csr.rdl
+    found: DATA_READY=1, CMD_COMPLETE=2
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/cptra_ss_mcu_mbox_test.c
+    line_start: 242
+    line_end: 247
+    why_not: get_data does read and check data after completion, so only the DATA_READY part of the finding
+      holds.
+  items: []
+  new_sources: []
+  resolution: Either update the plan to say the SOC agent responds with COMPLETE status, or change the
+    test to use and check the DATA_READY (1) status.
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.07311010000000001
+error: null

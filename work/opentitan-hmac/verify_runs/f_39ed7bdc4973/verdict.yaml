@@ -1,0 +1,40 @@
+finding_hash: 05f130646ba3b41e
+started_at: '2026-11-10T20:55:06Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The only stimulus is save_and_restore, which waits for a block-boundary trigger before saving.
+    Nothing attempts a context switch mid-block or checks that it is rejected or unsupported, so the "only
+    at block boundaries" restriction has only weak evidence.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 554
+    line_end: 556
+    quote: // Wait until message transmission is on a block boundary (multiple of 512 bits in SHA-2 256
+    role: context
+    note: Stimulus only ever saves at a block boundary; no negative case.
+  searches:
+  - what: save_and_restore, block boundary, mid-block, partial, unaligned
+    where: hw/ip/hmac
+    found: Only the boundary-wait in the vseq, a coverage group and the scoreboard's rounding of the message
+      counter. No mid-block save test and no check for one.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 239
+    line_end: 239
+    why_not: Rounds the message counter up to the block boundary for prediction. This is not a check on
+      the context-switch restriction.
+  items:
+  - id: cr_9b457cf2a7cd
+    outcome: verified
+    reason: Only a positive stimulus at the boundary exists. No test tries a mid-block context switch,
+      and no check would fail if one were allowed.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.044169299999999995
+error: null

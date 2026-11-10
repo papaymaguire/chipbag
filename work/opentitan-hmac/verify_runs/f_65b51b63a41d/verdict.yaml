@@ -1,0 +1,89 @@
+finding_hash: 06e23bf863ade16c
+started_at: '2026-11-10T19:41:30Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The two CSR testpoints (csr_hw_reset, csr_mem_rw_with_rand_reset) are implemented by shared
+    tests that HMAC includes via its sim cfg, and the regwen covergroup is implemented in a shared DV
+    library. The flagged gap is a name-template artifact. The two checklist items are process sign-offs,
+    not tests, so I could not settle them from the repo.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 21
+    line_end: 23
+    quote: "name: \"{name}_csr_hw_reset\"\n      build_mode: \"cover_reg_top\"\n      run_opts: [\"+csr_hw_reset\"\
+      ]"
+    role: refutes
+    note: Test exists, templated on {name}; HMAC includes this file in its sim cfg (hmac_sim_cfg.hjson:30).
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 61
+    line_end: 63
+    quote: 'name: "{name}_csr_mem_rw_with_rand_reset"'
+    role: refutes
+    note: Rand-reset test defined for every IP including hmac.
+  - path: hw/dv/sv/csr_utils/csr_hw_reset_seq.sv
+    line_start: 47
+    line_end: 51
+    quote: csr_rd_check(.ptr           (csr),
+    role: refutes
+    note: Check compares reset values against RAL, so the test can fail.
+  - path: hw/dv/sv/dv_base_reg/dv_base_lockable_field_cov.sv
+    line_start: 19
+    line_end: 19
+    quote: covergroup regwen_val_when_new_value_written_cg(string name) with function sample();
+    role: refutes
+    note: The covergroup is implemented in the shared DV library and sampled by CSR tests.
+  - path: hw/ip/hmac/doc/checklist.md
+    line_start: 247
+    line_end: 247
+    quote: 'Coverage      | [SIM_CODE_COVERAGE_AT_100][]      | Done        | Documented in issue #25216'
+    role: context
+    note: Checklist items are process sign-offs, not tests.
+  searches:
+  - what: csr_hw_reset and csr_mem_rw_with_rand_reset tests, and whether hmac includes them
+    where: hw/dv/tools/dvsim/tests, hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    found: Tests defined; hmac sim cfg imports csr_tests.hjson.
+  - what: regwen covergroup
+    where: hw/dv
+    found: Implemented in dv_base_lockable_field_cov.sv.
+  - what: checklist items
+    where: hw/ip/hmac/doc/checklist.md
+    found: Marked Done with issue references; not test-verifiable.
+  near_misses: []
+  items:
+  - id: cp_62857800d897
+    outcome: withdrawn
+    reason: hmac_csr_hw_reset exists via the shared csr_tests.hjson and checks reset values against the
+      RAL.
+    evidence:
+    - 0
+    - 2
+  - id: cp_69066ed60ce7
+    outcome: withdrawn
+    reason: The covergroup is implemented and sampled in the shared lockable-field coverage class. Coverage
+      is not a test.
+    evidence:
+    - 3
+  - id: cp_6a671c7f7e50
+    outcome: inconclusive
+    reason: This is a process checklist item, not testable in the repo.
+    evidence:
+    - 4
+  - id: cp_87e74b2a7c0c
+    outcome: withdrawn
+    reason: The test hmac_csr_mem_rw_with_rand_reset is defined in the shared csr_tests.hjson and runs
+      the hw_reset sequence checks.
+    evidence:
+    - 1
+  - id: cp_89d6ab0e238e
+    outcome: inconclusive
+    reason: A coverage-closure checklist item is not a test; the checklist marks it Done.
+    evidence:
+    - 4
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0650078
+error: null

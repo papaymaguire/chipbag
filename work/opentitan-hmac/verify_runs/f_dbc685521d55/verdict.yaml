@@ -1,0 +1,88 @@
+finding_hash: 19812f9f2cfea86d
+started_at: '2026-11-10T21:11:04Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Items 1 and 2 (key invalid after completion) are untested, because the DV forces sideload off.
+    Item 4 is covered by the scoreboard. Items 3 and 5 are modelled in the scoreboard, but I found no
+    clear stimulus that reaches them, so they are inconclusive.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: '// TODO(#31634): Disable sideloading for now.'
+    role: supports
+    note: Sideload is forced off in randomized configs, so a key becoming invalid is never exercised.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 306
+    line_end: 307
+    quote: exp_digest   = '{default:0};  // Digest gets cleared on disabling.
+    role: refutes
+    note: For item 4, the scoreboard predicts the digest clears on sha_en 1->0. Digest reads are checked
+      against exp_digest, so a wrong clear fails the test.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1042
+    line_end: 1042
+    quote: if (!`gmv(ral.intr_state.hmac_err)) begin
+    role: context
+    note: 'Item 3: the model only updates ERR_CODE when hmac_err is not pending. I found no stimulus that
+      raises a second error while one is pending.'
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 339
+    line_end: 340
+    quote: // Predict updated value coming from write iff SHA core is disabled.
+    role: context
+    note: 'Item 5: writes to DIGEST registers are modelled as ignored while sha_en is set. I could not
+      confirm that stimulus writes DIGEST with sha_en=1.'
+  searches:
+  - what: sideload and key-invalid handling in the DV
+    where: hw/ip/hmac/dv
+    found: 'Sideload is disabled in randomization (TODO #31634). No test or check for the key becoming
+      invalid after completion.'
+  - what: digest clear on sha_en falling, and digest write lock
+    where: hmac_scoreboard.sv
+    found: The clear is modelled and checked on digest reads. The write lock is modelled in the scoreboard,
+      but I found no confirming stimulus.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1041
+    line_end: 1056
+    why_not: This models the pending-error rule for item 3, but I found no stimulus that exercises it,
+      so it is inconclusive.
+  items:
+  - id: cr_c8ea510e0e76
+    outcome: verified
+    reason: Sideload is disabled in DV and no test invalidates the key after completion.
+    evidence:
+    - 0
+  - id: cr_cf99e411151d
+    outcome: verified
+    reason: 'Same as the previous item: no invalid-key-after-completion stimulus exists, so there is no
+      check of the absence of an error.'
+    evidence:
+    - 0
+  - id: cr_ea4b652641c0
+    outcome: inconclusive
+    reason: The scoreboard models it, but I did not confirm stimulus that raises a second error while
+      hmac_err is pending.
+    evidence:
+    - 2
+  - id: cr_4bb0aa48a9b1
+    outcome: withdrawn
+    reason: The scoreboard clears exp_digest on sha_en 1->0, and later digest reads are compared against
+      it.
+    evidence:
+    - 1
+  - id: cr_51fc8f2304d3
+    outcome: inconclusive
+    reason: The scoreboard models the write lock, but I did not confirm a test that writes DIGEST while
+      sha_en=1 and checks the read-back.
+    evidence:
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0818312
+error: null

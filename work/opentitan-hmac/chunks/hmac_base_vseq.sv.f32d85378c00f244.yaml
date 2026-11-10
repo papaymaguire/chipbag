@@ -1,0 +1,74 @@
+path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+scope:
+  kind: whole_file
+model: claude-sonnet-5-5
+cost_usd: 0.023728000000000003
+chunks:
+- title_path: hmac_base_vseq > class declaration
+  kind: class
+  line_start: 5
+  line_end: 100
+- title_path: hmac_base_vseq > constraints
+  kind: other
+  line_start: 102
+  line_end: 130
+- title_path: hmac_base_vseq > new, dut_init, apply_reset
+  kind: function
+  line_start: 132
+  line_end: 147
+- title_path: hmac_base_vseq > hmac_init
+  kind: function
+  line_start: 149
+  line_end: 190
+- title_path: hmac_base_vseq > discard/enable config and key
+  kind: function
+  line_start: 192
+  line_end: 220
+- title_path: hmac_base_vseq > trigger tasks
+  kind: function
+  line_start: 222
+  line_end: 267
+- title_path: hmac_base_vseq > digest and wipe/csr helpers
+  kind: function
+  line_start: 269
+  line_end: 309
+- title_path: hmac_base_vseq > wr_key, wipe_secrets
+  kind: function
+  line_start: 311
+  line_end: 328
+- title_path: hmac_base_vseq > wr_msg
+  kind: function
+  line_start: 330
+  line_end: 422
+- title_path: hmac_base_vseq > burst_wr_msg
+  kind: function
+  line_start: 424
+  line_end: 504
+- title_path: hmac_base_vseq > msg_length and status helpers
+  kind: function
+  line_start: 506
+  line_end: 526
+- title_path: hmac_base_vseq > check_error_code
+  kind: function
+  line_start: 528
+  line_end: 547
+- title_path: hmac_base_vseq > save_and_restore, sar_stop_and_continue
+  kind: function
+  line_start: 549
+  line_end: 594
+- title_path: hmac_base_vseq > sar_same_context
+  kind: function
+  line_start: 596
+  line_end: 632
+- title_path: hmac_base_vseq > sar_different_context
+  kind: function
+  line_start: 634
+  line_end: 750
+- title_path: hmac_base_vseq > save_and_restore_cfg
+  kind: function
+  line_start: 752
+  line_end: 832
+- title_path: hmac_base_vseq > wait_cycles_with_no_outstanding_accesses
+  kind: function
+  line_start: 834
+  line_end: 837

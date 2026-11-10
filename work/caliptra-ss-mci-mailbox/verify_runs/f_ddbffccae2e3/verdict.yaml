@@ -1,0 +1,73 @@
+finding_hash: 48b528aca68fbe73
+started_at: '2026-11-10T19:40:29Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I searched the MCU mailbox test suites and found no test that closes the stated gaps. The search
+    was limited and I did not read every test in full. In the target_user test, EXECUTE is set through
+    a helper with no readback or ownership check. The other tests touch the items but do not check the
+    missing parts.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 190
+    line_end: 191
+    quote: "// TARGET_USER_VALID stays 0 so Root keeps ownership when EXECUTE is set.\n    mcu_mbox_set_execute(mbox_num);"
+    role: supports
+    note: EXECUTE is written via a helper, with no readback and no ownership check.
+  searches:
+  - what: both mailboxes instantiated at once / independence (cr_318abb731c64)
+    where: src/integration/test_suites mcu_mbox* yml and C
+    found: The mbox0 and mbox1 variants run as separate yml configurations. The instantiation test selects
+      a single valid mailbox. No test runs both at once.
+  - what: lock configuration, access refused before lock, build-time straps (cr_554ae7995021)
+    where: mcu_mbox suites
+    found: The tests poll the AXI user lock but do not check that access is refused before it is set.
+      I did not search exhaustively for a strap test.
+  - what: EXECUTE readback / ownership change (cr_05374ba5822a)
+    where: smoke_test_mcu_mbox_target_user
+    found: EXECUTE is set via mcu_mbox_set_execute with no readback or owner check.
+  - what: LOCK read value of 0 and owner ROOT (cr_4c638fcc5650)
+    where: target_user, usr_lock_out_zero and valid_user tests
+    found: Only the MBOX user is checked, through a helper. No SRAM owner check was found.
+  - what: requester CMD/DLEN readback (cr_edff6af5db3e)
+    where: mcu_mbox_rand_rdwr, valid_user, write_user_lock
+    found: No owner-side read-back comparison of the requester-written CMD and DLEN was found.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_instantiation/smoke_test_mcu_mbox_instantiation.c
+    line_start: 47
+    line_end: 60
+    why_not: It selects a single valid mailbox, so it does not test both mailboxes instantiated at once
+      or their independence.
+  items:
+  - id: cr_318abb731c64
+    outcome: verified
+    reason: The mbox0 and mbox1 variants run separately. No test checks that both are instantiated at
+      once and independent.
+    evidence: []
+  - id: cr_554ae7995021
+    outcome: inconclusive
+    reason: I did not search exhaustively for a test that configures the lock or covers the build-time
+      straps.
+    evidence: []
+  - id: cr_05374ba5822a
+    outcome: verified
+    reason: EXECUTE is written through a helper, and the test does not read it back or check the ownership
+      change.
+    evidence:
+    - 0
+  - id: cr_4c638fcc5650
+    outcome: inconclusive
+    reason: I did not read the helpers in full, so I cannot confirm there is no direct check of the LOCK
+      read value.
+    evidence: []
+  - id: cr_edff6af5db3e
+    outcome: inconclusive
+    reason: I did not read every test in full, so I cannot confirm there is no CMD/DLEN readback.
+    evidence: []
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 7
+cost_usd: 0.0694692
+error: null

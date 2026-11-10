@@ -1,0 +1,85 @@
+finding_hash: 809dd9fedec71176
+started_at: '2026-11-10T22:06:41Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'The DV environment covers three items: WKUP_CAUSE clear, WKUP_CTRL disable and the count write/reset.
+    The scoreboard checks them against hardware behavior, so those items are withdrawn. The regwen lock
+    is not exercised, because the WDOG_REGWEN write is commented out in the base vseq. Near-overflow counter
+    writes with the timer disabled are also not tested.'
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 176
+    line_end: 177
+    quote: //  csr_utils_pkg::csr_wr(ral.wdog_regwen, wdog_regwen);
+    role: supports
+    note: WDOG_REGWEN write is commented out, so the lock is never exercised
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 764
+    line_end: 771
+    quote: predict_wkup_cause(.wkup_cause(0), .wait_for_we(1));
+    role: refutes
+    note: Scoreboard predicts the WKUP_CAUSE clear on a 0 write
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 1278
+    line_end: 1282
+    quote: bit predicted_wkup_req = `gmv(ral.wkup_cause);
+    role: refutes
+    note: Scoreboard compares the wkup_req pin against the predicted value, so a missed deassert fails
+      the test
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv
+    line_start: 36
+    line_end: 41
+    quote: 'write_wkup_reg(wkup ? ral.wkup_ctrl.enable : ral.wdog_ctrl.enable, 1);'
+    role: refutes
+    note: Enable and disable of the wakeup timer is stimulated and checked by the scoreboard
+  searches:
+  - what: wkup_cause, regwen, wkup_count, wkup_ctrl in aon_timer DV
+    where: hw/ip/aon_timer/dv
+    found: Scoreboard checks wkup_cause clear and the wkup_req pin. shutdown clears WKUP_CTRL enable and
+      WKUP_CAUSE. Count writes are done with the timer enabled. The regwen write is commented out. No
+      near-overflow disable-and-write test.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 131
+    line_end: 131
+    why_not: Writes 0 to WKUP_CAUSE in shutdown; the scoreboard check on it is what refutes item cr_0838c215b7f8.
+  items:
+  - id: cr_d3b9d9ce5458
+    outcome: verified
+    reason: The REGWEN write is commented out in the vseq, so lock enforcement is not tested. The scoreboard
+      only predicts the register.
+    evidence:
+    - 0
+  - id: cr_ebc0e38e9d47
+    outcome: verified
+    reason: No DV test disables the timer, writes a near-overflow count, and re-enables. Counts are constrained
+      near the threshold, not near rollover.
+    evidence:
+    - 0
+  - id: cr_0838c215b7f8
+    outcome: withdrawn
+    reason: The scoreboard predicts the WKUP_CAUSE clear and compares wkup_req against it, with expiry
+      stimulated by the smoke tests.
+    evidence:
+    - 1
+    - 2
+  - id: cr_4eefb20fac1a
+    outcome: withdrawn
+    reason: The DV writes WKUP_COUNT_LO and HI (including zero) and the scoreboard predicts the count
+      and the expiry. This is weaker, since there is no dedicated restart test.
+    evidence:
+    - 3
+  - id: cr_7e2f9abb5704
+    outcome: withdrawn
+    reason: The alternating enable/disable vseq clears WKUP_CTRL enable, and the scoreboard checks interrupts
+      and wkup_req afterwards.
+    evidence:
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0797977
+error: null

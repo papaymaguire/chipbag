@@ -1,0 +1,10 @@
+{"t": "2026-11-10T19:42:38Z", "event": "  \u2192 Grep: wipe|WIPE"}
+{"t": "2026-11-10T19:42:39Z", "event": "  \u2192 Grep: wipe_secret|WIPE_SECRET"}
+{"t": "2026-11-10T19:42:41Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:42:41Z", "event": "  \u2192 Grep: fifo|FIFO|wipe"}
+{"t": "2026-11-10T19:42:43Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/sw/device/tests/hmac_secure_wipe_test.c"}
+{"t": "2026-11-10T19:42:46Z", "event": "  \u2192 Grep: msg_fifo|MSG_FIFO"}
+{"t": "2026-11-10T19:42:56Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:43:03Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:43:07Z", "event": "I submitted the verdict as \"verified\": the repository has no test that checks any of the three items, so the finding stands.\n\n- **64-bit wipe value (cr_1c762e6535de):** The only software check is `sw/device/tests/hmac_secure_wipe_test.c`. It tests SHA-256 with 32-bit digest words, so the replicated 64-bit value for SHA-2 384/512 is never checked. The DV scoreboard does nothing on a `wipe_secret` write. It only confirms that the digest no longer matches the prediction.\n- **Software cannot read the message FIFO (cr_4282db4ce90a):** I found no test that reads the FIFO window and checks that the read is refused.\n- **Wiping does not clear the message FIFO (cr_8e41a2412a72):** I found no test that checks the FIFO contents survive a wipe.\n\nI did not look at generic TL-access tests for FIFO reads, so a read of the write-only window could occur incidentally there. Even if it does, nothing would check the result.\n\nMy first submit attempt failed because the tool wasn't available. The second went through and was accepted."}
+{"t": "2026-11-10T19:43:07Z", "event": "[9 turns, $0.0815]"}

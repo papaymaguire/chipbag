@@ -1,0 +1,103 @@
+finding_hash: 6a9ea7d33e893d17
+started_at: '2026-11-10T19:45:51Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Of the 5 items, 2 stand (CMD_BUSY meaning and hw-over-sw precedence) and 3 are withdrawn. The
+    hwclr item is covered by the zeros_after_release test. The swwe item is covered by the non-root CMD_STATUS
+    write checks. The sram_owner NONE item is covered by the ownership-flow testbench. I did not find
+    any test that writes CMD_BUSY or hits a simultaneous hw and sw update.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mbox_csr_zeros_after_release/smoke_test_mbox_csr_zeros_after_release.c
+    line_start: 137
+    line_end: 137
+    quote: if(lsu_read_32(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_CMD_STATUS + MCU_MBOX_NUM_STRIDE * mbox_num)
+      != 0) {
+    role: refutes
+    note: CMD_STATUS is written to 1 (line 72) and read back (line 95), then the mailbox is released and
+      CMD_STATUS must read 0. This checks hwclr on release.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/cptra_smoke_test_mcu_mbox_valid_user.c
+    line_start: 348
+    line_end: 348
+    quote: if (read_payload[0] == (0xDEADBEEF & MCU_MBOX0_CSR_MBOX_CMD_STATUS_STATUS_MASK)) {
+    role: refutes
+    note: A non-root agent writes CMD_STATUS and the test fails if the value changed. This checks the
+      swwe=valid_root_req gating. The MCU write at smoke_test_mcu_mbox_valid_user.c:147 shows the root
+      write path.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 95
+    line_end: 95
+    quote: mci_comm_flow_check_phase("released", MCU_MBOX_OWNER_NONE);
+    role: refutes
+    note: After release, the checker reads HW_STATUS and flags an error unless sram_owner is NONE.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 202
+    line_end: 203
+    quote: for (int status = mcu_mbox_csr__mbox_cmd_status__status__mbox_status_e__DATA_READY;
+    role: context
+    note: The status loop starts at DATA_READY, so CMD_BUSY is never driven in this flow.
+  - path: src/mci/rtl/mcu_mbox.sv
+    line_start: 370
+    line_end: 370
+    quote: 'assign hwif_in.mbox_cmd_status.status.hwclr = mbox_release; '
+    role: context
+    note: RTL hwclr is driven by mbox_release.
+  searches:
+  - what: CMD_BUSY usage in tests
+    where: src/integration
+    found: Only the enum definition in caliptra_ss_lib.h. No test writes CMD_BUSY and checks the busy
+      behavior.
+  - what: CMD_STATUS writes and reads in C tests
+    where: src/integration/test_suites
+    found: zeros_after_release (hwclr), valid_user (non-root write blocked), write_user_lock (root writes
+      COMPLETE). No simultaneous hw/sw update test.
+  - what: sram_owner NONE check
+    where: testbench mci_mbox_ownership_flow.svh and mci_common_tasks.svh
+    found: A checker task compares sram_owner to NONE after release.
+  near_misses:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 136
+    line_end: 139
+    why_not: Covers non-BUSY CMD_STATUS returning the SRAM to the Requester, but never writes BUSY, so
+      it does not check the CMD_BUSY meaning or the busy-hold behavior.
+  items:
+  - id: cr_01230983dc89
+    outcome: verified
+    reason: No test writes CMD_BUSY and checks that the command is treated as incomplete. The ownership
+      flow only uses DATA_READY through CMD_FAILURE.
+    evidence:
+    - 3
+  - id: cr_2bf0d372550b
+    outcome: withdrawn
+    reason: zeros_after_release writes CMD_STATUS, releases the mailbox, and fails if CMD_STATUS is not
+      0 afterwards.
+    evidence:
+    - 0
+    - 4
+  - id: cr_a89b498a6610
+    outcome: verified
+    reason: No test creates simultaneous hardware and software updates to the status field and checks
+      that hw wins.
+    evidence:
+    - 4
+  - id: cr_cf134dd5de1d
+    outcome: withdrawn
+    reason: A non-root write to CMD_STATUS is attempted and the test fails if the value changed. Root
+      writes take effect in the other tests.
+    evidence:
+    - 1
+  - id: cr_14efe156ee91
+    outcome: withdrawn
+    reason: The ownership flow checks that sram_owner reads NONE in the released phase.
+    evidence:
+    - 2
+  new_sources: []
+  resolution: Add a test that writes CMD_BUSY as root and checks that the SRAM ownership handoff does
+    not happen. Add a test that forces a software write to CMD_STATUS in the same cycle as a release,
+    to check that hw wins.
+submissions: 1
+rejections: []
+turns: 12
+cost_usd: 0.12845840000000003
+error: null

@@ -1,0 +1,94 @@
+finding_hash: 9af1141811979443
+started_at: '2026-11-10T20:41:06Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four of five items stand as untested. The only related test is mcu_intr_handler, which triggers
+    each notif and error interrupt through the INTR_TRIG registers and checks that the summed hardware
+    counters equal the firmware's per-event count. That check covers "increments by 1 per interrupt event",
+    so that item is withdrawn. No test checks saturation, the decrvalue=1 pulse mechanics or the swwel=false
+    write behaviour. The 1-cycle pulse is only constrained indirectly, so it is inconclusive.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 257
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: refutes
+    note: Per-event firmware count is compared with the summed HW notif counters, so it fails if the counter
+      does not increment by 1 per event. This covers cr_263337375bbf, including the CPTRA_MBOX_CMD_AVAIL
+      counter.
+  - path: src/integration/stimulus/testsuites/caliptra_ss_master_test_list.csv
+    line_start: 119
+    line_end: 119
+    quote: mcu_intr_handler/mcu_intr_handler
+    role: context
+    note: The test is in the nightly regression.
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1554
+    line_end: 1557
+    quote: default decrvalue = 1;
+    role: supports
+    note: The decrvalue and swwel properties are not checked by any test. Their only use is in the generated
+      register block.
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1565
+    line_end: 1565
+    quote: Will not overflow ('incrsaturate').
+    role: supports
+    note: No test drives a counter to its maximum value. mcu_intr_handler's only saturation-related matches
+      are mtime constants, not interrupt counters.
+  searches:
+  - what: intr_count / count_incr / INTR_COUNT_R usage in tests and libs
+    where: src/integration/test_suites, tools
+    found: Only mcu_intr_handler.c reads the counters. Other 'intr_count' matches are unrelated firmware
+      variables.
+  - what: saturation or 0xFFFFFFFF in mcu_intr_handler
+    where: src/integration/test_suites/mcu_intr_handler
+    found: Only mtime constants, nothing about interrupt counters.
+  - what: regression inclusion
+    where: master test list and yml files
+    found: mcu_intr_handler is listed in the nightly regression.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 208
+    line_end: 257
+    why_not: The check is summed over all counters and uses software trigger writes. It does not isolate
+      the pulse width, decrvalue, swwel or saturation, so it does not verify those items.
+  items:
+  - id: cr_1bcdcddb3f6d
+    outcome: inconclusive
+    reason: The 1-cycle pulse is only constrained indirectly by the summed count comparison, and the test
+      drives the trigger rather than the hardware event input.
+    evidence:
+    - 0
+  - id: cr_1e422b850220
+    outcome: verified
+    reason: No test drives a counter to saturation.
+    evidence:
+    - 3
+  - id: cr_22a6d4baab20
+    outcome: verified
+    reason: No test checks swwel behaviour on the pulse field.
+    evidence:
+    - 2
+  - id: cr_242db8343387
+    outcome: verified
+    reason: No test checks the decrvalue=1 mechanics. The summed check is only indirect.
+    evidence:
+    - 2
+  - id: cr_263337375bbf
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers every notif and error interrupt and fails if the hardware counter
+      sum differs from the firmware per-event count.
+    evidence:
+    - 0
+    - 1
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Test that reads and checks the MCI interrupt counters.
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.115486
+error: null

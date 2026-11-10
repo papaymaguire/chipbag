@@ -1,0 +1,18 @@
+{"t": "2026-11-10T19:43:11Z", "event": "  \u2192 Grep: fifo_empty|wr_config_during_hash|hmac_error|intr_fifo_empty"}
+{"t": "2026-11-10T19:43:14Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:43:15Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:43:15Z", "event": "  \u2192 Grep: tl_intg_err|fatal_fault|alert"}
+{"t": "2026-11-10T19:43:18Z", "event": "  \u2192 Grep: tl_intg_err|csr_tests|tl_device_access|common_tests"}
+{"t": "2026-11-10T19:43:19Z", "event": "  \u2192 Grep: wr_config_during_hash"}
+{"t": "2026-11-10T19:43:20Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/hmac_sim_cfg.hjson"}
+{"t": "2026-11-10T19:43:21Z", "event": "  \u2192 Grep: tl_intg_err|tl_intg"}
+{"t": "2026-11-10T19:43:23Z", "event": "  \u2192 Grep: tl_intg_err"}
+{"t": "2026-11-10T19:43:24Z", "event": "  \u2192 Grep: fatal_fault|check_tl_intg_err|alert_name"}
+{"t": "2026-11-10T19:43:25Z", "event": "Checking that the common tl_intg_err sequence checks the alert, then I'll submit."}
+{"t": "2026-11-10T19:43:26Z", "event": "  \u2192 Grep: fatal_alert|check_fatal_alert"}
+{"t": "2026-11-10T19:43:28Z", "event": "  \u2192 Grep: fatal_alert|alert"}
+{"t": "2026-11-10T19:43:30Z", "event": "  \u2192 Grep: run_tl_intg_err"}
+{"t": "2026-11-10T19:43:32Z", "event": "  \u2192 Grep: alert"}
+{"t": "2026-11-10T19:43:43Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:43:47Z", "event": "I withdrew all five items: the \"planned only\" claim is wrong because existing tests check each behaviour.\n\n- **fifo_empty interrupt (three items):** `hmac_scoreboard.sv` predicts the interrupt only when the FIFO was previously full and is now empty. It clears that \"was full\" state on process, stop, start and continue. It then compares the prediction against `intr_state` reads. The scoreboard comments list all three conditions from the spec.\n- **fatal_fault alert:** HMAC imports the common `tl_access_tests.hjson`, which defines `hmac_tl_intg_err`. That test injects integrity faults and waits for the fatal alert.\n- **CFG updated only when idle:** the scoreboard ignores a CFG write that arrives after the hash has started. `hmac_base_vseq.sv` writes CFG during a hash, and later CSR reads are compared against the scoreboard's prediction.\n\nOne caveat: a comment in `hmac_smoke_vseq.sv` says some fifo_empty corner cases are hard to align with the scoreboard. That limits the check in those cases but doesn't remove it.\n\nI did not modify any files."}
+{"t": "2026-11-10T19:43:47Z", "event": "[16 turns, $0.1059]"}

@@ -1,0 +1,10 @@
+{"t": "2026-11-10T19:45:10Z", "event": "  \u2192 Grep: data_avail"}
+{"t": "2026-11-10T19:45:11Z", "event": "  \u2192 Grep: TARGET_USER_VALID"}
+{"t": "2026-11-10T19:45:13Z", "event": "  \u2192 Grep: data_avail"}
+{"t": "2026-11-10T19:45:13Z", "event": "  \u2192 Grep: TARGET_USER_VALID"}
+{"t": "2026-11-10T19:45:16Z", "event": "  \u2192 Grep: VALID_AXI_USER|valid_axi_user"}
+{"t": "2026-11-10T19:45:18Z", "event": "  \u2192 Grep: FATAL|VALID_USER|valid_user"}
+{"t": "2026-11-10T19:45:20Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_invalid_axi/cptra_smoke_test_mcu_mbox_invalid_axi.c"}
+{"t": "2026-11-10T19:45:28Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:45:31Z", "event": "I submitted the verdict as verified: none of the four items has a test that checks it with a check that can fail.\n\n- **`data_avail` items (`cr_b395303f48f6`, `cr_918e477394f8`):** No test checks the wire's value. The testbench services only force it internally (`caliptra_ss_top_tb_services.sv:431`). Elsewhere it is declared, connected to ports, or sampled by coverpoints.\n- **`cr_d880e054e4d3` (order of `TARGET_USER`, `TARGET_USER_VALID`, then notification):** The target-user test checks that `TARGET_USER_VALID` is cleared and not changed by the Target. It does not check the order of the three steps, so it is stimulus only for this item.\n- **`cr_daf7f972a12c` (mailbox unusable until `MBOX*_VALID_AXI_USER` is configured):** The invalid-AXI test checks that an invalid user gets an AXI error. That is a different claim, so I recorded it as a near miss."}
+{"t": "2026-11-10T19:45:31Z", "event": "[9 turns, $0.0661]"}

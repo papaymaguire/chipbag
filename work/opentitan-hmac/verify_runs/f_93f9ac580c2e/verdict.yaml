@@ -1,0 +1,28 @@
+finding_hash: a13fea0ddc078cf0
+started_at: '2026-11-10T19:36:56Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The code does wait for reset assertion (line 88) and then for release (line 90, at the top
+    of the forever loop). That matches the description, so the finding's premise that release is not waited
+    on is wrong.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 88
+    line_end: 90
+    quote: "  wait(cfg.under_reset);\n  forever begin\n    wait(!cfg.under_reset);"
+    role: refutes
+    note: Both the assert wait and the release wait are present.
+  searches:
+  - what: read run_phase start
+    where: hmac_scoreboard.sv:86-104
+    found: wait(under_reset) then wait(!under_reset) in forever loop
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.0172787
+error: null

@@ -1,0 +1,8 @@
+{"t": "2026-11-10T20:56:59Z", "event": "  \u2192 Grep: MSG_FIFO|msg_fifo|HMAC_MSG_FIFO"}
+{"t": "2026-11-10T20:57:00Z", "event": "Writes use random addresses in the window and the scoreboard checks them."}
+{"t": "2026-11-10T20:57:01Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T20:57:02Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:57:04Z", "event": "  \u2192 Grep: wr_addr"}
+{"t": "2026-11-10T20:57:10Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:57:13Z", "event": "I withdrew the finding. The HMAC verification does test that MSG_FIFO spans a wide address range.\n\n- **Stimulus:** `hmac_base_vseq.sv` constrains the write address to the whole window, `HMAC_MSG_FIFO_BASE` to `HMAC_MSG_FIFO_LAST_ADDR` (0x1000 to 0x17FF). It re-randomizes that address for each message word it writes.\n- **Check:** the scoreboard in `hmac_scoreboard.sv` treats any write inside that window as a message push. It then compares the resulting digest, so a FIFO that only decoded one address would fail.\n\nThe single item, `cr_4be360be4489`, is withdrawn. I only grepped the HMAC DV directory for FIFO usage and did not search other test areas."}
+{"t": "2026-11-10T20:57:13Z", "event": "[6 turns, $0.0428]"}

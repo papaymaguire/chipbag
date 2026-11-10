@@ -1,0 +1,33 @@
+finding_hash: fba2faebc30ba697
+started_at: '2026-11-10T19:36:56Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The assertion's else branch only calls $display. No $error or $fatal is used, and nothing outside
+    the .sv files looks for "SVA ERROR" in the logs. A violation therefore prints a message but does not
+    fail the test.
+  evidence:
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    line_start: 236
+    line_end: 239
+    quote: "  mci_error_non_fatal_cold_rst_check: assert property (\n    @(posedge `CPTRA_SS_TB_TOP_NAME.core_clk)\n\
+      \    (~`CPTRA_SS_TOP_PATH.cptra_ss_pwrgood_i |-> (`MCI_REG_TOP_PATH.mci_reg_hwif_out.HW_ERROR_NON_FATAL=='h0))\n\
+      \  ) else $display(\"SVA ERROR: MCI HW ERROR NON FATAL is expected to reset on cold reset\");"
+    role: supports
+    note: The failure action is only $display, so a violation does not fail the test.
+  searches:
+  - what: '"SVA ERROR" in non-.sv files (scripts, makefiles, logs)'
+    where: whole repo
+    found: No matches, so no log scanning for this message.
+  - what: Other uses of "SVA ERROR" in .sv files
+    where: whole repo
+    found: All are $display-only, matching the same pattern.
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0376562
+error: null

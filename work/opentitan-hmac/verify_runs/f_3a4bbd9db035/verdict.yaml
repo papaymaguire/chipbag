@@ -1,0 +1,70 @@
+finding_hash: 46ddbc2c7e229d85
+started_at: '2026-11-10T20:55:13Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The HMAC DV environment checks this behaviour. Its scoreboard models the fifo_empty interrupt:
+    it is raised when the FIFO empties after having been full. The model is applied to intr_state on CSR
+    reads, so the DV regression tests exercise the item. The plan items in the finding are not the only
+    coverage.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 693
+    line_end: 697
+    quote: "if (fifo_full_detected && hmac_fifo_empty) begin\n        pre_fifo_empty_intr = 1;"
+    role: refutes
+    note: Scoreboard predicts the fifo_empty interrupt when the FIFO runs empty after having been full,
+      which is the resumed-popping scenario.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 391
+    line_end: 392
+    quote: bit intr_state_empty = fifo_empty_intr | last_intr_test_wr[HmacMsgFifoEmpty];
+    role: refutes
+    note: The predicted value is applied to intr_state, which the DV environment compares on CSR reads,
+      so a wrong interrupt fails the test.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 209
+    line_end: 218
+    quote: // there is one clk cycle difference between scb and design when predict fifo_empty,
+    role: context
+    note: The smoke sequence reads intr_state and checks fifo_empty, with only a timing-corner-case window
+      excluded.
+  searches:
+  - what: fifo_empty in hw/ip/hmac/dv
+    where: hw/ip/hmac/dv
+    found: Scoreboard prediction of the fifo_empty interrupt and intr_state, a smoke vseq, and coverage
+      of the status bit.
+  - what: fifo_empty in sw/device/tests hmac tests
+    where: sw/device/tests
+    found: hmac_enc_test.c only enables the interrupt and does not check it. hmac_error_conditions_test.c
+      only sets enable and state bits.
+  near_misses:
+  - path: sw/device/tests/hmac_enc_test.c
+    line_start: 57
+    line_end: 74
+    why_not: It enables the fifo_empty interrupt but never asserts that it fires. It is not the check
+      that withdraws the finding.
+  items:
+  - id: cr_b3cf3229b231
+    outcome: withdrawn
+    reason: The DV scoreboard models and checks the fifo_empty interrupt in intr_state. The interrupt
+      is raised when the FIFO empties after having been full, and the model applies to every smoke-sequence
+      run.
+    evidence:
+    - 0
+    - 1
+    - 2
+  new_sources:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    reason: Models and checks the fifo_empty interrupt.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    reason: Stimulus that reads and checks intr_state, including fifo_empty.
+  resolution: The finding's claim that the item is only planned is wrong, because DV already checks the
+    fifo_empty interrupt through the scoreboard. The test plan could be updated to link the item to the
+    smoke and long-message tests.
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.071713
+error: null

@@ -1,0 +1,56 @@
+finding_hash: bd64bf31153d6c54
+started_at: '2026-11-10T20:52:22Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The programmer's guide gives the missing condition. Software restores DIGEST with sha_en disabled,
+    and enabling sha_en locks out software writes to DIGEST. So a write takes effect only when hmac_idle
+    is 1 and sha_en is 0, and it is locked out once sha_en is 1. The guide does not say whether a locked-out
+    write is dropped or held. It also does not spell out the digest_size=None case, which the CSR tag
+    only notes as a write-check exclusion.
+  evidence:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 165
+    line_end: 166
+    quote: 1. Enable `sha_en` of `CFG`, which enables HMAC again and locks down writing to the `DIGEST_0`..`15`
+      registers from SW.
+    role: refutes
+    note: States that sha_en=1 locks out SW writes to DIGEST, so writes only take effect while sha_en
+      is 0.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 163
+    line_end: 164
+    quote: 1. Before restoring context, make sure that `sha_en` in `CFG` remains disabled.
+    role: refutes
+    note: Requires sha_en to be disabled for the DIGEST restore writes.
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 507
+    line_end: 507
+    quote: When `STATUS.hmac_idle` is 1, these registers may be written to by software.
+    role: context
+    note: The cited text. It is incomplete on its own, but the programmer's guide completes it.
+  searches:
+  - what: Spec text on DIGEST write conditions
+    where: hw/ip/hmac/doc/*.md
+    found: programmers_guide.md context-switch section says sha_en=1 locks down SW writes to DIGEST, and
+      the restore requires sha_en to be disabled.
+  near_misses:
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 512
+    line_end: 514
+    why_not: The CSR tag only excludes DIGEST from write-read checks when digest_mode is SHA2_None. It
+      is not a spec statement about write semantics.
+  items: []
+  new_sources:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    reason: Context-switch section defines when software writes to DIGEST take effect, and that sha_en=1
+      locks them out.
+  resolution: 'Add a line to the DIGEST description in hmac.hjson: software writes take effect only when
+    hmac_idle=1 and sha_en=0. State whether writes outside that window are dropped. State whether digest_size=None
+    affects them.'
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.041672600000000004
+error: null

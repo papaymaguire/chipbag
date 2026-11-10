@@ -1,0 +1,63 @@
+finding_hash: 9e878dd157750429
+started_at: '2026-11-10T19:40:55Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that programs TARGET_USER with TARGET_USER_VALID still 0 and checks that the
+    named user is denied. Every flow either leaves TARGET_USER at 0 with VALID=0, or writes TARGET_USER
+    and VALID back to back. The RTL does gate on valid, but no check fails if that gating were wrong.
+  evidence:
+  - path: src/mci/rtl/mcu_mbox.sv
+    line_start: 182
+    line_end: 182
+    quote: assign mbox_target_user       = mbox_target_user_valid & (hwif_out.mbox_target_user.user.value
+      == cif_resp_if.req_data.user);
+    role: context
+    note: The RTL gates the user match on valid, so the behavior exists in the design.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 207
+    line_end: 209
+    quote: "    // Configure and grant SRAM ownership to the Target.\n    mcu_mbox_write_target_user(mbox_num,\
+      \ caliptra_uc_axi_id);\n    mcu_mbox_write_target_user_valid(mbox_num, 1);"
+    role: context
+    note: TARGET_USER is written and VALID is set immediately afterwards. The Caliptra uC makes no access
+      attempt between the two writes.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 123
+    line_end: 124
+    quote: "    mcu_mbox_write(mci_comm_flow_target_user_addr, mci_comm_flow_root, mci_comm_flow_target);\n\
+      \    mcu_mbox_write(mci_comm_flow_target_valid_addr, mci_comm_flow_root, 1);"
+    role: context
+    note: The SV flow also writes TARGET_USER and VALID back to back, with no check of the target's access
+      between them.
+  searches:
+  - what: TARGET_USER_VALID usage in tests
+    where: src/integration/test_suites and testbench sv_tests
+    found: Tests cover the target grant, the denial when TARGET_USER is 0 and VALID is 0, hardware clear
+      on terminal status, and write protection of both registers. None covers a nonzero TARGET_USER with
+      VALID=0.
+  - what: Assertions on target user
+    where: src/mci/rtl/mcu_mbox.sv
+    found: Only the ERR_MCU_MBOX_TARGET_USER_LOCKED assertion, which checks that the user value is immutable
+      while VALID is set. Nothing checks the valid gating.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 202
+    line_end: 205
+    why_not: The Caliptra uC is denied while VALID=0, but TARGET_USER is 0 at that point, so a stale-user
+      match is not exercised.
+  items:
+  - id: cr_77efe78b888c
+    outcome: verified
+    reason: No test sets TARGET_USER to a real user while VALID=0 and checks that the user is denied.
+    evidence:
+    - 0
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0896009
+error: null

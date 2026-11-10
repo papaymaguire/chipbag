@@ -1,0 +1,7 @@
+accepted: true
+cost_usd: 0.2423569
+turns: 10
+submissions: 2
+last_errors:
+- 'sources[3] (docs/CaliptraSSIntegrationSpecification.md): duplicate path; merge its scopes into one
+  entry'

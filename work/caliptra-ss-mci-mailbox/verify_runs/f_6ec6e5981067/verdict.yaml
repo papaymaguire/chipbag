@@ -1,0 +1,64 @@
+finding_hash: 2e339085c76612f2
+started_at: '2026-11-10T19:43:58Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'I found no test that checks the interrupt count increment registers: not saturation, not the
+    swwel=false write behaviour, and not the one-cycle pulse. The only hits outside the RDL and generated
+    register RTL are address defines and coverpoints, which sample values but never fail a test.'
+  evidence:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 3970
+    line_end: 3970
+    quote: 'INTR_BLOCK_RF_ERROR_MBOX0_ECC_UNC_INTR_COUNT_R_cp : coverpoint i_mci_reg_top.i_mci_reg.field_storage.intr_block_rf.error_mbox0_ecc_unc_intr_count_r;'
+    role: context
+    note: The coverage file only samples the counter fields. It checks nothing.
+  searches:
+  - what: intr_count_incr, incrsaturate and count_incr_r names outside the RDL
+    where: whole repo
+    found: Only mci_reg.sv, mci_reg_uvm.sv, the coverage file and the Makefile matched. The Makefile match
+      is not about these registers.
+  - what: notif_mbox*_(soc_req_lock|target_done|cmd_avail)_intr_count
+    where: repo, excluding rdl/sv/h
+    found: No files.
+  - what: incr_r or saturat in integration tests
+    where: src/integration
+    found: Only address defines in soc_address_map_defines.svh. No test references them.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 3960
+    line_end: 4050
+    why_not: These are coverpoints on the count fields. They have no check that can fail a test.
+  items:
+  - id: cr_4b697972bda7
+    outcome: verified
+    reason: No test drives a counter to its maximum or checks that it saturates.
+    evidence:
+    - 0
+  - id: cr_4d9003ba78b7
+    outcome: verified
+    reason: No test references the notif_mbox1_soc_req_lock count_incr register.
+    evidence:
+    - 0
+  - id: cr_4ee310cb184b
+    outcome: verified
+    reason: No test references the notif_mbox0_soc_req_lock count_incr register.
+    evidence:
+    - 0
+  - id: cr_51c70a57d16c
+    outcome: verified
+    reason: No test references the notif_mbox0_target_done count_incr register.
+    evidence:
+    - 0
+  - id: cr_56a40256092d
+    outcome: verified
+    reason: No assertion or test checks that the pulse lasts one clock cycle.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.0682145
+error: null

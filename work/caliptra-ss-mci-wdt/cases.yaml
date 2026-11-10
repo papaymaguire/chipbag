@@ -1,0 +1,2829 @@
+generated_at: '2026-11-10T17:02:37Z'
+model: claude-sonnet-5-5
+manifest_commit: 69a8afa1eeb8bc80ed8726da74798273c862c00b
+stats:
+  chunks: 16
+  cases: 22
+  by_kind:
+    planned: 0
+    implemented: 13
+    listed: 9
+  checks: 28
+  failing_checks: 0
+  implemented_without_failing_checks: 13
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 11
+  citation_failures: 0
+  mean_coverage: 0.646
+  errors: 0
+  llm_calls: 0
+  cost_usd: 0.0
+skipped_sources: []
+errors: []
+chunks:
+- id: sec_41091b334c16
+  path: docs/CaliptraSSCoverage.md
+  heading_path: 'Coverage Analysis Notes > MCI Coverage Analysis Notes > Module: i_mci_wdt_top > Coverage
+    Metrics'
+  kind: section
+  chunker: native
+  content_type: other
+  lines:
+  - 111
+  - 113
+  content_hash: 8f22a82815c98403b929b4d4be1881d1b664678378fe41c67dc4e64adb609a46
+  coverage: 1.0
+  cases: 0
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 0
+  citation_failures: 0
+- id: sec_50e35b8d6985
+  path: docs/CaliptraSSCoverage.md
+  heading_path: 'Coverage Analysis Notes > SoC Interface / Caliptra Core Coverage Analysis Summary > Module:
+    i_wdt'
+  kind: section
+  chunker: native
+  content_type: other
+  lines:
+  - 474
+  - 475
+  content_hash: c63de36669760bd908b0116b2d865e21019908186b2dc1e60ce1aa75ed808d3f
+  coverage: 1.0
+  cases: 0
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 0
+  citation_failures: 0
+- id: sec_c95784c8348d
+  path: src/integration/asserts/caliptra_ss_top_sva.sv
+  heading_path: caliptra_ss_top_sva.sv > L90-152
+  kind: file
+  chunker: native
+  content_type: code
+  lines:
+  - 90
+  - 152
+  content_hash: 62680b1e56980e9bfcfe9403a0ef05f241a60ca773a7d1484b7a1b8ecb38243a
+  coverage: 0.783
+  cases: 10
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 0
+  citation_failures: 0
+- id: sec_20a9900a707a
+  path: src/integration/coverage/caliptra_ss_top_cov_if.sv
+  heading_path: caliptra_ss_top_cov_if.sv > L30-96
+  kind: file
+  chunker: native
+  content_type: code
+  lines:
+  - 30
+  - 96
+  content_hash: dfa643a1d68cd70e0699c102f3abf2e24f35b44a6bcec2d1fd685baf39e23b1c
+  coverage: 0.775
+  cases: 1
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 0
+  citation_failures: 0
+- id: sec_91d8e021d184
+  path: src/integration/stimulus/L0_Promote_caliptra_ss_top_tb_regression.yml
+  heading_path: L0_Promote_caliptra_ss_top_tb_regression.yml > entries L61-61
+  kind: entries
+  chunker: native
+  content_type: list
+  lines:
+  - 61
+  - 61
+  content_hash: 6408413394335a0e69eb26d0a0b6d8ee76e9689c5469f73b9478e7374f671626
+  coverage: 0.98
+  cases: 1
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 0
+  citation_failures: 0
+- id: sec_3353f3adcf62
+  path: src/integration/stimulus/L1_Nightly_Directed_Strict_caliptra_ss_top_tb_regression.yml
+  heading_path: L1_Nightly_Directed_Strict_caliptra_ss_top_tb_regression.yml > entries L183-184
+  kind: entries
+  chunker: native
+  content_type: list
+  lines:
+  - 183
+  - 184
+  content_hash: 8edfdaa497a716f6bfa84d77ab0e03283e13783e64fea0ea788b4080d5fc4d1b
+  coverage: 0.981
+  cases: 2
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 0
+  citation_failures: 0
+- id: sec_1eff4d3eb408
+  path: src/integration/stimulus/L1_Nightly_Directed_caliptra_ss_top_tb_regression.yml
+  heading_path: L1_Nightly_Directed_caliptra_ss_top_tb_regression.yml > entries L190-191
+  kind: entries
+  chunker: native
+  content_type: list
+  lines:
+  - 190
+  - 191
+  content_hash: 0d874773ae7e54b9c98abaf6cbd5576d37059bcecd5c7d5174cf99702d5bc7d1
+  coverage: 1.0
+  cases: 2
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 0
+  citation_failures: 0
+- id: sec_0c88bbb5f6d2
+  path: src/integration/stimulus/testsuites/caliptra_ss_master_test_list.csv
+  heading_path: caliptra_ss_master_test_list.csv > rows 200-201
+  kind: rows
+  chunker: native
+  content_type: list
+  rows:
+  - 200
+  - 201
+  sheet: ''
+  content_hash: 54b1a68bcd28dc2f369b7938f1b0361f0be98e323d96c3708dcf338eda9eed68
+  coverage: 0.769
+  cases: 2
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 0
+  citation_failures: 0
+- id: sec_92fd683d030f
+  path: src/integration/test_suites/libs/wdt/wdt.c
+  heading_path: wdt.c
+  kind: file
+  chunker: native
+  content_type: code
+  lines:
+  - 1
+  - 106
+  content_hash: 320f6c1a22707c86485ec7152630f1e7bf9fad7b7c034f4fd3e200192b5a990d
+  coverage: 0.047
+  cases: 0
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 2
+  citation_failures: 0
+- id: sec_775e4183e75b
+  path: src/integration/test_suites/libs/wdt/wdt.h
+  heading_path: wdt.h
+  kind: file
+  chunker: native
+  content_type: other
+  lines:
+  - 1
+  - 47
+  content_hash: 0fb1bb78b22ba3095fb92aa1ac8bd47e84b137065deecec1911c7fbd0b074a23
+  coverage: 0.354
+  cases: 0
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 0
+  citation_failures: 0
+- id: sec_1afec3f46e43
+  path: src/integration/test_suites/smoke_test_wdt/caliptra_isr.h
+  heading_path: caliptra_isr.h
+  kind: file
+  chunker: native
+  content_type: other
+  lines:
+  - 1
+  - 153
+  content_hash: 8caaa2f8e40db96d499d8d32ab2ae844c29bb0dd972f447fa67af17cf06563c5
+  coverage: 0.045
+  cases: 0
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 4
+  citation_failures: 0
+- id: sec_50bca0f206c7
+  path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+  heading_path: smoke_test_wdt.c
+  kind: file
+  chunker: native
+  content_type: code
+  lines:
+  - 1
+  - 124
+  content_hash: 515e3d9bc5fa2bb09bcceb1c3fd25bf559c50a02ee22dff7f9d97f7a30817561
+  coverage: 0.354
+  cases: 1
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 1
+  citation_failures: 0
+- id: sec_34a8fe78d924
+  path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.yml
+  heading_path: smoke_test_wdt.yml
+  kind: file
+  chunker: native
+  content_type: list
+  lines:
+  - 1
+  - 8
+  content_hash: 07b6b182ecf64082f2fa2cffb0092fc73d683722b090c44f5a2241848ce28495
+  coverage: 0.961
+  cases: 1
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 0
+  citation_failures: 0
+- id: sec_2d58c331794a
+  path: src/integration/test_suites/smoke_test_wdt_rst/caliptra_isr.h
+  heading_path: caliptra_isr.h
+  kind: file
+  chunker: native
+  content_type: code
+  lines:
+  - 1
+  - 153
+  content_hash: 8caaa2f8e40db96d499d8d32ab2ae844c29bb0dd972f447fa67af17cf06563c5
+  coverage: 0.04
+  cases: 0
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 3
+  citation_failures: 0
+- id: sec_fd1bcfd254be
+  path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+  heading_path: smoke_test_wdt_rst.c
+  kind: file
+  chunker: native
+  content_type: code
+  lines:
+  - 1
+  - 226
+  content_hash: d39e828c279d1f727923899d9e4dd39eb73a75d570023d937437720c60b83c2c
+  coverage: 0.286
+  cases: 1
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 1
+  citation_failures: 0
+- id: sec_9384a3c31e05
+  path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.yml
+  heading_path: smoke_test_wdt_rst.yml
+  kind: file
+  chunker: native
+  content_type: list
+  lines:
+  - 1
+  - 8
+  content_hash: 5ec48096a959298c8aba2ca7946e6866c7498f88ecb1f6ef524c029711a4587b
+  coverage: 0.963
+  cases: 1
+  ambiguous: 0
+  unclassified: 0
+  uncited_code: 0
+  citation_failures: 0
+cases:
+- id: vc_a945c19ebf09
+  path: src/integration/asserts/caliptra_ss_top_sva.sv
+  chunk: caliptra_ss_top_sva.sv > L90-152
+  chunk_id: sec_c95784c8348d
+  name: cascade_wdt_t1_pet
+  kind: implemented
+  summary: In cascade mode (timer1 enabled, timer2 not), a timer1 restart pet without a t1 timeout makes
+    timer1_count 0 on the next cycle.
+  anchor:
+    text: 'cascade_wdt_t1_pet: assert property ('
+    lines:
+    - 91
+    - 91
+    chars:
+    - 4245
+    - 4282
+  intent:
+  - text: 'SVA ERROR: [Cascade] WDT Timer1 did not restart on pet'
+    lines:
+    - 95
+    - 95
+    chars:
+    - 4515
+    - 4569
+  stimulus: []
+  checks:
+  - text: After timer1_restart with timer1_en, timer2 disabled and no t1_timeout, timer1_count must be
+      0 on the next clock; failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.timer1_restart && `MCI_WDT_PATH.timer1_en && !`MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t1_timeout)
+        |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+      lines:
+      - 93
+      - 93
+      chars:
+      - 4333
+      - 4493
+  references: []
+  ambiguity: null
+  check_count: 1
+  failing_checks: 0
+- id: vc_2ff80de27311
+  path: src/integration/asserts/caliptra_ss_top_sva.sv
+  chunk: caliptra_ss_top_sva.sv > L90-152
+  chunk_id: sec_c95784c8348d
+  name: cascade_wdt_t2_pet
+  kind: implemented
+  summary: In cascade mode (timer2 disabled), a timer2 restart pet without a t2 timeout makes timer2_count
+    0 on the next cycle.
+  anchor:
+    text: 'cascade_wdt_t2_pet: assert property ('
+    lines:
+    - 97
+    - 97
+    chars:
+    - 4576
+    - 4613
+  intent:
+  - text: 'SVA ERROR: [Cascade] WDT Timer2 did not restart on pet'
+    lines:
+    - 101
+    - 101
+    chars:
+    - 4819
+    - 4873
+  stimulus: []
+  checks:
+  - text: After timer2_restart with timer2 disabled and no t2_timeout, timer2_count must be 0 on the next
+      clock; failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.timer2_restart && !`MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t2_timeout) |=>
+        (`MCI_WDT_PATH.i_wdt.timer2_count == 'h0)
+      lines:
+      - 99
+      - 99
+      chars:
+      - 4664
+      - 4797
+  references: []
+  ambiguity: null
+  check_count: 1
+  failing_checks: 0
+- id: vc_e25f9381c582
+  path: src/integration/asserts/caliptra_ss_top_sva.sv
+  chunk: caliptra_ss_top_sva.sv > L90-152
+  chunk_id: sec_c95784c8348d
+  name: cascade_wdt_t1_service
+  kind: implemented
+  summary: In cascade mode, when the timer1 timeout is serviced, timer1_count is 0 on the next cycle.
+  anchor:
+    text: 'cascade_wdt_t1_service: assert property ('
+    lines:
+    - 103
+    - 103
+    chars:
+    - 4880
+    - 4921
+  intent:
+  - text: 'SVA ERROR: [Cascade] WDT Timer1 did not restart after interrupt service'
+    lines:
+    - 107
+    - 107
+    chars:
+    - 5178
+    - 5249
+  stimulus: []
+  checks:
+  - text: After timer1 timeout serviced with timer1_en, timer2 disabled and no t2_timeout, timer1_count
+      must be 0 on the next clock; failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.i_wdt.wdt_timer1_timeout_serviced_qual && `MCI_WDT_PATH.timer1_en && !`MCI_WDT_PATH.timer2_en
+        && !`MCI_WDT_PATH.t2_timeout) |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+      lines:
+      - 105
+      - 105
+      chars:
+      - 4972
+      - 5156
+  references: []
+  ambiguity: null
+  check_count: 1
+  failing_checks: 0
+- id: vc_e9bd7e26db30
+  path: src/integration/asserts/caliptra_ss_top_sva.sv
+  chunk: caliptra_ss_top_sva.sv > L90-152
+  chunk_id: sec_c95784c8348d
+  name: cascade_wdt_t2_service
+  kind: implemented
+  summary: In cascade mode, when the timer2 timeout is serviced, timer2_count is 0 on the next cycle.
+  anchor:
+    text: 'cascade_wdt_t2_service: assert property ('
+    lines:
+    - 109
+    - 109
+    chars:
+    - 5256
+    - 5297
+  intent:
+  - text: 'SVA ERROR: [Cascade] WDT Timer2 did not restart after interrupt service'
+    lines:
+    - 113
+    - 113
+    chars:
+    - 5498
+    - 5569
+  stimulus: []
+  checks:
+  - text: After timer2 timeout serviced with timer2 disabled, timer2_count must be 0 on the next clock;
+      failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.i_wdt.wdt_timer2_timeout_serviced_qual && !`MCI_WDT_PATH.timer2_en) |=> (`MCI_WDT_PATH.i_wdt.timer2_count
+        == 'h0)
+      lines:
+      - 111
+      - 111
+      chars:
+      - 5348
+      - 5476
+  references: []
+  ambiguity: null
+  check_count: 1
+  failing_checks: 0
+- id: vc_cb193fd51bf3
+  path: src/integration/asserts/caliptra_ss_top_sva.sv
+  chunk: caliptra_ss_top_sva.sv > L90-152
+  chunk_id: sec_c95784c8348d
+  name: independent_wdt_t1_pet
+  kind: implemented
+  summary: In independent mode (both timers enabled), a timer1 restart pet without a t1 timeout makes
+    timer1_count 0 on the next cycle.
+  anchor:
+    text: 'independent_wdt_t1_pet: assert property ('
+    lines:
+    - 115
+    - 115
+    chars:
+    - 5576
+    - 5617
+  intent:
+  - text: 'SVA ERROR: [Independent] WDT Timer1 did not restart on pet'
+    lines:
+    - 119
+    - 119
+    chars:
+    - 5849
+    - 5907
+  stimulus: []
+  checks:
+  - text: After timer1_restart with both timers enabled and no t1_timeout, timer1_count must be 0 on the
+      next clock; failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.timer1_restart && `MCI_WDT_PATH.timer1_en && `MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t1_timeout)
+        |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+      lines:
+      - 117
+      - 117
+      chars:
+      - 5668
+      - 5827
+  references: []
+  ambiguity: null
+  check_count: 1
+  failing_checks: 0
+- id: vc_63c46acf4d2a
+  path: src/integration/asserts/caliptra_ss_top_sva.sv
+  chunk: caliptra_ss_top_sva.sv > L90-152
+  chunk_id: sec_c95784c8348d
+  name: independent_wdt_t2_pet
+  kind: implemented
+  summary: In independent mode, a timer2 restart pet without a t2 timeout makes timer2_count 0 on the
+    next cycle.
+  anchor:
+    text: 'independent_wdt_t2_pet: assert property ('
+    lines:
+    - 121
+    - 121
+    chars:
+    - 5914
+    - 5955
+  intent:
+  - text: 'SVA ERROR: [Independent] WDT Timer2 did not restart on pet'
+    lines:
+    - 125
+    - 125
+    chars:
+    - 6160
+    - 6218
+  stimulus: []
+  checks:
+  - text: After timer2_restart with timer2_en and no t2_timeout, timer2_count must be 0 on the next clock;
+      failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.timer2_restart && `MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t2_timeout) |=>
+        (`MCI_WDT_PATH.i_wdt.timer2_count == 'h0)
+      lines:
+      - 123
+      - 123
+      chars:
+      - 6006
+      - 6138
+  references: []
+  ambiguity: null
+  check_count: 1
+  failing_checks: 0
+- id: vc_2405484d10ff
+  path: src/integration/asserts/caliptra_ss_top_sva.sv
+  chunk: caliptra_ss_top_sva.sv > L90-152
+  chunk_id: sec_c95784c8348d
+  name: independent_wdt_t1_service
+  kind: implemented
+  summary: In independent mode, when the timer1 timeout is serviced, timer1_count is 0 on the next cycle.
+  anchor:
+    text: 'independent_wdt_t1_service: assert property ('
+    lines:
+    - 127
+    - 127
+    chars:
+    - 6225
+    - 6270
+  intent:
+  - text: 'SVA ERROR: [Independent] WDT Timer1 did not restart after interrupt service'
+    lines:
+    - 131
+    - 131
+    chars:
+    - 6526
+    - 6601
+  stimulus: []
+  checks:
+  - text: After timer1 timeout serviced with both timers enabled and no t2_timeout, timer1_count must
+      be 0 on the next clock; failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.i_wdt.wdt_timer1_timeout_serviced_qual && `MCI_WDT_PATH.timer1_en && `MCI_WDT_PATH.timer2_en
+        && !`MCI_WDT_PATH.t2_timeout) |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+      lines:
+      - 129
+      - 129
+      chars:
+      - 6321
+      - 6504
+  references: []
+  ambiguity: null
+  check_count: 1
+  failing_checks: 0
+- id: vc_3d3ea34db036
+  path: src/integration/asserts/caliptra_ss_top_sva.sv
+  chunk: caliptra_ss_top_sva.sv > L90-152
+  chunk_id: sec_c95784c8348d
+  name: independent_wdt_t2_service
+  kind: implemented
+  summary: In independent mode, when the timer2 timeout is serviced, timer2_count is 0 on the next cycle.
+  anchor:
+    text: 'independent_wdt_t2_service: assert property ('
+    lines:
+    - 133
+    - 133
+    chars:
+    - 6608
+    - 6653
+  intent:
+  - text: 'SVA ERROR: [Independent] WDT Timer2 did not restart after interrupt service'
+    lines:
+    - 137
+    - 137
+    chars:
+    - 6853
+    - 6928
+  stimulus: []
+  checks:
+  - text: After timer2 timeout serviced with timer2 enabled, timer2_count must be 0 on the next clock;
+      failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.i_wdt.wdt_timer2_timeout_serviced_qual && `MCI_WDT_PATH.timer2_en) |=> (`MCI_WDT_PATH.i_wdt.timer2_count
+        == 'h0)
+      lines:
+      - 135
+      - 135
+      chars:
+      - 6704
+      - 6831
+  references: []
+  ambiguity: null
+  check_count: 1
+  failing_checks: 0
+- id: vc_0b87673261fc
+  path: src/integration/asserts/caliptra_ss_top_sva.sv
+  chunk: caliptra_ss_top_sva.sv > L90-152
+  chunk_id: sec_c95784c8348d
+  name: wdt_status_t1_check
+  kind: implemented
+  summary: A rising t1_timeout is followed by a rising WDT_STATUS t1_timeout bit in the MCI register output;
+    disabled during reset.
+  anchor:
+    text: 'wdt_status_t1_check: assert property ('
+    lines:
+    - 139
+    - 139
+    chars:
+    - 6935
+    - 6973
+  intent:
+  - text: 'SVA ERROR: WDT Status bit not set on t1 expiry!'
+    lines:
+    - 144
+    - 144
+    chars:
+    - 7201
+    - 7248
+  stimulus: []
+  checks:
+  - text: When t1_timeout rises, the WDT_STATUS.t1_timeout value must rise on the next clock (disabled
+      while cptra_ss_rst_b_i is low); failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: disable iff (~`CPTRA_SS_TB_TOP_NAME.cptra_ss_rst_b_i)
+      lines:
+      - 141
+      - 141
+      chars:
+      - 7024
+      - 7077
+    - text: $rose(`MCI_WDT_PATH.t1_timeout) |=> $rose(`MCI_PATH.mci_reg_hwif_out.WDT_STATUS.t1_timeout.value)
+      lines:
+      - 142
+      - 142
+      chars:
+      - 7082
+      - 7179
+  references: []
+  ambiguity: null
+  check_count: 1
+  failing_checks: 0
+- id: vc_5ed2d2fc77e7
+  path: src/integration/asserts/caliptra_ss_top_sva.sv
+  chunk: caliptra_ss_top_sva.sv > L90-152
+  chunk_id: sec_c95784c8348d
+  name: wdt_status_t2_check
+  kind: implemented
+  summary: A rising t2_timeout is followed by a rising WDT_STATUS t2_timeout bit in the MCI register output;
+    disabled during reset.
+  anchor:
+    text: 'wdt_status_t2_check: assert property ('
+    lines:
+    - 146
+    - 146
+    chars:
+    - 7255
+    - 7293
+  intent:
+  - text: 'SVA ERROR: WDT Status bit not set on t2 expiry!'
+    lines:
+    - 151
+    - 151
+    chars:
+    - 7521
+    - 7568
+  stimulus: []
+  checks:
+  - text: When t2_timeout rises, the WDT_STATUS.t2_timeout value must rise on the next clock (disabled
+      while cptra_ss_rst_b_i is low); failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: $rose(`MCI_WDT_PATH.t2_timeout) |=> $rose(`MCI_PATH.mci_reg_hwif_out.WDT_STATUS.t2_timeout.value)
+      lines:
+      - 149
+      - 149
+      chars:
+      - 7402
+      - 7499
+  references: []
+  ambiguity: null
+  check_count: 1
+  failing_checks: 0
+- id: vc_42665cac2b41
+  path: src/integration/coverage/caliptra_ss_top_cov_if.sv
+  chunk: caliptra_ss_top_cov_if.sv > L30-96
+  chunk_id: sec_20a9900a707a
+  name: caliptra_ss_top_cov_grp
+  kind: implemented
+  summary: Per-instance covergroup sampled on the SS clock. It covers AXI manager read/write requests
+    and responses, back-to-back transactions, address-region hits (MCI regs, MCU SRAM, FC regs), and WDT
+    timer enable states with their cross.
+  anchor:
+    text: covergroup caliptra_ss_top_cov_grp @(posedge cptra_ss_clk_i);
+    lines:
+    - 43
+    - 43
+    chars:
+    - 1658
+    - 1719
+  intent:
+  - text: //AXI Manager Coverpoints
+    lines:
+    - 46
+    - 46
+    chars:
+    - 1813
+    - 1838
+  - text: //5 rd txns in a row
+    lines:
+    - 50
+    - 50
+    chars:
+    - 2059
+    - 2079
+  - text: //5 wr txns in a row
+    lines:
+    - 58
+    - 58
+    chars:
+    - 2481
+    - 2501
+  - text: //5 txns in a row
+    lines:
+    - 66
+    - 66
+    chars:
+    - 2943
+    - 2960
+  - text: // FIXME replace these magic numbers with some macro once soc_address_map is updated
+    lines:
+    - 81
+    - 81
+    chars:
+    - 3968
+    - 4052
+  - text: //WDT coverpoints
+    lines:
+    - 90
+    - 90
+    chars:
+    - 4530
+    - 4547
+  stimulus:
+  - text: Sample the covergroup on the positive edge of the SS clock.
+    quotes:
+    - text: '@(posedge cptra_ss_clk_i)'
+      lines:
+      - 43
+      - 43
+      chars:
+      - 1693
+      - 1718
+  checks:
+  - text: Cover single and 5-in-a-row back-to-back AXI read address handshakes.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_rd_txn: coverpoint cptra_ss_cptra_core_m_axi_if_ar_hshake {'
+      lines:
+      - 48
+      - 48
+      chars:
+      - 1899
+      - 1962
+    - text: bins single_axi_rd_txn = (0 => 1 => 0);
+      lines:
+      - 49
+      - 49
+      chars:
+      - 1975
+      - 2014
+    - text: bins b2b_axi_rd_txn = (1 [*5]);
+      lines:
+      - 50
+      - 50
+      chars:
+      - 2027
+      - 2058
+  - text: Cover the AXI read response handshake (rvalid && rready) and a single read response pulse.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_rd_rsp: coverpoint cptra_ss_cptra_core_m_axi_if_r_mgr.rvalid && cptra_ss_cptra_core_m_axi_if_r_mgr.rready
+        {'
+      lines:
+      - 52
+      - 52
+      chars:
+      - 2098
+      - 2209
+    - text: bins axi_rd_hshake = {1'b1};
+      lines:
+      - 53
+      - 53
+      chars:
+      - 2222
+      - 2250
+    - text: bins single_axi_rd_rsp = (0 => 1 => 0);
+      lines:
+      - 54
+      - 54
+      chars:
+      - 2263
+      - 2302
+  - text: Cover single and 5-in-a-row back-to-back AXI write address handshakes.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_wr_txn: coverpoint cptra_ss_cptra_core_m_axi_if_aw_hshake {'
+      lines:
+      - 56
+      - 56
+      chars:
+      - 2321
+      - 2384
+    - text: bins single_axi_wr_txn = (0 => 1 => 0);
+      lines:
+      - 57
+      - 57
+      chars:
+      - 2397
+      - 2436
+    - text: bins b2b_axi_wr_txn = (1 [*5]);
+      lines:
+      - 58
+      - 58
+      chars:
+      - 2449
+      - 2480
+  - text: Cover the AXI write response handshake (bvalid && bready) and a single write response pulse.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_wr_rsp: coverpoint cptra_ss_cptra_core_m_axi_if_w_mgr.bvalid && cptra_ss_cptra_core_m_axi_if_w_mgr.bready
+        {'
+      lines:
+      - 60
+      - 60
+      chars:
+      - 2520
+      - 2631
+    - text: bins axi_wr_hshake = {1'b1};
+      lines:
+      - 61
+      - 61
+      chars:
+      - 2644
+      - 2672
+    - text: bins single_axi_wr_rsp = (0 => 1 => 0);
+      lines:
+      - 62
+      - 62
+      chars:
+      - 2685
+      - 2724
+  - text: Cover single and 5-in-a-row back-to-back AXI transactions of either read or write type.
+    fails_test: 'no'
+    quotes:
+    - text: axi_any_txn:coverpoint (cptra_ss_cptra_core_m_axi_if_ar_hshake) || (cptra_ss_cptra_core_m_axi_if_aw_hshake)
+        {
+      lines:
+      - 64
+      - 64
+      chars:
+      - 2743
+      - 2852
+    - text: bins single_axi_txn = (0 => 1 => 0);
+      lines:
+      - 65
+      - 65
+      chars:
+      - 2865
+      - 2901
+    - text: bins b2b_axi_txn = (1 [*5]);
+      lines:
+      - 66
+      - 66
+      chars:
+      - 2914
+      - 2942
+  - text: Cover an AXI read request with address in the MCI register range.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_rd_mci_regs: coverpoint cptra_ss_cptra_core_m_axi_if_ar_hshake && cptra_ss_cptra_core_m_axi_if_r_mgr.araddr
+        inside {[`SOC_MCI_TOP_BASE_ADDR:`SOC_MCI_TOP_MCU_TRACE_BUFFER_CSR_BASE_ADDR-4]} {'
+      lines:
+      - 69
+      - 69
+      chars:
+      - 2980
+      - 3173
+    - text: bins axi_rd_req = {1'b1};
+      lines:
+      - 70
+      - 70
+      chars:
+      - 3186
+      - 3211
+  - text: Cover an AXI write request with address in the MCI register range.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_wr_mci_regs: coverpoint cptra_ss_cptra_core_m_axi_if_aw_hshake && cptra_ss_cptra_core_m_axi_if_w_mgr.awaddr
+        inside {[`SOC_MCI_TOP_BASE_ADDR:`SOC_MCI_TOP_MCU_TRACE_BUFFER_CSR_BASE_ADDR-4]} {'
+      lines:
+      - 72
+      - 72
+      chars:
+      - 3230
+      - 3423
+    - text: bins axi_wr_req = {1'b1};
+      lines:
+      - 73
+      - 73
+      chars:
+      - 3436
+      - 3461
+  - text: Cover an AXI read request with address in the MCU SRAM range.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_rd_mcu_sram: coverpoint cptra_ss_cptra_core_m_axi_if_ar_hshake && cptra_ss_cptra_core_m_axi_if_r_mgr.araddr
+        inside {[`SOC_MCI_TOP_MCU_SRAM_BASE_ADDR:`SOC_MCI_TOP_MCU_SRAM_END_ADDR]} {'
+      lines:
+      - 75
+      - 75
+      chars:
+      - 3480
+      - 3667
+  - text: Cover an AXI write request with address in the MCU SRAM range.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_wr_mcu_sram: coverpoint cptra_ss_cptra_core_m_axi_if_aw_hshake && cptra_ss_cptra_core_m_axi_if_w_mgr.awaddr
+        inside {[`SOC_MCI_TOP_MCU_SRAM_BASE_ADDR:`SOC_MCI_TOP_MCU_SRAM_END_ADDR]} {'
+      lines:
+      - 78
+      - 78
+      chars:
+      - 3724
+      - 3911
+  - text: Cover an AXI read request with address in the fully-connected (FC) register range 0x7000_0000-0x7000_03FF.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_rd_fc_regs: coverpoint cptra_ss_cptra_core_m_axi_if_ar_hshake && cptra_ss_cptra_core_m_axi_if_r_mgr.araddr
+        inside {[64''h7000_0000:64''h7000_03FF]} {'
+      lines:
+      - 82
+      - 82
+      chars:
+      - 4061
+      - 4212
+  - text: Cover an AXI write request with address in the FC register range 0x7000_0000-0x7000_03FF.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_wr_fc_regs: coverpoint cptra_ss_cptra_core_m_axi_if_aw_hshake && cptra_ss_cptra_core_m_axi_if_w_mgr.awaddr
+        inside {[64''h7000_0000:64''h7000_03FF]} {'
+      lines:
+      - 85
+      - 85
+      chars:
+      - 4269
+      - 4420
+  - text: Cover WDT timer1 enable and timer2 enable values and their cross.
+    fails_test: 'no'
+    quotes:
+    - text: 'wdt_t1: coverpoint wdt_timer1_en;'
+      lines:
+      - 92
+      - 92
+      chars:
+      - 4608
+      - 4641
+    - text: 'wdt_t2: coverpoint wdt_timer2_en;'
+      lines:
+      - 93
+      - 93
+      chars:
+      - 4650
+      - 4683
+    - text: 'wdt_t1Xt2: cross wdt_t1, wdt_t2;'
+      lines:
+      - 94
+      - 94
+      chars:
+      - 4692
+      - 4724
+  references: []
+  ambiguity: null
+  check_count: 12
+  failing_checks: 0
+- id: vc_b41e41c3aa6a
+  path: src/integration/stimulus/L0_Promote_caliptra_ss_top_tb_regression.yml
+  chunk: L0_Promote_caliptra_ss_top_tb_regression.yml > entries L61-61
+  chunk_id: sec_91d8e021d184
+  name: smoke_test_wdt
+  kind: listed
+  summary: Regression list entry that references the smoke_test_wdt test suite file to be run.
+  anchor:
+    text: ../test_suites/smoke_test_wdt/smoke_test_wdt.yml
+    lines:
+    - 61
+    - 61
+  intent: []
+  stimulus: []
+  checks: []
+  references:
+  - ../test_suites/smoke_test_wdt/smoke_test_wdt.yml
+  ambiguity: null
+  check_count: 0
+  failing_checks: 0
+- id: vc_4a5a63312f10
+  path: src/integration/stimulus/L1_Nightly_Directed_Strict_caliptra_ss_top_tb_regression.yml
+  chunk: L1_Nightly_Directed_Strict_caliptra_ss_top_tb_regression.yml > entries L183-184
+  chunk_id: sec_3353f3adcf62
+  name: smoke_test_wdt
+  kind: listed
+  summary: Regression list entry that references the smoke_test_wdt test suite file.
+  anchor:
+    text: ../test_suites/smoke_test_wdt/smoke_test_wdt.yml
+    lines:
+    - 183
+    - 183
+  intent: []
+  stimulus: []
+  checks: []
+  references:
+  - ../test_suites/smoke_test_wdt/smoke_test_wdt.yml
+  ambiguity: null
+  check_count: 0
+  failing_checks: 0
+- id: vc_7a3b21473a03
+  path: src/integration/stimulus/L1_Nightly_Directed_Strict_caliptra_ss_top_tb_regression.yml
+  chunk: L1_Nightly_Directed_Strict_caliptra_ss_top_tb_regression.yml > entries L183-184
+  chunk_id: sec_3353f3adcf62
+  name: smoke_test_wdt_rst
+  kind: listed
+  summary: Regression list entry that references the smoke_test_wdt_rst test suite file.
+  anchor:
+    text: ../test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.yml
+    lines:
+    - 184
+    - 184
+  intent: []
+  stimulus: []
+  checks: []
+  references:
+  - ../test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.yml
+  ambiguity: null
+  check_count: 0
+  failing_checks: 0
+- id: vc_6fc0377cf63d
+  path: src/integration/stimulus/L1_Nightly_Directed_caliptra_ss_top_tb_regression.yml
+  chunk: L1_Nightly_Directed_caliptra_ss_top_tb_regression.yml > entries L190-191
+  chunk_id: sec_1eff4d3eb408
+  name: smoke_test_wdt
+  kind: listed
+  summary: Regression list entry naming the smoke_test_wdt test to run with weight 100.
+  anchor:
+    text: '$CALIPTRA_SS_ROOT/src/integration/test_suites/smoke_test_wdt/smoke_test_wdt: { weight: 100
+      }'
+    lines:
+    - 190
+    - 190
+  intent: []
+  stimulus: []
+  checks: []
+  references:
+  - smoke_test_wdt
+  ambiguity: null
+  check_count: 0
+  failing_checks: 0
+- id: vc_308d7b13d9ba
+  path: src/integration/stimulus/L1_Nightly_Directed_caliptra_ss_top_tb_regression.yml
+  chunk: L1_Nightly_Directed_caliptra_ss_top_tb_regression.yml > entries L190-191
+  chunk_id: sec_1eff4d3eb408
+  name: smoke_test_wdt_rst
+  kind: listed
+  summary: Regression list entry naming the smoke_test_wdt_rst test to run with weight 100.
+  anchor:
+    text: '$CALIPTRA_SS_ROOT/src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst: { weight:
+      100 }'
+    lines:
+    - 191
+    - 191
+  intent: []
+  stimulus: []
+  checks: []
+  references:
+  - smoke_test_wdt_rst
+  ambiguity: null
+  check_count: 0
+  failing_checks: 0
+- id: vc_4107eb66c86f
+  path: src/integration/stimulus/testsuites/caliptra_ss_master_test_list.csv
+  chunk: caliptra_ss_master_test_list.csv > rows 200-201
+  chunk_id: sec_0c88bbb5f6d2
+  name: $CALIPTRA_SS_ROOT/src/integration/test_suites/smoke_test_wdt/smoke_test_wdt
+  kind: listed
+  summary: List entry naming the smoke_test_wdt test, a directed nightly test on caliptra_ss_top_tb, tagged
+    L0 and L1 and promoted in the pipeline.
+  anchor:
+    text: $CALIPTRA_SS_ROOT/src/integration/test_suites/smoke_test_wdt/smoke_test_wdt
+    rows:
+    - 200
+    - 200
+    sheet: ''
+  intent: []
+  stimulus: []
+  checks: []
+  references:
+  - $CALIPTRA_SS_ROOT/src/integration/test_suites/smoke_test_wdt/smoke_test_wdt
+  ambiguity: null
+  check_count: 0
+  failing_checks: 0
+- id: vc_0f75b10bb2f6
+  path: src/integration/stimulus/testsuites/caliptra_ss_master_test_list.csv
+  chunk: caliptra_ss_master_test_list.csv > rows 200-201
+  chunk_id: sec_0c88bbb5f6d2
+  name: $CALIPTRA_SS_ROOT/src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst
+  kind: listed
+  summary: List entry naming the smoke_test_wdt_rst test, a directed nightly test on caliptra_ss_top_tb,
+    tagged L1 only and not promoted.
+  anchor:
+    text: $CALIPTRA_SS_ROOT/src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst
+    rows:
+    - 201
+    - 201
+    sheet: ''
+  intent: []
+  stimulus: []
+  checks: []
+  references:
+  - $CALIPTRA_SS_ROOT/src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst
+  ambiguity: null
+  check_count: 0
+  failing_checks: 0
+- id: vc_a49967e28115
+  path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+  chunk: smoke_test_wdt.c
+  chunk_id: sec_50bca0f206c7
+  name: WDT Smoke Test (main)
+  kind: implemented
+  summary: Smoke test of the MCI watchdog timers. It enables the WDT error interrupts and an NMI handler,
+    then runs cascade mode, independent mode and cascade mode with a T2 timeout, waiting on the WDT status
+    register for the T1 and T2 timeout bits. After an NMI-triggered cold reset it takes the rst_count
+    == 2 branch.
+  anchor:
+    text: void main(void) {
+    lines:
+    - 65
+    - 65
+    chars:
+    - 2659
+    - 2676
+  intent:
+  - text: WDT Smoke Test
+    lines:
+    - 67
+    - 67
+    chars:
+    - 2747
+    - 2761
+  - text: WDT T1 timed out as expected
+    lines:
+    - 86
+    - 86
+    chars:
+    - 3647
+    - 3675
+  - text: WDT T2 timed out as expected
+    lines:
+    - 97
+    - 97
+    chars:
+    - 4184
+    - 4212
+  - text: Coming out of cold reset after NMI intr
+    lines:
+    - 118
+    - 118
+    chars:
+    - 5010
+    - 5049
+  stimulus:
+  - text: Enable WDT timer1/timer2 timeout error interrupts, the global error/notif interrupts, and set
+      the NMI vector.
+    quotes:
+    - text: '*soc_intr_en = MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_EN_R_ERROR_WDT_TIMER1_TIMEOUT_EN_MASK |
+        MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_EN_R_ERROR_WDT_TIMER2_TIMEOUT_EN_MASK;'
+      lines:
+      - 71
+      - 71
+      chars:
+      - 2856
+      - 3017
+    - text: '*mci_global_intr_en = MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R_ERROR_EN_MASK | MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R_NOTIF_EN_MASK;'
+      lines:
+      - 72
+      - 72
+      chars:
+      - 3022
+      - 3152
+    - text: lsu_write_32(SOC_MCI_TOP_MCI_REG_MCU_NMI_VECTOR, (uint32_t) (nmi_handler));
+      lines:
+      - 73
+      - 73
+      chars:
+      - 3157
+      - 3232
+  - text: On the first pass, disable timer 2 and configure cascade mode with a 0x40 timer 1 period.
+    quotes:
+    - text: rst_count++;
+      lines:
+      - 78
+      - 78
+      chars:
+      - 3302
+      - 3314
+    - text: if (rst_count == 1) {
+      lines:
+      - 80
+      - 80
+      chars:
+      - 3320
+      - 3341
+    - text: lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, 0x0);
+      lines:
+      - 82
+      - 82
+      chars:
+      - 3390
+      - 3443
+    - text: configure_wdt_cascade(0x00000040, 0x00000000, 0x00000000, 0x00000001);
+      lines:
+      - 83
+      - 83
+      chars:
+      - 3452
+      - 3522
+  - text: Service the T1 interrupt after the cascade-mode T1 timeout.
+    quotes:
+    - text: service_t1_intr();
+      lines:
+      - 88
+      - 88
+      chars:
+      - 3690
+      - 3708
+  - text: Configure independent mode with both timers enabled, each with a 0x40 period.
+    quotes:
+    - text: configure_wdt_independent(BOTH_TIMERS_EN, 0x00000040, 0x00000000, 0x00000040, 0x00000000);
+      lines:
+      - 91
+      - 91
+      chars:
+      - 3762
+      - 3852
+  - text: Service the T1 and T2 interrupts after the independent-mode timeouts.
+    quotes:
+    - text: service_t1_intr();
+      lines:
+      - 99
+      - 99
+      chars:
+      - 4227
+      - 4245
+    - text: service_t2_intr();
+      lines:
+      - 100
+      - 100
+      chars:
+      - 4254
+      - 4272
+  - text: Restore the default T1/T2 periods and disable both timers.
+    quotes:
+    - text: set_default_t1_period();
+      lines:
+      - 103
+      - 103
+      chars:
+      - 4291
+      - 4315
+    - text: set_default_t2_period();
+      lines:
+      - 104
+      - 104
+      chars:
+      - 4324
+      - 4348
+    - text: configure_wdt_independent(BOTH_TIMERS_DIS, 0x00000000, 0x00000000, 0x00000000, 0x00000000);
+      lines:
+      - 105
+      - 105
+      chars:
+      - 4357
+      - 4448
+  - text: Configure cascade mode with a 0x40 period on both timers so that T2 also times out.
+    quotes:
+    - text: configure_wdt_cascade(0x00000040, 0x00000000, 0x00000040, 0x00000000);
+      lines:
+      - 108
+      - 108
+      chars:
+      - 4514
+      - 4584
+  - text: On the second pass after reset, only print a message (rst_count == 2 branch).
+    quotes:
+    - text: else if (rst_count == 2) {
+      lines:
+      - 117
+      - 117
+      chars:
+      - 4961
+      - 4987
+  - text: Signal end of test to the testbench.
+    quotes:
+    - text: SEND_STDOUT_CTRL(0xff);
+      lines:
+      - 121
+      - 121
+      chars:
+      - 5066
+      - 5089
+  - text: The NMI handler requests a cold reset if the NMI pin bit is set in HW_ERROR_FATAL.
+    quotes:
+    - text: SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+      lines:
+      - 58
+      - 58
+      chars:
+      - 2524
+      - 2560
+  checks:
+  - text: Poll the WDT status register until the T1 timeout bit is set (cascade mode). A timeout is not
+      visible here; only a message is printed afterwards.
+    fails_test: unknown
+    quotes:
+    - text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T1_TIMEOUT_MASK));
+      lines:
+      - 85
+      - 85
+      chars:
+      - 3532
+      - 3624
+  - text: Poll the WDT status register until the T2 timeout bit is set (independent mode and cascade mode
+      with t2 timeout).
+    fails_test: unknown
+    quotes:
+    - text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T2_TIMEOUT_MASK));
+      lines:
+      - 96
+      - 96
+      chars:
+      - 4069
+      - 4161
+  - text: The NMI handler checks that the NMI pin bit is set in HW_ERROR_FATAL; otherwise it only logs
+      an error message.
+    fails_test: 'no'
+    quotes:
+    - text: if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK)
+        {
+      lines:
+      - 57
+      - 57
+      chars:
+      - 2423
+      - 2515
+    - text: VPRINTF(ERROR, "Unexpected entry into NMI handler function\n");
+      lines:
+      - 61
+      - 61
+      chars:
+      - 2586
+      - 2649
+  references:
+  - nmi_handler
+  - configure_wdt_cascade
+  - configure_wdt_independent
+  - service_t1_intr
+  - service_t2_intr
+  ambiguity: null
+  check_count: 3
+  failing_checks: 0
+- id: vc_af02ca61ff25
+  path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.yml
+  chunk: smoke_test_wdt.yml
+  chunk_id: sec_34a8fe78d924
+  name: smoke_test_wdt
+  kind: listed
+  summary: Test list entry naming the smoke_test_wdt test with seed 1 and a pre-exec step that builds
+    the MCU program hex.
+  anchor:
+    text: 'testname: smoke_test_wdt'
+    lines:
+    - 3
+    - 3
+    chars:
+    - 12
+    - 36
+  intent: []
+  stimulus:
+  - text: Set seed for the run
+    quotes:
+    - text: 'seed: 1'
+      lines:
+      - 2
+      - 2
+      chars:
+      - 4
+      - 11
+  - text: Pre-exec builds mcu_program.hex for the test via make
+    quotes:
+    - text: make -f $CALIPTRA_SS_ROOT/tools/scripts/Makefile TESTNAME=smoke_test_wdt mcu_program.hex
+      lines:
+      - 7
+      - 7
+      chars:
+      - 108
+      - 196
+  checks: []
+  references: []
+  ambiguity: null
+  check_count: 0
+  failing_checks: 0
+- id: vc_707aa4cc2091
+  path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+  chunk: smoke_test_wdt_rst.c
+  chunk_id: sec_fd1bcfd254be
+  name: smoke_test_wdt_rst
+  kind: implemented
+  summary: Bare-metal WDT smoke test that uses a reboot counter to step through cascaded and independent
+    WDT timer configurations. Each phase ends in a warm or cold reset, or an NMI-triggered reset, and
+    the final pass runs after the last reset.
+  anchor:
+    text: void main(void) {
+    lines:
+    - 67
+    - 67
+    chars:
+    - 2712
+    - 2729
+  intent:
+  - text: VPRINTF(LOW, " WDT Smoke Test with reset\n");
+    lines:
+    - 69
+    - 69
+    chars:
+    - 2785
+    - 2830
+  - text: //Issue warm reset during WDT operation
+    lines:
+    - 174
+    - 174
+    chars:
+    - 6832
+    - 6871
+  - text: //Issue cold reset during WDT operation
+    lines:
+    - 182
+    - 182
+    chars:
+    - 7160
+    - 7199
+  - text: VPRINTF(LOW, "Cascaded mode with timer2 timeout - NMI - cold rst\n");
+    lines:
+    - 136
+    - 136
+    chars:
+    - 5271
+    - 5340
+  - text: handle_error("WDT timeout in cascade mode is expected to trigger NMI and reset!\n");
+    lines:
+    - 143
+    - 143
+    chars:
+    - 5636
+    - 5720
+  stimulus:
+  - text: Enable WDT timer1/timer2 timeout error interrupts and the MCI global error/notif interrupts.
+    quotes:
+    - text: '*soc_intr_en = MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_EN_R_ERROR_WDT_TIMER1_TIMEOUT_EN_MASK |
+        MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_EN_R_ERROR_WDT_TIMER2_TIMEOUT_EN_MASK;'
+      lines:
+      - 73
+      - 73
+      chars:
+      - 2920
+      - 3081
+    - text: '*mci_global_intr_en = MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R_ERROR_EN_MASK | MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R_NOTIF_EN_MASK;'
+      lines:
+      - 74
+      - 74
+      chars:
+      - 3086
+      - 3216
+  - text: Install the NMI handler address in the MCU NMI vector register.
+    quotes:
+    - text: lsu_write_32(SOC_MCI_TOP_MCI_REG_MCU_NMI_VECTOR, (uint32_t) (nmi_handler));
+      lines:
+      - 75
+      - 75
+      chars:
+      - 3221
+      - 3296
+  - text: Increment the reset counter to select the phase for this boot.
+    quotes:
+    - text: rst_count++;
+      lines:
+      - 80
+      - 80
+      chars:
+      - 3366
+      - 3378
+  - text: 'Phase 1: cascaded mode, wait for timer1 timeout, then warm reset.'
+    quotes:
+    - text: if (rst_count == 1) {
+      lines:
+      - 83
+      - 83
+      chars:
+      - 3469
+      - 3490
+    - text: configure_wdt_cascade(0x200, 0x00, 0xffffffff, 0xffffffff);
+      lines:
+      - 85
+      - 85
+      chars:
+      - 3562
+      - 3621
+    - text: service_t1_intr();
+      lines:
+      - 88
+      - 88
+      chars:
+      - 3695
+      - 3713
+    - text: SEND_STDOUT_CTRL(TB_CMD_WARM_RESET);
+      lines:
+      - 90
+      - 90
+      chars:
+      - 3731
+      - 3767
+  - text: 'Phase 2: cascaded mode, restart timer1, wait for timer1 timeout, then cold reset.'
+    quotes:
+    - text: else if (rst_count == 2) {
+      lines:
+      - 93
+      - 93
+      chars:
+      - 3809
+      - 3835
+    - text: '*wdt_timer1_ctrl = MCI_REG_WDT_TIMER1_CTRL_TIMER1_RESTART_MASK;'
+      lines:
+      - 97
+      - 97
+      chars:
+      - 3976
+      - 4039
+    - text: SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+      lines:
+      - 59
+      - 59
+      chars:
+      - 2546
+      - 2582
+  - text: 'Phase 3: independent mode with both timers enabled, wait for both timeouts, disable each timer,
+      then warm reset.'
+    quotes:
+    - text: else if (rst_count == 3) {
+      lines:
+      - 103
+      - 103
+      chars:
+      - 4154
+      - 4180
+    - text: configure_wdt_independent(BOTH_TIMERS_EN, 0x200, 0x00000000, 0x200, 0x00000000);
+      lines:
+      - 105
+      - 105
+      chars:
+      - 4266
+      - 4346
+    - text: service_t2_intr();
+      lines:
+      - 113
+      - 113
+      chars:
+      - 4559
+      - 4577
+    - text: '*wdt_timer1_en = 0;'
+      lines:
+      - 110
+      - 110
+      chars:
+      - 4466
+      - 4485
+    - text: '*wdt_timer2_en = 0;'
+      lines:
+      - 115
+      - 115
+      chars:
+      - 4605
+      - 4624
+  - text: 'Phase 4: independent mode with both timers enabled, wait for both timeouts, then cold reset.'
+    quotes:
+    - text: else if (rst_count == 4) {
+      lines:
+      - 120
+      - 120
+      chars:
+      - 4720
+      - 4746
+  - text: 'Phase 5: cascaded mode with a timer2 timeout, wait for the NMI pin in HW_ERROR_FATAL, then
+      call handle_error if execution continues.'
+    quotes:
+    - text: else if (rst_count == 5) {
+      lines:
+      - 135
+      - 135
+      chars:
+      - 5236
+      - 5262
+    - text: configure_wdt_cascade(0x200, 0x00, 0x00000200, 0x00000000);
+      lines:
+      - 137
+      - 137
+      chars:
+      - 5349
+      - 5408
+  - text: 'Phase 6: independent mode with timer2 enabled and timer1 disabled, set the timer2 period, wait
+      for the timeout, then warm reset.'
+    quotes:
+    - text: else if (rst_count == 6) {
+      lines:
+      - 145
+      - 145
+      chars:
+      - 5731
+      - 5757
+    - text: '*wdt_timer2_en = MCI_REG_WDT_TIMER2_EN_TIMER2_EN_MASK;'
+      lines:
+      - 152
+      - 152
+      chars:
+      - 6062
+      - 6116
+    - text: set_t2_period(0x00000200, 0x00000000);
+      lines:
+      - 153
+      - 153
+      chars:
+      - 6125
+      - 6163
+  - text: 'Phase 7: independent mode with T1_DIS_T2_EN, wait for the timer2 timeout, then cold reset.'
+    quotes:
+    - text: else if (rst_count == 7) {
+      lines:
+      - 162
+      - 162
+      chars:
+      - 6379
+      - 6405
+    - text: configure_wdt_independent(T1_DIS_T2_EN, 0x200, 0x00000000, 0x200, 0x00000000);
+      lines:
+      - 164
+      - 164
+      chars:
+      - 6503
+      - 6581
+  - text: 'Phases 8-9: configure cascade mode with a short timeout and issue a warm reset (8) or cold
+      reset (9) during WDT operation.'
+    quotes:
+    - text: else if (rst_count == 8) {
+      lines:
+      - 173
+      - 173
+      chars:
+      - 6797
+      - 6823
+    - text: configure_wdt_cascade(0x37, 0x00, 0xffffffff, 0xffffffff);
+      lines:
+      - 177
+      - 177
+      chars:
+      - 6980
+      - 7038
+    - text: else if (rst_count == 9) {
+      lines:
+      - 181
+      - 181
+      chars:
+      - 7125
+      - 7151
+  - text: 'Phases 10-11: configure independent mode with both timers and a short timer2 period, then issue
+      a warm reset (10) or cold reset (11) during WDT operation.'
+    quotes:
+    - text: else if (rst_count == 10) {
+      lines:
+      - 188
+      - 188
+      chars:
+      - 7426
+      - 7453
+    - text: configure_wdt_independent(BOTH_TIMERS_EN, 0x200, 0x00000000, 0x34, 0x00000000);
+      lines:
+      - 192
+      - 192
+      chars:
+      - 7614
+      - 7693
+    - text: else if (rst_count == 11) {
+      lines:
+      - 196
+      - 196
+      chars:
+      - 7780
+      - 7807
+  - text: 'Phases 12-13: configure independent mode with timer2 enabled and issue a warm reset (12) or
+      cold reset (13) during WDT operation.'
+    quotes:
+    - text: else if (rst_count == 12) {
+      lines:
+      - 204
+      - 204
+      chars:
+      - 8134
+      - 8161
+    - text: else if (rst_count == 13) {
+      lines:
+      - 212
+      - 212
+      chars:
+      - 8495
+      - 8522
+  - text: After all phases, signal test pass and halt.
+    quotes:
+    - text: SEND_STDOUT_CTRL(TB_CMD_TEST_PASS);
+      lines:
+      - 221
+      - 221
+      chars:
+      - 8871
+      - 8906
+  checks:
+  - text: The NMI handler reads HW_ERROR_FATAL and tests the NMI pin bit. If it is set, the handler requests
+      a cold reset. Otherwise it only prints an error message.
+    fails_test: 'no'
+    quotes:
+    - text: if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK)
+        {
+      lines:
+      - 58
+      - 58
+      chars:
+      - 2445
+      - 2537
+    - text: VPRINTF(ERROR, "Unexpected entry into NMI handler function\n");
+      lines:
+      - 63
+      - 63
+      chars:
+      - 2639
+      - 2702
+  - text: In phase 5, poll until the HW_ERROR_FATAL NMI pin bit is set. If execution continues past the
+      NMI/reset, handle_error is called, but its failure behaviour is not visible here.
+    fails_test: unknown
+    quotes:
+    - text: while(!(lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK));
+      lines:
+      - 142
+      - 142
+      chars:
+      - 5531
+      - 5627
+    - text: handle_error("WDT timeout in cascade mode is expected to trigger NMI and reset!\n");
+      lines:
+      - 143
+      - 143
+      chars:
+      - 5636
+      - 5720
+  - text: In phase 6, check that the cold reset cleared the hw_error_fatal NMI pin. On mismatch it prints
+      an error and sends a control command with 0x1.
+    fails_test: unknown
+    quotes:
+    - text: if ((*hw_error_fatal && MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK) == 1) {
+      lines:
+      - 146
+      - 146
+      chars:
+      - 5766
+      - 5834
+    - text: SEND_STDOUT_CTRL(0x1);
+      lines:
+      - 148
+      - 148
+      chars:
+      - 5931
+      - 5953
+  references: []
+  ambiguity: null
+  check_count: 3
+  failing_checks: 0
+- id: vc_be6c241498ff
+  path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.yml
+  chunk: smoke_test_wdt_rst.yml
+  chunk_id: sec_9384a3c31e05
+  name: smoke_test_wdt_rst
+  kind: listed
+  summary: Test list entry naming the smoke_test_wdt_rst test with seed 1; a pre-exec step builds the
+    MCU program hex. It does not state what is checked.
+  anchor:
+    text: 'testname: smoke_test_wdt_rst'
+    lines:
+    - 3
+    - 3
+    chars:
+    - 12
+    - 40
+  intent: []
+  stimulus:
+  - text: Pre-exec builds mcu_program.hex for this test via make.
+    quotes:
+    - text: make -f $CALIPTRA_SS_ROOT/tools/scripts/Makefile TESTNAME=smoke_test_wdt_rst mcu_program.hex
+      lines:
+      - 7
+      - 7
+      chars:
+      - 116
+      - 208
+  checks: []
+  references: []
+  ambiguity: null
+  check_count: 0
+  failing_checks: 0
+other_text:
+- path: docs/CaliptraSSCoverage.md
+  chunk: 'Coverage Analysis Notes > MCI Coverage Analysis Notes > Module: i_mci_wdt_top > Coverage Metrics'
+  chunk_id: sec_41091b334c16
+  label: informative
+  reason: States the toggle coverage status for the module without describing a specific verification
+    case.
+  ambiguity: null
+  quote:
+    text: '**Toggle Coverage:** Complete with exclusions'
+    lines:
+    - 111
+    - 111
+    chars:
+    - 12793
+    - 12836
+- path: docs/CaliptraSSCoverage.md
+  chunk: 'Coverage Analysis Notes > MCI Coverage Analysis Notes > Module: i_mci_wdt_top > Coverage Metrics'
+  chunk_id: sec_41091b334c16
+  label: informative
+  reason: Gives the rationale for excluding the uncovered upper toggle bits of the timer counters.
+  ambiguity: null
+  quote:
+    text: Only missing toggle are the timer1_count and timer2_count upper bits. These counters do not
+      connect externally and we have verified much of this logic within Caliptra. We deem it OK that some
+      of the upper bits haven't been hit after inspecting the RTL.
+    lines:
+    - 112
+    - 112
+    chars:
+    - 12841
+    - 13093
+- path: docs/CaliptraSSCoverage.md
+  chunk: 'Coverage Analysis Notes > SoC Interface / Caliptra Core Coverage Analysis Summary > Module:
+    i_wdt'
+  chunk_id: sec_50e35b8d6985
+  label: informative
+  reason: Summarizes coverage status and the rationale for exclusions, without defining a specific verification
+    case.
+  ambiguity: null
+  quote:
+    text: Watchdog Timer coverage is complete after applying some exclusions for large timer values that
+      are unreachable in simulation.
+    lines:
+    - 475
+    - 475
+    chars:
+    - 36761
+    - 36886
+- path: docs/CaliptraSSCoverage.md
+  chunk: 'Coverage Analysis Notes > SoC Interface / Caliptra Core Coverage Analysis Summary > Module:
+    i_wdt'
+  chunk_id: sec_50e35b8d6985
+  label: informative
+  reason: Reports coverage completion for watchdog operating modes and how threshold values were randomized.
+  ambiguity: null
+  quote:
+    text: Functional coverage for operating modes of the watchdog timer is complete with randomness applied
+      to timer threshold values.
+    lines:
+    - 475
+    - 475
+    chars:
+    - 36887
+    - 37011
+- path: docs/CaliptraSSCoverage.md
+  chunk: 'Coverage Analysis Notes > SoC Interface / Caliptra Core Coverage Analysis Summary > Module:
+    i_wdt'
+  chunk_id: sec_50e35b8d6985
+  label: informative
+  reason: Gives a risk assessment of coverage exclusions rather than describing something to verify.
+  ambiguity: null
+  quote:
+    text: Exclusions for certain index bits of the timer counters poses low design risk.
+    lines:
+    - 475
+    - 475
+    chars:
+    - 37012
+    - 37090
+- path: src/integration/asserts/caliptra_ss_top_sva.sv
+  chunk: caliptra_ss_top_sva.sv > L90-152
+  chunk_id: sec_c95784c8348d
+  label: informative
+  reason: Section comment introducing the watchdog timer assertions.
+  ambiguity: null
+  quote:
+    text: '//WDT checks:'
+    lines:
+    - 90
+    - 90
+    chars:
+    - 4229
+    - 4242
+- path: src/integration/coverage/caliptra_ss_top_cov_if.sv
+  chunk: caliptra_ss_top_cov_if.sv > L30-96
+  chunk_id: sec_20a9900a707a
+  label: boilerplate
+  reason: Helper signal derivation for coverage sampling; it verifies nothing itself.
+  ambiguity: null
+  quote:
+    text: always_comb cptra_ss_cptra_core_m_axi_if_ar_hshake = cptra_ss_cptra_core_m_axi_if_r_mgr.arvalid
+      && cptra_ss_cptra_core_m_axi_if_r_mgr.arready;
+    lines:
+    - 36
+    - 36
+    chars:
+    - 1133
+    - 1275
+- path: src/integration/coverage/caliptra_ss_top_cov_if.sv
+  chunk: caliptra_ss_top_cov_if.sv > L30-96
+  chunk_id: sec_20a9900a707a
+  label: boilerplate
+  reason: Signal hookup used by the WDT coverpoints.
+  ambiguity: null
+  quote:
+    text: always_comb wdt_timer1_en = caliptra_ss_top.mci_top_i.i_mci_wdt_top.timer1_en;
+    lines:
+    - 39
+    - 39
+    chars:
+    - 1428
+    - 1506
+- path: src/integration/coverage/caliptra_ss_top_cov_if.sv
+  chunk: caliptra_ss_top_cov_if.sv > L30-96
+  chunk_id: sec_20a9900a707a
+  label: informative
+  reason: Commented-out cross of WDT timers with warm reset; not active coverage.
+  ambiguity: null
+  quote:
+    text: '// wdt_t1t2Xwarmrst: cross wdt_t1Xt2, cptra_rst_b;'
+    lines:
+    - 95
+    - 95
+    chars:
+    - 4733
+    - 4783
+- path: src/integration/coverage/caliptra_ss_top_cov_if.sv
+  chunk: caliptra_ss_top_cov_if.sv > L30-96
+  chunk_id: sec_20a9900a707a
+  label: informative
+  reason: Commented-out cross of WDT timers with cold reset; not active coverage.
+  ambiguity: null
+  quote:
+    text: '// wdt_t1t2Xcoldrst: cross wdt_t1Xt2, cptra_pwrgood;'
+    lines:
+    - 96
+    - 96
+    chars:
+    - 4792
+    - 4844
+- path: src/integration/test_suites/libs/wdt/wdt.c
+  chunk: wdt.c
+  chunk_id: sec_92fd683d030f
+  label: boilerplate
+  reason: License header.
+  ambiguity: null
+  quote:
+    text: '// SPDX-License-Identifier: Apache-2.0'
+    lines:
+    - 1
+    - 1
+    chars:
+    - 0
+    - 38
+- path: src/integration/test_suites/libs/wdt/wdt.c
+  chunk: wdt.c
+  chunk_id: sec_92fd683d030f
+  label: boilerplate
+  reason: Include of the library header; verifies nothing.
+  ambiguity: null
+  quote:
+    text: '#include "wdt.h"'
+    lines:
+    - 16
+    - 16
+    chars:
+    - 597
+    - 613
+- path: src/integration/test_suites/libs/wdt/wdt.c
+  chunk: wdt.c
+  chunk_id: sec_92fd683d030f
+  label: informative
+  reason: Helper routine that configures WDT cascade mode; it is not a test case and contains no checks.
+  ambiguity: null
+  quote:
+    text: void configure_wdt_cascade(uint32_t t1_period_0, uint32_t t1_period_1, uint32_t t2_period_0,
+      uint32_t t2_period_1) {
+    lines:
+    - 61
+    - 61
+    chars:
+    - 2507
+    - 2623
+- path: src/integration/test_suites/libs/wdt/wdt.c
+  chunk: wdt.c
+  chunk_id: sec_92fd683d030f
+  label: informative
+  reason: Helper that polls for and clears the timer1 timeout interrupt; the poll loop is a wait, not
+    a comparison against an expected value.
+  ambiguity: null
+  quote:
+    text: void service_t1_intr() {
+    lines:
+    - 49
+    - 49
+    chars:
+    - 1757
+    - 1781
+- path: src/integration/test_suites/libs/wdt/wdt.h
+  chunk: wdt.h
+  chunk_id: sec_775e4183e75b
+  label: boilerplate
+  reason: License header.
+  ambiguity: null
+  quote:
+    text: '// SPDX-License-Identifier: Apache-2.0'
+    lines:
+    - 1
+    - 1
+    chars:
+    - 0
+    - 38
+- path: src/integration/test_suites/libs/wdt/wdt.h
+  chunk: wdt.h
+  chunk_id: sec_775e4183e75b
+  label: boilerplate
+  reason: License header text.
+  ambiguity: null
+  quote:
+    text: // Licensed under the Apache License, Version 2.0 (the "License");
+    lines:
+    - 3
+    - 3
+    chars:
+    - 42
+    - 108
+- path: src/integration/test_suites/libs/wdt/wdt.h
+  chunk: wdt.h
+  chunk_id: sec_775e4183e75b
+  label: boilerplate
+  reason: Include guard.
+  ambiguity: null
+  quote:
+    text: '#ifndef WDT_H'
+    lines:
+    - 16
+    - 16
+    chars:
+    - 597
+    - 610
+- path: src/integration/test_suites/libs/wdt/wdt.h
+  chunk: wdt.h
+  chunk_id: sec_775e4183e75b
+  label: boilerplate
+  reason: Library include.
+  ambiguity: null
+  quote:
+    text: '#include "soc_address_map.h"'
+    lines:
+    - 20
+    - 20
+    chars:
+    - 663
+    - 691
+- path: src/integration/test_suites/libs/wdt/wdt.h
+  chunk: wdt.h
+  chunk_id: sec_775e4183e75b
+  label: boilerplate
+  reason: Library include.
+  ambiguity: null
+  quote:
+    text: '#include "riscv_hw_if.h"'
+    lines:
+    - 22
+    - 22
+    chars:
+    - 721
+    - 745
+- path: src/integration/test_suites/libs/wdt/wdt.h
+  chunk: wdt.h
+  chunk_id: sec_775e4183e75b
+  label: informative
+  reason: Enum defining watchdog independent-mode settings; declares no test or check.
+  ambiguity: null
+  quote:
+    text: "enum wdt_independent_mode_e {\n    BOTH_TIMERS_DIS = 0x0,\n    T1_DIS_T2_EN    = 0x1,\n   \
+      \ BOTH_TIMERS_EN  = 0x2\n};"
+    lines:
+    - 25
+    - 29
+    chars:
+    - 802
+    - 914
+- path: src/integration/test_suites/libs/wdt/wdt.h
+  chunk: wdt.h
+  chunk_id: sec_775e4183e75b
+  label: informative
+  reason: Helper function prototype, not a test case.
+  ambiguity: null
+  quote:
+    text: void set_t1_period(uint32_t t1_period_0, uint32_t t1_period_1);
+    lines:
+    - 33
+    - 33
+    chars:
+    - 975
+    - 1038
+- path: src/integration/test_suites/libs/wdt/wdt.h
+  chunk: wdt.h
+  chunk_id: sec_775e4183e75b
+  label: informative
+  reason: Helper function prototype, not a test case.
+  ambiguity: null
+  quote:
+    text: void wdt_independent_both_timers_en(uint32_t t1_period_0, uint32_t t1_period_1, uint32_t t2_period_0,
+      uint32_t t2_period_1);
+    lines:
+    - 41
+    - 41
+    chars:
+    - 1213
+    - 1337
+- path: src/integration/test_suites/libs/wdt/wdt.h
+  chunk: wdt.h
+  chunk_id: sec_775e4183e75b
+  label: informative
+  reason: Helper function prototype, not a test case.
+  ambiguity: null
+  quote:
+    text: void configure_wdt_cascade(uint32_t t1_period_0, uint32_t t1_period_1, uint32_t t2_period_0,
+      uint32_t t2_period_1);
+    lines:
+    - 45
+    - 45
+    chars:
+    - 1562
+    - 1677
+- path: src/integration/test_suites/smoke_test_wdt/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_1afec3f46e43
+  label: boilerplate
+  reason: License header with no verification content.
+  ambiguity: null
+  quote:
+    text: '// SPDX-License-Identifier: Apache-2.0'
+    lines:
+    - 1
+    - 1
+    chars:
+    - 0
+    - 38
+- path: src/integration/test_suites/smoke_test_wdt/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_1afec3f46e43
+  label: informative
+  reason: Describes the header as an ISR library for tests; it is not itself a test or check.
+  ambiguity: null
+  quote:
+    text: Provides function declarations for use by external test files, so
+    lines:
+    - 18
+    - 18
+    chars:
+    - 716
+    - 781
+- path: src/integration/test_suites/smoke_test_wdt/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_1afec3f46e43
+  label: boilerplate
+  reason: Configuration macro enabling ISR prints; verifies nothing.
+  ambiguity: null
+  quote:
+    text: '#define EN_ISR_PRINTS 1'
+    lines:
+    - 29
+    - 29
+    chars:
+    - 1163
+    - 1186
+- path: src/integration/test_suites/smoke_test_wdt/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_1afec3f46e43
+  label: boilerplate
+  reason: Defines the struct of received-interrupt counters; it is declaration only.
+  ambiguity: null
+  quote:
+    text: typedef struct {
+    lines:
+    - 37
+    - 37
+    chars:
+    - 1342
+    - 1358
+- path: src/integration/test_suites/smoke_test_wdt/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_1afec3f46e43
+  label: boilerplate
+  reason: Declaration of an interrupt setup helper, not a test case.
+  ambiguity: null
+  quote:
+    text: void init_interrupts(void);
+    lines:
+    - 68
+    - 68
+    chars:
+    - 2206
+    - 2233
+- path: src/integration/test_suites/smoke_test_wdt/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_1afec3f46e43
+  label: informative
+  reason: ISR helper that clears pending SoC IFC error interrupt bits and reports an error on a zero status;
+    it is a helper routine, not a test case.
+  ambiguity: null
+  quote:
+    text: inline void service_soc_ifc_error_intr() {
+    lines:
+    - 93
+    - 93
+    chars:
+    - 3087
+    - 3129
+- path: src/integration/test_suites/smoke_test_wdt/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_1afec3f46e43
+  label: informative
+  reason: ISR helper that clears pending SoC IFC notification interrupt bits; it is a helper routine,
+    not a test case.
+  ambiguity: null
+  quote:
+    text: inline void service_soc_ifc_notif_intr () {
+    lines:
+    - 118
+    - 118
+    chars:
+    - 4368
+    - 4411
+- path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+  chunk: smoke_test_wdt.c
+  chunk_id: sec_50bca0f206c7
+  label: boilerplate
+  reason: License header.
+  ambiguity: null
+  quote:
+    text: '// SPDX-License-Identifier: Apache-2.0'
+    lines:
+    - 1
+    - 1
+    chars:
+    - 0
+    - 38
+- path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+  chunk: smoke_test_wdt.c
+  chunk_id: sec_50bca0f206c7
+  label: boilerplate
+  reason: Include directives and register pointer/global declarations verify nothing.
+  ambiguity: null
+  quote:
+    text: '#include "caliptra_ss_lib.h"'
+    lines:
+    - 24
+    - 24
+    chars:
+    - 794
+    - 822
+- path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+  chunk: smoke_test_wdt.c
+  chunk_id: sec_50bca0f206c7
+  label: boilerplate
+  reason: Register pointer declaration used for setup.
+  ambiguity: null
+  quote:
+    text: volatile uint32_t * hw_error_fatal      = (uint32_t *) SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL;
+    lines:
+    - 49
+    - 49
+    chars:
+    - 2166
+    - 2256
+- path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.yml
+  chunk: smoke_test_wdt.yml
+  chunk_id: sec_34a8fe78d924
+  label: boilerplate
+  reason: Shell option setup that verifies nothing.
+  ambiguity: null
+  quote:
+    text: set -eu
+    lines:
+    - 5
+    - 5
+    chars:
+    - 51
+    - 58
+- path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.yml
+  chunk: smoke_test_wdt.yml
+  chunk_id: sec_34a8fe78d924
+  label: boilerplate
+  reason: Log message only.
+  ambiguity: null
+  quote:
+    text: echo "Running pre_exec for [smoke_test_wdt]"
+    lines:
+    - 6
+    - 6
+    chars:
+    - 61
+    - 105
+- path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.yml
+  chunk: smoke_test_wdt.yml
+  chunk_id: sec_34a8fe78d924
+  label: boilerplate
+  reason: Commented-out build command; not executed.
+  ambiguity: null
+  quote:
+    text: '# CALIPTRA_ROOT=$CALIPTRA_SS_ROOT/third_party/caliptra-rtl make -f $CALIPTRA_SS_ROOT/third_party/caliptra-rtl/tools/scripts/Makefile
+      TESTNAME=smoke_test_wdt program.hex'
+    lines:
+    - 8
+    - 8
+    chars:
+    - 199
+    - 367
+- path: src/integration/test_suites/smoke_test_wdt_rst/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_2d58c331794a
+  label: boilerplate
+  reason: License header.
+  ambiguity: null
+  quote:
+    text: '// SPDX-License-Identifier: Apache-2.0'
+    lines:
+    - 1
+    - 1
+    chars:
+    - 0
+    - 38
+- path: src/integration/test_suites/smoke_test_wdt_rst/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_2d58c331794a
+  label: informative
+  reason: Describes the purpose of the header as a library of ISR declarations, not a test.
+  ambiguity: null
+  quote:
+    text: Provides function declarations for use by external test files, so
+    lines:
+    - 18
+    - 18
+    chars:
+    - 716
+    - 781
+- path: src/integration/test_suites/smoke_test_wdt_rst/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_2d58c331794a
+  label: boilerplate
+  reason: Configuration macro that enables ISR prints; verifies nothing.
+  ambiguity: null
+  quote:
+    text: '#define EN_ISR_PRINTS 1'
+    lines:
+    - 29
+    - 29
+    chars:
+    - 1163
+    - 1186
+- path: src/integration/test_suites/smoke_test_wdt_rst/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_2d58c331794a
+  label: boilerplate
+  reason: Typedef for the received-interrupt counters; no verification.
+  ambiguity: null
+  quote:
+    text: typedef struct {
+    lines:
+    - 37
+    - 37
+    chars:
+    - 1342
+    - 1358
+- path: src/integration/test_suites/smoke_test_wdt_rst/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_2d58c331794a
+  label: informative
+  reason: ISR helper that clears pending soc_ifc error interrupts and reports an error if the status is
+    zero. It is a helper routine, not a test case.
+  ambiguity: null
+  quote:
+    text: inline void service_soc_ifc_error_intr() {
+    lines:
+    - 93
+    - 93
+    chars:
+    - 3087
+    - 3129
+- path: src/integration/test_suites/smoke_test_wdt_rst/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_2d58c331794a
+  label: informative
+  reason: ISR helper that clears pending soc_ifc notification interrupts. It is a helper routine, not
+    a test case.
+  ambiguity: null
+  quote:
+    text: inline void service_soc_ifc_notif_intr () {
+    lines:
+    - 118
+    - 118
+    chars:
+    - 4368
+    - 4411
+- path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+  chunk: smoke_test_wdt_rst.c
+  chunk_id: sec_fd1bcfd254be
+  label: boilerplate
+  reason: License header.
+  ambiguity: null
+  quote:
+    text: '// SPDX-License-Identifier: Apache-2.0'
+    lines:
+    - 1
+    - 1
+    chars:
+    - 0
+    - 38
+- path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+  chunk: smoke_test_wdt_rst.c
+  chunk_id: sec_fd1bcfd254be
+  label: boilerplate
+  reason: Include and setup that verifies nothing.
+  ambiguity: null
+  quote:
+    text: '#include "caliptra_ss_lib.h"'
+    lines:
+    - 24
+    - 24
+    chars:
+    - 794
+    - 822
+- path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.yml
+  chunk: smoke_test_wdt_rst.yml
+  chunk_id: sec_9384a3c31e05
+  label: boilerplate
+  reason: Random seed configuration for the run, verifies nothing.
+  ambiguity: null
+  quote:
+    text: 'seed: 1'
+    lines:
+    - 2
+    - 2
+    chars:
+    - 4
+    - 11
+- path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.yml
+  chunk: smoke_test_wdt_rst.yml
+  chunk_id: sec_9384a3c31e05
+  label: boilerplate
+  reason: Shell strictness setup.
+  ambiguity: null
+  quote:
+    text: set -eu
+    lines:
+    - 5
+    - 5
+    chars:
+    - 55
+    - 62
+- path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.yml
+  chunk: smoke_test_wdt_rst.yml
+  chunk_id: sec_9384a3c31e05
+  label: boilerplate
+  reason: Log message only.
+  ambiguity: null
+  quote:
+    text: echo "Running pre_exec for [smoke_test_wdt_rst]"
+    lines:
+    - 6
+    - 6
+    chars:
+    - 65
+    - 113
+- path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.yml
+  chunk: smoke_test_wdt_rst.yml
+  chunk_id: sec_9384a3c31e05
+  label: boilerplate
+  reason: Commented-out build command, not executed.
+  ambiguity: null
+  quote:
+    text: '# CALIPTRA_ROOT=$CALIPTRA_SS_ROOT/third_party/caliptra-rtl make -f $CALIPTRA_SS_ROOT/third_party/caliptra-rtl/tools/scripts/Makefile
+      TESTNAME=smoke_test_wdt_rst program.hex'
+    lines:
+    - 8
+    - 8
+    chars:
+    - 211
+    - 383
+unclassified: []
+uncited_code:
+- path: src/integration/test_suites/libs/wdt/wdt.c
+  chunk: wdt.c
+  chunk_id: sec_92fd683d030f
+  lines:
+  - 17
+  - 47
+  chars:
+  - 614
+  - 1756
+  text: "#include \"riscv_hw_if.h\"\n// #include \"caliptra_defines.h\"\n#include \"printf.h\"\n// #include\
+    \ \"soc_ifc_ss.h\"\n#include \"soc_address_map.h\"\n// #include \"soc_ifc.h\"\n// #include \"caliptra_ss_lib.h\"\
+    \n\nvoid set_t1_period(uint32_t t1_period_0, uint32_t t1_period_1) {\n    //Set timer1 period\n  \
+    \  lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_TIMEOUT_PERIOD_0, t1_period_0);\n    lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_TIMEOUT_PERIOD_1,\
+    \ t1_period_1);\n}\n\nvoid set_t2_period(uint32_t t2_period_0, uint32_t t2_period_1) {\n    //Set\
+    \ timer2 period\n    lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_TIMEOUT_PERIOD_0, t2_period_0);\n\
+    \    lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_TIMEOUT_PERIOD_1, t2_period_1);\n}\n\nvoid set_default_t1_period()\
+    \ {\n    //Set default timer1 period\n    lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_TIMEOUT_PERIOD_0,\
+    \ 0xffffffff);\n    lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_TIMEOUT_PERIOD_1, 0xffffffff);\n}\n\
+    \nvoid set_default_t2_period() {\n    //Set default timer2 period\n    lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_TIMEOUT_PERIOD_0,\
+    \ 0xffffffff);\n    lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_TIMEOUT_PERIOD_1, 0xffffffff);\n}"
+- path: src/integration/test_suites/libs/wdt/wdt.c
+  chunk: wdt.c
+  chunk_id: sec_92fd683d030f
+  lines:
+  - 63
+  - 106
+  chars:
+  - 2629
+  - 4469
+  text: "set_t1_period(t1_period_0, t1_period_1);\n    set_t2_period(t2_period_0, t2_period_1);\n\n  \
+    \  //Enable timer1 to start cascade mode\n    lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_EN, 1);\n\
+    \n    //Restart timer1\n    lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_CTRL, MCI_REG_WDT_TIMER1_CTRL_TIMER1_RESTART_MASK);\n\
+    }\n\nvoid configure_wdt_independent(enum wdt_independent_mode_e mode, uint32_t t1_period_0, uint32_t\
+    \ t1_period_1, uint32_t t2_period_0, uint32_t t2_period_1) {\n    VPRINTF(LOW, \"mode = %x\\n\", mode);\n\
+    \    if (mode == BOTH_TIMERS_DIS) {\n        VPRINTF(LOW, \"Disabling timer1 in independent mode\\\
+    n\");\n        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_CTRL, 1);\n        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_EN,\
+    \ 0);\n        VPRINTF(LOW, \"Disabling timer2 in independent mode\\n\");\n        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_CTRL,\
+    \ 1);\n        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, 0);\n    }\n    else if (mode == T1_DIS_T2_EN)\
+    \ {\n        VPRINTF(LOW, \"Enabling only timer2 in independent mode\\n\");\n        set_t2_period(t2_period_0,\
+    \ t2_period_1);\n        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, 1);\n        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_CTRL,\
+    \ 1);\n\n    }\n    else if (mode == BOTH_TIMERS_EN) {\n        VPRINTF(LOW, \"Enabling both timers\
+    \ in independent mode\\n\");\n        set_t1_period(t1_period_0, t1_period_1);\n        set_t2_period(t2_period_0,\
+    \ t2_period_1);\n\n        VPRINTF(LOW, \"Enabling timer1 and timer2\\n\");\n        //Enable timer1\
+    \ and timer2\n        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_EN, 1);\n        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN,\
+    \ 1);\n\n        VPRINTF(LOW, \"Restarting timer1 and timer2\\n\");\n        //Restart timer1 and\
+    \ timer2\n        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_CTRL, 1);\n        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_CTRL,\
+    \ 1);\n    }\n\n}"
+- path: src/integration/test_suites/smoke_test_wdt/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_1afec3f46e43
+  lines:
+  - 38
+  - 67
+  chars:
+  - 1363
+  - 2206
+  text: "uint32_t doe_error;\n    uint32_t doe_notif;\n    uint32_t ecc_error;\n    uint32_t ecc_notif;\n\
+    \    uint32_t hmac_error;\n    uint32_t hmac_notif;\n    uint32_t kv_error;\n    uint32_t kv_notif;\n\
+    \    uint32_t sha512_error;\n    uint32_t sha512_notif;\n    uint32_t sha256_error;\n    uint32_t\
+    \ sha256_notif;\n    uint32_t soc_ifc_error;\n    uint32_t soc_ifc_notif;\n    uint32_t sha512_acc_error;\n\
+    \    uint32_t sha512_acc_notif;\n    uint32_t abr_error;\n    uint32_t abr_notif;\n    uint32_t axi_dma_error;\n\
+    \    uint32_t axi_dma_notif;\n    uint32_t aes_error;\n    uint32_t aes_notif;\n} caliptra_intr_received_s;\n\
+    extern volatile caliptra_intr_received_s cptra_intr_rcv;\n\n//////////////////////////////////////////////////////////////////////////////\n\
+    // Function Declarations\n//\n\n// Performs all the CSR setup to configure and enable vectored external\
+    \ interrupts"
+- path: src/integration/test_suites/smoke_test_wdt/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_1afec3f46e43
+  lines:
+  - 70
+  - 90
+  chars:
+  - 2235
+  - 3085
+  text: '// These inline functions are used to insert event-specific functionality into the
+
+    // otherwise generic ISR that gets laid down by the parameterized macro "nonstd_veer_isr"
+
+    inline void service_doe_error_intr() {return;}
+
+    inline void service_doe_notif_intr() {return;}
+
+
+    inline void service_ecc_error_intr() {return;}
+
+    inline void service_ecc_notif_intr() {return;}
+
+
+    inline void service_hmac_error_intr() {return;}
+
+    inline void service_hmac_notif_intr() {return;}
+
+
+    inline void service_kv_error_intr() {return;}
+
+    inline void service_kv_notif_intr() {return;}
+
+    inline void service_sha512_error_intr() {return;}
+
+    inline void service_sha512_notif_intr() {return;}
+
+
+    inline void service_sha256_error_intr() {return;}
+
+    inline void service_sha256_notif_intr() {return;}
+
+
+    inline void service_sha3_error_intr() {return;}
+
+    inline void service_sha3_notif_intr() {return;}'
+- path: src/integration/test_suites/smoke_test_wdt/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_1afec3f46e43
+  lines:
+  - 94
+  - 116
+  chars:
+  - 3134
+  - 4367
+  text: "uint32_t * reg = (uint32_t *) (SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R);\n \
+    \   uint32_t sts = *reg;\n    /* Write 1 to Clear the pending interrupt */\n    if (sts & MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_INTERNAL_STS_MASK)\
+    \ {\n        *reg = MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_INTERNAL_STS_MASK;\n    }\n\
+    \    if (sts & MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_MBOX0_ECC_UNC_STS_MASK) {\n    \
+    \    *reg = MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_MBOX0_ECC_UNC_STS_MASK;\n    }\n  \
+    \  if (sts & MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_MBOX1_ECC_UNC_STS_MASK) {\n      \
+    \  *reg = MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_MBOX1_ECC_UNC_STS_MASK;\n    }\n    if\
+    \ (sts & MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_WDT_TIMER1_TIMEOUT_STS_MASK) {\n     \
+    \   *reg = MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_WDT_TIMER1_TIMEOUT_STS_MASK;\n    }\n\
+    \    if (sts & MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_WDT_TIMER2_TIMEOUT_STS_MASK) {\n\
+    \        *reg = MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_WDT_TIMER2_TIMEOUT_STS_MASK;\n\
+    \    }\n    if (sts == 0) {\n        VPRINTF(ERROR, \"bad soc_ifc_error_intr sts:%x\\n\", sts);\n\
+    \        SEND_STDOUT_CTRL( 0x1);\n    }\n}"
+- path: src/integration/test_suites/smoke_test_wdt/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_1afec3f46e43
+  lines:
+  - 119
+  - 153
+  chars:
+  - 4416
+  - 6079
+  text: "uint32_t * reg = (uint32_t *) (SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R);\n \
+    \   uint32_t sts = *reg;\n    /* Write 1 to Clear the pending interrupt */\n    if (sts & MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_MCU_SRAM_ECC_COR_STS_MASK)\
+    \ {\n        *reg = MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_MCU_SRAM_ECC_COR_STS_MASK;\n\
+    \    }\n    if (sts & MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_DEBUG_LOCKED_STS_MASK) {\n\
+    \        *reg = MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_DEBUG_LOCKED_STS_MASK;\n    }\n\
+    \    if (sts & MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_SCAN_MODE_STS_MASK) {\n        *reg\
+    \ = MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_SCAN_MODE_STS_MASK;\n    }\n    if (sts & MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_MBOX0_SOC_REQ_LOCK_STS_MASK)\
+    \ {\n        *reg = MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_MBOX0_SOC_REQ_LOCK_STS_MASK;\n\
+    \    }\n    if (sts & MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_MBOX1_SOC_REQ_LOCK_STS_MASK)\
+    \ {\n        *reg = MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_MBOX1_SOC_REQ_LOCK_STS_MASK;\n\
+    \    }\n    if (sts == 0) {\n        VPRINTF(ERROR, \"bad soc_ifc_notif_intr sts:%x\\n\", sts);\n\
+    \        SEND_STDOUT_CTRL( 0x1);\n    }\n}\n\ninline void service_sha512_acc_error_intr() {return;}\n\
+    inline void service_sha512_acc_notif_intr() {return;}\ninline void service_abr_error_intr() {return;}\n\
+    inline void service_abr_notif_intr() {return;}\ninline void service_axi_dma_error_intr() {return;}\n\
+    inline void service_axi_dma_notif_intr() {return;}\ninline void service_aes_error_intr() {return;}\n\
+    inline void service_aes_notif_intr() {return;}\n\n\n#endif //CALIPTRA_ISR_H"
+- path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+  chunk: smoke_test_wdt.c
+  chunk_id: sec_50bca0f206c7
+  lines:
+  - 26
+  - 47
+  chars:
+  - 824
+  - 2165
+  text: "// volatile uint32_t* stdout           = (uint32_t *)STDOUT;\nvolatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;\n\
+    volatile uint32_t  intr_count = 0;\nvolatile uint32_t  rst_count  = 0;\n\n#ifdef CPT_VERBOSITY\n \
+    \   enum printf_verbosity verbosity_g = CPT_VERBOSITY;\n#else\n    enum printf_verbosity verbosity_g\
+    \ = LOW;\n#endif\n\nvolatile uint32_t * wdt_timer1_en       = (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER1_EN;\n\
+    volatile uint32_t * wdt_timer1_ctrl     = (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER1_CTRL;\nvolatile\
+    \ uint32_t * wdt_timer1_period_0 = (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER1_TIMEOUT_PERIOD_0;\n\
+    volatile uint32_t * wdt_timer1_period_1 = (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER1_TIMEOUT_PERIOD_1;\n\
+    volatile uint32_t * soc_intr_en         = (uint32_t *) SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_EN_R;\
+    \ //TODO: confirm\nvolatile uint32_t * mci_global_intr_en  = (uint32_t *) SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R;\n\
+    \nvolatile uint32_t * wdt_timer2_en       = (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN;\nvolatile\
+    \ uint32_t * wdt_timer2_ctrl     = (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER2_CTRL;\nvolatile uint32_t\
+    \ * wdt_timer2_period_0 = (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER2_TIMEOUT_PERIOD_0;\nvolatile\
+    \ uint32_t * wdt_timer2_period_1 = (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER2_TIMEOUT_PERIOD_1;"
+- path: src/integration/test_suites/smoke_test_wdt_rst/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_2d58c331794a
+  lines:
+  - 38
+  - 90
+  chars:
+  - 1363
+  - 3085
+  text: "uint32_t doe_error;\n    uint32_t doe_notif;\n    uint32_t ecc_error;\n    uint32_t ecc_notif;\n\
+    \    uint32_t hmac_error;\n    uint32_t hmac_notif;\n    uint32_t kv_error;\n    uint32_t kv_notif;\n\
+    \    uint32_t sha512_error;\n    uint32_t sha512_notif;\n    uint32_t sha256_error;\n    uint32_t\
+    \ sha256_notif;\n    uint32_t soc_ifc_error;\n    uint32_t soc_ifc_notif;\n    uint32_t sha512_acc_error;\n\
+    \    uint32_t sha512_acc_notif;\n    uint32_t abr_error;\n    uint32_t abr_notif;\n    uint32_t axi_dma_error;\n\
+    \    uint32_t axi_dma_notif;\n    uint32_t aes_error;\n    uint32_t aes_notif;\n} caliptra_intr_received_s;\n\
+    extern volatile caliptra_intr_received_s cptra_intr_rcv;\n\n//////////////////////////////////////////////////////////////////////////////\n\
+    // Function Declarations\n//\n\n// Performs all the CSR setup to configure and enable vectored external\
+    \ interrupts\nvoid init_interrupts(void);\n\n// These inline functions are used to insert event-specific\
+    \ functionality into the\n// otherwise generic ISR that gets laid down by the parameterized macro\
+    \ \"nonstd_veer_isr\"\ninline void service_doe_error_intr() {return;}\ninline void service_doe_notif_intr()\
+    \ {return;}\n\ninline void service_ecc_error_intr() {return;}\ninline void service_ecc_notif_intr()\
+    \ {return;}\n\ninline void service_hmac_error_intr() {return;}\ninline void service_hmac_notif_intr()\
+    \ {return;}\n\ninline void service_kv_error_intr() {return;}\ninline void service_kv_notif_intr()\
+    \ {return;}\ninline void service_sha512_error_intr() {return;}\ninline void service_sha512_notif_intr()\
+    \ {return;}\n\ninline void service_sha256_error_intr() {return;}\ninline void service_sha256_notif_intr()\
+    \ {return;}\n\ninline void service_sha3_error_intr() {return;}\ninline void service_sha3_notif_intr()\
+    \ {return;}"
+- path: src/integration/test_suites/smoke_test_wdt_rst/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_2d58c331794a
+  lines:
+  - 94
+  - 116
+  chars:
+  - 3134
+  - 4367
+  text: "uint32_t * reg = (uint32_t *) (SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R);\n \
+    \   uint32_t sts = *reg;\n    /* Write 1 to Clear the pending interrupt */\n    if (sts & MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_INTERNAL_STS_MASK)\
+    \ {\n        *reg = MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_INTERNAL_STS_MASK;\n    }\n\
+    \    if (sts & MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_MBOX0_ECC_UNC_STS_MASK) {\n    \
+    \    *reg = MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_MBOX0_ECC_UNC_STS_MASK;\n    }\n  \
+    \  if (sts & MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_MBOX1_ECC_UNC_STS_MASK) {\n      \
+    \  *reg = MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_MBOX1_ECC_UNC_STS_MASK;\n    }\n    if\
+    \ (sts & MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_WDT_TIMER1_TIMEOUT_STS_MASK) {\n     \
+    \   *reg = MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_WDT_TIMER1_TIMEOUT_STS_MASK;\n    }\n\
+    \    if (sts & MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_WDT_TIMER2_TIMEOUT_STS_MASK) {\n\
+    \        *reg = MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_WDT_TIMER2_TIMEOUT_STS_MASK;\n\
+    \    }\n    if (sts == 0) {\n        VPRINTF(ERROR, \"bad soc_ifc_error_intr sts:%x\\n\", sts);\n\
+    \        SEND_STDOUT_CTRL( 0x1);\n    }\n}"
+- path: src/integration/test_suites/smoke_test_wdt_rst/caliptra_isr.h
+  chunk: caliptra_isr.h
+  chunk_id: sec_2d58c331794a
+  lines:
+  - 119
+  - 153
+  chars:
+  - 4416
+  - 6079
+  text: "uint32_t * reg = (uint32_t *) (SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R);\n \
+    \   uint32_t sts = *reg;\n    /* Write 1 to Clear the pending interrupt */\n    if (sts & MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_MCU_SRAM_ECC_COR_STS_MASK)\
+    \ {\n        *reg = MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_MCU_SRAM_ECC_COR_STS_MASK;\n\
+    \    }\n    if (sts & MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_DEBUG_LOCKED_STS_MASK) {\n\
+    \        *reg = MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_DEBUG_LOCKED_STS_MASK;\n    }\n\
+    \    if (sts & MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_SCAN_MODE_STS_MASK) {\n        *reg\
+    \ = MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_SCAN_MODE_STS_MASK;\n    }\n    if (sts & MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_MBOX0_SOC_REQ_LOCK_STS_MASK)\
+    \ {\n        *reg = MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_MBOX0_SOC_REQ_LOCK_STS_MASK;\n\
+    \    }\n    if (sts & MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_MBOX1_SOC_REQ_LOCK_STS_MASK)\
+    \ {\n        *reg = MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_MBOX1_SOC_REQ_LOCK_STS_MASK;\n\
+    \    }\n    if (sts == 0) {\n        VPRINTF(ERROR, \"bad soc_ifc_notif_intr sts:%x\\n\", sts);\n\
+    \        SEND_STDOUT_CTRL( 0x1);\n    }\n}\n\ninline void service_sha512_acc_error_intr() {return;}\n\
+    inline void service_sha512_acc_notif_intr() {return;}\ninline void service_abr_error_intr() {return;}\n\
+    inline void service_abr_notif_intr() {return;}\ninline void service_axi_dma_error_intr() {return;}\n\
+    inline void service_axi_dma_notif_intr() {return;}\ninline void service_aes_error_intr() {return;}\n\
+    inline void service_aes_notif_intr() {return;}\n\n\n#endif //CALIPTRA_ISR_H"
+- path: src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+  chunk: smoke_test_wdt_rst.c
+  chunk_id: sec_fd1bcfd254be
+  lines:
+  - 25
+  - 57
+  chars:
+  - 823
+  - 2441
+  text: "#include \"veer-csr.h\"\n\n// volatile uint32_t* stdout           = (uint32_t *)STDOUT;\nvolatile\
+    \ char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;\nvolatile uint32_t  intr_count = 0;\nvolatile\
+    \ uint32_t  rst_count  = 0;\n\n#ifdef CPT_VERBOSITY\n    enum printf_verbosity verbosity_g = CPT_VERBOSITY;\n\
+    #else\n    enum printf_verbosity verbosity_g = LOW;\n#endif\n\nvolatile uint32_t * wdt_timer1_en \
+    \      = (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER1_EN;\nvolatile uint32_t * wdt_timer1_ctrl    \
+    \ = (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER1_CTRL;\nvolatile uint32_t * wdt_timer1_period_0 = (uint32_t\
+    \ *) SOC_MCI_TOP_MCI_REG_WDT_TIMER1_TIMEOUT_PERIOD_0;\nvolatile uint32_t * wdt_timer1_period_1 = (uint32_t\
+    \ *) SOC_MCI_TOP_MCI_REG_WDT_TIMER1_TIMEOUT_PERIOD_1;\nvolatile uint32_t * soc_intr_en         = (uint32_t\
+    \ *) SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_EN_R; //TODO: confirm\nvolatile uint32_t * mci_global_intr_en\
+    \  = (uint32_t *) SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R;\n\nvolatile uint32_t * wdt_timer2_en\
+    \       = (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN;\nvolatile uint32_t * wdt_timer2_ctrl   \
+    \  = (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER2_CTRL;\nvolatile uint32_t * wdt_timer2_period_0 =\
+    \ (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER2_TIMEOUT_PERIOD_0;\nvolatile uint32_t * wdt_timer2_period_1\
+    \ = (uint32_t *) SOC_MCI_TOP_MCI_REG_WDT_TIMER2_TIMEOUT_PERIOD_1;\n\nvolatile uint32_t * hw_error_fatal\
+    \      = (uint32_t *) SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL;\n\nvolatile caliptra_intr_received_s cptra_intr_rcv\
+    \ = {0};\n\nvoid nmi_handler (void);\n\nvoid nmi_handler (void) {\n    VPRINTF(LOW, \"*** Entering\
+    \ NMI Handler ***\\n\");"
+citation_failures: []

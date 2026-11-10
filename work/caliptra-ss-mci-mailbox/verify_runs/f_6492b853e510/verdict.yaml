@@ -1,0 +1,73 @@
+finding_hash: 69cfb140b00989e2
+started_at: '2026-11-10T20:38:41Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Item cr_3877f33b1448 stands: no test sweeps or checks MCU_MBOX1_SIZE_KB. Item cr_920e089bc5fb
+    is withdrawn: mci_mbox_ownership_flow.svh makes the requester set EXECUTE and then calls a helper
+    that calls $fatal if the CMD_AVAIL notification status never sets. Because one item stands, the finding
+    is verified overall.'
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_common_tasks.svh
+    line_start: 489
+    line_end: 491
+    quote: "if ((data & mask) === mask) break;\n        if (poll == max_polls)\n            $fatal(1,\
+      \ \"mcu_mbox_wait_clear_notif: mbox=%0d %s never set, NOTIF0=%08x\", mbox_num, notif.name(), data);"
+    role: refutes
+    note: 'A failing check: the test is fatal if the MBOX CMD_AVAIL notification status never sets after
+      EXECUTE.'
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 115
+    line_end: 117
+    quote: // EXECUTE=1 hands the SRAM to Root, which is notified by CMD_AVAIL.
+    role: context
+    note: 'Stimulus: the requester sets EXECUTE, then the test waits for the CMD_AVAIL notification.'
+  - path: src/integration/testbench/tb_top_pkg.sv
+    line_start: 60
+    line_end: 60
+    quote: localparam MCU_MBOX1_SIZE_KB = 256;
+    role: context
+    note: The integration testbench fixes the mailbox size at a single value; there is no sweep.
+  searches:
+  - what: MBOX1_SIZE_KB usage in tests and testbenches
+    where: repo
+    found: Only a fixed value in tb_top_pkg (256) and mci_top_tb (4); no sweep and no size check.
+  - what: cmd_avail in the test_suites firmware tests
+    where: src/integration/test_suites
+    found: Only a clear helper and clock-gating comments; no check of the notification.
+  - what: mci_comm_flow_transaction and the wait helper
+    where: src/integration/testbench/sv_tests/mci
+    found: The helper polls the NOTIF0 status and calls $fatal if it never sets.
+  near_misses:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 115
+    line_end: 117
+    why_not: Used to withdraw item 2. It checks the notification status bit rather than the notif_mbox*_cmd_avail
+      interrupt pin at the MCU, but the status bit is the same notification.
+  - path: src/mci/tb/mci_top_tb.sv
+    line_start: 32
+    line_end: 33
+    why_not: Sets one fixed size of 4 KB, with no sweep and no size check.
+  items:
+  - id: cr_3877f33b1448
+    outcome: verified
+    reason: No test varies or checks MCU_MBOX1_SIZE_KB. The testbenches only set fixed values (256 and
+      4).
+    evidence:
+    - 2
+  - id: cr_920e089bc5fb
+    outcome: withdrawn
+    reason: The ownership-flow test sets EXECUTE and then waits on the CMD_AVAIL notification status.
+      The helper calls $fatal if the status never sets, so the test fails when the behavior is wrong.
+    evidence:
+    - 0
+    - 1
+  new_sources:
+  - path: src/integration/testbench/sv_tests/mci/mci_common_tasks.svh
+    reason: Contains the mcu_mbox_wait_clear_notif helper that checks the CMD_AVAIL notification.
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.06584010000000001
+error: null

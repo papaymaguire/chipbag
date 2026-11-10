@@ -1,0 +1,54 @@
+finding_hash: 83e9484139db8245
+started_at: '2026-11-10T20:52:16Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No other spec text defines what "rejected" means for hash_stop/hash_continue with a sideloaded
+    key. The docs only say the commands are rejected and ERR_CODE reports SwInvalidConfig. The key-invalid
+    case is spelled out in detail, including the abort, the cleared state and no hmac_done. Nothing equivalent
+    exists for rejected stop/continue.
+  evidence:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 164
+    line_end: 164
+    quote: 'saving and restoring the context is not available with a sideloaded key: `CMD.hash_stop` and
+      `CMD.hash_continue` are rejected, and [`ERR_CODE`](registers.md#err_code) reports `SwInvalidConfig`.'
+    role: supports
+    note: Only says rejected plus ERR_CODE; no statement on the ongoing operation, FSM state, or interrupts.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 103
+    line_end: 103
+    quote: A message hashed with a sideloaded key has to be run to completion in one go.
+    role: context
+    note: Suggests the operation is meant to run to completion, but does not say a rejected command leaves
+      it unaffected.
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 155
+    line_end: 157
+    quote: aborts that operation and reports the same error.
+    role: context
+    note: The abort semantics are explicit for the invalid-key case only, which highlights the gap for
+      rejected stop/continue.
+  searches:
+  - what: hash_stop/hash_continue in hmac docs and hjson
+    where: hw/ip/hmac (md, hjson)
+    found: Only the theory_of_operation and programmers_guide lines (plus the generic hjson/registers.md
+      CMD descriptions) mention these; none defines the reject behaviour.
+  near_misses:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 152
+    line_end: 157
+    why_not: Describes blocked start/continue with an invalid key and the abort on key invalidation, not
+      the rejection of stop/continue with a valid sideloaded key.
+  items: []
+  new_sources: []
+  resolution: Spec should state that a rejected hash_stop/hash_continue is dropped with no side effect
+    other than ERR_CODE=SwInvalidConfig and the hmac_err interrupt. It should also say whether the in-progress
+    operation continues and still raises hmac_done after hash_process, or is aborted as in the invalid-key
+    case.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.039951
+error: null

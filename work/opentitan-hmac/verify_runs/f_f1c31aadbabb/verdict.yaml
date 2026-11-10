@@ -1,0 +1,62 @@
+finding_hash: 6784b88053c6c655
+started_at: '2026-11-10T20:58:31Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: All three are project-governance checklist rows (X-prop log result, TODO resolution, N/A for
+    pre-verified sub-modules). None is a behavior a test could stimulate and check. They are not implemented
+    by any test, and the hmac directory has no other mention of them. The finding stands technically,
+    though these items are process sign-offs rather than real verification gaps.
+  evidence:
+  - path: hw/ip/hmac/doc/checklist.md
+    line_start: 244
+    line_end: 244
+    quote: 'xprop.log file says: "instrumentation success rate:  100%"'
+    role: context
+    note: X-prop item is evidenced by a tool log, not a test.
+  - path: hw/ip/hmac/doc/checklist.md
+    line_start: 251
+    line_end: 251
+    quote: Remaining TODOs have a linked issue and are not required for verification completion
+    role: context
+    note: A process item with no test.
+  - path: hw/ip/hmac/doc/checklist.md
+    line_start: 254
+    line_end: 254
+    quote: '[PRE_VERIFIED_SUB_MODULES_V3][]   | N/A'
+    role: context
+    note: Marked N/A.
+  searches:
+  - what: X_PROP_ANALYSIS_COMPLETED / xprop
+    where: hw/ip/hmac
+    found: Only the checklist.md row, no test.
+  - what: ALL_TODOS_RESOLVED
+    where: hw/ip/hmac
+    found: Only the checklist.md row, no test.
+  - what: PRE_VERIFIED_SUB_MODULES_V3
+    where: hw/ip/hmac
+    found: Only the checklist.md row, marked N/A, no test.
+  near_misses: []
+  items:
+  - id: cp_e74f11dd6d95
+    outcome: verified
+    reason: The only evidence cited is the xprop log; no test implements it.
+    evidence:
+    - 0
+  - id: cp_ec276fc249d6
+    outcome: verified
+    reason: A process item with no test.
+    evidence:
+    - 1
+  - id: cp_f7ad110ca489
+    outcome: verified
+    reason: Marked N/A, so no test is expected.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 5
+cost_usd: 0.0499638
+error: null

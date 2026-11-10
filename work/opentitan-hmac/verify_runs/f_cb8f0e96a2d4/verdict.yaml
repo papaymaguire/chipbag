@@ -1,0 +1,87 @@
+finding_hash: b3da8e78c15a241c
+started_at: '2026-11-10T20:57:58Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The HMAC DV environment forces CFG.sideload to 0 and the sec_cm sideload test is "N/A". The
+    scoreboard and vseqs have no sideload, key_valid or revoke handling. The only sideload test is the
+    C test keymgr_dpe_sideload_hmac_test, which has no abort, revoke-mid-operation or SHA-only checks.
+    None of the five items has a test with a failing check.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: '// TODO(#31634): Disable sideloading for now.'
+    role: supports
+    note: DV randomization disables sideload.
+  - path: hw/ip/hmac/data/hmac_sec_cm_testplan.hjson
+    line_start: 33
+    line_end: 36
+    quote: 'name: sec_cm_key_sideload'
+    role: supports
+    note: 'The sideload countermeasure has tests: N/A.'
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    line_start: 214
+    line_end: 222
+    quote: // Starting HMAC with an invalid sideload key must be blocked.
+    role: context
+    note: The test covers an invalid key at start only.
+  searches:
+  - what: sideload/key_valid/revoke in hmac dv and testplans
+    where: hw/ip/hmac
+    found: Only agent wiring; sideload disabled in the base vseq; sec_cm test N/A
+  - what: sideload in sw tests
+    where: sw/device/tests
+    found: Only keymgr_dpe_sideload_hmac_test.c
+  - what: abort, stop or SHA-only handling (retained CFG, SHA-only ignore) in the sideload C test
+    where: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    found: No matches
+  - what: key_valid, keymgr_key, revoke or sideload in scoreboard, vseq and cov files
+    where: hw/ip/hmac/dv/env
+    found: Only the line forcing sideload to 0
+  near_misses:
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    line_start: 190
+    line_end: 192
+    why_not: Checks that the software key is not used. This is not a check that the key is never exposed
+      to software.
+  items:
+  - id: cr_419b9981b884
+    outcome: verified
+    reason: No check on exposure of the key. DV sideload is off.
+    evidence:
+    - 0
+    - 1
+    - 2
+  - id: cr_4311569af12c
+    outcome: verified
+    reason: No test revokes the key mid-operation. The searches found no revoke handling.
+    evidence:
+    - 0
+    - 2
+  - id: cr_90db0cc9a415
+    outcome: verified
+    reason: No abort test checks that CFG is retained. The searches found no abort handling.
+    evidence:
+    - 0
+    - 1
+  - id: cr_bd802d2e0596
+    outcome: verified
+    reason: No test drops the valid indication mid-operation.
+    evidence:
+    - 0
+    - 2
+  - id: cr_c4e4f4d945ab
+    outcome: verified
+    reason: No test sets CFG.sideload with SHA-only mode. DV forces sideload to 0.
+    evidence:
+    - 0
+  new_sources:
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    reason: The only sideload HMAC test; relevant context.
+submissions: 2
+rejections: []
+turns: 15
+cost_usd: 0.10023769999999999
+error: null

@@ -1,0 +1,119 @@
+finding_hash: 287e12df0e91aae9
+started_at: '2026-11-10T21:03:50Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: All five items have implemented DV tests with checks. The tl_access_tests and alert_test lists
+    are imported by hmac_sim_cfg and cover the fatal_fault alert and BUS.INTEGRITY. A random CFG write
+    during hashing is discarded in the scoreboard, and the invalid config key_length/digest_size combination
+    yields SwInvalidConfig in the scoreboard. Some of the stimulus and check links rest on partial reads,
+    noted below.
+  evidence:
+  - path: hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    line_start: 33
+    line_end: 33
+    quote: '"{proj_root}/hw/dv/tools/dvsim/tests/tl_access_tests.hjson",'
+    role: refutes
+    note: Imports the common tl_intg_err test (hmac_tl_intg_err), which injects TL-UL integrity errors
+      and checks the fatal alert. I did not open tl_access_tests.hjson, so the test name and its alert
+      check are inferred from the hw/dv/tools/dvsim/tests/tl_access_tests.hjson:20 hit and the shared
+      plan.
+  - path: hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    line_start: 31
+    line_end: 31
+    quote: '"{proj_root}/hw/dv/tools/dvsim/tests/alert_test.hjson",'
+    role: refutes
+    note: The common alert_test is run for HMAC, covering the alert_test CSR driving the fatal_fault alert.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 296
+    line_end: 300
+    quote: "if (hmac_start) begin\n            if (cfg.en_cov) cov.wr_config_during_hash_cg.sample(1);\n\
+      \            return; // won't update configs if hash start"
+    role: refutes
+    note: The scoreboard models CFG writes during hashing as discarded (no mirror update). I did not trace
+      where the later CSR read-back check happens.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 208
+    line_end: 214
+    quote: // Attempt to change config reg during msg write, design will ignore the change
+    role: refutes
+    note: The stimulus writes a random CFG value during the message write.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 198
+    line_end: 199
+    quote: "if (invalid_cfg) begin\n                update_err_intr_code(SwInvalidConfig);"
+    role: refutes
+    note: The scoreboard expects an error code when start is triggered with an invalid config.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 176
+    line_end: 178
+    quote: "((cast_key_length == Key_None) && hmac_en) ||\n      ((cast_digest_size == SHA2_256) && (cast_key_length\
+      \ == Key_1024) && hmac_en)) begin"
+    role: refutes
+    note: The invalid config includes Key_1024 with SHA2_256 in HMAC mode, as the item requires.
+  - path: sw/device/tests/hmac_error_conditions_test.c
+    line_start: 205
+    line_end: 205
+    quote: TRY_CHECK(hmacerr_reg == kErrorSwInvalidConfig,
+    role: refutes
+    note: The chip-level test checks the invalid-config error. The lines I read cover the Key_None and
+      SHA2_None cases, not Key_1024 with SHA2_256.
+  searches:
+  - what: tl_intg_err, wr_config_during_hash, invalid config tests
+    where: hw/ip/hmac, hw/dv/tools/dvsim
+    found: The common TL/alert tests are imported by hmac_sim_cfg. The scoreboard and vseq implement the
+      CFG discard and SwInvalidConfig checks.
+  - what: chip-level error test
+    where: sw/device/tests
+    found: hmac_error_conditions_test.c exists and checks kErrorSwInvalidConfig.
+  near_misses:
+  - path: hw/ip/hmac/data/hmac_testplan.hjson
+    line_start: 197
+    line_end: 197
+    why_not: The plan item wr_config_during_hash_cg is only a coverage entry. The check is in the scoreboard
+      and vseq.
+  items:
+  - id: cr_7351afa1afa3
+    outcome: withdrawn
+    reason: The common tl_intg_err and alert_test tests run for HMAC via hmac_sim_cfg.
+    evidence:
+    - 0
+    - 1
+  - id: cr_b406ffbaa86a
+    outcome: withdrawn
+    reason: The BUS.INTEGRITY sec_cm plan item maps to hmac_tl_intg_err, which is run through the imported
+      tl_access_tests.
+    evidence:
+    - 0
+  - id: cr_0731a47e9bb2
+    outcome: withdrawn
+    reason: The scoreboard ignores the CFG write during hashing and the vseq issues such writes.
+    evidence:
+    - 2
+    - 3
+  - id: cr_74e678770b65
+    outcome: withdrawn
+    reason: The vseq flags Key_1024 with SHA2_256 as invalid and the scoreboard checks for SwInvalidConfig.
+      The chip-level test covers other invalid configs. I did not confirm the random stimulus reaches
+      this exact pair.
+    evidence:
+    - 4
+    - 5
+    - 6
+  - id: cr_c2c3736b2c77
+    outcome: withdrawn
+    reason: The write_discard_config stimulus and the scoreboard no-update handling cover the discard.
+    evidence:
+    - 2
+    - 3
+  new_sources:
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    reason: Defines the common tl_intg_err test that hmac_sim_cfg imports.
+  - path: sw/device/tests/hmac_error_conditions_test.c
+    reason: Chip-level test that checks the invalid-config error.
+submissions: 1
+rejections: []
+turns: 15
+cost_usd: 0.1094244
+error: null

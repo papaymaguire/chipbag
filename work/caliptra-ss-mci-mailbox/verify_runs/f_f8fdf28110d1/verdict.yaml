@@ -1,0 +1,74 @@
+finding_hash: 0daff59fcc39eb70
+started_at: '2026-11-10T20:43:18Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks these interrupt counters. The only references outside the generated
+    register files are address-map defines and a coverage interface with coverpoints. The coverpoints
+    record values but don't check anything. The one other hit, in smoke_test_wdt.c, is an unrelated software
+    variable called intr_count.
+  evidence:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 3970
+    line_end: 3970
+    quote: 'INTR_BLOCK_RF_ERROR_MBOX0_ECC_UNC_INTR_COUNT_R_cp : coverpoint i_mci_reg_top.i_mci_reg.field_storage.intr_block_rf.error_mbox0_ecc_unc_intr_count_r;'
+    role: context
+    note: A coverpoint only samples the counter value. It checks nothing.
+  searches:
+  - what: intr_count_r references in tests
+    where: whole repo, *.c/*.h/*.sv/*.py/*.yml
+    found: Only generated register files, the coverage interface, the docs and the address-map defines.
+  - what: notif_mbox0_soc_req_lock counter (cnt field, increment by 1)
+    where: src/integration
+    found: Only soc_address_map defines. No test code uses it.
+  - what: error_mbox0_ecc_unc counter (cnt field)
+    where: src/integration and src/mci/coverage
+    found: Only address-map defines and a coverpoint at mci_top_cov_if.sv:3970. No check.
+  - what: notif_cptra_mbox_cmd_avail counter (saturation)
+    where: src/integration
+    found: Only address-map defines. No test uses it.
+  - what: notif_mbox1_target_done counter (increment by 1)
+    where: src/integration
+    found: Only address-map defines. No test uses it.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    line_start: 28
+    line_end: 28
+    why_not: intr_count is an unrelated software variable, not the register counter.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 3970
+    line_end: 3970
+    why_not: A coverpoint records the value. It has no pass/fail check.
+  items:
+  - id: cr_aa899d455be8
+    outcome: verified
+    reason: No test references this counter's field.
+    evidence:
+    - 0
+  - id: cr_ae2e67d909b3
+    outcome: verified
+    reason: Only a coverpoint samples this counter. No test checks it.
+    evidence:
+    - 0
+  - id: cr_ae5b56a5c9c2
+    outcome: verified
+    reason: No test checks the increment by 1.
+    evidence:
+    - 0
+  - id: cr_b15aa1219258
+    outcome: verified
+    reason: No test checks saturation.
+    evidence:
+    - 0
+  - id: cr_b2c572ea94c4
+    outcome: verified
+    reason: No test checks the increment by 1.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 10
+cost_usd: 0.0844532
+error: null

@@ -1,0 +1,44 @@
+finding_hash: af640e7a5cbac78d
+started_at: '2026-11-10T20:34:40Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Caliptra acquires the lock and MCU only waits for it, then returns the response with DATA_READY.
+    The plan text has MCU acquiring the lock and the SOC agent responding, so the roles are reversed.
+    I did not open the plan spreadsheet; the plan wording comes from the finding.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/cptra_smoke_test_mcu_mbox_pass_data.c
+    line_start: 391
+    line_end: 391
+    quote: cptra_mcu_mbox_acquire_lock(mbox_num, 1000, true);
+    role: supports
+    note: Caliptra acquires the lock.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/smoke_test_mcu_mbox_pass_data.c
+    line_start: 115
+    line_end: 115
+    quote: if(!mcu_mbox_wait_for_user_lock(mbox_num, caliptra_uc_axi_id, 10000)) {
+    role: supports
+    note: MCU only waits for Caliptra's lock.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/smoke_test_mcu_mbox_pass_data.c
+    line_start: 162
+    line_end: 162
+    quote: mcu_mbox_update_status(mbox_num, MCU_MBOX_DATA_READY);
+    role: supports
+    note: MCU is the responder that sets DATA_READY.
+  searches:
+  - what: Read both test sources around the lock, execute and response steps
+    where: smoke_test_mcu_mbox_pass_data directory
+    found: Caliptra is the lock owner and MCU is the responder.
+  - what: Search for pass_data in md files
+    where: repo
+    found: The glob failed in zsh, so nothing was searched. I did not look for another test that realizes
+      the plan item.
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.0292481
+error: null

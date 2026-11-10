@@ -1,0 +1,9 @@
+{"t": "2026-11-10T21:01:30Z", "event": "  \u2192 Grep: sram_owner|SRAM_OWNER|mbox_hw_status|MBOX_HW_STATUS"}
+{"t": "2026-11-10T21:01:31Z", "event": "Look for NONE checks."}
+{"t": "2026-11-10T21:01:31Z", "event": "  \u2192 Grep: OWNER_NONE|SRAM_OWNER_NONE"}
+{"t": "2026-11-10T21:01:33Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh"}
+{"t": "2026-11-10T21:01:34Z", "event": "  \u2192 Grep: task.*mcu_mbox_check_sram_owner"}
+{"t": "2026-11-10T21:01:36Z", "event": "  \u2192 Grep: MCI_MBOX0_OWNERSHIP_FLOW|mci_mbox_ownership_flow"}
+{"t": "2026-11-10T21:01:42Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:01:44Z", "event": "I withdrew the finding: `sram_owner` = NONE (0) is tested.\n\nThe `MCI_MBOX0_OWNERSHIP_FLOW` and `MCI_MBOX1_OWNERSHIP_FLOW` tests check it after every release. At the end of each transaction, `mci_comm_flow_end` writes EXECUTE=0 and then calls `mci_comm_flow_check_phase(\"released\", MCU_MBOX_OWNER_NONE)`. That check reads `MBOX_HW_STATUS` and raises an error if `sram_owner` differs from NONE.\n\nBoth tests are in the nightly regression lists. I did not run them.\n\nThe verdict was accepted."}
+{"t": "2026-11-10T21:01:44Z", "event": "[7 turns, $0.0627]"}

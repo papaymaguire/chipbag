@@ -1,0 +1,77 @@
+finding_hash: 5c39bff00d313ab5
+started_at: '2026-11-10T20:57:13Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: DV forces CFG.sideload to 0, so no test exercises sideloading, abort on key invalid, or key
+    change. The scoreboard's SwInvalidConfig checks cover key-length and config cases, not sideload. Nothing
+    checks the block fetch timing either.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: '// TODO(#31634): Disable sideloading for now.'
+    role: supports
+    note: Sideload disabled in random config.
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 179
+    line_end: 179
+    quote: This version of the IP fetches the next 16 x 32-bit message into the internal message scheduling
+      array only after completing the current block.
+    role: context
+    note: Performance claim, no check found.
+  searches:
+  - what: sideload/key_valid in HMAC DV (item 1, 3, 4)
+    where: hw/ip/hmac
+    found: Only agent and tb wiring; sideload bit forced to 0; no key valid toggling or key change.
+  - what: SwInvalidConfig/invalid_config in dv (item 2, 3)
+    where: hw/ip/hmac/dv
+    found: The scoreboard handles key-length and config cases only, with no sideload abort and no packer
+      or FIFO clear check.
+  - what: packer/msg_fifo clear checks (item 2)
+    where: hw/ip/hmac/dv
+    found: Only coverage exclusions and README; no check.
+  - what: hmac_en with sideload in scoreboard (item 1)
+    where: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    found: hmac_en is used only for key-length checks.
+  - what: block fetch timing or 80 cycles (item 5)
+    where: hw/ip/hmac/dv
+    found: None.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 199
+    line_end: 219
+    why_not: SwInvalidConfig is checked for key-length and config cases, not sideload.
+  items:
+  - id: cr_89cd9ce85cff
+    outcome: verified
+    reason: Sideload disabled in DV.
+    evidence:
+    - 0
+  - id: cr_aeeb0cb3e0f0
+    outcome: verified
+    reason: No abort test or packer/FIFO check.
+    evidence:
+    - 0
+  - id: cr_af28a6129f5c
+    outcome: verified
+    reason: No test deasserts key valid.
+    evidence:
+    - 0
+  - id: cr_d882830deff5
+    outcome: verified
+    reason: No test changes the key mid-operation.
+    evidence:
+    - 0
+  - id: cr_2a29e638293c
+    outcome: verified
+    reason: No timing check.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.0677976
+error: null

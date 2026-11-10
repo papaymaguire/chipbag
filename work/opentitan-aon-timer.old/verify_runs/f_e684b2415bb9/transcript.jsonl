@@ -1,0 +1,7 @@
+{"t": "2026-11-10T22:08:57Z", "event": "  \u2192 Grep: csr_mem_rw_with_rand_reset"}
+{"t": "2026-11-10T22:08:58Z", "event": "  \u2192 Grep: csr_bit_bash|csr_rw"}
+{"t": "2026-11-10T22:09:00Z", "event": "  \u2192 Grep: csr_tests.hjson"}
+{"t": "2026-11-10T22:09:02Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/dv/tools/dvsim/tests/csr_tests.hjson"}
+{"t": "2026-11-10T22:09:07Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T22:09:10Z", "event": "I withdrew the finding: a generic register test library exists and is enabled on the blocks I checked.\n\nThe shared file `hw/dv/tools/dvsim/tests/csr_tests.hjson` defines `{name}_csr_rw` and `{name}_csr_bit_bash`. Both run over every register of a block. 28 IP sim configs import that file, including aes, hmac and kmac. The finding doesn't name its block, so I couldn't confirm which of these it maps to.\n\nI did not read the csr_rw or csr_bit_bash sequence code, so I did not confirm the checks themselves. I also found no direct `csr_mem_rw_with_rand_reset` entry under aes, hmac or kmac, so that third suite is not confirmed for those blocks."}
+{"t": "2026-11-10T22:09:10Z", "event": "[6 turns, $0.0335]"}

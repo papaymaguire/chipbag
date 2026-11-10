@@ -1,0 +1,41 @@
+finding_hash: a02f2615ca7b8ade
+started_at: '2026-11-10T22:05:44Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'Line 25 says reads are synchronized. Lines 26-28 say writes can complete early and that a
+    read-back guarantees completion. These don''t conflict: the async register interface synchronizes
+    the whole access path, and the read-back is itself a synchronized read. Line 25 is loosely worded
+    and would read better as "register accesses", but the passage doesn''t state two incompatible things.
+    I did not open the RTL or the generated register code.'
+  evidence:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 25
+    line_end: 28
+    quote: This means that writes can complete before the data has reached its underlying register in
+      the slow clock domain.
+    role: refutes
+    note: Describes the consequence of the async interface for writes. It is consistent with the interface
+      synchronizing register accesses in general, and the read-back that guarantees completion is itself
+      a synchronized read.
+  searches:
+  - what: Read the full theory_of_operation.md passage around the cited sentence
+    where: hw/ip/aon_timer/doc/theory_of_operation.md
+    found: 'Lines 25-28 are consistent: async register generation affects access timing, writes are posted,
+      and a read-back confirms completion.'
+  near_misses:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 25
+    line_end: 25
+    why_not: The wording "reads" is imprecise and "accesses" would be clearer, but that is a wording nit,
+      not two incompatible statements.
+  items: []
+  new_sources: []
+  resolution: No contradiction. The design uses the async register interface for both reads and writes.
+    An optional wording fix is to change line 25 to "Register accesses via the TL-UL interface...".
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.044362
+error: null

@@ -1,0 +1,55 @@
+finding_hash: 955dc381807da8d7
+started_at: '2026-11-10T21:01:27Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The MCI_MBOX0/1_OWNERSHIP_FLOW tests check SRAM_OWNER == NONE after every release. After each
+    EXECUTE=0 they call the phase check with owner NONE, and the checker reads MBOX_HW_STATUS and raises
+    an error on a mismatch. The tests are in the nightly regression lists.
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 93
+    line_end: 95
+    quote: mci_comm_flow_check_phase("released", MCU_MBOX_OWNER_NONE);
+    role: refutes
+    note: After release the test expects owner NONE.
+  - path: src/integration/testbench/sv_tests/mci/mci_common_tasks.svh
+    line_start: 468
+    line_end: 470
+    quote: if (data !== exp) begin
+    role: refutes
+    note: The checker reads HW_STATUS.sram_owner and flags an error if it differs from the expected value
+      (NONE).
+  - path: src/integration/stimulus/testsuites/caliptra_ss_master_test_list.csv
+    line_start: 142
+    line_end: 142
+    quote: mci_mbox0_ownership_flow
+    role: context
+    note: The test is in the nightly regression list.
+  searches:
+  - what: OWNER_NONE usage in tests
+    where: repo
+    found: mci_mbox_ownership_flow.svh checks NONE via mcu_mbox_check_sram_owner; the check task errors
+      on mismatch
+  - what: test in regression lists
+    where: stimulus
+    found: mci_mbox0/1_ownership_flow in the nightly lists
+  near_misses: []
+  items:
+  - id: cr_14efe156ee91
+    outcome: withdrawn
+    reason: The ownership flow tests check that sram_owner reads NONE after each release, and the check
+      fails the test on a mismatch.
+    evidence:
+    - 0
+    - 1
+    - 2
+  new_sources:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    reason: Test that checks sram_owner NONE
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0626729
+error: null

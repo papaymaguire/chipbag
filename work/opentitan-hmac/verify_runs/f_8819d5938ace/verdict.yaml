@@ -1,0 +1,72 @@
+finding_hash: f726ad30e5c6ef51
+started_at: '2026-11-10T19:42:06Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The scoreboard checks status reads, including fifo_depth and fifo_full, against a cycle-based
+    FIFO model and fails the test on a mismatch. It also models a key write during an active hash as an
+    error and predicts the error code. These checks run in the normal HMAC tests, so all four items are
+    covered.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 510
+    line_end: 514
+    quote: if ((`gmv(ral.status.fifo_depth)   != rd_fifo_depth) &&
+    role: refutes
+    note: Explicit fifo_depth check on every status read; it raises uvm_error on mismatch.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 383
+    line_end: 387
+    quote: (hmac_fifo_full  << HmacStaMsgFifoFull)  |
+    role: refutes
+    note: Predicted status includes fifo_full. The status value is compared against the read data via
+      the do_read_check mirror compare.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 322
+    line_end: 325
+    quote: if (hmac_start) begin
+    role: refutes
+    note: Key write while the engine is active is modelled as SwUpdateSecretKeyInProcess and the key is
+      not updated.
+  searches:
+  - what: fifo_depth and fifo_full in hmac dv
+    where: hw/ip/hmac/dv
+    found: Scoreboard predicts and checks them on status reads; the coverage collector samples them; hmac_base_vseq
+      polls fifo_depth.
+  - what: key update in process error
+    where: hw/ip/hmac/dv
+    found: Scoreboard models SwUpdateSecretKeyInProcess; the error code is checked on read.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 96
+    line_end: 102
+    why_not: Coverage only; it checks nothing.
+  items:
+  - id: cr_0bd7f7a859d0
+    outcome: withdrawn
+    reason: The scoreboard compares the read fifo_depth with the model, allowing +1 tolerance.
+    evidence:
+    - 0
+  - id: cr_a0e17a44b5f3
+    outcome: withdrawn
+    reason: The predicted status includes fifo_full and is compared against the read value.
+    evidence:
+    - 1
+  - id: cr_d7084e0ddaed
+    outcome: withdrawn
+    reason: The hwext register value is checked on every status read by the scoreboard.
+    evidence:
+    - 0
+  - id: cr_781c9e811c5e
+    outcome: withdrawn
+    reason: The scoreboard models rejection of a key write while the engine is active and predicts the
+      error code.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0574432
+error: null

@@ -1,0 +1,54 @@
+finding_hash: b878cc02265b9466
+started_at: '2026-11-10T19:37:35Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The programmer's guide names the ERR_CODE value and the interrupt for a key write during hashing,
+    and says the write is discarded. The KEY description is terse, but the question is answered elsewhere
+    in the spec. The guide does not explicitly cover the paused/stopped case.
+  evidence:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 135
+    line_end: 136
+    quote: 'If the software tries to update the KEY, the IP reports an error through the [`ERR_CODE`](registers.md#err_code)
+      register.
+
+      The error code is `SwUpdateSecretKeyInProcess`, `0x0003`.'
+    role: refutes
+    note: Gives the exact ERR_CODE value.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 174
+    line_end: 175
+    quote: When HMAC errors are triggered, the IP reports the error via [`INTR_STATE.hmac_err`](registers.md#intr_state).
+    role: refutes
+    note: Says errors assert the hmac_err interrupt.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 132
+    line_end: 133
+    quote: Such attempts are discarded.
+    role: refutes
+    note: The write is dropped, so the key register stays unchanged.
+  searches:
+  - what: SwUpdateSecretKeyInProcess and secret key update wording
+    where: hw/ip/hmac, non-SV files
+    found: programmers_guide.md lines 136 and 181 define the code 0x3; the testplan mentions the scenario
+  near_misses:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 138
+    line_end: 170
+    why_not: The save/restore flow writes KEY while hashing is stopped, but it first disables sha_en.
+      This leaves the paused-but-not-idle case only implicitly covered, which is a minor gap and does
+      not undermine the main answer.
+  items: []
+  new_sources:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    reason: Defines the error code and interrupt for a key update during hashing.
+  resolution: 'Spec answer: ERR_CODE = 0x3 (SwUpdateSecretKeyInProcess), INTR_STATE.hmac_err is asserted,
+    and the write is discarded. Optionally, the KEY description in hmac.hjson could cross-reference the
+    programmer''s guide section.'
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.037911900000000005
+error: null

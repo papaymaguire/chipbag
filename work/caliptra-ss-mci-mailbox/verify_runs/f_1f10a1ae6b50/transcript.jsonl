@@ -1,0 +1,5 @@
+{"t": "2026-11-10T20:34:43Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_pass_data; sed -n 380,400p cptra_smoke_test_mcu_mbox_pass_data.c; sed -n 100,170p smoke_test_mcu_"}
+{"t": "2026-11-10T20:34:45Z", "event": "Roles are reversed as the finding says."}
+{"t": "2026-11-10T20:34:49Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:34:52Z", "event": "I verified the finding: in `smoke_test_mcu_mbox_pass_data` the roles are the reverse of what plan item p9 says. Caliptra acquires the mailbox lock (`cptra_mcu_mbox_acquire_lock`, line 391). MCU only waits for Caliptra's lock (`mcu_mbox_wait_for_user_lock`, line 115), writes the response data, and sets `MCU_MBOX_DATA_READY`.\n\nTwo gaps in the check:\n- I did not open the plan spreadsheet; the plan wording comes from the finding itself.\n- My search for other tests tied to the plan item failed (a zsh glob error), so I did not look for another test that realizes it.\n\nThe verdict has been submitted and accepted."}
+{"t": "2026-11-10T20:34:52Z", "event": "[3 turns, $0.0292]"}

@@ -1,0 +1,38 @@
+finding_hash: 4829618318130eac
+started_at: '2026-11-10T22:05:44Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Line 32 of the doc lists WKUP_THOLD_HI as the register for bits [31:0], but its link target
+    is registers.md#wkup_thold_lo. Line 31 already assigns WKUP_THOLD_HI to bits [63:32]. The two readings
+    are incompatible, and the link target and the 64-bit split point to LO being intended. It is a doc
+    typo. I did not check the register definitions or RTL.
+  evidence:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 32
+    line_end: 32
+    quote: Bits[31:0] in registers [`WKUP_COUNT_LO`](registers.md#wkup_count_lo) and [`WKUP_THOLD_HI`](registers.md#wkup_thold_lo).
+    role: supports
+    note: Link text says HI, link target says lo, for bits [31:0].
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 31
+    line_end: 31
+    quote: Bits[63:32] in registers [`WKUP_COUNT_HI`](registers.md#wkup_count_hi) and [`WKUP_THOLD_HI`](registers.md#wkup_thold_hi).
+    role: supports
+    note: HI is already used for bits [63:32].
+  searches:
+  - what: context of the cited line
+    where: hw/ip/aon_timer/doc/theory_of_operation.md:25-40
+    found: Line 32 names WKUP_THOLD_HI with a link to wkup_thold_lo; line 31 uses HI for bits [63:32].
+  near_misses: []
+  items: []
+  new_sources: []
+  resolution: The register holding bits [31:0] is WKUP_THOLD_LO, as the link target and the 64-bit split
+    indicate. I did not open the RTL or the register definitions. The fix is to change the link text on
+    line 32 from `WKUP_THOLD_HI` to `WKUP_THOLD_LO`.
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.0421153
+error: null

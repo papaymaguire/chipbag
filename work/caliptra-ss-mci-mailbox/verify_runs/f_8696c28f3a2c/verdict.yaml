@@ -1,0 +1,111 @@
+finding_hash: c4f0a27d131b59cb
+started_at: '2026-11-10T20:39:41Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The mcu_intr_handler directed test triggers each error and notif interrupt, including the three
+    counters cited here. It then reads every *_INTR_COUNT_R and fails the sim if the hardware count sum
+    differs from the firmware count. It is in the nightly regressions. The check is an aggregate sum,
+    so it is weaker than a per-counter check. But a counter that failed to increment, or incremented by
+    more than 1, would fail the test unless another counter offset it.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 65
+    line_end: 65
+    quote: ERROR_MBOX1_ECC_UNC_TRIG_MASK             ); mci_error_intr_count++;
+    role: context
+    note: 'Stimulus: triggers the mbox1 ecc unc error interrupt once and increments the firmware count.'
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: refutes
+    note: 'Check: the sum of the hardware counters, which includes error_mbox1_ecc_unc, must equal the
+      firmware count, otherwise the sim is killed with an error.'
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 259
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: refutes
+    note: 'Check: the hardware notif count sum includes the MBOX0_TARGET_DONE and MBOX1_SOC_REQ_LOCK counters.'
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 211
+    line_end: 211
+    quote: NOTIF_MBOX0_TARGET_DONE_INTR_COUNT_R    ) +
+    role: context
+    note: The notif_mbox0_target_done counter is read into the checked sum.
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1554
+    line_end: 1555
+    quote: "default decrvalue = 1;\n        default counter;"
+    role: context
+    note: The RDL attributes under test. Their effect is exercised through the resulting counts.
+  searches:
+  - what: intr_count / INTR_COUNT_INCR references outside the RDL
+    where: whole repo
+    found: Found only generated reg RTL, UVM reg model, coverage interface, address-map defines and mcu_intr_handler.c.
+  - what: Tests that trigger and check mbox0_target_done, mbox1_soc_req_lock and mbox1_ecc_unc
+    where: src/integration/test_suites
+    found: mcu_intr_handler.c triggers all three and checks the aggregate hardware count against the firmware
+      count.
+  - what: Regression inclusion of mcu_intr_handler
+    where: src/integration/stimulus
+    found: Listed in the L1 Nightly Directed and Directed Strict regressions.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 3960
+    line_end: 3980
+    why_not: Coverpoints only, with no checks. They are not what verifies the counters.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    why_not: The check is on a sum rather than per counter, so a compensating error across counters could
+      mask a fault. That is a weakness, not an absence of verification.
+  items:
+  - id: cr_29a5cbd3339c
+    outcome: withdrawn
+    reason: notif_mbox0_target_done is triggered once, and its counter is read into the checked notif
+      sum. The sim fails if the sum differs from the firmware count.
+    evidence:
+    - 3
+    - 2
+  - id: cr_2b1a5342bb6d
+    outcome: withdrawn
+    reason: error_mbox1_ecc_unc is triggered once, and its counter is read into the checked error sum.
+      The sim fails if the sum differs from the firmware count.
+    evidence:
+    - 0
+    - 1
+  - id: cr_2c0e1728aaaa
+    outcome: withdrawn
+    reason: The pulse counter decrementing by 1 is a pulse-generation attribute. The counter reaching
+      exactly 1 per trigger depends on it, and that is checked in the notif sum, which includes the MBOX1_SOC_REQ_LOCK
+      counter.
+    evidence:
+    - 2
+    - 4
+  - id: cr_304b89024a55
+    outcome: withdrawn
+    reason: 'The counter attribute is exercised: the pulse field must act as a counter for the count to
+      reach 1 per trigger. That is checked in the error sum.'
+    evidence:
+    - 1
+    - 4
+  - id: cr_32694e6feef7
+    outcome: withdrawn
+    reason: 'The decrvalue=1 pulse behavior is exercised: a wrong value would give a wrong count in the
+      error sum.'
+    evidence:
+    - 1
+    - 4
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Directed test that triggers each interrupt and checks the hardware count sums.
+  - path: src/integration/stimulus/L1_Nightly_Directed_caliptra_ss_top_tb_regression.yml
+    reason: Regression list that includes mcu_intr_handler.
+submissions: 1
+rejections: []
+turns: 14
+cost_usd: 0.1376809
+error: null

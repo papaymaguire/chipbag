@@ -1,0 +1,48 @@
+finding_hash: 593c4eeeef90304f
+started_at: '2026-11-10T21:08:23Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The parameter table in the same integration spec gives a Min and Max for each of MCU_MBOX0_SIZE_KB
+    and MCU_MBOX1_SIZE_KB separately (0 to 2048 KB). That answers the question: the 2 MB limit applies
+    per mailbox, not to their sum. The RTL has per-parameter init assertions that match.'
+  evidence:
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 1806
+    line_end: 1806
+    quote: 'Size of MBOX0 SRAM. If set to 0 the entire MBOX0 is removed from MCI. Min: 0 Max: 2048 (2MB)'
+    role: refutes
+    note: The limit is stated per parameter, MBOX0.
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 1809
+    line_end: 1809
+    quote: 'Size of MBOX1 SRAM. If set to 0 the entire MBOX1 is removed from MCI. Min: 0 Max: 2048 (2MB)'
+    role: refutes
+    note: The same independent limit applies to MBOX1.
+  - path: src/mci/rtl/mci_top.sv
+    line_start: 956
+    line_end: 956
+    quote: '`CALIPTRA_ASSERT_INIT(ERR_MCU_MBOX0_MAX_SIZE, MCU_MBOX0_SIZE_KB <= 2048)'
+    role: context
+    note: The RTL assertion checks each mailbox independently, so a size above the limit is rejected at
+      elaboration.
+  searches:
+  - what: MCU_MBOX size limits in docs and RTL
+    where: repo-wide, *.md, *.sv, *.rdl
+    found: Per-parameter Min/Max in the spec table, per-mailbox elaboration assertions in mci_top.sv,
+      and a note in the hardware spec that each mailbox reserves 2MB of address space.
+  near_misses:
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2263
+    line_end: 2263
+    why_not: This sentence is garbled, but the parameter table clarifies it.
+  items: []
+  new_sources: []
+  resolution: The 2 MB limit applies per mailbox, and each size is checked by its own elaboration assertion.
+    Rewording line 2263 to say "each up to 2 MB" would remove the ambiguity.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0563003
+error: null

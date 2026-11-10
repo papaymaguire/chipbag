@@ -1,0 +1,5 @@
+{"t": "2026-11-10T19:36:22Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/doc/programmers_guide.md"}
+{"t": "2026-11-10T19:36:22Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/sw/device/tests/keymgr_dpe_sideload_hmac_test.c"}
+{"t": "2026-11-10T19:36:30Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:36:33Z", "event": "I withdrew the finding. The test and the spec agree, so there is no contradiction.\n\nThe spec (`hw/ip/hmac/doc/programmers_guide.md:82`) says the key length is set by the width of the sideload interface. The test (`sw/device/tests/keymgr_dpe_sideload_hmac_test.c:127-130`) reads `CFG` after starting HMAC and expects `KEY_512`, which is that width. It never asserts that the length depends on the key manager.\n\nWhat is true is a coverage gap. The test only reads `CFG.key_length` with a valid key present, so it doesn't verify that the value is independent of the key manager. If you want that covered, add a read of `CFG.key_length` with no valid sideload key."}
+{"t": "2026-11-10T19:36:33Z", "event": "[4 turns, $0.0388]"}

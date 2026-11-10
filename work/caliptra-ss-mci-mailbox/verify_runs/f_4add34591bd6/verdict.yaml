@@ -1,0 +1,31 @@
+finding_hash: 15fe0f6cc4dd9b45
+started_at: '2026-11-10T19:37:33Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The plan row reads "MCU MBOX - STRBW to CSRs (not supported to SRAM)". It asks for strobe writes
+    to CSRs and only notes that SRAM is out of scope. The test does byte writes to CSRs, which is what
+    the row requires. The finding misreads the note as a requirement to verify SRAM behaviour.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_strb_wr_csr/smoke_test_mcu_mbox_strb_wr_csr.c
+    line_start: 62
+    line_end: 62
+    quote: lsu_write_8(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_DLEN + ii + MCU_MBOX_NUM_STRIDE * mbox_num, 0xFF);
+    role: refutes
+    note: The test does 8-bit strobe writes to CSRs, matching the plan item's scope of 'STRBW to CSRs'.
+  searches:
+  - what: Plan row 129 text
+    where: docs/Caliptra_Gen2_SS_TestPlan.xlsx
+    found: '''MCU MBOX - STRBW to CSRs (not supported to SRAM)'''
+  - what: SRAM mentions in the test source
+    where: smoke_test_mcu_mbox_strb_wr_csr.c
+    found: none
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.028603000000000003
+error: null

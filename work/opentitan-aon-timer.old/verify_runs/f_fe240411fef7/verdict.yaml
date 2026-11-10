@@ -1,0 +1,56 @@
+finding_hash: 54197700af0c0039
+started_at: '2026-11-10T22:09:05Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The repository's generic CSR tests cover this. The common csr_testplan maps the regwen/lockable
+    item to the shared csr_rw and csr_aliasing tests. These are enabled per block via csr_tests_mode.
+    The RAL models regwen locking by changing lockable fields to read-only after a regwen clear, so csr_rw's
+    read-back comparison fails if a lockable CSR stays writable. I did not identify which block the finding
+    refers to, so I only confirmed csr_rw is wired into aes and kmac.
+  evidence:
+  - path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+    line_start: 98
+    line_end: 99
+    quote: '      tests: ["{name}{intf}_csr_rw", "{name}{intf}_csr_aliasing"]'
+    role: refutes
+    note: The regwen_csr_and_corresponding_lockable_csr plan item maps to the generic csr_rw and csr_aliasing
+      tests, which run over every CSR.
+  - path: hw/dv/sv/dv_base_reg/dv_base_reg.sv
+    line_start: 356
+    line_end: 359
+    quote: '  virtual function void lock_lockable_flds(uvm_reg_data_t val, uvm_predict_e kind);'
+    role: refutes
+    note: The RAL changes lockable fields' access policy when regwen is cleared. Generic csr_rw then checks
+      reads against this model, so a lock that fails to hold is caught.
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 29
+    line_end: 32
+    quote: '      name: "{name}_csr_rw"'
+    role: context
+    note: The generic csr_rw test is enabled per block via csr_tests_mode.
+  searches:
+  - what: regwen/lockable handling in shared DV libraries
+    where: hw/dv/sv
+    found: dv_base_reg lock_lockable_flds, a lockable-field coverage class, and a regwen coverage group
+  - what: generic csr tests
+    where: hw/dv/tools/dvsim/tests/csr_tests.hjson and csr_testplan.hjson
+    found: csr_rw and csr_aliasing are mapped to the regwen plan item
+  - what: csr_rw use in the crypto blocks
+    where: hw/ip/aes/dv, hw/ip/hmac/dv, hw/ip/kmac/dv
+    found: aes_common_vseq.sv and kmac_common_vseq.sv reference csr_rw; hmac has no match
+  near_misses:
+  - path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+    line_start: 91
+    line_end: 96
+    why_not: The note says regwen CSRs that are HW-updated need a separate test. That limits the generic
+      coverage for such blocks, but the finding is about the HW read-only case that the generic tests
+      cover.
+  items: []
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 7
+cost_usd: 0.07018579999999999
+error: null

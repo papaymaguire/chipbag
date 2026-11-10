@@ -1,0 +1,91 @@
+finding_hash: 52fc590ed6312e8b
+started_at: '2026-11-10T21:10:19Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: All five items are covered by the DV environment even though the testplan entries are only
+    "planned". The bound tlul_assert device checker covers the tl interface. The scoreboard models the
+    fifo_empty interrupt, including the "previously full" and "not after Process/Stop" conditions, and
+    checks it against intr_state reads. I did not confirm which tests read intr_state or that do_read_check
+    is enabled, so the interrupt items rest on the scoreboard model.
+  evidence:
+  - path: hw/ip/hmac/dv/sva/hmac_bind.sv
+    line_start: 7
+    line_end: 14
+    quote: "  bind hmac tlul_assert #(\n    .EndpointType(\"Device\")\n  ) tlul_assert_device ("
+    role: refutes
+    note: tlul_assert protocol checker is bound to hmac tl_i/tl_o as a device and runs in every sim (sim_tops
+      includes hmac_bind).
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 690
+    line_end: 697
+    quote: '      //   3- The message FIFO must also have been full previously. Otherwise, the hardware
+      empties'
+    role: refutes
+    note: 'Scoreboard models the interrupt: it is predicted only if fifo_full_detected && hmac_fifo_empty.
+      fifo_full_detected is cleared on process/start/stop/continue, which covers the Process/Stop suppression.'
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 389
+    line_end: 392
+    quote: '      bit intr_state_empty = fifo_empty_intr | last_intr_test_wr[HmacMsgFifoEmpty];'
+    role: refutes
+    note: The predicted fifo_empty intr_state is compared against DUT reads, so a wrong interrupt fails
+      the test.
+  searches:
+  - what: fifo_empty in hmac DV and SW tests
+    where: hw/ip/hmac/dv, sw/device/tests
+    found: The scoreboard models fifo_empty status and the interrupt. SW tests only poll the status bit.
+  - what: TLUL assert bind
+    where: hw/ip/hmac/dv/sva/hmac_bind.sv
+    found: tlul_assert bound as Device.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 95
+    line_end: 100
+    why_not: Coverage only, no check.
+  - path: sw/device/tests/hmac_smoketest.c
+    line_start: 90
+    line_end: 90
+    why_not: Polls the status bit only; it does not check the interrupt.
+  items:
+  - id: cr_3514ec92d204
+    outcome: withdrawn
+    reason: tlul_assert is bound to the tl device port.
+    evidence:
+    - 0
+  - id: cr_ceb521c08f4e
+    outcome: withdrawn
+    reason: tlul_assert checks the device-side TL-UL protocol on tl_i/tl_o.
+    evidence:
+    - 0
+  - id: cr_67e76dbb8ac1
+    outcome: withdrawn
+    reason: The scoreboard predicts the interrupt only after the FIFO was full, and checks intr_state
+      against the prediction.
+    evidence:
+    - 1
+    - 2
+  - id: cr_999bc3c78db5
+    outcome: withdrawn
+    reason: The scoreboard clears fifo_full_detected on process/stop, so no interrupt is predicted afterwards,
+      and this is checked on reads.
+    evidence:
+    - 1
+    - 2
+  - id: cr_d16dbd9e0ca7
+    outcome: withdrawn
+    reason: The scoreboard predicts the interrupt on FIFO empty and compares it with the DUT's intr_state.
+    evidence:
+    - 1
+    - 2
+  new_sources:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    reason: Models and checks the fifo_empty interrupt.
+  - path: hw/ip/hmac/dv/sva/hmac_bind.sv
+    reason: Binds tlul_assert.
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0711732
+error: null

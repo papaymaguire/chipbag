@@ -1,0 +1,11 @@
+{"t": "2026-11-10T21:09:54Z", "event": "  \u2192 Grep: hash_continue|SwInvalidConfig|SwInvalidConfig"}
+{"t": "2026-11-10T21:09:55Z", "event": "  \u2192 Grep: SwInvalidConfig|invalid_key|key_valid"}
+{"t": "2026-11-10T21:09:56Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:09:59Z", "event": "  \u2192 Grep: invalid_cfg\\s*=|invalid_cfg;|key_length.*Key_1024|Key_1024"}
+{"t": "2026-11-10T21:10:02Z", "event": "  \u2192 Grep: fifo_full|FifoFull|msg_fifo.*full|back_pressure"}
+{"t": "2026-11-10T21:10:02Z", "event": "  \u2192 Grep: hmac"}
+{"t": "2026-11-10T21:10:12Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T21:10:14Z", "event": "Submitting the verdict now. The first attempt failed because I used the wrong tool name, so I'm retrying with the correct one."}
+{"t": "2026-11-10T21:10:20Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:10:24Z", "event": "I submitted the verdict as verified. Four of the five items stand, and one (cr_a65819a54cf2, key lengths) is withdrawn.\n\n- **cr_a65819a54cf2 (key lengths), withdrawn:** The random sequence in `hmac_base_vseq.sv` sweeps key length against digest size and marks SHA2_256 with a 1024-bit key as invalid. The scoreboard in `hmac_scoreboard.sv` predicts the SwInvalidConfig error for that pair and checks it against the DUT, and coverage tracks the key-length/digest combinations. Together these cover the missing part named in the gap.\n- **cr_26f0103d3cea (FIFO back-pressure), stands:** `hmac_back_pressure_vseq` only sets `do_back_pressure`. Nothing checks that the FIFO becomes full or that the interconnect is back-pressured.\n- **cr_605b3802525f (key revocation takes effect immediately), stands:** No test revokes the key while an operation is running or measures how quickly the revocation takes effect.\n- **cr_75181956206e and cr_b5bc42e67d01 (hash_continue with an invalid sideload key), stand:** The scoreboard's SwInvalidConfig prediction covers only configuration-driven errors. The one sideload test, `chip_sw_keymgr_dpe_sideload_hmac_vseq`, exercises only `hash_start`.\n\nMy first submission attempt failed because I called the wrong tool name. The retry was accepted."}
+{"t": "2026-11-10T21:10:24Z", "event": "[9 turns, $0.0877]"}

@@ -1,0 +1,81 @@
+finding_hash: 561a97769038a965
+started_at: '2026-11-10T20:42:35Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: The mcu_intr_handler test triggers each of these interrupts once and checks that the sum of
+    the HW counters equals the firmware count. That covers "increments by 1" for three items and "is a
+    counter" for the fourth, so those four are withdrawn. No test drives a counter to its maximum, so
+    the saturation item is verified as untested. The finding as a whole is partly wrong.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 64
+    line_end: 65
+    quote: ERROR_MBOX0_ECC_UNC_TRIG_MASK             ); mci_error_intr_count++;
+    role: supports
+    note: 'Stimulus: one trigger per interrupt, with the FW count incremented by 1 for each.'
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: refutes
+    note: 'Check: the sum of the HW counters, including MBOX0/MBOX1 ECC_UNC, must equal the FW count.
+      A missed or double increment fails the test.'
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 211
+    line_end: 214
+    quote: lsu_read_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_MBOX0_TARGET_DONE_INTR_COUNT_R    ) +
+    role: refutes
+    note: The notif sum includes the MBOX0/MBOX1 TARGET_DONE and CMD_AVAIL counters, and is compared with
+      the FW count the same way.
+  searches:
+  - what: Tests or libs referencing these specific counters
+    where: whole repo, excluding the address map and RTL
+    found: mcu_intr_handler.c (stimulus and check), libs/mci/mci.c (register table only), coverage files
+  - what: Saturation or overflow test for the counters
+    where: src/integration/test_suites
+    found: none
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 569
+    line_end: 585
+    why_not: Only a register-property table (sticky or not), no stimulus or check of counting.
+  items:
+  - id: cr_93f442797b66
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers MBOX1 CMD_AVAIL once and checks the HW counter sum against the FW
+      count.
+    evidence:
+    - 1
+    - 2
+  - id: cr_98b85c82cd7e
+    outcome: withdrawn
+    reason: MBOX0 ECC_UNC is triggered once and its counter is in the sum that is checked.
+    evidence:
+    - 0
+    - 1
+  - id: cr_99a664f7c3be
+    outcome: withdrawn
+    reason: MBOX1 ECC_UNC is triggered and its counter is checked in the sum, which shows the field counts.
+    evidence:
+    - 0
+    - 1
+  - id: cr_a0511df283f8
+    outcome: verified
+    reason: No test drives a counter to its maximum or checks that it saturates.
+    evidence:
+    - 1
+  - id: cr_a4e88fd170e5
+    outcome: withdrawn
+    reason: MBOX0 TARGET_DONE is triggered once and its counter is in the checked notif sum.
+    evidence:
+    - 2
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Test that triggers the interrupts and checks the counters.
+submissions: 1
+rejections: []
+turns: 12
+cost_usd: 0.13251300000000002
+error: null

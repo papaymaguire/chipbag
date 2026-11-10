@@ -1,0 +1,74 @@
+finding_hash: bcca787d8c897d7a
+started_at: '2026-11-10T20:54:16Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The scoreboard predicts and checks every STATUS read, covering fifo_empty and fifo_depth. The
+    vseqs read STATUS, so the check runs under the smoke and related tests. The "planned only" classification
+    is wrong for both items.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 383
+    line_end: 387
+    quote: "hmac_status_data = (hmac_idle       << HmacStaIdle)         |\n                         (hmac_fifo_empty\
+      \ << HmacStaMsgFifoEmpty) |"
+    role: refutes
+    note: The scoreboard predicts the whole STATUS value, including fifo_empty, from a modelled FIFO depth.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 510
+    line_end: 514
+    quote: "if ((`gmv(ral.status.fifo_depth)   != rd_fifo_depth) &&\n              (`gmv(ral.status.fifo_depth)+1\
+      \ != rd_fifo_depth)) begin\n            `uvm_error(`gfn, $sformatf({\"Check failed, read status.fifo_depth\
+      \ is not matching \","
+    role: refutes
+    note: fifo_depth is checked on every STATUS read and raises uvm_error on mismatch, with a tolerance
+      of +1.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 554
+    line_end: 558
+    quote: "if (do_read_check) begin\n      `uvm_info(`gfn, $sformatf(\"%s reg is checked with expected\
+      \ value %0h\",\n                                csr_name, `gmv(csr)), UVM_HIGH)\n      `DV_CHECK_EQ(item.d_data,\
+      \ `gmv(csr), csr_name)"
+    role: refutes
+    note: The whole STATUS read data, including fifo_empty, is compared exactly with the prediction. This
+      check is skipped only when sar_skip_ctxt is set.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 521
+    line_end: 526
+    quote: task hmac_base_vseq::read_status_intr_clr();
+    role: context
+    note: 'Stimulus: sequences read STATUS through this task, and also poll fifo_depth with csr_spinwait.'
+  searches:
+  - what: fifo_empty and fifo_depth in hmac DV
+    where: hw/ip/hmac/dv
+    found: Scoreboard prediction and read checks, status_cg coverage, and vseq reads of STATUS.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 209
+    line_end: 218
+    why_not: A one-cycle timing difference in fifo_empty prediction exists, but it affects the intr_state
+      check, not the STATUS check. Intr_state checking is only avoided during that window.
+  items:
+  - id: cr_cb42c461741a
+    outcome: withdrawn
+    reason: fifo_empty is predicted in hmac_status_data and compared exactly by DV_CHECK_EQ on every STATUS
+      read.
+    evidence:
+    - 0
+    - 2
+    - 3
+  - id: cr_d7084e0ddaed
+    outcome: withdrawn
+    reason: fifo_depth is checked against the model on every STATUS read and raises uvm_error on mismatch.
+      The sequences also poll it with csr_spinwait.
+    evidence:
+    - 1
+    - 2
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.0906682
+error: null

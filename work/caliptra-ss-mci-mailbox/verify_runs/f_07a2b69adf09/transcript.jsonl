@@ -1,0 +1,10 @@
+{"t": "2026-11-10T21:08:27Z", "event": "  \u2192 Grep: BYTE access|byte access|sub-DWORD|sub-dword|partial write"}
+{"t": "2026-11-10T21:08:27Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/docs/CaliptraSSHardwareSpecification.md"}
+{"t": "2026-11-10T21:08:29Z", "event": "Quick search for other mailbox docs."}
+{"t": "2026-11-10T21:08:30Z", "event": "  \u2192 Grep: (?i)mcu.?mbox.*(unaligned|error|SLVERR|strobe|byte)|(unaligned|byte).*mcu.?mbox"}
+{"t": "2026-11-10T21:08:32Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss; sed -n 3239p docs/CaliptraSSIntegrationSpecification.md | grep -oiE '.{200}(unaligned|byte|strobe).{200}' | head"}
+{"t": "2026-11-10T21:08:34Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss; sed -n 3239p docs/CaliptraSSIntegrationSpecification.md | cut -c1-600"}
+{"t": "2026-11-10T21:08:35Z", "event": "Not relevant."}
+{"t": "2026-11-10T21:08:40Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:08:43Z", "event": "I submitted the verdict as verified: the finding stands, because no specification text in the repository says what a sub-DWORD access to the MCU mailbox SRAM does.\n\nThe only statement is at `docs/CaliptraSSHardwareSpecification.md:1458`: \"Accesses must be DWORD aligned and BYTE accesses are not supported by the SRAM.\" It gives no AXI response and does not say whether SRAM data is modified.\n\n- **Other spec text:** I searched the markdown, register-definition and text files for byte, sub-DWORD, partial-write and unaligned wording. The integration spec's \"partial writes\" row (line 2020) concerns a different SRAM, the FW exec region. The `CSS_Mem_6` row (line 3239) concerns an external staging area. Neither answers the question.\n- **RTL and tests:** I did not look at them, so the resolution I submitted only suggests a spec fix. It says to state the response (for example SLVERR) and whether any data changes."}
+{"t": "2026-11-10T21:08:43Z", "event": "[7 turns, $0.0429]"}

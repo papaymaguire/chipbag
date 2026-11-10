@@ -1,0 +1,56 @@
+finding_hash: 1965172cf75d645d
+started_at: '2026-11-10T20:33:51Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The spec's "Root, as the reset lock holder" can be read two ways, and the test's REQUESTER
+    (1) expectation fits one of them, so this isn't a clear contradiction. I'm reclassifying it as a spec
+    ambiguity. I did not check the RTL's actual reset value for SRAM_OWNER.
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1395
+    line_end: 1395
+    quote: '| MCI reset | Root, as the reset lock holder |'
+    role: supports
+    note: The event table names Root as the owner after MCI reset, but qualifies it as the "reset lock
+      holder".
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1444
+    line_end: 1445
+    quote: '| 1 | Requester/lock holder |'
+    role: refutes
+    note: Encoding 1 is labelled "Requester/lock holder", so a lock holder owner can legitimately read
+      back as 1. This supports the test's expectation.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_csrs_warm_rst/smoke_test_mcu_mbox_csrs_warm_rst.c
+    line_start: 113
+    line_end: 114
+    quote: if(mcu_mbox_read_sram_owner(mbox_num) != MCU_MBOX_SRAM_OWNER_REQUESTER) {
+    role: context
+    note: The test expects encoding 1 and its message says "reset lock holder", so its author read "lock
+      holder" as the encoding-1 owner.
+  searches:
+  - what: SRAM_OWNER encoding in the spec and library header
+    where: docs/CaliptraSSHardwareSpecification.md, caliptra_ss_lib.h
+    found: 1 = Requester/lock holder, 2 = Root. The spec does not say which encoding applies after reset.
+  near_misses: []
+  items: []
+  new_sources: []
+  reclassify:
+    category: spec_ambiguity
+    title: 'Post-MCI-reset SRAM_OWNER encoding: Root (2) or lock holder (1)?'
+    explanation: The spec's event table says the owner after MCI reset is "Root, as the reset lock holder".
+      The SRAM_OWNER encoding table separates 1 (Requester/lock holder) from 2 (Root). The test expects
+      1. A spec change that states the exact SRAM_OWNER value after reset would resolve it.
+    evidence:
+    - 0
+    - 1
+    - 2
+  resolution: Check the RTL's reset value for SRAM_OWNER. Then change the spec to state the encoding after
+    reset explicitly. If the RTL resets to 1, say "lock holder (encoding 1)". If it resets to 2, fix the
+    test.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.07461630000000001
+error: null

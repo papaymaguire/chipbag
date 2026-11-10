@@ -1,0 +1,12 @@
+{"t": "2026-11-10T20:38:44Z", "event": "  \u2192 Grep: cmd_avail"}
+{"t": "2026-11-10T20:38:44Z", "event": "  \u2192 Grep: MCU_MBOX1_SIZE_KB|MBOX1_SIZE_KB"}
+{"t": "2026-11-10T20:38:46Z", "event": "  \u2192 Grep: cmd_avail"}
+{"t": "2026-11-10T20:38:47Z", "event": "  \u2192 Grep: MBOX1_SIZE_KB"}
+{"t": "2026-11-10T20:38:49Z", "event": "  \u2192 Grep: CMD_AVAIL|cmd_avail"}
+{"t": "2026-11-10T20:38:51Z", "event": "  \u2192 Grep: mci_comm_flow_transaction"}
+{"t": "2026-11-10T20:38:53Z", "event": "  \u2192 Grep: CMD_AVAIL|cmd_avail|assert|error|fail"}
+{"t": "2026-11-10T20:38:55Z", "event": "Checking whether the wait helper fails when the notification never arrives."}
+{"t": "2026-11-10T20:38:55Z", "event": "  \u2192 Grep: mcu_mbox_wait_clear_notif"}
+{"t": "2026-11-10T20:39:06Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:39:09Z", "event": "I submitted the verdict: the finding is verified overall, but only one of its two items stands.\n\n- **cr_3877f33b1448 (MCU MBOX1 SRAM size set by `MCU_MBOX1_SIZE_KB`):** This stands. No test sweeps or checks the size parameter. The testbenches only set fixed values (256 KB in `tb_top_pkg.sv`, 4 KB in `mci_top_tb.sv`).\n- **cr_920e089bc5fb (`notif_mbox*_cmd_avail` interrupt when a command is available):** I withdrew this item. The test in `mci_mbox_ownership_flow.svh` makes the requester set EXECUTE, then calls `mcu_mbox_wait_clear_notif`. That helper in `mci_common_tasks.svh` calls `$fatal` if the CMD_AVAIL notification status never sets, so the test fails when the behavior is wrong.\n\nThe caveat on the withdrawn item is that the check reads the notification status bit, not the interrupt pin at the MCU."}
+{"t": "2026-11-10T20:39:09Z", "event": "[10 turns, $0.0658]"}

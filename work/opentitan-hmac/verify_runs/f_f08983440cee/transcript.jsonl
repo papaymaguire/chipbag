@@ -1,0 +1,6 @@
+{"t": "2026-11-10T20:58:15Z", "event": "  \u2192 Grep: fifo_empty_status_interrupt|csr_aliasing|fifo_empty"}
+{"t": "2026-11-10T20:58:15Z", "event": "  \u2192 Grep: csr_aliasing"}
+{"t": "2026-11-10T20:58:18Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac; sed -n 105,125p data/hmac_testplan.hjson; grep -n \"csr\\|import_cfgs\\|exclude\" dv/hmac_sim_cfg.hjson | head -30; grep -n \"SIM_CODE_COV\\|"}
+{"t": "2026-11-10T20:58:28Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:58:31Z", "event": "I submitted the verdict as \"verified\" overall. Two of the five items are withdrawn and three stand.\n\n- **`csr_aliasing` (withdrawn):** the generated `hmac_csr_aliasing` test exists, because the HMAC sim config imports `csr_tests.hjson`.\n- **`fifo_empty_status_interrupt` (withdrawn):** the plan item lists real tests such as `hmac_smoke`. The scoreboard predicts and checks the `fifo_empty` interrupt state.\n- **`SIM_CODE_COVERAGE_AT_100` and `SIM_FUNCTIONAL_COVERAGE_AT_100` (stand):** these are coverage-closure goals. No test implements them, and the checklist marks them Done with issue references.\n- **`FPV_CODE_COVERAGE_AT_100` (stands):** marked N/A for HMAC, so no test exists. None of the three is a real defect."}
+{"t": "2026-11-10T20:58:31Z", "event": "[5 turns, $0.0632]"}

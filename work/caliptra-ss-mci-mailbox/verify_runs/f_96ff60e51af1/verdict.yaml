@@ -1,0 +1,33 @@
+finding_hash: 6bdae241247f564c
+started_at: '2026-11-10T19:37:16Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The USER check compares the read-back against 0xDEADBEEF masked with the CMD_STATUS STATUS
+    mask, not the full 0xDEADBEEF. A 32-bit USER register that accepted the write would read 0xDEADBEEF,
+    which differs from the masked constant, so the check would not fire. The CMD check at line 337 compares
+    against the unmasked value. Line 359 looks copied from the CMD_STATUS check at line 348.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/cptra_smoke_test_mcu_mbox_valid_user.c
+    line_start: 359
+    line_end: 360
+    quote: "    if (read_payload[0] == (0xDEADBEEF & MCU_MBOX0_CSR_MBOX_CMD_STATUS_STATUS_MASK)) {\n \
+      \       VPRINTF(FATAL, \"Mbox%x MBOX USER was changed\\n\", mbox_num);"
+    role: supports
+    note: USER check uses the CMD_STATUS mask rather than the full written value.
+  searches:
+  - what: Read the USER write and read-back check in context
+    where: cptra_smoke_test_mcu_mbox_valid_user.c lines 335-368
+    found: The check uses the CMD_STATUS mask and is copied from the check at line 348. The CMD check
+      at line 337 compares unmasked.
+  near_misses: []
+  items: []
+  new_sources: []
+  resolution: Compare against 0xDEADBEEF unmasked at line 359. Better, read USER before the write and
+    fail if the read-back changed.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0369378
+error: null

@@ -1,0 +1,5 @@
+{"t": "2026-11-10T19:37:14Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/cptra_smoke_test_mcu_mbox_write_user_lock.c"}
+{"t": "2026-11-10T19:37:16Z", "event": "  \u2192 Grep: USER"}
+{"t": "2026-11-10T19:37:21Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:37:23Z", "event": "I verified the finding, and the verdict was accepted. The Caliptra uC test reads the MBOX_USER register after acquiring the lock and only prints it. Nothing compares it to the expected lock holder, so the \"Checking MBOX USER INFO\" step cannot fail the test.\n\nThe only other USER check is on the MCU side in `smoke_test_mcu_mbox_write_user_lock.c`. It confirms USER is unchanged after a Root write, not that it names the lock holder.\n\nI only read the two test sources and did not look at the plan spreadsheet or search for other tests covering plan row 117."}
+{"t": "2026-11-10T19:37:23Z", "event": "[4 turns, $0.0358]"}

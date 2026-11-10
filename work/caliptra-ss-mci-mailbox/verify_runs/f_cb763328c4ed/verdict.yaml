@@ -1,0 +1,50 @@
+finding_hash: 33fc907e92308de0
+started_at: '2026-11-10T19:40:23Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I made one focused search of the test suites for TARGET_USER_VALID writes. It found no test
+    where Root clears TARGET_USER_VALID after the grant. The other four items were not searched, so the
+    verdict rests on the first item and on the finding's own analysis. No evidence refutes the finding.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_strb_wr_csr/smoke_test_mcu_mbox_strb_wr_csr.c
+    line_start: 137
+    line_end: 138
+    quote: "// TARGET_USER_VALID accepts a byte write and locks both target fields.\n    lsu_write_8(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_TARGET_USER_VALID\
+      \ + MCU_MBOX_NUM_STRIDE * mbox_num, 1);"
+    role: supports
+    note: This only sets valid. It does not try to clear TARGET_USER_VALID after the grant.
+  searches:
+  - what: Tests that write TARGET_USER_VALID after the grant
+    where: src/integration/test_suites/smoke_test_mcu_mbox_{strb,write,target}*/*.c
+    found: Only grant writes of valid=1 and Target-side checks. No Root clear attempt after the grant.
+  near_misses: []
+  items:
+  - id: cr_8e68a65f2d45
+    outcome: verified
+    reason: No Root write of TARGET_USER_VALID=0 after the grant was found.
+    evidence:
+    - 0
+  - id: cr_071a71b48260
+    outcome: inconclusive
+    reason: I did not search for this item.
+    evidence: []
+  - id: cr_303f686605c5
+    outcome: inconclusive
+    reason: I did not search for this item.
+    evidence: []
+  - id: cr_9ac8672befb2
+    outcome: inconclusive
+    reason: I did not search for this item.
+    evidence: []
+  - id: cr_c967c84789bf
+    outcome: inconclusive
+    reason: I did not search for this item.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0375364
+error: null

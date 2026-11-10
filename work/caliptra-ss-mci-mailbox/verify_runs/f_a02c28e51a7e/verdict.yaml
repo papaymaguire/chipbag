@@ -1,0 +1,73 @@
+finding_hash: 33545b6331671546
+started_at: '2026-11-10T21:00:34Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that closes any of the five gaps. The ECC test checks only interrupt and status
+    bits, never the returned data. No zeroize test writes DLEN=0 or observes the clearing phases. The
+    TARGET_USER_VALID write-attempt in the target_user test comes from the Caliptra target agent, not
+    the MCU while VALID=1, so it doesn't close that gap. I only skimmed the target_user test, so item
+    5 is less certain than the others.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_ecc/smoke_test_mcu_mbox_ecc.c
+    line_start: 175
+    line_end: 176
+    quote: if ((mcu_mbox_read_hw_status(mbox_num) & ecc_status_mask) == MCU_MBOX0_CSR_MBOX_HW_STATUS_ECC_DOUBLE_ERROR_MASK)
+      {
+    role: supports
+    note: ECC test checks only status/interrupt bits, not data returned.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c
+    line_start: 209
+    line_end: 212
+    quote: cptra_mcu_mbox_write_target_user_valid(mbox_num, ~target_valid_before);
+    role: context
+    note: Write attempt is from the Caliptra target agent, not an MCU write while VALID=1, so it doesn't
+      fully close the gap.
+  searches:
+  - what: ECC tests and data checks
+    where: src/integration/test_suites/smoke_test_mcu_mbox_ecc
+    found: Only interrupt and status checks; no data compare.
+  - what: DLEN=0 writes in zeroize tests
+    where: src/integration/test_suites/*zero*
+    found: No write of DLEN=0 and no whole-SRAM clear check.
+  - what: TARGET_USER_VALID writes
+    where: src/integration/test_suites
+    found: The target_user test attempts the write from the Caliptra target agent; no MCU write while
+      VALID=1.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c
+    line_start: 194
+    line_end: 215
+    why_not: The writer is the Caliptra target agent, not the MCU while VALID=1.
+  items:
+  - id: cr_ccc86edf401d
+    outcome: verified
+    reason: No test writes DLEN=0 and reads back the whole SRAM.
+    evidence: []
+  - id: cr_fadd412c3094
+    outcome: verified
+    reason: No test observes the intermediate clearing start/end phases.
+    evidence: []
+  - id: cr_20362a1989f1
+    outcome: verified
+    reason: No data-correction check after a single-bit error.
+    evidence:
+    - 0
+  - id: cr_feb29b2f4853
+    outcome: verified
+    reason: No check of returned data after a double-bit error.
+    evidence:
+    - 0
+  - id: cr_2d3206a4c6cc
+    outcome: verified
+    reason: The only write attempt found comes from the Caliptra target agent, not an MCU write to TARGET_USER_VALID
+      while it is 1.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0794106
+error: null

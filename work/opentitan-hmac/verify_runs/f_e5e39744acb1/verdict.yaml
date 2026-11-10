@@ -1,0 +1,68 @@
+finding_hash: 0bd48486c9c7b2e2
+started_at: '2026-11-10T21:09:56Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Items 1-4 stand. I found no test in hw/ip/hmac/dv that revokes a sideload key mid-operation,
+    or that checks the sideload key_length read-back with no valid key. Item 5 is covered by hmac_smoke
+    and the scoreboard, so I withdrew it. The overall outcome is "verified" because four of the five items
+    stand.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 114
+    line_end: 118
+    quote: "constraint hmac_base_vseq::key_length_c {\n  $countones(key_length) == 1 dist {\n    1 :/\
+      \ 4,  // Key_128/Key_256/Key_384/Key_512/Key_1024/Key_None\n    0 :/ 1   // Illegal -> should get\
+      \ cast to Key_None in HW"
+    role: refutes
+    note: Smoke randomizes key_length with illegal encodings, which are cast to Key_None. With hmac_en
+      set, this gives an invalid key length in HMAC mode.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 198
+    line_end: 199
+    quote: "if (invalid_cfg) begin\n                update_err_intr_code(SwInvalidConfig);"
+    role: refutes
+    note: The scoreboard predicts SwInvalidConfig on a start with Key_None and hmac_en. This is compared
+      against the ERR_CODE and INTR_STATE CSRs.
+  searches:
+  - what: sideload and SwInvalidConfig in hmac dv
+    where: hw/ip/hmac/dv
+    found: Sideload appears only in env config and package files. No sideload abort or revoke sequence
+      in the hmac dv sequences.
+  - what: key_length handling in smoke and scoreboard
+    where: hw/ip/hmac/dv/env
+    found: Random illegal key_length leads to invalid_cfg, and the scoreboard predicts SwInvalidConfig.
+  near_misses: []
+  items:
+  - id: cr_0f006fc77258
+    outcome: verified
+    reason: No test aborts an in-flight operation by revoking the key and checks that hmac_done is not
+      raised.
+    evidence: []
+  - id: cr_59caa8cb74a9
+    outcome: verified
+    reason: No test starts again after an abort, with hmac_err cleared and the key still invalid.
+    evidence: []
+  - id: cr_a578aba72de1
+    outcome: verified
+    reason: No test checks hmac_err for an abort caused by revoking the key mid-operation.
+    evidence: []
+  - id: cr_fb14b2d5a9e6
+    outcome: verified
+    reason: No test checks the sideload key_length read-back while the key manager provides no valid key.
+    evidence: []
+  - id: cr_af599a140af4
+    outcome: withdrawn
+    reason: hmac_smoke randomizes illegal key lengths, which become Key_None. With hmac_en set and hash
+      start issued, the scoreboard predicts SwInvalidConfig in ERR_CODE and INTR_STATE, and the CSR compare
+      fails the test if the design disagrees.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 10
+cost_usd: 0.09258340000000001
+error: null

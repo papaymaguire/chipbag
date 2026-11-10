@@ -1,0 +1,87 @@
+finding_hash: edd5a9a70e360783
+started_at: '2026-11-10T19:39:35Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four of the five items stand. The clearing-order item (cr_fadd412c3094) is withdrawn, because
+    two tests cover its gap. The two ECC tests discard the data they read, so they never compare it. The
+    lockout and cmd_avail items have no check I could find.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_ecc/smoke_test_mcu_mbox_ecc.c
+    line_start: 102
+    line_end: 102
+    quote: rand_data = mcu_mbox_read_sram_dword(mbox_num, rand_dword_addr);
+    role: supports
+    note: The data read after the injected ECC error is never compared; only interrupt and status bits
+      are checked.
+  - path: src/integration/test_suites/mcu_mbox_lock_return_one_during_zeroize/mcu_mbox_lock_return_one_during_zeroize.c
+    line_start: 80
+    line_end: 81
+    quote: if((lsu_read_32(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_LOCK + MCU_MBOX_NUM_STRIDE * mbox_num) & MCU_MBOX0_CSR_MBOX_LOCK_LOCK_MASK)
+      == 0) {
+    role: refutes
+    note: After execute is cleared, with a large DLEN so zeroize is still in progress, the test fails
+      unless LOCK reads 1. This checks the lock stays held during clearing.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/smoke_test_mcu_mbox_usr_lock_out_zero.c
+    line_start: 100
+    line_end: 100
+    quote: // 4. Caliptra will attempt gaining the lock and check that it is locked out for a handful
+      of attempts
+    role: refutes
+    note: Another requester is checked to be locked out while zeroization is in progress.
+  searches:
+  - what: ECC test data comparison
+    where: smoke_test_mcu_mbox_ecc
+    found: The read data is assigned to a variable and never compared.
+  - what: cmd_avail checks
+    where: test_suites
+    found: Only the ISR handlers and a wait; no explicit assertion check.
+  - what: Lock held during zeroize and another requester locked out
+    where: mcu_mbox_lock_return_one_during_zeroize, smoke_test_mcu_mbox_usr_lock_out_zero
+    found: Both tests check it. Together with mci_mbox_dlen_wrap this covers the cr_fadd412c3094 gap.
+  - what: Writes and reads by the original requester during the wipe
+    where: test_suites
+    found: No test; only an SRAM read in the ownership flow.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/smoke_test_mcu_mbox_usr_lock_out_zero.c
+    line_start: 100
+    line_end: 100
+    why_not: This tests lockout of a different user, not the original requester that released the lock.
+  items:
+  - id: cr_3295b0fbaf41
+    outcome: verified
+    reason: No test checks the releasing requester's SRAM or CSR writes and reads being blocked during
+      the wipe.
+    evidence:
+    - 2
+  - id: cr_fadd412c3094
+    outcome: withdrawn
+    reason: One test checks LOCK reads 1 during an in-progress zeroize and another that a second requester
+      is locked out. The dlen_wrap and zeroize tests check the SRAM is zero once the lock is back. Together
+      this covers the gap, apart from observing that clearing started.
+    evidence:
+    - 1
+    - 2
+  - id: cr_12dbdc943d69
+    outcome: verified
+    reason: No explicit check that notif_mbox*_cmd_avail is asserted.
+    evidence: []
+  - id: cr_20362a1989f1
+    outcome: verified
+    reason: The read data is not compared against the written data.
+    evidence:
+    - 0
+  - id: cr_feb29b2f4853
+    outcome: verified
+    reason: The data returned after a double-bit error is not checked.
+    evidence:
+    - 0
+  new_sources:
+  - path: src/integration/test_suites/mcu_mbox_lock_return_one_during_zeroize/mcu_mbox_lock_return_one_during_zeroize.c
+    reason: Checks the lock stays 1 during zeroize.
+submissions: 2
+rejections: []
+turns: 10
+cost_usd: 0.09375520000000001
+error: null

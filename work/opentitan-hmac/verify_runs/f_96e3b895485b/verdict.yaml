@@ -1,0 +1,77 @@
+finding_hash: 0404dd8bddc196e7
+started_at: '2026-11-10T21:10:55Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: All five items are checked by existing DV. The scoreboard predicts the invalid-config error
+    and the CFG-discard behaviour, and it predicts STATUS including fifo_full. The sim cfg imports the
+    shared sec_cm tests, which supply hmac_tl_intg_err.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 173
+    line_end: 177
+    quote: invalid_cfg = (`gmv(ral.cfg.digest_size) == SHA2_None) |
+    role: refutes
+    note: Scoreboard models the invalid-config condition, including Key_1024 with SHA2_256 in HMAC mode,
+      and expects the SwInvalidConfig error.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 297
+    line_end: 299
+    quote: return; // won't update configs if hash start
+    role: refutes
+    note: Model discards a CFG write while a hash is active; later CFG reads are compared against the
+      mirror.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 385
+    line_end: 385
+    quote: (hmac_fifo_full  << HmacStaMsgFifoFull)  |
+    role: refutes
+    note: fifo_full is part of the predicted STATUS value, which is checked on reads.
+  - path: hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    line_start: 34
+    line_end: 34
+    quote: '"{proj_root}/hw/dv/tools/dvsim/tests/sec_cm_tests.hjson",'
+    role: refutes
+    note: Imports the shared sec_cm tests, which provide hmac_tl_intg_err for BUS.INTEGRITY.
+  searches:
+  - what: tl_intg_err, invalid cfg, cfg write during hash, fifo_full
+    where: hw/ip/hmac
+    found: Scoreboard modelling and checking for each item; the sec_cm testplan maps BUS.INTEGRITY to
+      hmac_tl_intg_err.
+  near_misses: []
+  items:
+  - id: cr_b406ffbaa86a
+    outcome: withdrawn
+    reason: Shared sec_cm tests are imported, and the testplan maps BUS.INTEGRITY to hmac_tl_intg_err.
+      I did not open sec_cm_tests.hjson to confirm that the test is defined there.
+    evidence:
+    - 3
+  - id: cr_0731a47e9bb2
+    outcome: withdrawn
+    reason: The scoreboard ignores a CFG write while a hash is active, and CFG read checks would fail
+      if the DUT updated it.
+    evidence:
+    - 1
+  - id: cr_74e678770b65
+    outcome: withdrawn
+    reason: The scoreboard predicts the error for the Key_1024/SHA2_256 HMAC combination, and the sequences
+      generate it.
+    evidence:
+    - 0
+  - id: cr_c2c3736b2c77
+    outcome: withdrawn
+    reason: Same CFG-discard modelling in the scoreboard, plus coverage on the discard path.
+    evidence:
+    - 1
+  - id: cr_a0e17a44b5f3
+    outcome: withdrawn
+    reason: The scoreboard predicts STATUS including fifo_full and compares it on reads.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.0822212
+error: null

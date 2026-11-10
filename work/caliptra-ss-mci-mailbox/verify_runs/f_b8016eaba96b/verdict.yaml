@@ -1,0 +1,52 @@
+finding_hash: b4a10142af1eda8e
+started_at: '2026-11-10T19:36:17Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The two statements are consistent. The RDL reset value of 0 is the value during reset. After
+    reset release, hardware sets the lock through hwset (rst_mbox_lock_req) and loads the root AXI user
+    into mbox_user.
+  evidence:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 52
+    line_end: 53
+    quote: On reset release lock is set to root_user (MCU) to allow SRAM clearing
+    role: context
+    note: The RDL field has reset value 0 and hwset=true, so hardware can set it after reset.
+  - path: src/mci/rtl/mcu_mbox.sv
+    line_start: 363
+    line_end: 363
+    quote: assign hwif_in.mbox_lock.lock.hwset = (!hwif_out.mbox_lock.lock.value & hwif_out.mbox_lock.lock.swmod)
+      | rst_mbox_lock_req;
+    role: refutes
+    note: Hardware sets the lock after reset through rst_mbox_lock_req. This is a hardware set after reset
+      release, not the reset value.
+  - path: src/mci/rtl/mcu_mbox.sv
+    line_start: 382
+    line_end: 382
+    quote: 'assign hwif_in.mbox_user.user.next = rst_mbox_lock_req ? strap_root_axi_user :'
+    role: refutes
+    note: The owner is recorded in the mbox_user register, which gets the root user on the reset lock
+      request.
+  searches:
+  - what: How the lock is set after reset
+    where: src/mci/rtl/mcu_mbox.sv, src/mci/rtl/mcu_mbox_csr.rdl
+    found: The reset value is 0. After reset release, rst_mbox_lock_req drives hwset on the lock and loads
+      the root user into mbox_user.
+  near_misses:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 53
+    line_end: 53
+    why_not: The reset value of 0 looks like a conflict with the description. It is only the value while
+      reset is asserted, and the lock is then set by hardware.
+  items: []
+  new_sources: []
+  resolution: 'The RTL matches both statements. The field resets to 0, then hardware sets it right after
+    reset release and records root_user in MBOX_USER. The RDL description could say this explicitly, for
+    example: "resets to 0; hardware sets it on reset release."'
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.06169070000000001
+error: null

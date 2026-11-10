@@ -1,0 +1,70 @@
+finding_hash: 1d87bad3a622f28d
+started_at: '2026-11-10T19:39:36Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test sets a MBOX0 AXI_USER_LOCK bit and then checks that a write to the associated MBOX0_VALID_AXI_USER
+    register is rejected. The tests that touch the lock only set it or read it back. The random register
+    test explicitly lists lock-driven prediction as a TODO and does not include the lock group.
+  evidence:
+  - path: src/integration/test_suites/mci_reg_rand_test/mci_reg_rand_test.c
+    line_start: 108
+    line_end: 111
+    quote: // MBOX AXI USER LOCK registers should have test cases added.
+    role: supports
+    note: The test's own comment says the MBOX AXI USER LOCK registers have no test cases yet.
+  - path: src/integration/test_suites/mci_reg_rand_test/mci_reg_rand_test.c
+    line_start: 51
+    line_end: 52
+    quote: "        REG_GROUP_MCI_MBOX0,\n        REG_GROUP_MCI_MBOX1,"
+    role: supports
+    note: The tested groups include only the VALID_AXI_USER groups. The RW1S lock groups are never written,
+      so the lock stays 0 and no write is ever blocked.
+  - path: src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c
+    line_start: 41
+    line_end: 43
+    quote: '    if (lsu_read_32(SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_4)) {'
+    role: context
+    note: The test only reads the lock state. It does not attempt a write to VALID_AXI_USER and check
+      it is rejected.
+  - path: src/integration/test_suites/libs/caliptra_ss_lib/caliptra_ss_lib.c
+    line_start: 507
+    line_end: 511
+    quote: lsu_write_32(SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_0 + MCU_MBOX_AXI_CFG_STRIDE*mbox_num,
+      MCI_REG_MBOX0_AXI_USER_LOCK_0_LOCK_MASK);
+    role: context
+    note: The library helper sets the lock bits during configuration. It never checks that a later write
+      is rejected.
+  searches:
+  - what: Tests or testbench code that use MBOX0 AXI_USER_LOCK or VALID_AXI_USER
+    where: src/integration (test_suites and testbench)
+    found: Setup writes in caliptra_ss_lib.c, reads in smoke_test_mcu_hitless.c, and the register table
+      and prediction code in mci.c. Nothing tests a blocked write.
+  - what: Lock-aware expected-value prediction in mci.c
+    where: src/integration/test_suites/libs/mci/mci.c lines 967-981
+    found: update_axi_user logic exists in the model, but the rand test never writes the RW1S lock group.
+      The lock therefore stays 0 and the blocked-write path is never reached.
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 967
+    line_end: 981
+    why_not: The predictor models the lock, but the rand test never sets a lock bit, so a write to a locked
+      register is never exercised.
+  items:
+  - id: cr_b4c4fa8cc446
+    outcome: verified
+    reason: No stimulus sets a LOCK bit and then writes the associated VALID_AXI_USER register with a
+      pass/fail check. The only related checks observe the lock state. There is also no check that the
+      other four registers stay writable.
+    evidence:
+    - 0
+    - 1
+    - 2
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 12
+cost_usd: 0.10281290000000001
+error: null

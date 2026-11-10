@@ -1,0 +1,82 @@
+finding_hash: 566e15b9aad2e0d6
+started_at: '2026-11-10T19:39:45Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The HMAC sim cfg imports the shared csr_tests, tl_access_tests and sec_cm_tests lists. These
+    provide hmac_csr_rw and hmac_tl_intg_err, which both stimulate the TL device port and have checks.
+    tlul_assert is bound to the DUT's tl_i/tl_o. The "planned only" claim is wrong; the tests are defined
+    in shared hjson files, not in an HMAC-specific list.
+  evidence:
+  - path: hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    line_start: 33
+    line_end: 34
+    quote: "\"{proj_root}/hw/dv/tools/dvsim/tests/tl_access_tests.hjson\",\n                \"{proj_root}/hw/dv/tools/dvsim/tests/sec_cm_tests.hjson\"\
+      ,"
+    role: refutes
+    note: HMAC imports the shared TL access and sec_cm test lists, which supply hmac_tl_intg_err.
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 20
+    line_end: 23
+    quote: 'name: "{name}_tl_intg_err"'
+    role: refutes
+    note: Shared test definition that expands to hmac_tl_intg_err.
+  - path: hw/dv/sv/cip_lib/seq_lib/cip_base_vseq__tl_errors.svh
+    line_start: 474
+    line_end: 484
+    quote: virtual task check_tl_intg_error_response();
+    role: refutes
+    note: The test injects integrity errors and checks that the fatal alert fires repeatedly and the status
+      CSR is updated. This is a real check.
+  - path: hw/ip/hmac/dv/sva/hmac_bind.sv
+    line_start: 7
+    line_end: 14
+    quote: 'bind hmac tlul_assert #('
+    role: refutes
+    note: The TL-UL protocol assertion is bound to the HMAC device port (tl_i/tl_o).
+  searches:
+  - what: hmac_tl_intg_err and hmac_csr_rw test definitions
+    where: hw/ip/hmac and hw/dv/tools/dvsim/tests
+    found: Defined generically in shared hjson files and imported by hmac_sim_cfg.hjson. They are not
+      listed as HMAC-specific tests.
+  - what: The checking in the tl_intg_err vseq
+    where: hw/dv/sv/cip_lib/seq_lib/cip_base_vseq__tl_errors.svh
+    found: Injects errors and checks the alert and the status CSR.
+  near_misses:
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 20
+    line_end: 23
+    why_not: The test runs with +en_scb=0, but the vseq has its own alert and CSR checks, so it still
+      verifies the countermeasure.
+  items:
+  - id: cr_3514ec92d204
+    outcome: withdrawn
+    reason: hmac_csr_rw, the TL access tests and the tlul_assert bind exercise and check the TL-UL device
+      interface.
+    evidence:
+    - 0
+    - 3
+  - id: cr_ceb521c08f4e
+    outcome: withdrawn
+    reason: The port is bound to tlul_assert and used by every TL test. A structural port-type declaration
+      is verified by compilation and connectivity.
+    evidence:
+    - 3
+  - id: cr_b406ffbaa86a
+    outcome: withdrawn
+    reason: hmac_tl_intg_err injects integrity errors and checks the fatal alert and the status CSR.
+    evidence:
+    - 0
+    - 1
+    - 2
+  new_sources:
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    reason: Defines the shared tl_intg_err test.
+  - path: hw/dv/sv/cip_lib/seq_lib/cip_base_vseq__tl_errors.svh
+    reason: Implements the integrity-error stimulus and checks.
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.0692463
+error: null

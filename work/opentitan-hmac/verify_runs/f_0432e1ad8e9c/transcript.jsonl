@@ -1,0 +1,15 @@
+{"t": "2026-11-10T21:03:22Z", "event": "  \u2192 Grep: key_swap|sideload|hmac_idle|KEY_|msg_length_upper"}
+{"t": "2026-11-10T21:03:23Z", "event": "  \u2192 Grep: discard|key.*(ignored|unchanged)|wipe_secret"}
+{"t": "2026-11-10T21:03:25Z", "event": "  \u2192 Grep: write_discard_key|write_discard_config_and_key"}
+{"t": "2026-11-10T21:03:26Z", "event": "  \u2192 Grep: key|digest"}
+{"t": "2026-11-10T21:03:28Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:03:29Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T21:03:31Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:03:33Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T21:03:34Z", "event": "  \u2192 Grep: wr_key_during_hash|sideload|rand_key|use_sideload"}
+{"t": "2026-11-10T21:03:36Z", "event": "Checking the key-write-during-hash test, then I'll submit."}
+{"t": "2026-11-10T21:03:37Z", "event": "  \u2192 Grep: wr_key_during_hash"}
+{"t": "2026-11-10T21:03:49Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:03:58Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:04:03Z", "event": "I submitted the verdict as verified overall, but I withdrew one of the five items.\n\n- **cr_00446a3b2658 (key write during hash): withdrawn.**\n  - The check is indirect but real. The sequence writes random key values while a hash runs (`write_discard_key` in `hmac_base_vseq.sv`).\n  - The scoreboard (`hmac_scoreboard.sv`) leaves its modelled key unchanged on such a write and flags `SwUpdateSecretKeyInProcess`.\n  - The final digest is compared against the original-key prediction, so a changed key would fail the test.\n  - I did not confirm which tests turn `wr_key_during_hash` on. It is randomised in the base sequence, and the smoke sequence constrains it to 0.\n- **cr_67bea9a867f4 (KEY ignored when sideloaded): verified as a gap.** Block-level DV forces sideload off (`TODO(#31634)` in `hmac_base_vseq.sv`), so nothing there writes KEY under sideload and checks it is ignored.\n- **cr_781c9e811c5e (KEY writable only when idle): verified as a gap.** Only the mid-hash write is exercised. I found no test of other non-idle states or of a successful write while idle.\n- **cr_98ab14b5706d (DIGEST writable when `hmac_idle`=1): verified as a gap.** The scoreboard keys on `sha_en`, not `STATUS.hmac_idle`, and I found no check that a DIGEST write takes effect.\n- **cr_ce024c03a454 (MSG_LENGTH_UPPER writable when `hmac_idle`=1): verified as a gap.** Same reason: there is no explicit `hmac_idle`=1 check before the write.\n\nI did not look at the chip-level `keymgr_dpe_sideload_hmac_test` or the `sar_*` sequences directly. For the two `hmac_idle` items I relied on the scoreboard's `sha_en` handling."}
+{"t": "2026-11-10T21:04:03Z", "event": "[13 turns, $0.1143]"}

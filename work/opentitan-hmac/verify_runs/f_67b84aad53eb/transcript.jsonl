@@ -1,0 +1,10 @@
+{"t": "2026-11-10T20:56:06Z", "event": "  \u2192 Grep: 80 cycles|96 cycles|240|throughput|cycle count|num_cycles|ROUNDS|\\b80\\b"}
+{"t": "2026-11-10T20:56:08Z", "event": "  \u2192 Grep: HMAC_KEY_PROCESS_CYCLES|fifo_full|FIFO_FULL"}
+{"t": "2026-11-10T20:56:08Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:56:10Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:56:13Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:56:23Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:56:24Z", "event": "Resubmitting with a search recorded for each item."}
+{"t": "2026-11-10T20:56:33Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:56:36Z", "event": "I submitted the verdict as verified: none of the five items is checked by any test I could find.\n\n- **Block times (items 1 and 2):** nothing checks the 80-cycle SHA-2 256 block or the 96-cycle SHA-2 384/512 block. The scoreboard says so itself at `hw/ip/hmac/dv/env/hmac_scoreboard.sv:414`: \"future throughput test should check the accurate cycles\".\n- **Throughput (item 5):** the same deferred comment covers the 20% / 64 bytes per 80 clocks claim.\n- **240-cycle HMAC overhead (item 4):** the scoreboard models only the inner-key padding delay (80 cycles for SHA-2 256, 112 for 384/512) to predict FIFO reads. It does not model or check the outer-key and first-round-result cycles, or the total.\n- **FIFO full (item 3):** the scoreboard predicts the FIFO-full status flag and the FIFO-empty interrupt. Nothing checks that software cannot push more data until the current block is processed.\n\nThe first submission was rejected because it recorded too few searches. The second, with one search per item, was accepted."}
+{"t": "2026-11-10T20:56:36Z", "event": "[8 turns, $0.0903]"}

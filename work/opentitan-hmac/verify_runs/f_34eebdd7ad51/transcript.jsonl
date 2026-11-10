@@ -1,0 +1,8 @@
+{"t": "2026-11-10T19:36:53Z", "event": "  \u2192 Grep: wr_key_during_sha_only|key length should be seamless"}
+{"t": "2026-11-10T19:36:53Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/README.md"}
+{"t": "2026-11-10T19:36:56Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/data/hmac_testplan.hjson"}
+{"t": "2026-11-10T19:36:56Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:36:57Z", "event": "The plan item is a covergroup. It is not linked to this test, and the scoreboard samples it."}
+{"t": "2026-11-10T19:37:00Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:37:03Z", "event": "I withdrew the finding, and the verdict was accepted. `wr_key_during_sha_only_cg` is a functional covergroup entry in `hw/ip/hmac/data/hmac_testplan.hjson`, and it has no tests linked to it. The scoreboard samples it (`hw/ip/hmac/dv/env/hmac_scoreboard.sv:301-305`) whenever any test writes a key length with HMAC disabled. `hmac_test_vectors_sha_vseq` therefore needs no covergroup or check of its own. Nothing in the repository ties this plan item to that test."}
+{"t": "2026-11-10T19:37:03Z", "event": "[6 turns, $0.0312]"}

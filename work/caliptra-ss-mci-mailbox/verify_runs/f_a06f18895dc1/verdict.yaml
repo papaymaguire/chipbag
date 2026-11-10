@@ -1,0 +1,85 @@
+finding_hash: aacf34b0a3d2a40a
+started_at: '2026-11-10T20:40:49Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'I found no test with both stimulus and a failing check for items 1, 2, 3 and 5. Item 4 is
+    only partly settled: the valid_user and axi_param tests come close but I could not confirm they cover
+    that exact condition. My search was limited to the mailbox test suites and the shared library. I did
+    not search the testbench, the assertion files or the regression lists in depth.'
+  evidence:
+  - path: src/integration/test_suites/libs/caliptra_ss_lib/caliptra_ss_lib.c
+    line_start: 314
+    line_end: 323
+    quote: void mcu_mbox_clear_lock_out_of_reset(uint32_t mbox_num) {
+    role: context
+    note: The reset-lock helper only clears DLEN and EXECUTE and prints a message. It does not check that
+      MCU holds the lock after reset.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+    line_start: 126
+    line_end: 130
+    quote: uint32_t sram_size_kb = mcu_mbox_get_sram_size_kb(mbox_num);
+    role: context
+    note: The tests read the configured SRAM size. They do not sweep the sizes 0, 81, 512 and 2MB.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/smoke_test_mcu_mbox_axi_param.c
+    line_start: 47
+    line_end: 47
+    quote: uint32_t axi_select = xorshift32() % 5;
+    role: context
+    note: The randomization is of the Caliptra uC AXI user selection. It is not MCU LSU AXI USER randomization.
+  searches:
+  - what: tests that check the MCU lock after reset deassertion
+    where: test_suites mcu_mbox*
+    found: Only the mcu_mbox_clear_lock_out_of_reset helper, which clears the lock without checking it.
+  - what: SRAM size sweep and parameter configurations
+    where: test_suites yml files and C files
+    found: The tests only read the configured size. No sweep over sizes was found.
+  - what: randomized MCU LSU AXI USER and cross-agent USER check
+    where: test_suites
+    found: target_user compares MBOX_USER to MCU_LSU_AXI_USER, but the value is not randomized.
+  - what: valid user CSR works with LOCK set and the parameter not enabled
+    where: valid_user and axi_param tests
+    found: Close but not confirmed. valid_user has MCU acquire the lock and use CSR valid users. axi_param
+      checks CSR-configured users.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+    line_start: 96
+    line_end: 110
+    why_not: MCU acquires the lock and checks that the USER is MCU. This is not verified from a different-USER
+      agent, and it does not check the lock held at reset.
+  items:
+  - id: cp_09b1804b6739
+    outcome: verified
+    reason: No test checks that MCU holds the lock after reset deassertion. The helper only clears it.
+    evidence:
+    - 0
+  - id: cp_0f315bad6087
+    outcome: verified
+    reason: The USER value is read only by MCU itself. No second agent with a different USER ID checks
+      it.
+    evidence:
+    - 2
+  - id: cp_1938f018bdaa
+    outcome: verified
+    reason: The tests use whatever SRAM size is configured. I found no sweep over the listed sizes.
+    evidence:
+    - 1
+  - id: cp_524f95c33ab7
+    outcome: inconclusive
+    reason: valid_user and axi_param touch this area but I could not confirm that either covers the exact
+      condition.
+    evidence:
+    - 2
+  - id: cp_56c553b219c0
+    outcome: verified
+    reason: MCU_LSU_AXI_USER is not randomized on mailbox accesses. The only randomization found is the
+      Caliptra uC AXI selection.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.11364370000000001
+error: null

@@ -1,0 +1,38 @@
+finding_hash: 77194b43a2de4b9d
+started_at: '2026-11-10T20:34:59Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The TARGET_STATUS field description in the same RDL defines terminal as any non-BUSY value,
+    which answers the question. Writing any non-BUSY value (DATA_READY, CMD_COMPLETE, CMD_FAILURE) clears
+    TARGET_USER and TARGET_USER_VALID. A BUSY write is non-terminal.
+  evidence:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 106
+    line_end: 106
+    quote: Writing any terminal (non-BUSY) value ends the target's SRAM ownership, clears TARGET_USER
+      and TARGET_USER_VALID, and notifies Root.
+    role: refutes
+    note: Defines terminal as non-BUSY and states the clearing effect.
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 109
+    line_end: 120
+    quote: CMD_BUSY = 4'd0 {
+    role: context
+    note: 'Enum encodings: BUSY=0, DATA_READY=1, COMPLETE=2, FAILURE=3.'
+  searches:
+  - what: TARGET_USER_VALID and terminal definitions
+    where: repo-wide, mcu_mbox_csr.rdl
+    found: The TARGET_STATUS field desc defines terminal as non-BUSY.
+  near_misses: []
+  items: []
+  new_sources: []
+  resolution: Cross-reference the TARGET_STATUS field description from the TARGET_USER_VALID description,
+    or restate "terminal = any non-BUSY value". It is still unspecified whether a write of a reserved
+    encoding (4 to 15) counts as terminal.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0380506
+error: null

@@ -1,0 +1,69 @@
+finding_hash: eabb7f1d1e6548ec
+started_at: '2026-11-10T22:08:37Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: racl_error_o is left unconnected in the testbench, so nothing checks it. sleep_mode_i is driven
+    by a random sleep interface and the scoreboard models the pause-in-sleep behaviour, so that item is
+    withdrawn. The three structural items (no bus host, no chip IO pins, clk_i) are absences or a clock
+    that every test uses, so I left them inconclusive.
+  evidence:
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 62
+    line_end: 62
+    quote: .racl_error_o              (),
+    role: supports
+    note: racl_error output unconnected in the TB, so it is never checked.
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 69
+    line_end: 69
+    quote: .sleep_mode_i              (sleep)
+    role: refutes
+    note: sleep_mode is driven by the TB.
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 986
+    line_end: 986
+    quote: if ( (wdog_pause_in_sleep & synchronised_sleep_mode_i))
+    role: refutes
+    note: The scoreboard models the effect of sleep_mode on the watchdog.
+  searches:
+  - what: sleep_mode and racl_error in the aon_timer dv directory
+    where: hw/ip/aon_timer/dv
+    found: sleep_mode is driven and modelled; racl_error_o is unconnected and appears only in coverage
+      exclusions
+  near_misses:
+  - path: hw/ip/aon_timer/dv/cov/aon_timer_unr_non_racl_manually_excluded_excl.el
+    line_start: 23
+    line_end: 45
+    why_not: These are coverage exclusions for racl_error toggles, not checks.
+  items:
+  - id: cr_627c824e7226
+    outcome: inconclusive
+    reason: This is a structural absence of a bus host interface, with nothing specific to test.
+    evidence: []
+  - id: cr_8d65e39a5db1
+    outcome: inconclusive
+    reason: This is a structural absence of chip IO pins, with nothing specific to test.
+    evidence: []
+  - id: cr_e4e318bad395
+    outcome: inconclusive
+    reason: clk_i is used by every test, but no dedicated check exists.
+    evidence: []
+  - id: cr_a34add480316
+    outcome: verified
+    reason: racl_error_o is unconnected in the TB and no check covers it.
+    evidence:
+    - 0
+  - id: cr_b50528f0b75d
+    outcome: withdrawn
+    reason: sleep_mode is driven by the sleep interface and the scoreboard models the pause-in-sleep behaviour.
+    evidence:
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.040710800000000005
+error: null

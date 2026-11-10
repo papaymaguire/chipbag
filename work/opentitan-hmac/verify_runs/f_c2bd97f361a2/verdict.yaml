@@ -1,0 +1,62 @@
+finding_hash: 7cd23eae0c44b8a0
+started_at: '2026-11-10T19:43:20Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The 32-entry depth is exercised and checked. The scoreboard models the FIFO as 32 deep and
+    derives full as depth == 32. It checks every STATUS read against that model. hmac_back_pressure_vseq
+    is in the sim cfg and drives the FIFO full. The 32-bit width is covered only implicitly, by the digest
+    and message checks.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 671
+    line_end: 672
+    quote: "hmac_fifo_depth = hmac_wr_cnt - hmac_rd_cnt;\n      hmac_fifo_full  = hmac_fifo_depth == HMAC_MSG_FIFO_DEPTH_WR;"
+    role: refutes
+    note: The reference model hard-codes a depth of 32 (HMAC_MSG_FIFO_DEPTH_WR = 32) and derives full
+      from it.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 510
+    line_end: 510
+    quote: if ((`gmv(ral.status.fifo_depth)   != rd_fifo_depth) &&
+    role: refutes
+    note: A STATUS read raises uvm_error if the DUT fifo_depth differs from the model by more than +1.
+      The full bit goes through the same status prediction and the CSR read compare.
+  - path: hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    line_start: 73
+    line_end: 74
+    quote: "name: hmac_back_pressure\n      uvm_test_seq: hmac_back_pressure_vseq"
+    role: refutes
+    note: The back-pressure test is implemented and listed in the sim cfg. The finding only saw it as
+      a plan entry.
+  searches:
+  - what: fifo depth/full handling in the DV environment
+    where: hw/ip/hmac/dv
+    found: The scoreboard models depth 32 and full at 32. It checks the status.fifo_depth read. base_vseq
+      waits on fifo_depth <= 32 - burst_len before bursting writes.
+  - what: back_pressure test
+    where: hw/ip/hmac/dv
+    found: hmac_back_pressure_vseq exists and is registered in hmac_sim_cfg.hjson.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 97
+    line_end: 98
+    why_not: Coverage only records depth values; it is not a check. The scoreboard compare is the actual
+      check.
+  items:
+  - id: cr_7d33a2cc89ef
+    outcome: withdrawn
+    reason: The back_pressure test is implemented, and the scoreboard's 32-deep model is compared against
+      the DUT's STATUS fifo_depth/full on reads. The check is tolerant by +1, and the 32-bit width is
+      verified only indirectly through the data checks.
+    evidence:
+    - 0
+    - 1
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.10193150000000001
+error: null

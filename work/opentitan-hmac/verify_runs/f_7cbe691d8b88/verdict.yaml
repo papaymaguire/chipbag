@@ -1,0 +1,80 @@
+finding_hash: 2af49fc65c455ac7
+started_at: '2026-11-10T21:09:33Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that closes the gaps named for any of the five items. The scoreboard tracks
+    FIFO-full, idle and wipe, but nothing checks the specific missing behaviors. The key-update item rests
+    on the cited test and on a comment I found in hmac_base_vseq.sv. I did not read the test itself.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 482
+    line_end: 484
+    quote: // If wipe_secret is triggered, ensure the predicted value does not match the read out
+    role: supports
+    note: After a wipe, the scoreboard only checks that the digest differs. It does not check the internal
+      state.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 717
+    line_end: 718
+    quote: end else if (hmac_fifo_full_posedge && hmac_fifo_full) begin
+    role: context
+    note: The scoreboard tracks FIFO-full for status prediction. It does not check that writes are stalled.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 398
+    line_end: 398
+    quote: // randomly change key, config regs during msg wr, should trigger error or be discarded
+    role: context
+    note: Key writes during message writes are randomized. No check that the key is unchanged is evident.
+  searches:
+  - what: hmac_en=0 with Key_None 'not blocked' check
+    where: hw/ip/hmac/dv
+    found: No explicit directed check. Key_None is only handled in invalid-configuration prediction.
+  - what: FIFO-full back-pressure check
+    where: hw/ip/hmac/dv
+    found: Only status prediction and a coverage cross. No check that writes are stalled.
+  - what: hmac_idle STATUS reads and idle conditions
+    where: hw/ip/hmac/dv
+    found: Idle is predicted from the pin. No targeted test of the idle conditions.
+  - what: wipe_secret internal state check
+    where: hmac_scoreboard.sv
+    found: Only a digest-differs check.
+  - what: key unchanged while hashing
+    where: hw/ip/hmac/dv
+    found: Only a comment about random key writes. No check that the key is unchanged.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 101
+    line_end: 101
+    why_not: This is a coverage cross of FIFO-full, not a check.
+  items:
+  - id: cr_db590d70ed32
+    outcome: verified
+    reason: No explicit hmac_en=0 with Key_None 'not blocked' check.
+    evidence: []
+  - id: cr_1089c5d4e1c7
+    outcome: verified
+    reason: Only FIFO-full status prediction. No check that writes are stalled.
+    evidence:
+    - 1
+  - id: cr_c486e3895381
+    outcome: verified
+    reason: No test of the idle conditions beyond the generic scoreboard prediction.
+    evidence: []
+  - id: cr_b0906404bd67
+    outcome: verified
+    reason: Only a digest-differs check.
+    evidence:
+    - 0
+  - id: cr_00446a3b2658
+    outcome: verified
+    reason: No check that the key is unchanged. The sequence only randomizes key writes.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 6
+cost_usd: 0.0658292
+error: null

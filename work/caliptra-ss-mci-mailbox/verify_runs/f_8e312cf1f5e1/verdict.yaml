@@ -1,0 +1,88 @@
+finding_hash: f8ab9636e3a47d97
+started_at: '2026-11-10T20:39:59Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Only one test touches these counters: mcu_intr_handler. It fires events with software INTR_TRIG
+    writes and checks that the summed hardware counters equal a firmware count. That indirectly covers
+    "increments by 1 per event" (item 3), so I withdrew that item. Nothing drives the real hardware event
+    input to check rising-edge behaviour (items 1 and 5). Nothing separately checks the counter field
+    type or the 1-bit down-counter pulse (items 2 and 4); those are only implied by the counts matching.'
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 259
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: refutes
+    note: Fails the sim if the summed hardware notif counts differ from the firmware count of triggered
+      events. That indirectly checks increment-by-1 per event (item 3), though only in aggregate.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 215
+    line_end: 215
+    quote: lsu_read_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_CPTRA_MBOX_CMD_AVAIL_INTR_COUNT_R ) +
+    role: context
+    note: The test reads the count registers, never the *_COUNT_INCR_R registers. Events come from software
+      TRIG writes.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: context
+    note: Same aggregate check for the error counters, including the ERROR_MBOX0_ECC_UNC count.
+  searches:
+  - what: INTR_COUNT_INCR and count_incr usage in tests
+    where: whole repo
+    found: Only address maps, mci_reg.sv, mci_reg_uvm.sv and the coverage interface. No test uses them.
+  - what: INTR_COUNT_R usage in test suites
+    where: src/integration/test_suites
+    found: Only mcu_intr_handler.c checks them, via an aggregate sum against a firmware counter.
+  - what: Whether mcu_intr_handler is in a regression
+    where: regression yml files
+    found: It is in the Nightly Directed and Strict regressions.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 107
+    line_end: 111
+    why_not: Software TRIG writes do exercise the count increment. The check is an aggregate sum, and
+      the stimulus is a software trigger rather than a hardware input rising edge.
+  items:
+  - id: cr_ac50ef86787c
+    outcome: verified
+    reason: No test drives the hardware event input and checks the edge. Only software TRIG writes are
+      used.
+    evidence:
+    - 1
+  - id: cr_ad2b9f5593f2
+    outcome: inconclusive
+    reason: The field being a counter is an implementation property. It is only implied by the count registers
+      matching, with no direct check.
+    evidence:
+    - 1
+  - id: cr_ad3bc76d7645
+    outcome: withdrawn
+    reason: The mcu_intr_handler test fires one trigger per event, including CPTRA_MBOX_CMD_AVAIL and
+      MBOX1_CMD_AVAIL, and fails if the summed hardware counts differ from the firmware count. This indirectly
+      checks increment-by-1, although only in aggregate.
+    evidence:
+    - 0
+  - id: cr_af3a97a3f2b9
+    outcome: inconclusive
+    reason: The 1-bit down-counter pulse mechanism is internal. No test checks it directly.
+    evidence:
+    - 1
+  - id: cr_b17476f90b95
+    outcome: verified
+    reason: Same as the first item. The hardware-edge trigger is untested, because only software TRIG
+      stimulus exists.
+    evidence:
+    - 1
+    - 2
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: The only test that exercises the interrupt event counters.
+submissions: 2
+rejections: []
+turns: 13
+cost_usd: 0.16587179999999999
+error: null

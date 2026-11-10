@@ -1,0 +1,27 @@
+finding_hash: 0eae18db3bdd946f
+started_at: '2026-11-10T20:52:08Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The write-back exists at line 543: csr_wr writes error_code, which was just read from intr_state,
+    back to clear it. The finding''s claim that the clearing step is missing is wrong.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 541
+    line_end: 544
+    quote: "    csr_rd(.ptr(ral.intr_state), .value(error_code));\n    csr_wr(.ptr(ral.intr_state), .value(error_code));"
+    role: refutes
+    note: Read intr_state then write the same value back (W1C clear).
+  searches:
+  - what: read check_error_code in full
+    where: hmac_base_vseq.sv:532-547
+    found: csr_wr write-back present in the check_err=0 branch
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.0183689
+error: null

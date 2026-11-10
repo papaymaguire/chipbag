@@ -1,0 +1,112 @@
+finding_hash: 45c5187f3b07b697
+started_at: '2026-11-10T20:38:33Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks the pulse or counter behaviour of these four count_incr registers.
+    The only test that reads their count registers, `mcu_intr_handler`, triggers interrupts through the
+    software trigger registers. It never raises the real hardware events that drive the `hwset` input
+    of the incrementor pulse. The other hits are register masks in `mci.c` and coverpoints in `mci_top_cov_if.sv`,
+    and neither checks anything.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1548
+    line_end: 1549
+    quote: "This is implemented as a down-counter (1-bit) that will\n                decrement immediately\
+      \ on being set - resulting in a pulse"
+    role: context
+    note: The behaviour the items describe.
+  - path: src/mci/rtl/mci_reg.sv
+    line_start: 22281
+    line_end: 22281
+    quote: end else if(hwif_in.intr_block_rf.notif0_internal_intr_r.notif_mbox0_ecc_cor_sts.hwset) begin
+      // HW Set
+    role: context
+    note: The incrementor pulse is set only by the hardware hwset input. The software trigger bit (trig)
+      does not drive it.
+  - path: src/mci/rtl/mci_reg_top.sv
+    line_start: 833
+    line_end: 834
+    quote: always_comb mci_reg_hwif_in.intr_block_rf.error0_internal_intr_r.error_mbox0_ecc_unc_sts.hwset  =
+      mbox0_sram_double_ecc_error;
+    role: context
+    note: The pulse is driven by real mailbox ECC error events. The tests found never raise them while
+      checking the counters.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 64
+    line_end: 64
+    quote: lsu_write_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_TRIG_R, MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_TRIG_R_ERROR_MBOX0_ECC_UNC_TRIG_MASK             );
+    role: context
+    note: 'Near miss: the stimulus is a software trigger write, not a hardware event on the hwset input.'
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4810
+    line_end: 4810
+    quote: 'INTR_BLOCK_RF_ERROR_MBOX0_ECC_UNC_INTR_COUNT_INCR_R_cp : coverpoint i_mci_reg_top.i_mci_reg.field_storage.intr_block_rf.error_mbox0_ecc_unc_intr_count_incr_r;'
+    role: context
+    note: A coverpoint only. It checks nothing.
+  searches:
+  - what: count_incr names in tests, sequences and libs
+    where: whole repo
+    found: Only generated RTL, the UVM register model, coverage, SoC address map headers and the register
+      masks in `libs/mci/mci.c`.
+  - what: mbox ECC and target_done INTR_COUNT_R reads in tests
+    where: src/integration/test_suites
+    found: Only `mcu_intr_handler.c`, which sums the counters after software trigger writes.
+  - what: how the pulse is driven
+    where: src/mci/rtl/mci_reg.sv and mci_reg_top.sv
+    found: The pulse is set only by the status hwset input from real hardware events, not by the trigger
+      bit.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 159
+    line_end: 204
+    why_not: It compares a firmware count against the summed hardware count registers, but its stimulus
+      is software triggers, which do not reach the incrementor pulse. It does not check the pulse itself
+      or the 1-bit down-counter behaviour, so it cannot confirm the items.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2088
+    line_end: 2098
+    why_not: It only adds register mask entries for the count_incr registers. It does not check pulse
+      behaviour.
+  items:
+  - id: cr_948e0cfb6d3a
+    outcome: verified
+    reason: The counter attribute is untested. No check in the repo confirms the field behaves as a counter.
+    evidence:
+    - 0
+    - 4
+  - id: cr_96b7a083f521
+    outcome: verified
+    reason: No test reads or checks the incrementor pulse. This one is for mbox0 ecc_cor.
+    evidence:
+    - 0
+    - 1
+    - 3
+  - id: cr_97a9307feeea
+    outcome: verified
+    reason: No test checks the counter attribute of the mbox0 target_done incrementor.
+    evidence:
+    - 0
+    - 4
+  - id: cr_991e89c92ef8
+    outcome: verified
+    reason: No test checks the 1-bit down-counter pulse. This one is for mbox1 ecc_cor.
+    evidence:
+    - 0
+    - 1
+    - 3
+  - id: cr_9b97309f0dd7
+    outcome: verified
+    reason: The only counter-reading test uses software triggers rather than the hwset event input, so
+      the single-cycle pulse is not checked.
+    evidence:
+    - 1
+    - 2
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 17
+cost_usd: 0.1867675
+error: null

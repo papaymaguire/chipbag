@@ -1,0 +1,16 @@
+{"t": "2026-11-10T19:40:22Z", "event": "  \u2192 Grep: SwHashStartWhenShaDisabled|SwHashStartWhenActive|SwPushMsgWhenShaDisabled"}
+{"t": "2026-11-10T19:40:22Z", "event": "  \u2192 Grep: hmac_error_conditions|err_code_cg"}
+{"t": "2026-11-10T19:40:25Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:40:26Z", "event": "  \u2192 Grep: err_code|ERR_CODE|intr_hmac_err|hmac_err"}
+{"t": "2026-11-10T19:40:29Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_error_vseq.sv"}
+{"t": "2026-11-10T19:40:30Z", "event": "  \u2192 Grep: wr_key_during_sha_en|wr_config_during_hash|hash_start_when|trig_rand_hash_start|hash_start_sha_disabled|sha_en.*=\\s*0|clear_sha_en|invalid_cfg"}
+{"t": "2026-11-10T19:40:32Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T19:40:33Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T19:40:33Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv"}
+{"t": "2026-11-10T19:40:38Z", "event": "  \u2192 Grep: SwPushMsgWhenDisallowed"}
+{"t": "2026-11-10T19:40:38Z", "event": "  \u2192 Grep: dut_reg_chk|do_read_check"}
+{"t": "2026-11-10T19:40:41Z", "event": "Checking whether the scoreboard skips the read check for `err_code`. If it doesn't, I'll submit."}
+{"t": "2026-11-10T19:40:41Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env && sed -n 495,560p hmac_scoreboard.sv && sed -n 1041,1060p hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:40:56Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:00Z", "event": "I withdrew the finding for all three items, and the verdict was accepted. The test it cites, `hmac_error_conditions_test`, doesn't exist in the repository. The HMAC scoreboard (`hw/ip/hmac/dv/env/hmac_scoreboard.sv`) does check all three items.\n\n- **`SwHashStartWhenShaDisabled` (0x2):** The scoreboard predicts this code when a start or continue arrives while SHA is disabled. The read of `err_code` is compared against that prediction, so a wrong value fails the test. `trigger_hash` in `hmac_base_vseq.sv` creates the condition with SHA disabled.\n- **`SwHashStartWhenActive` (0x4):** The scoreboard predicts this code in the remaining case. `hmac_smoke_vseq.sv` creates the condition through `do_hash_start_when_active` and `trigger_hash_when_active`.\n- **`SwPushMsgWhenShaDisabled` (unused):** The scoreboard predicts `SwPushMsgWhenDisallowed` (5) for a push with SHA disabled and never predicts 1. The checked read would catch a DUT that reported 1.\n\nI did not inspect the regression test list, so I haven't confirmed that these sequences run in regression."}
+{"t": "2026-11-10T19:41:00Z", "event": "[14 turns, $0.1067]"}

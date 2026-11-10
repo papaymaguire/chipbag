@@ -1,0 +1,15 @@
+{"t": "2026-11-10T20:35:57Z", "event": "  \u2192 Grep: TARGET_USER_VALID"}
+{"t": "2026-11-10T20:35:57Z", "event": "  \u2192 Grep: 0xFFFF_?FFFF|MBOX_LOCK"}
+{"t": "2026-11-10T20:36:00Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mbox_csr_zeros_after_release/smoke_test_mbox_csr_zeros_after_release.c"}
+{"t": "2026-11-10T20:36:00Z", "event": "  \u2192 Grep: TARGET_USER|0xFFFFFFFF|0xffffffff"}
+{"t": "2026-11-10T20:36:03Z", "event": "  \u2192 Grep: second|TARGET_STATUS"}
+{"t": "2026-11-10T20:36:12Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:36:14Z", "event": "  \u2192 Grep: MBOX_LOCK|AXI_USER|axi_user|0xFFFFFFFF|0xffffffff"}
+{"t": "2026-11-10T20:36:15Z", "event": "  \u2192 Grep: MBOX_LOCK"}
+{"t": "2026-11-10T20:36:16Z", "event": "  \u2192 Grep: MBOX_LOCK|MBOX_EXECUTE|MBOX_CMD\\b"}
+{"t": "2026-11-10T20:36:18Z", "event": "Checking whether pass_data covers the positive lock-then-write case for item 2."}
+{"t": "2026-11-10T20:36:19Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_pass_data/cptra_smoke_test_mcu_mbox_pass_data.c"}
+{"t": "2026-11-10T20:36:22Z", "event": "  \u2192 Grep: DEADBEEF|0xdeadbeef|DLEN"}
+{"t": "2026-11-10T20:36:33Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:36:37Z", "event": "I submitted the verdict as verified: the finding stands overall, with item 2 left inconclusive. I only read the release and target-user tests closely. For items 1\u20133 I relied on grep results and a read of `smoke_test_mcu_mbox_pass_data`.\n\n- **cr_7f11ce310155 (5 trusted users):** verified as untested. No test checks each of the 5 slots or rejects a sixth ID.\n- **cr_9cdd5a9fb770 (lock needed to write CSRs):** inconclusive. `smoke_test_mcu_mbox_pass_data` has the Caliptra user acquire the lock, then write CMD, DLEN and EXECUTE. CMD_STATUS and USER are not covered, and the MCU only reads DLEN back.\n- **cr_bb5623ddc32e (only trusted users, default user and MCU can lock):** verified as untested. The invalid-user test reads `MBOX_LOCK` but never checks that the lock stays free, and nothing checks access by the default user 0xFFFF_FFFF.\n- **cr_045d5c38ebd5 (second Target waits for the first):** verified as untested. `smoke_test_mcu_mbox_target_user` runs a single Target and never grants a second one.\n- **cr_261014384edd (registers unlock on release):** verified as untested. `smoke_test_mbox_csr_zeros_after_release` only reads TARGET_USER and TARGET_USER_VALID back as 0 after release and never rewrites them."}
+{"t": "2026-11-10T20:36:37Z", "event": "[13 turns, $0.1276]"}

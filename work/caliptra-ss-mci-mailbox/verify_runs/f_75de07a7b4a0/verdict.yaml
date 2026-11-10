@@ -1,0 +1,57 @@
+finding_hash: e9abfa7c621033fb
+started_at: '2026-11-10T20:39:10Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test writes MBOX*_VALID_AXI_USER after setting AXI_USER_LOCK and then checks that the value
+    is unchanged. The write-while-unlocked / write-after-locked behaviour is therefore untested for both
+    items. Tests only program the user and lock registers as setup, or read them back.
+  evidence:
+  - path: src/integration/test_suites/libs/caliptra_ss_lib/caliptra_ss_lib.c
+    line_start: 501
+    line_end: 511
+    quote: lsu_write_32(SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_0 + MCU_MBOX_AXI_CFG_STRIDE*mbox_num,
+      axi_user_id[0]);
+    role: context
+    note: The library sets the users and then the locks as configuration. It does not attempt a write
+      after lock or check read-only behaviour.
+  - path: src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c
+    line_start: 41
+    line_end: 43
+    quote: if (lsu_read_32(SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_4)) {
+    role: context
+    note: The test only reads the lock and the user value. It makes no write-after-lock attempt and has
+      no failing check.
+  searches:
+  - what: tests referencing VALID_AXI_USER / AXI_USER_LOCK
+    where: src/integration/test_suites
+    found: Only config setup in caliptra_ss_lib.c, a read in the hitless smoke test, and register tables
+      in mci.c. The mbox axi_param test mentions the user values only in a comment.
+  - what: locked-write-ignored check
+    where: src/integration/test_suites and src/integration/testbench
+    found: None found.
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 273
+    line_end: 277
+    why_not: These are generic register-table entries. Nothing there writes after lock and checks that
+      the value is unchanged.
+  items:
+  - id: cr_9a48d7d6fd74
+    outcome: verified
+    reason: No test writes the register while it is locked or unlocked and checks the result. The searches
+      found only configuration writes.
+    evidence:
+    - 0
+  - id: cr_da0583be4faf
+    outcome: verified
+    reason: No test checks that the register is read-only after lock. The tests only read it back.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.09847650000000001
+error: null

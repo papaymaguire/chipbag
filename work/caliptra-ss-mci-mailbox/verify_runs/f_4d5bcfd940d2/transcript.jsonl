@@ -1,0 +1,14 @@
+{"t": "2026-11-10T19:39:40Z", "event": "  \u2192 Grep: MBOX0_AXI_USER_LOCK|mbox0_axi_user_lock|MBOX0_VALID_AXI_USER|mbox0_valid_axi_user"}
+{"t": "2026-11-10T19:39:41Z", "event": "  \u2192 Grep: MBOX_AXI_USER_LOCK|MBOX0_AXI_USER_LOCK|mcu_mbox0_axi_user_lock"}
+{"t": "2026-11-10T19:39:44Z", "event": "  \u2192 Grep: AXI_USER_LOCK"}
+{"t": "2026-11-10T19:39:45Z", "event": "  \u2192 Grep: AXI_USER_LOCK"}
+{"t": "2026-11-10T19:39:47Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/libs/mci/mci.c"}
+{"t": "2026-11-10T19:39:47Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c"}
+{"t": "2026-11-10T19:39:50Z", "event": "  \u2192 Grep: update_axi_user|REG_GROUP_MCI_MBOX0_RW1S"}
+{"t": "2026-11-10T19:39:53Z", "event": "  \u2192 Grep: REG_GROUP_MCI_MBOX0\\b|REG_GROUP_MCI_MBOX0_RW1S|MBOX0_RW1S"}
+{"t": "2026-11-10T19:39:53Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/libs/mci/mci.c"}
+{"t": "2026-11-10T19:39:55Z", "event": "Checking whether the random register test writes lock bits and then VALID_AXI_USER and compares against a model."}
+{"t": "2026-11-10T19:39:55Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mci_reg_rand_test/mci_reg_rand_test.c"}
+{"t": "2026-11-10T19:40:06Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:40:09Z", "event": "I submitted the verdict as verified: the finding stands, because no test checks that a write to a locked MBOX0_VALID_AXI_USER register is rejected.\n\n- **Random register test:** `mci_reg_rand_test.c` writes only the VALID_AXI_USER groups, never the lock group. The lock therefore stays 0 and no write is ever blocked. Its own comment says \"MBOX AXI USER LOCK registers should have test cases added.\"\n- **Other lock users:** `smoke_test_mcu_hitless.c` only reads a lock bit, and `caliptra_ss_lib.c` only sets the lock bits during setup. Neither attempts a write afterwards and checks it is rejected.\n- **Other four registers:** nothing checks that they stay writable while their own LOCK bits are clear.\n- **Near miss:** `mci.c` has lock-aware expected-value logic, but it is never reached because the rand test never sets a lock bit."}
+{"t": "2026-11-10T19:40:09Z", "event": "[12 turns, $0.1028]"}

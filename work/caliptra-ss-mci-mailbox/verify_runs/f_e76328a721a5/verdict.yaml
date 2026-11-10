@@ -1,0 +1,49 @@
+finding_hash: 7b5245c9cc1ec72d
+started_at: '2026-11-10T19:37:28Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The warm-reset test does not check an interrupt. But nothing in the repository ties plan item
+    p1.k2 (ECC interrupt to MCU) to this test. A different test, smoke_test_mcu_mbox_ecc, checks the single-bit
+    and double-bit ECC interrupts, so it realizes that plan item.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_ecc/smoke_test_mcu_mbox_ecc.c
+    line_start: 104
+    line_end: 107
+    quote: '        // Check if SB ECC interrupt has been logged'
+    role: refutes
+    note: Dedicated ECC test checks the SB ECC interrupt and fails if it is not set. This covers the interrupt
+      half of the plan item.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_csrs_warm_rst/smoke_test_mcu_mbox_csrs_warm_rst.c
+    line_start: 150
+    line_end: 151
+    quote: '        // Check that HW status is populated'
+    role: context
+    note: The warm-reset test only checks HW status. Its purpose is CSR reset behaviour, not the ECC interrupt.
+  searches:
+  - what: references to the test name in the repo
+    where: whole repo
+    found: Only regression lists and ymls. No stated link to plan item p1.k2. I did not open the xlsx.
+  - what: interrupt checks in the warm_rst test
+    where: smoke_test_mcu_mbox_csrs_warm_rst.c
+    found: none
+  - what: other users of the single-bit ECC injection command
+    where: whole repo
+    found: smoke_test_mcu_mbox_ecc.c checks the SB and DB ECC interrupts
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_csrs_warm_rst/smoke_test_mcu_mbox_csrs_warm_rst.c
+    line_start: 138
+    line_end: 157
+    why_not: The test really lacks an interrupt check, but the plan link is inferred, and another test
+      covers the plan item.
+  items: []
+  new_sources:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_ecc/smoke_test_mcu_mbox_ecc.c
+    reason: Realizes the ECC interrupt plan item
+  resolution: No test change is needed. The plan row for p1.k2 should link to smoke_test_mcu_mbox_ecc.
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.052033
+error: null

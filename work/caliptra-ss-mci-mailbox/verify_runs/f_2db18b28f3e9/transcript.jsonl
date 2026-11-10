@@ -1,0 +1,11 @@
+{"t": "2026-11-10T19:41:53Z", "event": "  \u2192 Grep: count_incr|intr_count"}
+{"t": "2026-11-10T19:41:53Z", "event": "  \u2192 Grep: mbox1_ecc_cor_intr_count|mbox0_cmd_avail_intr_count"}
+{"t": "2026-11-10T19:41:55Z", "event": "Those C tests likely match generic \"intr_count\" in other contexts. Check specifics."}
+{"t": "2026-11-10T19:41:56Z", "event": "  \u2192 Grep: notif_mbox[01]_(ecc_cor|cmd_avail|target_done)_intr_count"}
+{"t": "2026-11-10T19:41:56Z", "event": "  \u2192 Grep: intr_count_incr"}
+{"t": "2026-11-10T19:41:58Z", "event": "Coverage only, no check. Quick check for tests touching mbox notif counters."}
+{"t": "2026-11-10T19:41:58Z", "event": "  \u2192 Grep: notif_mbox[01]_\\w*_intr_count|NOTIF_MBOX[01]_\\w*_INTR_COUNT"}
+{"t": "2026-11-10T19:42:00Z", "event": "  \u2192 Grep: notif_mbox[01]_\\w*_intr_count|NOTIF_MBOX[01]_\\w*_INTR_COUNT"}
+{"t": "2026-11-10T19:42:08Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:42:11Z", "event": "I submitted the verdict as verified: none of the five items is tested. I found no test or checker that verifies the increment-pulse behaviour for any of them.\n\n- **RTL, register model and coverage:** The `*_count_incr_r` fields appear only in the generated RTL, the UVM register model, and coverpoints in `src/mci/coverage/mci_top_cov_if.sv`. The coverpoints only sample values, so they can't fail a test.\n- **Integration tests:** `src/integration` has no references to `intr_count_incr`. Tests only touch the `*_INTR_COUNT_R` count registers. `mcu_intr_handler.c` sums them and `libs/mci/mci.c` lists them, but neither checks the increment pulse or compares against an expected value.\n\nAll five items get the same outcome because the same searches cover them."}
+{"t": "2026-11-10T19:42:11Z", "event": "[8 turns, $0.0575]"}

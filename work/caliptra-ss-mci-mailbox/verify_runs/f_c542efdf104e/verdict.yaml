@@ -1,0 +1,37 @@
+finding_hash: 4f0fc0425404ecef
+started_at: '2026-11-10T19:37:24Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: 'The test code matches the finding''s description: it writes the FW image, DLEN, command and
+    execute, then polls for COMPLETE, and never reads data back. But I could not find the quoted plan
+    sentence in the test plan spreadsheet or elsewhere in the repo. Nothing in the repo ties plan item
+    p1 to this test. The only related plan row is "MCU Hitless Update Flow" (Subsystem Test Plan B93).
+    The test is a hitless FW image writer, so the plan-to-test link looks inferred and the mismatch is
+    not established.'
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mcu_mbox_soc_agent_write_fw_image.svh
+    line_start: 265
+    line_end: 265
+    quote: if (rd_data == MCU_MBOX_CMD_COMPLETE) begin
+    role: context
+    note: The test only polls cmd status for complete. It never reads back mailbox data.
+  searches:
+  - what: Plan sentence 'sends data back' / 'MCU receives it' in the xlsx and repo-wide
+    where: docs/Caliptra_Gen2_SS_TestPlan.xlsx and the whole repo
+    found: No matches
+  - what: '''write_fw_image'' or ''mcu_mbox'' in the plan xlsx'
+    where: docs/Caliptra_Gen2_SS_TestPlan.xlsx
+    found: No matches. The only related row is 'MCU Hitless Update Flow' (B93).
+  - what: Test dispatch
+    where: src/integration/testbench/caliptra_ss_top_tb_soc_bfm.sv
+    found: Dispatched via MCU_MBOX_SOC_AGENT_WRITE_FW_IMAGE with no link to a plan item
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0566407
+error: null

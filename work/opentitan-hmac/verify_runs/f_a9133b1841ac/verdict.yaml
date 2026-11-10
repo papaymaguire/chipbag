@@ -1,0 +1,90 @@
+finding_hash: f2e32b7543955b6b
+started_at: '2026-11-10T20:57:02Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks any of the five items. The DV forces CFG.sideload to 0. The only
+    sideload test is a firmware test, and it covers the SwInvalidConfig error on an invalid key, not these
+    items.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: '// TODO(#31634): Disable sideloading for now.'
+    role: supports
+    note: The DV forces sideload off in randomized configs.
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 143
+    line_end: 143
+    quote: has no effect on the sideloaded key, as the key manager delivers it in a fixed order.
+    role: context
+    note: Spec statement for key_swap.
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    line_start: 214
+    line_end: 216
+    quote: // Starting HMAC with an invalid sideload key must be blocked.
+    role: context
+    note: The firmware test checks the invalid-key start case, which is not one of the five items.
+  searches:
+  - what: sideload/key_valid/key_swap in the hmac DV env, scoreboard and sequences
+    where: hw/ip/hmac/dv
+    found: Sideload is disabled in the base vseq. The scoreboard applies key_swap only to register keys.
+      No sideload checks.
+  - what: sideload references in hmac hjson, sv, md and core files
+    where: hw/ip/hmac
+    found: There is a key_sideload agent and a tb interface, but sideload is forced off. The sec_cm testplan
+      has a sec_cm_key_sideload entry.
+  - what: HMAC sideload firmware tests
+    where: sw/device/tests
+    found: keymgr_dpe_sideload_hmac_test.c checks the SwInvalidConfig error for an invalid key. It does
+      not cover key replacement, abort clearing of SHA-2 state, valid held for a whole operation, key_swap
+      on a sideloaded key, or the absence of a key copy.
+  near_misses:
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    line_start: 205
+    line_end: 227
+    why_not: It tests starting with an invalid key and the resulting error. It does not check that the
+      digest or state is cleared on abort.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 861
+    line_end: 862
+    why_not: key_swap is modelled for register keys only.
+  items:
+  - id: cr_291fea02ab56
+    outcome: verified
+    reason: Neither DV nor the firmware test replaces the key mid-operation.
+    evidence:
+    - 0
+    - 2
+  - id: cr_2bd90963e6d1
+    outcome: verified
+    reason: No test checks that the digest or SHA-2 state is cleared after an abort. The firmware test
+      only covers a blocked start.
+    evidence:
+    - 0
+    - 2
+  - id: cr_4fa240172006
+    outcome: verified
+    reason: No test checks the valid indication across an operation. DV has sideload disabled.
+    evidence:
+    - 0
+  - id: cr_562194d14c29
+    outcome: verified
+    reason: The scoreboard applies key_swap only to register keys, and sideload is off in DV.
+    evidence:
+    - 0
+    - 1
+  - id: cr_7eee2f253918
+    outcome: verified
+    reason: No test checks that HMAC keeps no copy of the key.
+    evidence:
+    - 0
+  new_sources:
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    reason: The only HMAC sideload test. It covers invalid-key blocking only.
+submissions: 2
+rejections: []
+turns: 11
+cost_usd: 0.0765157
+error: null

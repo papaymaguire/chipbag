@@ -1,0 +1,12 @@
+{"t": "2026-11-10T21:03:23Z", "event": "  \u2192 Grep: byte_addr|addr\\[1:0\\]|\\[1:0\\]|byte_en|a_mask|wr_addr"}
+{"t": "2026-11-10T21:03:24Z", "event": "  \u2192 Grep: msg_fifo|MSG_FIFO|win"}
+{"t": "2026-11-10T21:03:27Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T21:03:27Z", "event": "  \u2192 Grep: wr_mask"}
+{"t": "2026-11-10T21:03:30Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T21:03:33Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:03:38Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/dv/sv; grep -rn \"get_addr_from_offset\" dv_base_reg/dv_base_reg_block.sv | head -3; grep -n \"addr\\b.*\\[1:0\\]\\|\\[1:0\\]\\|~.*3\" cip_lib/cip_base_vse"}
+{"t": "2026-11-10T21:03:40Z", "event": "Checking whether the TL agent keeps address bits [1:0] on the sub-word writes. Then I'll submit."}
+{"t": "2026-11-10T21:03:42Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/dv/sv; grep -rn \"a_addr\\|addr\" tl_agent/tl_seq_item.sv dv_utils/../cip_lib/cip_base_vseq.sv 2>/dev/null | grep -i \"align\\|\\[1:0\\]\\|\\[.*:2\\]\\|mas"}
+{"t": "2026-11-10T21:03:52Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:03:55Z", "event": "I submitted the verdict as verified: the finding stands, and the MSG_FIFO address-bits item is only partly tested.\n\n- **What the DV does:** `hmac_base_vseq.sv:358` randomizes a contiguous byte mask and a write address anywhere in the window. The scoreboard checks the resulting digest. So sub-word writes do happen.\n- **What's missing:** the mask and address are chosen independently. The scoreboard builds the expected message from the mask alone (`hmac_scoreboard.sv:157-162`) and ignores the address. Nothing checks that the write offset depends only on address bits [1:0].\n- **What I didn't confirm:** the TL agent requires addresses to be aligned to the access size (`tl_seq_item.sv:37`). I didn't trace how `tl_access` sets the size, so I couldn't confirm that the low address bits reach the DUT unchanged.\n\nI didn't find a test elsewhere in the repository that covers this."}
+{"t": "2026-11-10T21:03:55Z", "event": "[10 turns, $0.0731]"}

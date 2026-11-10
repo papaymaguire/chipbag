@@ -1,0 +1,50 @@
+finding_hash: 7c8596ffb235f8d4
+started_at: '2026-11-10T20:56:56Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The HMAC DV randomizes the message write address across the whole MSG_FIFO window (0x1000..0x17FF).
+    The scoreboard checks that the data is accepted and the digest is correct, so a FIFO that only decoded
+    a single address would fail. The requirement is tested.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 103
+    line_end: 105
+    quote: "constraint hmac_base_vseq::wr_addr_c {\n  wr_addr inside {[HMAC_MSG_FIFO_BASE : HMAC_MSG_FIFO_LAST_ADDR]};\n\
+      }"
+    role: refutes
+    note: 'Stimulus: writes go to randomized addresses across the whole FIFO window.'
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 459
+    line_end: 460
+    quote: '`DV_CHECK_FATAL(randomize(wr_addr, wr_mask) with {wr_mask == ''1;})'
+    role: refutes
+    note: The write address is re-randomized for each word written.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 143
+    line_end: 143
+    quote: 'if ((item.a_addr & addr_mask) inside {[HMAC_MSG_FIFO_BASE : HMAC_MSG_FIFO_LAST_ADDR]}) begin'
+    role: refutes
+    note: 'Check: the scoreboard treats any write in the window as a message push and compares the digest.'
+  searches:
+  - what: MSG_FIFO address window usage in HMAC DV
+    where: hw/ip/hmac/dv
+    found: wr_addr is randomized over the full window; the scoreboard models any write in the window as
+      a FIFO push
+  near_misses: []
+  items:
+  - id: cr_4be360be4489
+    outcome: withdrawn
+    reason: Writes to random addresses across the window are modelled by the scoreboard and the digest
+      is checked, so the wide-address behaviour is exercised and checked.
+    evidence:
+    - 0
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0427538
+error: null

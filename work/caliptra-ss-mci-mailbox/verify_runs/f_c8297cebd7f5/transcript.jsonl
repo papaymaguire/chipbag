@@ -1,0 +1,15 @@
+{"t": "2026-11-10T20:42:01Z", "event": "  \u2192 Grep: intr_count_incr|notif_mbox0_cmd_avail_intr_count|notif_cmd_avail_intr_count"}
+{"t": "2026-11-10T20:42:02Z", "event": "  \u2192 Grep: intr_count_r|intr_count_incr"}
+{"t": "2026-11-10T20:42:04Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:42:04Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:42:07Z", "event": "  \u2192 Grep: notif_mbox[01]_(cmd_avail|target_done|ecc_cor)_intr_count|NOTIF_MBOX[01]_(CMD_AVAIL|TARGET_DONE)_INTR_COUNT|notif_mbox0_ecc_cor"}
+{"t": "2026-11-10T20:42:10Z", "event": "  \u2192 Grep: intr_count_r|INTR_COUNT_R|intr_count_incr"}
+{"t": "2026-11-10T20:42:10Z", "event": "  \u2192 Grep: INTR_COUNT|intr_count"}
+{"t": "2026-11-10T20:42:12Z", "event": "  \u2192 Grep: NOTIF.*INTR_COUNT"}
+{"t": "2026-11-10T20:42:14Z", "event": "Checking whether the interrupt-handler test actually compares these counter sums against something, since that would count as a check."}
+{"t": "2026-11-10T20:42:15Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T20:42:20Z", "event": "  \u2192 Grep: notif_mbox0_cmd_avail_intr_count_incr_r|notif_mbox0_ecc_cor_intr_count_incr_r"}
+{"t": "2026-11-10T20:42:21Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T20:42:31Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:42:35Z", "event": "I submitted the verdict as verified: none of the five items is checked by any test I could find.\n\n- **What I searched:** I searched the whole repository for the per-notification counters (the `notif_mbox0`/`mbox1` `cmd_avail`, `target_done` and `ecc_cor` interrupt counters) and the incrementor pulse register. Outside the register description and generated register files, they appear only in the coverage-generation script and the coverage interface. Those collect coverage and check nothing.\n- **Closest check:** `mcu_intr_handler.c` sums about 40 notification counters, including all six of those, and compares the total with the software interrupt-handler count. It never reads the incrementor pulse register or any single counter, and it triggers events through the software trigger registers, not the hardware input. The register description (`mci_reg.rdl`) says the pulse is wired to both the hardware set and the software trigger. So this test cannot confirm the 1-cycle pulse, the pulse mirroring the event, or an increment on the rising edge of the hardware input.\n\nI did not read the rest of `mcu_intr_handler.c` to confirm which of those counters its software triggers actually fire. That doesn't change the outcome, since the sum comparison is too coarse to check any single counter."}
+{"t": "2026-11-10T20:42:35Z", "event": "[13 turns, $0.1249]"}

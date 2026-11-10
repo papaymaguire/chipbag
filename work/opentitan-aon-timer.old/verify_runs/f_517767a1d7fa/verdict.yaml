@@ -1,0 +1,94 @@
+finding_hash: e53d4e1ab7ebaa4b
+started_at: '2026-11-10T22:06:41Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Items 2 and 3 are withdrawn. The DV scoreboard checks the 64-bit threshold and the prescaler
+    scaling. Items 1 and 5 stand. Nothing checks the escalation halt, or that a bus write completes before
+    the AON register updates. Item 4 is inconclusive.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 933
+    line_end: 934
+    quote: "          if (wkup_count <= wkup_thold) begin\n            wkup_num = ((wkup_thold - wkup_count)\
+      \ * (prescaler + 1));"
+    role: refutes
+    note: Scoreboard models 64-bit wkup_thold and the (prescaler+1) scaling of expiry time, checking interrupts
+      against it.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 196
+    line_end: 196
+    quote: '  write_wkup_reg(ral.wkup_thold_hi, wkup_thold[63:32]);'
+    role: refutes
+    note: Random 64-bit threshold is written through hi and lo registers.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+    line_start: 55
+    line_end: 55
+    quote: '  csr_utils_pkg::csr_wr(ral.wkup_ctrl.prescaler, prescaler);'
+    role: refutes
+    note: Random prescaler is applied up to the maximum, then wait_for_interrupt runs against the scoreboard
+      timing model.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 208
+    line_end: 208
+    quote: '  cfg.lc_escalate_en_vif.drive(0);'
+    role: context
+    note: DV only drives escalation at reset and then disables it, so no test checks that counting halts
+      during escalation.
+  searches:
+  - what: escalation handling in scoreboard and sequences
+    where: hw/ip/aon_timer/dv
+    found: The scoreboard has no escalate check. Sequences only drive lc_escalate_en at reset and disable
+      it afterwards.
+  - what: threshold and prescaler checking
+    where: scoreboard and vseqs
+    found: The scoreboard models the 64-bit threshold and the prescaler scaling of expiry time.
+  - what: bus write completion compared with AON register update
+    where: hw/ip/aon_timer/dv
+    found: Nothing found. The scoreboard only waits for the write-enable pulse in the AON domain.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 390
+    line_end: 412
+    why_not: It waits for the AON write-enable pulse before counting, but it never checks that the bus
+      write completed earlier.
+  items:
+  - id: cr_20f39fd89cf5
+    outcome: verified
+    reason: No DV or software test checks that the counters stay halted while lc_escalate_en_i is set.
+    evidence:
+    - 3
+  - id: cr_10c426d79dad
+    outcome: withdrawn
+    reason: The base vseq writes a random 64-bit threshold through hi and lo, and the scoreboard checks
+      the expiry against the full 64-bit value.
+    evidence:
+    - 0
+    - 1
+  - id: cr_26daf00e8fb8
+    outcome: withdrawn
+    reason: The prescaler vseq randomizes the prescaler, and the scoreboard checks the expiry time scaled
+      by (prescaler+1).
+    evidence:
+    - 0
+    - 2
+  - id: cr_eadb3b6bb9a2
+    outcome: inconclusive
+    reason: Many registers are written across the CDC and checked by the scoreboard, but I found no explicit
+      test of the async synchronization read path.
+    evidence: []
+  - id: cr_f75f4b79d7eb
+    outcome: verified
+    reason: No check compares bus write completion with the AON register update.
+    evidence: []
+  new_sources:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    reason: It models the 64-bit threshold and the prescaler timing, and checks interrupts against them.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+    reason: It randomizes the prescaler and runs wait_for_interrupt against the scoreboard.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0736396
+error: null

@@ -1,0 +1,65 @@
+finding_hash: 70c1012615bbcbc3
+started_at: '2026-11-10T20:37:38Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The finding stands for the items I searched. The strb_wr_csr test only checks that a byte write
+    of 0 to TARGET_USER is ignored after valid is set. The write_user_lock test only writes TARGET_USER
+    and TARGET_USER_VALID as Root before the grant. Neither tests writes to TARGET_USER_VALID while it
+    is locked, the unlock after the hardware clear, or blocked access after valid clears. I did not search
+    the two lock items (hwset and hwclr of the lock) separately, so they are marked inconclusive.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_strb_wr_csr/smoke_test_mcu_mbox_strb_wr_csr.c
+    line_start: 145
+    line_end: 150
+    quote: lsu_write_8(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_TARGET_USER + MCU_MBOX_NUM_STRIDE * mbox_num, 0);
+    role: supports
+    note: Only TARGET_USER is checked as locked. There is no write to TARGET_USER_VALID and no check that
+      the lock is released.
+  searches:
+  - what: TARGET_USER / TARGET_USER_VALID uses in tests, for the target_user items (cr_618052e4c5dd, cr_465defb96dea)
+    where: repo-wide, then the strb_wr_csr and write_user_lock tests
+    found: The strb_wr_csr test only attempts a TARGET_USER write after valid is set. No test writes 0
+      to TARGET_USER_VALID while it is set, and none checks that writes are accepted after a hardware
+      clear.
+  - what: Blocked access after valid clears (cr_77efe78b888c)
+    where: write_user_lock test and repo-wide TARGET_USER_VALID grep
+    found: No check found. I did not open the target_user test itself.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 129
+    line_end: 149
+    why_not: Only Root writes to the two registers before the grant. It does not attempt writes while
+      valid is set.
+  items:
+  - id: cr_402cb9b67d1a
+    outcome: inconclusive
+    reason: I did not search for the hardware set of the lock separately.
+    evidence: []
+  - id: cr_a7c29b77aa24
+    outcome: inconclusive
+    reason: I did not search for the hardware clear of the lock separately.
+    evidence: []
+  - id: cr_618052e4c5dd
+    outcome: verified
+    reason: Only TARGET_USER is checked as locked. TARGET_USER_VALID is not, and release of the lock is
+      not checked.
+    evidence:
+    - 0
+  - id: cr_77efe78b888c
+    outcome: verified
+    reason: I found no check that target access is blocked again after valid is cleared.
+    evidence: []
+  - id: cr_465defb96dea
+    outcome: verified
+    reason: No test writes 0 to TARGET_USER_VALID while it is set, and none checks the unlock after the
+      hardware clear.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 7
+cost_usd: 0.0698117
+error: null

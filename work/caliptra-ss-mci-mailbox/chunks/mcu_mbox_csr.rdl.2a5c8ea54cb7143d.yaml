@@ -1,0 +1,38 @@
+path: src/mci/rtl/mcu_mbox_csr.rdl
+scope:
+  kind: whole_file
+model: claude-sonnet-5-5
+cost_usd: 0.0715442
+chunks:
+- title_path: mcu_mbox_csr > Addrmap setup and signals
+  kind: other
+  line_start: 1
+  line_end: 33
+- title_path: mcu_mbox_csr > MBOX_SRAM
+  kind: entry
+  line_start: 35
+  line_end: 44
+- title_path: mcu_mbox_csr > Registers > mbox_lock, mbox_user
+  kind: register
+  line_start: 47
+  line_end: 64
+- title_path: mcu_mbox_csr > Registers > mbox_target_user, mbox_target_user_valid
+  kind: register
+  line_start: 67
+  line_end: 82
+- title_path: mcu_mbox_csr > Registers > mbox_cmd, mbox_dlen, mbox_execute
+  kind: register
+  line_start: 84
+  line_end: 100
+- title_path: mcu_mbox_csr > Registers > mbox_target_status
+  kind: register
+  line_start: 102
+  line_end: 123
+- title_path: mcu_mbox_csr > Registers > mbox_cmd_status
+  kind: register
+  line_start: 125
+  line_end: 147
+- title_path: mcu_mbox_csr > Registers > mbox_hw_status
+  kind: register
+  line_start: 149
+  line_end: 200

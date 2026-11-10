@@ -1,0 +1,69 @@
+finding_hash: 7766916a76dfe9da
+started_at: '2026-11-10T19:43:39Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test references the *_intr_count_r registers. They appear only in the RTL, the UVM register
+    model and a coverage interface. Test-suite hits for "intr_count" are an unrelated local C variable.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1565
+    line_end: 1571
+    quote: Will not overflow ('incrsaturate').";
+    role: supports
+    note: Counter definition (incrvalue=1, incrsaturate, counter). The search found no test that exercises
+      it.
+  searches:
+  - what: notif_mbox0_target_done_intr_count (increments by 1) in c/h/sv/py/yml/tcl
+    where: repo
+    found: only mci_reg.sv, mci_reg_uvm.sv and mci_top_cov_if.sv (RTL, register model, coverage)
+  - what: notif_mbox0_soc_req_lock_intr_count (counter, increments by 1) in c/h/sv/py/yml/tcl
+    where: repo
+    found: no test references; same three non-test files
+  - what: error_mbox0_ecc_unc_intr_count (counter) in c/h/sv/py/yml/tcl
+    where: repo
+    found: no test references; same three non-test files
+  - what: notif_cptra_mbox_cmd_avail_intr_count (saturation) in c/h/sv/py/yml/tcl
+    where: repo
+    found: no test references; no saturation check found
+  - what: intr_count in test suites
+    where: src/integration/test_suites
+    found: unrelated local variable intr_count in the mcu_mbox test
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/cptra_ss_mcu_mbox_test.c
+    line_start: 29
+    line_end: 29
+    why_not: This is a local variable named intr_count. It is not the register.
+  items:
+  - id: cr_a4e88fd170e5
+    outcome: verified
+    reason: No test increments or reads the counter.
+    evidence:
+    - 0
+  - id: cr_aa899d455be8
+    outcome: verified
+    reason: No test references the counter field.
+    evidence:
+    - 0
+  - id: cr_ae2e67d909b3
+    outcome: verified
+    reason: No test references the counter field.
+    evidence:
+    - 0
+  - id: cr_ae5b56a5c9c2
+    outcome: verified
+    reason: No test increments or reads the counter.
+    evidence:
+    - 0
+  - id: cr_b15aa1219258
+    outcome: verified
+    reason: No test checks saturation.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 10
+cost_usd: 0.0739013
+error: null

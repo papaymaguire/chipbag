@@ -1,0 +1,54 @@
+finding_hash: 9aa05bfd693c5959
+started_at: '2026-11-10T19:50:20Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'The RDL says any terminal CMD_STATUS write returns SRAM ownership to the Requester, with no
+    exception. The test writes CMD_COMPLETE as Root while TARGET_USER_VALID=1 and expects the owner to
+    stay Target. The RTL agrees with the test: Target ownership has priority over a non-busy cmd_status.
+    The spec text is therefore incomplete or wrong, not the test.'
+  evidence:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 130
+    line_end: 130
+    quote: Writing any terminal (non-BUSY) value returns SRAM ownership to the Requester.
+    role: supports
+    note: Unconditional spec statement.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 156
+    line_end: 163
+    quote: mcu_mbox_write_cmd_status(mbox_num, MCU_MBOX_CMD_COMPLETE);
+    role: supports
+    note: Root writes a terminal status; the test then expects the owner to stay Target ("stole ownership
+      from Target").
+  - path: src/mci/rtl/mcu_mbox.sv
+    line_start: 227
+    line_end: 233
+    quote: if (execute_set &  mbox_target_user_valid) begin
+    role: context
+    note: RTL gives Target priority while target_user_valid is set. The Requester gets the SRAM only when
+      !execute_set, or when the target is not valid and cmd_status is not busy.
+  searches:
+  - what: SRAM owner logic and cmd_status handling
+    where: src/mci/rtl/mcu_mbox.sv
+    found: The Target-valid case takes priority over a terminal cmd_status.
+  - what: Spec exception for Target-owned case
+    where: mcu_mbox_csr.rdl
+    found: None in the CMD_STATUS description.
+  near_misses:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 106
+    line_end: 106
+    why_not: TARGET_STATUS text describes the Target ending its own ownership. It does not qualify the
+      CMD_STATUS statement.
+  items: []
+  new_sources: []
+  resolution: The RTL and test agree, so the spec text is likely what needs changing. Amend the CMD_STATUS
+    description to say that a terminal write returns ownership to the Requester only when no Target grant
+    is active (TARGET_USER_VALID=0). While the Target holds the SRAM, ownership stays with the Target.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0729695
+error: null

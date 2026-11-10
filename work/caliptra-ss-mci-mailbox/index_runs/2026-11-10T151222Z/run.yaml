@@ -1,0 +1,6 @@
+accepted: true
+cost_usd: 0.2463396
+turns: 8
+submissions: 2
+last_errors:
+- 'sources[3] (src/mci/rtl/mci_reg.rdl): scope ''entries'' only applies to hjson/json/yaml files'

@@ -1,0 +1,85 @@
+finding_hash: 1e3c824e9c10b763
+started_at: '2026-11-10T19:47:53Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that implements any of the five plan items. The mailbox tests are numerous,
+    but none targets these specific behaviours. The data-available interrupt item is the least certain
+    of the five. The nearest test, smoke_test_mcu_hitless, covers the SoC-writes case, not the MCU-holds-lock-and-sets-EXECUTE
+    case.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c
+    line_start: 152
+    line_end: 152
+    quote: if(!mcu_mbox_wait_for_soc_data_avail_interrupt(mbox_num, 100000)) {
+    role: context
+    note: Waits for the data-available interrupt, but the data is written by the SoC BFM agent. The MCU
+      does not hold the lock and set EXECUTE here, so this does not exercise the plan item.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+    line_start: 233
+    line_end: 233
+    quote: if (!mcu_mbox_wait_for_soc_req_while_mcu_lock_interrupt(mbox_num, 10000)) {
+    role: context
+    note: This checks the SoC-request-while-MCU-lock interrupt, which is a different interrupt from the
+      one in the plan item.
+  searches:
+  - what: Automatic MCU lock acquisition on reset deassertion (item cp_09b1804b6739)
+    where: src/ excluding rtl, regex on mcu/lock/reset phrasing
+    found: No test checks it. Only mcu_mbox_clear_lock_out_of_reset is called in the hitless test, and
+      it does not check the lock state.
+  - what: Valid user CSR with LOCK set and parameter disabled (item cp_524f95c33ab7)
+    where: src/integration/test_suites/smoke_test_mcu_mbox_valid_user and the other mbox tests
+    found: The valid_user and write_user_lock tests enable valid users through mcu_cptra_init_d. None
+      covers the parameter-disabled case.
+  - what: Randomized MCU LSU AXI USER (item cp_56c553b219c0)
+    where: src/integration/test_suites and src/integration/testbench, grep for lsu and user
+    found: No match. The valid-user test randomizes the SoC valid-user list with xorshift32, not the MCU
+      LSU AXI USER.
+  - what: SRAM readable only by MCU and Target (item cp_70f5e9d8cba4)
+    where: mbox test directories, grep for sram read restrictions
+    found: No test checks it. The target_user test only checks the target user in general.
+  - what: Data-available interrupt on MCU EXECUTE (item cp_7e15eab8e3fc)
+    where: src/integration, grep for data_avail and cmd_avail
+    found: Found only in smoke_test_mcu_hitless, after an SoC-agent write. No test has the MCU hold the
+      lock and set EXECUTE and then check the interrupt.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_hitless/smoke_test_mcu_hitless.c
+    line_start: 152
+    line_end: 152
+    why_not: Covers the data-available interrupt when the SoC writes. The plan item is the case where
+      the MCU holds the lock and sets EXECUTE.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+    line_start: 177
+    line_end: 177
+    why_not: Randomizes the SoC valid-user list with xorshift32. It does not randomize the MCU LSU AXI
+      USER.
+  items:
+  - id: cp_09b1804b6739
+    outcome: verified
+    reason: No test checks that the MCU automatically acquires the lock on reset deassertion.
+    evidence: []
+  - id: cp_524f95c33ab7
+    outcome: verified
+    reason: No test checks a valid user CSR working with LOCK set and the parameter not enabled.
+    evidence: []
+  - id: cp_56c553b219c0
+    outcome: verified
+    reason: No test randomizes the MCU LSU AXI USER on mailbox accesses.
+    evidence: []
+  - id: cp_70f5e9d8cba4
+    outcome: verified
+    reason: No test checks that the SRAM is readable only by the MCU and the Target.
+    evidence: []
+  - id: cp_7e15eab8e3fc
+    outcome: verified
+    reason: I found no test where the MCU holds the lock, sets EXECUTE, and the data-available interrupt
+      is checked. The only wait for that interrupt follows an SoC-agent write.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 11
+cost_usd: 0.1178106
+error: null

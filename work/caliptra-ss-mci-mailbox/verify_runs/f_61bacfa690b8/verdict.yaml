@@ -1,0 +1,51 @@
+finding_hash: 7026f0194e032549
+started_at: '2026-11-10T20:34:12Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The plan row (DB ECC: status bit, error interrupt, HW_ERROR_NON_FATAL) is realized by smoke_test_mcu_mbox_ecc,
+    which checks all three. Nothing in the repo ties that row to the warm-reset CSR test. That test is
+    about CSR reset values and only uses ECC injection to dirty state.'
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_ecc/smoke_test_mcu_mbox_ecc.c
+    line_start: 183
+    line_end: 186
+    quote: "    // Check HW_ERROR_NON_FATAL register\n    if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_NON_FATAL)\
+      \ == "
+    role: refutes
+    note: Another test checks HW_ERROR_NON_FATAL after DB ECC.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_ecc/smoke_test_mcu_mbox_ecc.c
+    line_start: 166
+    line_end: 167
+    quote: '        if (!is_only_mcu_mbox_db_ecc_interrupt_set(mbox_num)) {'
+    role: refutes
+    note: The same test checks the DB ECC error interrupt.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_csrs_warm_rst/smoke_test_mcu_mbox_csrs_warm_rst.c
+    line_start: 172
+    line_end: 172
+    quote: '        if (mcu_mbox_read_hw_status(mbox_num) & MCU_MBOX0_CSR_MBOX_HW_STATUS_ECC_DOUBLE_ERROR_MASK)
+      {'
+    role: context
+    note: The warm-reset test only checks the HW status bit, as a precondition for the reset check.
+  searches:
+  - what: Plan row 123 and tests that cover DB ECC
+    where: docs xlsx, test_suites
+    found: smoke_test_mcu_mbox_ecc checks the interrupt and HW_ERROR_NON_FATAL
+  - what: interrupt/NON_FATAL checks in warm_rst test
+    where: smoke_test_mcu_mbox_csrs_warm_rst
+    found: none
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_csrs_warm_rst/smoke_test_mcu_mbox_csrs_warm_rst.c
+    line_start: 172
+    line_end: 178
+    why_not: It does not check the interrupt, but no repository text links plan row 123 to this test.
+  items: []
+  new_sources:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_ecc/smoke_test_mcu_mbox_ecc.c
+    reason: Realizes plan row 123 (DB ECC status, interrupt, HW_ERROR_NON_FATAL).
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.055440199999999995
+error: null

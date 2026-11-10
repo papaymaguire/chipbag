@@ -1,0 +1,96 @@
+finding_hash: e0a76f43d3c64124
+started_at: '2026-11-10T21:09:33Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Four of the five items stand: no test covers the missing part of cr_67bea9a867f4, cr_781c9e811c5e,
+    cr_98ab14b5706d or cr_ce024c03a454. cr_5dc8e5c046fb is withdrawn. The base vseq randomizes the MSG_FIFO
+    write address anywhere in the window together with a partial contiguous byte mask. It places message
+    bytes in the enabled lanes and fills the rest with random bytes. The scoreboard compares the resulting
+    digest, so the offset behavior is checked end to end.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: '// TODO(#31634): Disable sideloading for now.'
+    role: supports
+    note: Sideload is never enabled in DV, so KEY writes while sideloaded are not tested there.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 216
+    line_end: 220
+    quote: task hmac_base_vseq::write_discard_key();
+    role: supports
+    note: KEY is written only during a hash as a discard write. Other non-idle states and successful updates
+      when idle are not covered.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 103
+    line_end: 112
+    quote: '  wr_addr inside {[HMAC_MSG_FIFO_BASE : HMAC_MSG_FIFO_LAST_ADDR]};'
+    role: refutes
+    note: The write address is random anywhere in the window and the byte mask is random with partial
+      and contiguous widths. This exercises sub-word writes.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 358
+    line_end: 373
+    quote: '`DV_CHECK_FATAL(randomize(wr_addr, wr_mask) with {$countones(wr_mask) <= msg_q.size();})'
+    role: refutes
+    note: Bytes are placed in the enabled lanes and the rest are random. The scoreboard checks the digest,
+      so a wrong write offset would fail.
+  searches:
+  - what: sideload and key-write sequences
+    where: hw/ip/hmac/dv/env/seq_lib
+    found: Sideload is disabled in DV. Key writes during a hash are only discarded.
+  - what: hmac_idle used as a write precondition
+    where: hw/ip/hmac/dv
+    found: Used only in scoreboard status prediction. Not checked before KEY, DIGEST or MSG_LENGTH_UPPER
+      writes.
+  - what: DIGEST and msg_length_upper writes with distinct values
+    where: hw/ip/hmac/dv/env/seq_lib
+    found: csr_wr_digest only restores the saved digest through the save-and-restore flow. No test writes
+      a different value to check the write takes effect.
+  - what: sub-word and unaligned MSG_FIFO writes
+    where: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    found: Random wr_addr in the window with a random partial wr_mask. The digest is checked by the scoreboard.
+  - what: KEY and hmac_idle in the C tests
+    where: sw/device/tests
+    found: Only CFG key_length checks. No KEY-register-ignored check.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 216
+    line_end: 220
+    why_not: It writes KEY during a hash only, so it doesn't reach the other non-idle states or the idle-update
+      case.
+  items:
+  - id: cr_67bea9a867f4
+    outcome: verified
+    reason: DV disables sideload. The C test does not write KEY while sideloaded.
+    evidence:
+    - 0
+  - id: cr_781c9e811c5e
+    outcome: verified
+    reason: Only a key write during a hash is covered.
+    evidence:
+    - 1
+  - id: cr_98ab14b5706d
+    outcome: verified
+    reason: The save-and-restore flow writes back the same digest, with no explicit hmac_idle precondition
+      and no check that a different value takes effect.
+    evidence: []
+  - id: cr_ce024c03a454
+    outcome: verified
+    reason: hmac_idle is never read before the write and not every branch checks the written value.
+    evidence: []
+  - id: cr_5dc8e5c046fb
+    outcome: withdrawn
+    reason: The base vseq randomizes the write address across the window and uses partial contiguous byte
+      masks. The digest is compared by the scoreboard, so the offset behavior is checked.
+    evidence:
+    - 2
+    - 3
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 11
+cost_usd: 0.10444780000000001
+error: null

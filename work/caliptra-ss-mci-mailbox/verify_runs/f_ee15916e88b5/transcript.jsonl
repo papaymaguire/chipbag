@@ -1,0 +1,7 @@
+{"t": "2026-11-10T20:34:32Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_target_user; sed -n 295,340p cptra_*.c; sed -n 40,75p smoke_test_mcu_mbox_target_user.c; sed -n 2"}
+{"t": "2026-11-10T20:34:34Z", "event": "Need the helper."}
+{"t": "2026-11-10T20:34:35Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss; grep -rn \"cptra_mcu_mbox_target_write_sram_and_csrs\" src | head; "}
+{"t": "2026-11-10T20:34:36Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_target_user; sed -n 85,180p cptra_*.c"}
+{"t": "2026-11-10T20:34:42Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:34:45Z", "event": "I withdrew the finding, and the verdict was accepted. The Caliptra-side comment is accurate: CMD writes do succeed once ownership is granted.\n\nThe helper `cptra_mcu_mbox_target_write_sram_and_csrs` writes CMD and checks the read-back is 0xDEADBEEF. It then restores CMD to 0xFADECAFE, with the comment \"Restore CMD so MCU sees only SRAM and DLEN changed.\" So the MCU-side check that CMD stays 0xFADECAFE passes because of that restore, not because the write was blocked.\n\nThe two comments describe different observation points. They don't contradict each other, and the mismatch with plan item p5 only holds if you read the Caliptra-side comment as describing what the MCU sees."}
+{"t": "2026-11-10T20:34:45Z", "event": "[5 turns, $0.0444]"}

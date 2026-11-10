@@ -1,0 +1,66 @@
+finding_hash: 9a3fbcf9189a4550
+started_at: '2026-11-10T19:43:30Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: Two items (tl_intg_err, csr_bit_bash) are implemented by shared dvsim tests that HMAC imports,
+    so they are not unimplemented. The three checklist items are sign-off process items, not simulation
+    tests. I did not look for tool logs or FPV artifacts, so those three are inconclusive.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 20
+    line_end: 23
+    quote: 'name: "{name}_tl_intg_err"'
+    role: refutes
+    note: Common tl_intg_err test, imported by HMAC sim cfg.
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 37
+    line_end: 39
+    quote: 'name: "{name}_csr_bit_bash"'
+    role: refutes
+    note: Common csr_bit_bash test, imported by HMAC sim cfg.
+  searches:
+  - what: tl_intg_err and csr_bit_bash tests, and whether HMAC imports them
+    where: hw/dv/tools/dvsim/tests, hw/ip/hmac/dv/hmac_sim_cfg.hjson, hmac_sec_cm_testplan.hjson
+    found: Both tests are defined in the shared files. The HMAC cfg imports csr_tests.hjson and tl_access_tests.hjson.
+      The HMAC sec_cm testplan references hmac_tl_intg_err.
+  - what: Checklist items NO_TOOL_WARNINGS_THROWN, FPV_COI_COVERAGE_AT_100, X_PROP_ANALYSIS_COMPLETED
+    where: hw/ip/hmac/doc/checklist.md
+    found: They are process sign-off rows, not tests. COI is N/A. Tool warnings and xprop are marked Done
+      and depend on logs that are not in the repo.
+  near_misses: []
+  items:
+  - id: cp_b45f61de3f01
+    outcome: withdrawn
+    reason: hmac_tl_intg_err exists via the common tl_access_tests.hjson and runs the common vseq with
+      +run_tl_intg_err.
+    evidence:
+    - 0
+  - id: cp_d17099555445
+    outcome: withdrawn
+    reason: hmac_csr_bit_bash exists via the common csr_tests.hjson, run with +csr_bit_bash.
+    evidence:
+    - 1
+  - id: cp_c9280b6eb563
+    outcome: inconclusive
+    reason: This is a tool-flow checklist item with no test. The repo cannot settle whether it holds.
+    evidence: []
+  - id: cp_d8aefbb82a18
+    outcome: inconclusive
+    reason: The checklist marks this N/A, so no test is expected.
+    evidence: []
+  - id: cp_e74f11dd6d95
+    outcome: inconclusive
+    reason: The xprop log is not in the repo, so the claim cannot be checked.
+    evidence: []
+  new_sources:
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    reason: Defines the common tl_intg_err test.
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    reason: Defines the common csr_bit_bash test.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.048816700000000005
+error: null

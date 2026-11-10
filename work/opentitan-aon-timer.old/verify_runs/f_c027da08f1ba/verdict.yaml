@@ -1,0 +1,73 @@
+finding_hash: f760fb1bd3526afc
+started_at: '2026-11-10T22:08:09Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: 'Item 1 (RACL policy selection) stands: the testbench ties racl_policies to 0 and no RACL test
+    exists. The three INTR_TEST items are withdrawn. The scoreboard predicts intr_state from intr_test
+    writes, and the generic intr_test test is included in the sim config, so a wrong hwext or hwqe would
+    fail those checks. I treat the WKUP_CTRL.prescaler hwqe item as inconclusive: the core resets the
+    prescale counter on qe, but I did not trace an explicit check of that effect.'
+  evidence:
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 25
+    line_end: 26
+    quote: "racl_policy_vec_t racl_policies;\n  assign racl_policies = 0;"
+    role: supports
+    note: RACL policies tied to 0; no RACL stimulus
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 829
+    line_end: 834
+    quote: "\"intr_test\": begin\n      uint intr_test_val = item.a_data;\n      if (addr_phase_write)\
+      \ begin"
+    role: refutes
+    note: Scoreboard predicts intr_state from intr_test writes, so the hwext/hwqe path is checked
+  - path: hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson
+    line_start: 33
+    line_end: 33
+    quote: '"{proj_root}/hw/dv/tools/dvsim/tests/intr_test.hjson",'
+    role: refutes
+    note: Generic intr_test test is included in the regression
+  searches:
+  - what: racl|intr_test
+    where: hw/ip/aon_timer/dv
+    found: racl only tied off in tb; intr_test modelled in scoreboard and imported test
+  - what: prescaler qe
+    where: hw/ip/aon_timer
+    found: core resets prescale counter on qe; no explicit check traced
+  near_misses: []
+  items:
+  - id: cr_d3bb7e9459e0
+    outcome: verified
+    reason: No RACL test; policies tied to 0.
+    evidence:
+    - 0
+  - id: cr_7352e4c71220
+    outcome: inconclusive
+    reason: Indirectly covered by the prescaler vseq; no explicit qe check traced.
+    evidence: []
+  - id: cr_413a62fd4916
+    outcome: withdrawn
+    reason: Scoreboard intr_test model and the generic intr_test test check this.
+    evidence:
+    - 1
+    - 2
+  - id: cr_a7c7c80abce3
+    outcome: withdrawn
+    reason: The intr_test write must reach intr_state through the qe pulse; the scoreboard checks it.
+    evidence:
+    - 1
+    - 2
+  - id: cr_b2ba11feb55d
+    outcome: withdrawn
+    reason: Same as the other intr_test items.
+    evidence:
+    - 1
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.0715072
+error: null

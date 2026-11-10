@@ -1,0 +1,90 @@
+finding_hash: b2251494d5cc5c0b
+started_at: '2026-11-10T21:01:20Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks any of the 5 items. The C smoke tests do check CMD_STATUS == DATA_READY,
+    but that is the cmd_status register, not the target_status DATA_READY item. The SV ownership-flow
+    test writes TARGET_STATUS and CMD_STATUS but only checks SRAM ownership and notifications, never the
+    status values. I found no test for CMD_BUSY or for hw-over-sw precedence on either register.
+  evidence:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 122
+    line_end: 122
+    quote: sw=rw; hw=r; swwe=valid_target_req; encode = mbox_status_e; hwclr; precedence=hw; swmod=true;}
+      status[4]=0;
+    role: context
+    note: The target_status field declaration, with precedence=hw.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 131
+    line_end: 131
+    quote: mcu_mbox_write(mci_comm_flow_target_status_addr, mci_comm_flow_target, status);
+    role: supports
+    note: Only writes target_status. The surrounding task checks SRAM owner phases and notifications,
+      not the status value, and has no simultaneous hw/sw update.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/cptra_smoke_test_mcu_mbox_pass_data.c
+    line_start: 288
+    line_end: 288
+    quote: if (data_length != MCU_MBOX_DATA_READY) {
+    role: context
+    note: Checks the cmd_status DATA_READY value only. This is not the target_status item and not CMD_BUSY.
+  searches:
+  - what: References to mbox_target_status / mbox_cmd_status outside the RDL
+    where: whole repo
+    found: 33 files, mostly generated RTL and headers, C smoke tests, and the SV ownership flow.
+  - what: DATA_READY / CMD_BUSY use in tests
+    where: src/integration
+    found: Only cmd_status DATA_READY is checked, in the C smoke tests. MCU_MBOX_CMD_BUSY and MCU_MBOX_TARGET_STATUS_*
+      appear only in the enum definitions in caliptra_ss_lib.h.
+  - what: target_status read-back or value checks
+    where: src/integration testbench and test_suites
+    found: The only hit is the write in mci_mbox_ownership_flow.svh, with no read-back check.
+  - what: Precedence tests or assertions
+    where: repo
+    found: None found. I did not run a dedicated search for hw/sw precedence assertions beyond these greps.
+  near_misses:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 200
+    line_end: 210
+    why_not: Drives DATA_READY, CMD_COMPLETE and CMD_FAILURE through TARGET_STATUS and CMD_STATUS, but
+      checks only ownership, not the status register values, and never uses CMD_BUSY.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/cptra_smoke_test_mcu_mbox_pass_data.c
+    line_start: 423
+    line_end: 423
+    why_not: Waits for cmd_status DATA_READY. Covers the cmd_status register, not target_status DATA_READY,
+      and not CMD_BUSY.
+  items:
+  - id: cr_d48ef4f510ee
+    outcome: verified
+    reason: No test reads back target_status and checks it equals DATA_READY. The flow test only writes
+      it.
+    evidence:
+    - 1
+  - id: cr_ea1bed14203c
+    outcome: verified
+    reason: No test creates a simultaneous hw clear and sw write on target_status, and no assertion covers
+      it.
+    evidence:
+    - 0
+  - id: cr_f9cc76302a6a
+    outcome: verified
+    reason: No test checks that target_status reads CMD_BUSY, including the reset-to-BUSY on handoff.
+    evidence:
+    - 1
+  - id: cr_01230983dc89
+    outcome: verified
+    reason: No test checks cmd_status CMD_BUSY. The tests only check DATA_READY.
+    evidence:
+    - 2
+  - id: cr_a89b498a6610
+    outcome: verified
+    reason: No test or assertion covers simultaneous hw/sw updates of cmd_status.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.1193459
+error: null

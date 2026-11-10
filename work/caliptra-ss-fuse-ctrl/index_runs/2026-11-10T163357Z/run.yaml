@@ -1,0 +1,7 @@
+accepted: true
+cost_usd: 0.3902029
+turns: 9
+submissions: 2
+last_errors:
+- 'sources[24] (src/integration/stimulus/L0_Promote_caliptra_ss_top_tb_regression.yml): name glob ''*otp*''
+  matches no entry'

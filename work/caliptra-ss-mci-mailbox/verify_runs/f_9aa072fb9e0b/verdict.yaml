@@ -1,0 +1,72 @@
+finding_hash: b54b2c0c69ba27d8
+started_at: '2026-11-10T20:40:28Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks any of the five counter behaviours. The four named counters appear
+    only in the RDL, the generated register files, the address map and a coverage interface. Test software
+    never reads them or compares their values.
+  evidence:
+  - path: src/integration/test_suites/libs/mcu_isr/mcu_isr.c
+    line_start: 359
+    line_end: 360
+    quote: mci_reg[MCI_REG_INTR_BLOCK_RF_NOTIF_DEBUG_LOCKED_INTR_COUNT_R /sizeof(uint32_t)] = 0;
+    role: context
+    note: The only intr_count register access in the test libraries. It clears two other counters (debug-locked
+      and scan-mode) and checks nothing.
+  searches:
+  - what: The four counter names (notif_mbox0_ecc_cor, notif_mbox0_target_done, notif_cptra_mbox_cmd_avail,
+      error_mbox1_ecc_unc) with intr_count, in src outside mci_reg and the RDL
+    where: src
+    found: Only address-map definitions, mci_reg.sv, mci_reg_uvm.sv and mci_top_cov_if.sv. No test uses
+      them.
+  - what: INTR_COUNT_R, INTR_COUNT_INCR_R and intr_count in test suites
+    where: src/integration/test_suites
+    found: Test files only match the software variable `intr_count`, which they increment themselves.
+      mcu_isr.c clears two unrelated counters.
+  - what: intr_count_r in mcu_intr_handler.c
+    where: src/integration/test_suites/mcu_intr_handler
+    found: No matches.
+  near_misses:
+  - path: src/integration/test_suites/libs/mcu_isr/mcu_isr.c
+    line_start: 855
+    line_end: 856
+    why_not: This increments a software variable named intr_count, not the hardware counter register.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 1
+    line_end: 1
+    why_not: This is a coverage interface. It samples the counters but does not check them, so it cannot
+      fail a test.
+  items:
+  - id: cr_22dc2380458a
+    outcome: verified
+    reason: No test reads notif_mbox0_ecc_cor_intr_count_r or checks that it increments by 1.
+    evidence:
+    - 0
+  - id: cr_363bc0793fc3
+    outcome: verified
+    reason: No test checks that notif_mbox0_target_done_intr_count_r behaves as a counter.
+    evidence:
+    - 0
+  - id: cr_3d87302757c0
+    outcome: verified
+    reason: No test checks the increment of notif_cptra_mbox_cmd_avail_intr_count_r.
+    evidence:
+    - 0
+  - id: cr_3f0d776dda4a
+    outcome: verified
+    reason: No test drives error_mbox1_ecc_unc_intr_count_r to its maximum to check saturation.
+    evidence:
+    - 0
+  - id: cr_43b0313d0b42
+    outcome: verified
+    reason: No test checks saturation of notif_mbox0_target_done_intr_count_r.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.09981749999999999
+error: null

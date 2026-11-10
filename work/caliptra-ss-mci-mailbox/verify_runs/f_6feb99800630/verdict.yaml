@@ -1,0 +1,88 @@
+finding_hash: 517094dcbb232b9b
+started_at: '2026-11-10T19:44:00Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'The four saturation items are untested: no test drives a notif_mbox0_cmd_avail, notif_mbox1_cmd_avail,
+    notif_mbox1_target_done or notif_mbox0_soc_req_lock counter near its maximum and checks that it holds
+    there. The increment-by-1 item for notif_mbox1_target_done is exercised by mcu_intr_handler, which
+    is in the nightly regression. That test only checks an aggregate sum of the counters, so I withdrew
+    the finding for that item only.'
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 108
+    line_end: 108
+    quote: NOTIF_MBOX1_TARGET_DONE_TRIG_MASK   ); mci_notif_intr_count++;
+    role: refutes
+    note: 'Stimulus: fires this notif interrupt exactly once and increments a firmware expected count
+      by 1.'
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 259
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: refutes
+    note: 'Check: fails the test (SEND_STDOUT_CTRL(0x1)) if the summed hardware counters, including MBOX1_TARGET_DONE_INTR_COUNT_R,
+      differ from the number of triggers. This covers an increment of 1 only in aggregate. It does not
+      cover saturation.'
+  - path: src/integration/stimulus/testsuites/caliptra_ss_master_test_list.csv
+    line_start: 119
+    line_end: 119
+    quote: mcu_intr_handler/mcu_intr_handler
+    role: context
+    note: The test is in the nightly directed regression.
+  searches:
+  - what: notif_mbox*_intr_count and incrsaturate references outside generated register files
+    where: src/integration, src/mci
+    found: Only address defines, the mci_reg RDL/SV files, the coverage interface (mci_top_cov_if.sv)
+      and mcu_intr_handler.c. No saturation test or assertion.
+  - what: saturation or overflow stimulus for the interrupt counters
+    where: whole repo, C tests
+    found: None. No test pre-loads or drives a counter near 0xFFFFFFFF.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 206
+    line_end: 259
+    why_not: Checks only a single trigger per counter and only the sum of all counters. It never approaches
+      the maximum, so saturation is not tested.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4710
+    line_end: 4710
+    why_not: Coverpoint only, with no checker.
+  items:
+  - id: cr_b2c572ea94c4
+    outcome: withdrawn
+    reason: 'mcu_intr_handler triggers MBOX1_TARGET_DONE once and fails the test if the summed hardware
+      counters differ from the firmware count. This is a real stimulus and check, but only aggregate:
+      it checks the sum of all notif counters, not this counter alone.'
+    evidence:
+    - 0
+    - 1
+  - id: cr_c263d751c70e
+    outcome: verified
+    reason: No test saturates the MBOX1_TARGET_DONE counter.
+    evidence:
+    - 1
+  - id: cr_db7951777429
+    outcome: verified
+    reason: No test saturates the MBOX0_CMD_AVAIL counter. The existing test triggers it once.
+    evidence:
+    - 1
+  - id: cr_ecafe675afa3
+    outcome: verified
+    reason: No test saturates the MBOX1_CMD_AVAIL counter.
+    evidence:
+    - 1
+  - id: cr_eea6fa2277a6
+    outcome: verified
+    reason: No test saturates the MBOX0_SOC_REQ_LOCK counter.
+    evidence:
+    - 1
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Test that triggers the notif interrupts and checks the summed counter values.
+submissions: 2
+rejections: []
+turns: 17
+cost_usd: 0.23123870000000002
+error: null

@@ -1,0 +1,49 @@
+finding_hash: ded1fcab1e8c89a8
+started_at: '2026-11-10T19:37:51Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The CFG.endian_swap register description in hmac.hjson answers the main question. With 0, values
+    go into the message in little-endian order, the same as software wrote them. With 1, each multi-byte
+    value is byte-swapped to big-endian, per TL-UL word. The programmer's guide agrees. The table's exact
+    derivation for partial writes is still thin, but the swap-condition ambiguity is resolved.
+  evidence:
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 229
+    line_end: 235
+    quote: If 0, each value will be added to the message in little-endian byte order.
+    role: refutes
+    note: 'The register description defines the endian_swap=0 behaviour: no swap, data is stored as software
+      wrote it. It also defines endian_swap=1: swap each multi-byte value, regardless of alignment, and
+      leave byte writes unaffected.'
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 12
+    line_end: 12
+    quote: reverses the byte-order of input words when software writes into the message FIFO.
+    role: refutes
+    note: This confirms the swap is applied only when endian_swap is set.
+  searches:
+  - what: endian_swap descriptions
+    where: hw/ip/hmac data, doc
+    found: The hjson field description and the programmer's guide both state that the swap applies only
+      when endian_swap=1.
+  near_misses:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 47
+    line_end: 52
+    why_not: The example table's derivation for the 3-byte and 2-byte writes is still not spelled out.
+      That is a minor residual gap, and the main ambiguity is resolved elsewhere.
+  items: []
+  new_sources:
+  - path: hw/ip/hmac/data/hmac.hjson
+    reason: Its CFG.endian_swap field description defines the swap behaviour.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    reason: It describes endian_swap as reversing the byte order of input words.
+  resolution: The design converts byte order only when endian_swap=1. A spec tweak would be to annotate
+    the example table with the per-byte packing.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.037949500000000004
+error: null

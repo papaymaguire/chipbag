@@ -1,0 +1,42 @@
+finding_hash: 078ed7b87bdbb7c1
+started_at: '2026-11-10T20:34:34Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The "Checking MBOX USER INFO" step reads the MBOX USER register and only prints it. Nothing
+    compares the value to an expected user, so the test cannot fail on it. The MCU-side test only polls
+    until USER is nonzero, which is a weak check, and then prints it.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/cptra_ss_mcu_mbox_test.c
+    line_start: 112
+    line_end: 117
+    quote: "    // Checking MBOX USER INFO\n    if (!fail) {\n        soc_ifc_axi_dma_read_ahb_payload(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_USER\
+      \ + MCU_MBOX_NUM_STRIDE * mbox_num, 0, read_payload, 4, 0);"
+    role: supports
+    note: The USER value is read and then only printed, never compared.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/smoke_test_mcu_mbox.c
+    line_start: 115
+    line_end: 117
+    quote: '    while(lsu_read_32(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_USER + MCU_MBOX_NUM_STRIDE * mbox_num)
+      == 0);'
+    role: supports
+    note: The MCU side only waits for USER to be nonzero and does not compare it to an expected user.
+  searches:
+  - what: MBOX_USER uses in the smoke_test_mcu_mbox directory
+    where: src/integration/test_suites/smoke_test_mcu_mbox
+    found: '3 uses: one read-and-print, one poll until nonzero, and one read into a variable that is printed.
+      No comparison against an expected user.'
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/smoke_test_mcu_mbox.c
+    line_start: 115
+    line_end: 115
+    why_not: The nonzero poll is a weak check that the user field is set. It does not verify the identity
+      of the lock holder.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.035419000000000006
+error: null

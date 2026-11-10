@@ -1,0 +1,6 @@
+{"t": "2026-11-10T19:38:00Z", "event": "  \u2192 Grep: DIGEST_8|DIGEST_0\\.\\.7|irrelevant|redundant"}
+{"t": "2026-11-10T19:38:02Z", "event": "Other spec text says the same thing: irrelevant, not to be read. It gives no value."}
+{"t": "2026-11-10T19:38:05Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:38:09Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:38:12Z", "event": "I submitted a verdict of **verified**: the repository has no specification text that says what DIGEST_8..15 read back in SHA-256 mode.\n\nThe only other place the question comes up is the register description in `hw/ip/hmac/data/hmac.hjson`, line 503. It says `{DIGEST8 - DIGEST15} are irrelevant and should not be read out.` The generated `hw/ip/hmac/doc/registers.md` repeats this at lines 422\u2013423. That wording tells software not to read those registers, but it doesn't give a value. It also doesn't say whether the values differ after an earlier SHA-384/512 operation.\n\nI only searched the `hw/ip/hmac` markdown and hjson files, and I did not look at the RTL or tests."}
+{"t": "2026-11-10T19:38:12Z", "event": "[4 turns, $0.0293]"}

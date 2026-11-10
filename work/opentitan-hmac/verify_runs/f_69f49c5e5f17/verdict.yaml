@@ -1,0 +1,42 @@
+finding_hash: 485fa980bcfc9f18
+started_at: '2026-11-10T20:52:50Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The register description for CFG.key_length answers the question: in HMAC mode, Key_None (including
+    unsupported/invalid and all-zero encodings) and Key_1024 with SHA2_256 block the start and signal
+    an error. With hmac_en == 0, no key length is invalid.'
+  evidence:
+  - path: hw/ip/hmac/doc/registers.md
+    line_start: 203
+    line_end: 203
+    quote: However, for HMAC mode (`hmac_en == 1`), when HMAC is triggered to start while [`KEY_LENGTH`](#key_length)
+      holds `Key_None` or [`KEY_LENGTH`](#key_length) holds `Key_1024` for [`DIGEST_SIZE`](#digest_size)
+      = `SHA2_256`, starting is blocked and an error is signalled to SW.
+    role: refutes
+    note: 'Lists exactly the invalid combinations: Key_None, and Key_1024 with SHA2_256.'
+  - path: hw/ip/hmac/doc/registers.md
+    line_start: 212
+    line_end: 212
+    quote: If only unkeyed SHA-2 is configured (`hmac_en == 0`), starting is not blocked, since this does
+      not require a key.
+    role: refutes
+    note: 'Answers the HMAC-disabled question: no key length is invalid then. Reserved codes map to Key_None.'
+  searches:
+  - what: invalid key length, Key_None, SwInvalidConfig
+    where: hw/ip/hmac docs and hjson
+    found: registers.md and hmac.hjson CFG.key_length descriptions define the invalid cases
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/ip/hmac/doc/registers.md
+    reason: CFG.key_length description defines invalid key lengths
+  - path: hw/ip/hmac/data/hmac.hjson
+    reason: Source of the key_length description
+  resolution: Add a cross-reference from the programmer's guide Errors table to the CFG.key_length description.
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.028486400000000002
+error: null

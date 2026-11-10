@@ -1,0 +1,41 @@
+finding_hash: 0a39b00510eb4903
+started_at: '2026-11-10T19:37:16Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The assertion mci_error_non_fatal_check has only an else $display action. In SystemVerilog,
+    an assert with an else clause runs only that clause on failure, so there is no default error and no
+    $fatal or $error. I found nothing in the repository that scans logs for "SVA ERROR" or otherwise turns
+    this message into a test failure, so the check cannot fail a test. I did not read the regression or
+    pass/fail scripts in full.
+  evidence:
+  - path: src/integration/asserts/caliptra_ss_top_sva.sv
+    line_start: 233
+    line_end: 234
+    quote: ') else $display("SVA ERROR: MCI HW ERROR NON FATAL reg is not set correctly");'
+    role: supports
+    note: The failure action is only a $display. It does not call $error or $fatal, and it does not set
+      any failure flag.
+  searches:
+  - what: Log scanners, $assertoff or fatal-on-assert handling that would turn 'SVA ERROR' into a test
+      failure
+    where: whole repository, excluding *sva.sv files
+    found: Nothing that treats 'SVA ERROR' as a failure. The only hits were unrelated $assertoff calls
+      in USB and fuse_ctrl, and -assert compile flags.
+  - what: The assertion body and its action block
+    where: src/integration/asserts/caliptra_ss_top_sva.sv lines 215-254
+    found: Every assertion in this file uses an else $display action. None calls $error or $fatal.
+  near_misses:
+  - path: tools/scripts/Makefile
+    line_start: 392
+    line_end: 401
+    why_not: These lines only enable assertion compilation. They do not make a failed assertion fail the
+      test.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0538213
+error: null

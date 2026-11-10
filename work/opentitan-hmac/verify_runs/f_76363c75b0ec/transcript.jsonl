@@ -1,0 +1,10 @@
+{"t": "2026-11-10T21:04:54Z", "event": "  \u2192 Grep: msg_length_upper|MSG_LENGTH_UPPER"}
+{"t": "2026-11-10T21:04:55Z", "event": "  \u2192 Grep: msg_length_upper|MSG_LENGTH_UPPER"}
+{"t": "2026-11-10T21:04:56Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:04:57Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T21:05:02Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:05:03Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:05:12Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:05:18Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:05:21Z", "event": "I withdrew both items in finding f_76363c75b0ec, and the verdict was accepted, so there's nothing left to do.\n\n- **Item cr_581ad0c1fa81 (register is hwext):** the HMAC DV env exercises `MSG_LENGTH_UPPER`. The context save/restore sequence writes large values and reads them back. The scoreboard predicts the register and checks the reads.\n- **Item cr_b3a93fda27e3 (zero-padded upper 64 bits for SHA-384/512):** this is only an implicit check. Every SHA-384/512 digest is compared against the model and the NIST vectors, which only match if the upper 64 length bits are zero. The huge-length restore case does run, but its read check is skipped (`sar_skip_ctxt`).\n\nI did not run any simulation, so the evidence comes from reading the DV code."}
+{"t": "2026-11-10T21:05:21Z", "event": "[9 turns, $0.0797]"}

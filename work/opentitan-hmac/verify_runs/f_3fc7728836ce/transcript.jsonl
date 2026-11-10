@@ -1,0 +1,8 @@
+{"t": "2026-11-10T19:40:50Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/data/hmac.hjson"}
+{"t": "2026-11-10T19:40:51Z", "event": "  \u2192 Grep: digest_swap|sha_en|hmac_en|sideload"}
+{"t": "2026-11-10T19:40:53Z", "event": "  \u2192 Grep: digest_swap|sha_en|hmac_en|sideload"}
+{"t": "2026-11-10T19:40:56Z", "event": "  \u2192 Grep: sideload"}
+{"t": "2026-11-10T19:40:57Z", "event": "  \u2192 Grep: sideload"}
+{"t": "2026-11-10T19:41:07Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:10Z", "event": "I submitted an inconclusive verdict: one of the five items stands as untested, and I couldn't settle the other four.\n\n- **`CFG.sideload` hwqe (`cr_5a80d0a89e9e`): verified untested.** `hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv:211-212` forces the sideload bit to 0 in random CFG writes, with a TODO (#31634) saying sideloading is disabled for now. A sideload agent is instantiated in the env but never enabled, so no test writes the bit.\n- **The other four items: inconclusive.** These are `hmac_en` hwqe, `sha_en` hwqe, `sha_en` hwext and `digest_swap` hwext, all implementation attributes of the register. The smoke tests write `hmac_en`, `sha_en` and `digest_swap` through CFG. The scoreboard models them, for example `hw/ip/hmac/dv/env/hmac_scoreboard.sv:353` branches on `digest_swap`, so a wrong write would break the digest check. That covers the attributes only indirectly, so I couldn't call them clearly untested or clearly tested.\n\nI only searched the HMAC `dv` directory, not other test directories, formal properties or firmware tests."}
+{"t": "2026-11-10T19:41:10Z", "event": "[7 turns, $0.0661]"}

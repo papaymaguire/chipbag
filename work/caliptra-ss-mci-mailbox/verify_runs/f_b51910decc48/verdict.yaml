@@ -1,0 +1,69 @@
+finding_hash: c8988d3f126101ac
+started_at: '2026-11-10T20:41:28Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test, sequence, assertion or firmware references the mbox1 intr_count or intr_count_incr
+    registers. The only references outside the RDL and the generated RTL/UVM model are coverpoints in
+    mci_top_cov_if.sv. A coverpoint samples values but does not check them. All five items stay untested.
+  evidence:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4700
+    line_end: 4700
+    quote: 'INTR_BLOCK_RF_NOTIF_MBOX1_TARGET_DONE_INTR_COUNT_R_cp : coverpoint i_mci_reg_top.i_mci_reg.field_storage.intr_block_rf.notif_mbox1_target_done_intr_count_r;'
+    role: context
+    note: Coverage sampling only; it does not check counter behaviour.
+  searches:
+  - what: incr pulse field (target_done_intr_count_incr_r) in tests
+    where: whole repo
+    found: Only generated RTL/UVM and a coverpoint at mci_top_cov_if.sv:5540. No check.
+  - what: soc_req_lock incr pulse from the interrupt event input
+    where: whole repo
+    found: Only the RDL, generated RTL/UVM and a coverpoint. No test.
+  - what: ecc_cor intr_count counter
+    where: whole repo
+    found: Only the RDL, generated RTL/UVM and a coverpoint at mci_top_cov_if.sv:4750. No test.
+  - what: target_done intr_count counter
+    where: whole repo
+    found: Only the RDL, generated RTL/UVM and a coverpoint at mci_top_cov_if.sv:4700. No test.
+  - what: cmd_avail intr_count counter
+    where: whole repo
+    found: Only the RDL, generated RTL/UVM and a coverpoint at mci_top_cov_if.sv:4720. No test.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 5540
+    line_end: 5540
+    why_not: Coverpoint on the incr signal. It only samples values and has no pass/fail check.
+  items:
+  - id: cr_fb753857ed6c
+    outcome: verified
+    reason: No test or check on the incr pulse field. Only a coverpoint exists.
+    evidence:
+    - 0
+  - id: cr_fd7b0222641a
+    outcome: verified
+    reason: No test or check ties the interrupt event input to a 1-cycle incr pulse.
+    evidence:
+    - 0
+  - id: cr_01d650d8691a
+    outcome: verified
+    reason: No test or check on ecc_cor intr_count counting behaviour.
+    evidence:
+    - 0
+  - id: cr_0b89e28cd650
+    outcome: verified
+    reason: No test or check on target_done intr_count counting behaviour. Only a coverpoint.
+    evidence:
+    - 0
+  - id: cr_0f4287b8ecea
+    outcome: verified
+    reason: No test or check on cmd_avail intr_count counting behaviour.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.08895220000000001
+error: null

@@ -1,0 +1,77 @@
+finding_hash: d3ab8e19c6d453a2
+started_at: '2026-11-10T20:57:39Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Three of the five items are implemented. The two checklist items are process sign-offs, not
+    tests, so I left them inconclusive. HMAC imports the common csr_tests and tl_access_tests lists, which
+    contain hmac_csr_bit_bash and hmac_tl_intg_err. hmac.sv carries ASSERT_KNOWN checks that run in every
+    simulation.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 37
+    line_end: 39
+    quote: 'name: "{name}_csr_bit_bash"'
+    role: refutes
+    note: Generic bit-bash test, imported by hmac_sim_cfg.hjson.
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 20
+    line_end: 23
+    quote: 'name: "{name}_tl_intg_err"'
+    role: refutes
+    note: Generic TL integrity error test, imported by HMAC.
+  - path: hw/ip/hmac/rtl/hmac.sv
+    line_start: 1087
+    line_end: 1088
+    quote: // All outputs should be known value after reset
+    role: refutes
+    note: ASSERT_KNOWN checks on DUT outputs run with every sim.
+  - path: hw/ip/hmac/doc/checklist.md
+    line_start: 250
+    line_end: 250
+    quote: Coverage      | [FPV_COI_COVERAGE_AT_100][]       | N/A         |
+    role: context
+    note: The item is marked N/A, so no test is expected.
+  searches:
+  - what: csr_bit_bash and tl_intg_err in the HMAC sim cfg imports
+    where: hw/dv/tools/dvsim/tests, hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    found: Both tests are defined in the common lists and imported by HMAC.
+  - what: ASSERT_KNOWN in the HMAC RTL
+    where: hw/ip/hmac/rtl/hmac.sv
+    found: Present for all outputs.
+  - what: checklist items NO_TOOL_WARNINGS_THROWN and FPV_COI_COVERAGE_AT_100
+    where: hw/ip/hmac/doc/checklist.md
+    found: Process items, marked Done and N/A. No test applies.
+  near_misses: []
+  items:
+  - id: cp_b3b4dffd4371
+    outcome: withdrawn
+    reason: ASSERT_KNOWN assertions in hmac.sv check this in every simulation.
+    evidence:
+    - 2
+  - id: cp_b45f61de3f01
+    outcome: withdrawn
+    reason: hmac_tl_intg_err comes from the imported common tl_access_tests list.
+    evidence:
+    - 1
+  - id: cp_c9280b6eb563
+    outcome: inconclusive
+    reason: This is a process checklist item, not a test, so there is no test to find.
+    evidence: []
+  - id: cp_d17099555445
+    outcome: withdrawn
+    reason: hmac_csr_bit_bash comes from the imported common csr_tests list.
+    evidence:
+    - 0
+  - id: cp_d8aefbb82a18
+    outcome: inconclusive
+    reason: The item is marked N/A for HMAC, so no test is expected. This is not a test gap.
+    evidence:
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0474569
+error: null

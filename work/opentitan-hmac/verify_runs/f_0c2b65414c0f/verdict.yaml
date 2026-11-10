@@ -1,0 +1,78 @@
+finding_hash: 47530efe8b71763d
+started_at: '2026-11-10T19:37:15Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Other spec text answers most of the question. The prim_packer doc says mask ones must be contiguous
+    and that packing is to the right, in arrival order. It also shows a worked example of misaligned partial
+    writes being packed. The HMAC theory of operation and register docs give the endian_swap behaviour,
+    with a worked example using partial words. The only point not explicitly covered is how the address
+    offset affects packing. That is a minor gap, and the strobe-based packer interface implies the strobe
+    is what matters.
+  evidence:
+  - path: hw/ip/prim/doc/prim_packer.md
+    line_start: 24
+    line_end: 24
+    quote: mask_i[InW]  | input  | Input bit mask. Ones in the mask must be contiguous.
+    role: refutes
+    note: 'Answers question (2): non-contiguous strobes are not legal.'
+  - path: hw/ip/prim/doc/prim_packer.md
+    line_start: 103
+    line_end: 103
+    quote: '`prim_packer` only supports packing to the right.'
+    role: refutes
+    note: 'Answers question (1): packing is LSB first, in arrival order.'
+  - path: hw/ip/prim/doc/prim_packer.md
+    line_start: 94
+    line_end: 96
+    quote: At cycle 9 and 10, `mask_i` is used to only load 2 bits of data into the packer
+    role: refutes
+    note: Shows that only the masked bits are loaded and packed together.
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 50
+    line_end: 53
+    quote: 'endian_swap     | 0         | 1
+
+      ----------------|-----------|-----------
+
+      Push to SHA2 #0 | 03020105h | 01020304h'
+    role: refutes
+    note: Answers question (4) with a worked example of partial words and endian swap.
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 56
+    line_end: 56
+    quote: Small writes to [`MSG_FIFO`](registers.md#msg_fifo) are coalesced into 32-bit words by the
+      [packer logic]
+    role: refutes
+    note: Clarifies that small writes are coalesced into 32-bit words.
+  - path: hw/ip/hmac/doc/registers.md
+    line_start: 247
+    line_end: 247
+    quote: If 1, then each individual multi-byte value, regardless of its alignment, written to [`MSG_FIFO`](#msg_fifo)
+      will be added to the message in big-endian byte order.
+    role: refutes
+    note: Alignment does not affect the endian-swap semantics.
+  searches:
+  - what: packer, partial, strobe and endian text in the HMAC docs
+    where: hw/ip/hmac/doc
+    found: The endian table, the small-write coalescing statement and the endian_swap register description.
+  - what: prim_packer specification
+    where: hw/ip/prim/doc/prim_packer.md
+    found: Contiguous mask requirement, pack-to-right behaviour and the misaligned-write waveform.
+  near_misses:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 196
+    line_end: 197
+    why_not: The cited sentence is itself terse, but other documents fill in the details.
+  items: []
+  new_sources:
+  - path: hw/ip/prim/doc/prim_packer.md
+    reason: Specifies the packer's mask contiguity and packing direction.
+  resolution: Cross-reference prim_packer.md from the MSG_FIFO section, and state explicitly that the
+    address offset within the window is ignored and only the byte strobe is used.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0496179
+error: null

@@ -1,0 +1,5386 @@
+generated_at: '2026-11-10T22:11:26Z'
+model: claude-sonnet-5-5
+manifest_commit: b84154c71810e853c0b37c00e96bb830804dd9f4
+stats:
+  sections: 37
+  requirements: 152
+  property_requirements: 61
+  by_construction: 56
+  ambiguous_text: 5
+  ambiguous_requirements: 16
+  unclassified: 0
+  dropped: 1
+  mean_coverage: 0.998
+  errors: 0
+  llm_calls: 0
+  cost_usd: 0.0
+skipped_sources: []
+errors: []
+sections:
+- id: sec_598c2e861eae
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CTRL
+  kind: register
+  chunker: native
+  lines:
+  - 180
+  - 199
+  content_hash: 6805b921b13fb4676d181fce7b4edc5c006bb7273ddfe087d2f0f4ddbc4333f1
+  coverage: 1.0
+  requirements: 10
+  property_requirements: 7
+  by_construction: 6
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_936a6dd44a46
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_THOLD_HI
+  kind: register
+  chunker: native
+  lines:
+  - 200
+  - 211
+  content_hash: 1947622a08c9635636aa858681231f0825cbdc01404a15b29468d538c1bcd8db
+  coverage: 1.0
+  requirements: 3
+  property_requirements: 3
+  by_construction: 3
+  informative: 1
+  references: 0
+  ambiguous: 1
+  unclassified: 0
+  dropped: 0
+- id: sec_05476ea7e547
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_THOLD_LO
+  kind: register
+  chunker: native
+  lines:
+  - 212
+  - 223
+  content_hash: b2a77f04b5c02bbaeb7ac8c0b723bf049dde93fa0c1c4d9b641f3020b078d9b4
+  coverage: 1.0
+  requirements: 3
+  property_requirements: 3
+  by_construction: 3
+  informative: 1
+  references: 0
+  ambiguous: 1
+  unclassified: 0
+  dropped: 0
+- id: sec_edaaff046ac6
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_COUNT_HI
+  kind: register
+  chunker: native
+  lines:
+  - 224
+  - 237
+  content_hash: 85e00ac3a9e0552d6a51eb953b4d1d1de7558f20a5437bcbb5e4ba8d644aaf7c
+  coverage: 1.0
+  requirements: 3
+  property_requirements: 3
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_3f1c520b840f
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_COUNT_LO
+  kind: register
+  chunker: native
+  lines:
+  - 238
+  - 251
+  content_hash: 8dd9e0ec16e3f39de48382549d345b1bceffc39fb5c6408dd31bf5e406da769f
+  coverage: 1.0
+  requirements: 3
+  property_requirements: 3
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_f19be4b29bb7
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_REGWEN
+  kind: register
+  chunker: native
+  lines:
+  - 252
+  - 263
+  content_hash: 7d0315d3078fc21cc3878688cd7484e7c1b91d7a3a53a6cc1563639cabda083b
+  coverage: 1.0
+  requirements: 5
+  property_requirements: 4
+  by_construction: 4
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_25d02efb76b1
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_CTRL
+  kind: register
+  chunker: native
+  lines:
+  - 264
+  - 280
+  content_hash: fa959444c03af63229e3c25147558236d55d567e9bcc2de2b1ba6590d43a4201
+  coverage: 1.0
+  requirements: 10
+  property_requirements: 8
+  by_construction: 8
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_486605425110
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BARK_THOLD
+  kind: register
+  chunker: native
+  lines:
+  - 281
+  - 293
+  content_hash: c1b9f3defd9beef21e7942510c8e7a01652546ccd224d2f2891c6ed4d62ef6ea
+  coverage: 1.0
+  requirements: 5
+  property_requirements: 4
+  by_construction: 4
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_a7682d5ebb42
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BITE_THOLD
+  kind: register
+  chunker: native
+  lines:
+  - 294
+  - 306
+  content_hash: 8dd465d7a7c063d9bc78ad97f79ce82fda790edf7f7cee350af882738b1ea24d
+  coverage: 1.0
+  requirements: 5
+  property_requirements: 4
+  by_construction: 4
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_98635dd5e716
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_COUNT
+  kind: register
+  chunker: native
+  lines:
+  - 307
+  - 320
+  content_hash: 9639a3fd9d78546c94c469f6c09b122667788fdf8e1ec0fa3353e48d298e8c8d
+  coverage: 1.0
+  requirements: 3
+  property_requirements: 3
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_9f99be69ef79
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_STATE
+  kind: register
+  chunker: native
+  lines:
+  - 321
+  - 337
+  content_hash: b2091656b37fd0498e2ea614b4a23727da51ea5e676bc9ecec3dacb1b4911567
+  coverage: 1.0
+  requirements: 8
+  property_requirements: 6
+  by_construction: 6
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_e64b2920af6a
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  kind: register
+  chunker: native
+  lines:
+  - 338
+  - 354
+  content_hash: e68af4260cab4b203c27495786b3a645c61613d888dc215d405b82b190a0135e
+  coverage: 1.0
+  requirements: 12
+  property_requirements: 10
+  by_construction: 6
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_3368d5cf3b17
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CAUSE
+  kind: register
+  chunker: native
+  lines:
+  - 355
+  - 370
+  content_hash: cdc4bc12f43d68fd3c0d317fa41af878352e2a6a77699b3f6f5c867a2740df80
+  coverage: 0.982
+  requirements: 4
+  property_requirements: 3
+  by_construction: 3
+  informative: 3
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_22340de7925e
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > interrupt_list
+  kind: entry
+  chunker: native
+  lines:
+  - 46
+  - 53
+  content_hash: 0aa679aa39e78097bf5923f6594ae634664791fc65f30554bbf1af9a041d2482
+  coverage: 1.0
+  requirements: 2
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_51f0c6e5e2fc
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > alert_list
+  kind: entry
+  chunker: native
+  lines:
+  - 54
+  - 60
+  content_hash: 1039fb4f1b7c18a37cd7a734e6c6138dbaf74037cc6cd949be0bd2977c7a4ba2
+  coverage: 1.0
+  requirements: 1
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_1db926fa4f91
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > wakeup_list
+  kind: entry
+  chunker: native
+  lines:
+  - 61
+  - 65
+  content_hash: 1e91486e47b009a388c1ab08632d1ab89c658ec6451e0d715069327409a902e2
+  coverage: 1.0
+  requirements: 1
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_2fcd9e154b9d
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > reset_request_list
+  kind: entry
+  chunker: native
+  lines:
+  - 66
+  - 70
+  content_hash: 17fbadfa1aff4f41281f79186f22b28a89a9ba80f140ac5c5cbe0b0dc3184339
+  coverage: 1.0
+  requirements: 0
+  property_requirements: 0
+  by_construction: 0
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_255f94b5386e
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > inter_signal_list
+  kind: entry
+  chunker: native
+  lines:
+  - 71
+  - 129
+  content_hash: bf170c5c421dbf71cbb3c91d2ac03cb967f2bbaa881cd8cfcdad7e85a7b3ac34
+  coverage: 1.0
+  requirements: 1
+  property_requirements: 0
+  by_construction: 0
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_2322056c0294
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > features
+  kind: entry
+  chunker: native
+  lines:
+  - 130
+  - 171
+  content_hash: e0d0fb96ec0ec58f5e37898989ae046718410e327ee86e22e583bab39fd189b9
+  coverage: 1.0
+  requirements: 11
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_4e939865dd9f
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > countermeasures
+  kind: entry
+  chunker: native
+  lines:
+  - 172
+  - 176
+  content_hash: 619dc13703794ed908cf878e6f853e47fee813376a2d66dbfffc8fc8f89c19cf
+  coverage: 1.0
+  requirements: 0
+  property_requirements: 0
+  by_construction: 0
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_03ab644d8240
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces
+  kind: section
+  chunker: native
+  lines:
+  - 2
+  - 10
+  content_hash: a766eef27bbea704fe3424553f90920357850b23c599d5f92f77064052124b23
+  coverage: 0.996
+  requirements: 5
+  property_requirements: 0
+  by_construction: 0
+  informative: 1
+  references: 1
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_399570f2c11d
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  kind: section
+  chunker: native
+  lines:
+  - 12
+  - 23
+  content_hash: ec9cb2304911b95aefaaa8fb3ae77640019ca8f41f0f26febc3c19eb5f9eb31c
+  coverage: 0.985
+  requirements: 9
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_a9d82c0113c5
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Interrupts
+  kind: section
+  chunker: native
+  lines:
+  - 25
+  - 30
+  content_hash: 40f1c67a1330d07bbb2f3adc936d6362f35682da17b46559c96bf126429c69a7
+  coverage: 1.0
+  requirements: 2
+  property_requirements: 0
+  by_construction: 0
+  informative: 3
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_d131fe6dccaa
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Security Alerts
+  kind: section
+  chunker: native
+  lines:
+  - 32
+  - 36
+  content_hash: 0d6351559c2ee4f90ed5b3a27585bca4fc2319d21402cb4435f98ed54ac65c27
+  coverage: 1.0
+  requirements: 1
+  property_requirements: 0
+  by_construction: 0
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_570b0615afea
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Security Countermeasures
+  kind: section
+  chunker: native
+  lines:
+  - 38
+  - 44
+  content_hash: 62ac237a2271e3b2ab68b792a5bf80546432e1cf1aebfc21e36292c37a67b5a3
+  coverage: 1.0
+  requirements: 1
+  property_requirements: 0
+  by_construction: 0
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_7633b1b3ecd2
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Initialization
+  kind: section
+  chunker: native
+  lines:
+  - 4
+  - 10
+  content_hash: 48a59593db0469501e25092543f679d29ed9982a154930e635df292ae027b248
+  coverage: 1.0
+  requirements: 5
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_5d6405aac9fd
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Watchdog pet
+  kind: section
+  chunker: native
+  lines:
+  - 12
+  - 14
+  content_hash: a484246bb391f0f2a13b2407f11fbf8a02d38942b694455973802038ff11a989
+  coverage: 1.0
+  requirements: 1
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_f4a4a521cf9f
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access
+  kind: section
+  chunker: native
+  lines:
+  - 16
+  - 21
+  content_hash: 694875f513be85e54b3ba50a63be972a455b22de2e6e4929a9f6c951c0d21dbf
+  coverage: 1.0
+  requirements: 2
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 1
+  ambiguous: 1
+  unclassified: 0
+  dropped: 0
+- id: sec_b930f300f37d
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  kind: section
+  chunker: native
+  lines:
+  - 23
+  - 47
+  content_hash: 72f684e2102242094b2fe2bbbaa091996deae6a0600479af828fb178cb536999
+  coverage: 1.0
+  requirements: 0
+  property_requirements: 0
+  by_construction: 0
+  informative: 17
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 1
+- id: sec_26fa06325de3
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the counter
+  kind: section
+  chunker: native
+  lines:
+  - 49
+  - 57
+  content_hash: 3ddf4d750184134c0003bbd794d0537536d1d1bf52aec3010e29d54c13d092b1
+  coverage: 1.0
+  requirements: 1
+  property_requirements: 0
+  by_construction: 0
+  informative: 3
+  references: 0
+  ambiguous: 2
+  unclassified: 0
+  dropped: 0
+- id: sec_25e1c95b68ba
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the threshold
+  kind: section
+  chunker: native
+  lines:
+  - 59
+  - 61
+  content_hash: dba69826a0fd845bbbb8002f3737721c85d80a79a083345e1c50f10a58bae395
+  coverage: 0.989
+  requirements: 1
+  property_requirements: 0
+  by_construction: 0
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_7cc19f57fca1
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the threshold
+  kind: section
+  chunker: native
+  lines:
+  - 63
+  - 83
+  content_hash: 37aeef28b3f709df1b3b06e202776f02caece2dc358005bf396fa9d72794a1fd
+  coverage: 1.0
+  requirements: 5
+  property_requirements: 0
+  by_construction: 0
+  informative: 5
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_621d34d9838e
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  kind: section
+  chunker: native
+  lines:
+  - 85
+  - 94
+  content_hash: 76b86c3782e770956448da20686c4046365269d2232a5d3b5af273bed4123caa
+  coverage: 0.995
+  requirements: 7
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_6e285a6957fb
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Device Interface Functions (DIFs)
+  kind: section
+  chunker: native
+  lines:
+  - 96
+  - 97
+  content_hash: 30b83de28f75dcfeb91c944921acce8670848c410c895be93c69dd5745face1f
+  coverage: 1.0
+  requirements: 0
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 1
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_fb45f88786d9
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation
+  kind: section
+  chunker: native
+  lines:
+  - 2
+  - 13
+  content_hash: a795e2d1819739b60d7f997ecca7fca430025f05c0c380a69284920dd2aa6193
+  coverage: 0.999
+  requirements: 7
+  property_requirements: 0
+  by_construction: 0
+  informative: 2
+  references: 2
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_5c3fde890f98
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Block diagram
+  kind: section
+  chunker: native
+  lines:
+  - 15
+  - 17
+  content_hash: 449ad8d7d44ae907473264650305224b8206e218fe1c8168bd3e4313b42768a7
+  coverage: 1.0
+  requirements: 0
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 1
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_0d077e50455b
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  kind: section
+  chunker: native
+  lines:
+  - 19
+  - 36
+  content_hash: 3bd63dc65fdc60933694a3966904a52027651e109f67404161f881e24f12e2c3
+  coverage: 0.99
+  requirements: 15
+  property_requirements: 0
+  by_construction: 0
+  informative: 1
+  references: 1
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+requirements:
+- id: req_e677babd2785
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CTRL
+  section_id: sec_598c2e861eae
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_CTRL.enable: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_CTRL.enable
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 185
+    - 185
+    chars:
+    - 5787
+    - 5801
+  quote_hash: 4990732e3ce0
+- id: req_ff4a0166ad5e
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CTRL
+  section_id: sec_598c2e861eae
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_CTRL.enable: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_CTRL.enable
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 186
+    - 186
+    chars:
+    - 5809
+    - 5824
+  quote_hash: 4a7d2bfc2eec
+- id: req_be8aded0c1c2
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CTRL
+  section_id: sec_598c2e861eae
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_CTRL.enable: occupies bits 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_CTRL.enable
+  property: bits
+  value: '0'
+  quotes:
+  - text: 'bits: "0"'
+    lines:
+    - 189
+    - 189
+    chars:
+    - 5878
+    - 5887
+  quote_hash: cb646482b8d4
+- id: req_b6f09eb7b8d9
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CTRL
+  section_id: sec_598c2e861eae
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_CTRL.prescaler: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_CTRL.prescaler
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 185
+    - 185
+    chars:
+    - 5787
+    - 5801
+  quote_hash: 4990732e3ce0
+- id: req_9647ca554e07
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CTRL
+  section_id: sec_598c2e861eae
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_CTRL.prescaler: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_CTRL.prescaler
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 186
+    - 186
+    chars:
+    - 5809
+    - 5824
+  quote_hash: 4a7d2bfc2eec
+- id: req_a36023136be5
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CTRL
+  section_id: sec_598c2e861eae
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'WKUP_CTRL.prescaler: hardware receives a write-qualifier pulse on software writes (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_CTRL.prescaler
+  property: hwqe
+  value: 'true'
+  quotes:
+  - text: 'hwqe: "true"'
+    lines:
+    - 196
+    - 196
+    chars:
+    - 6109
+    - 6121
+  quote_hash: 618a036af1ac
+- id: req_afd84f682ebb
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CTRL
+  section_id: sec_598c2e861eae
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_CTRL.prescaler: occupies bits 12:1.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_CTRL.prescaler
+  property: bits
+  value: '12:1'
+  quotes:
+  - text: 'bits: "12:1"'
+    lines:
+    - 193
+    - 193
+    chars:
+    - 5997
+    - 6009
+  quote_hash: 1500bc96b1f4
+- id: req_602fc015ac98
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CTRL
+  section_id: sec_598c2e861eae
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Each write to WKUP_CTRL resets the internal prescaler count.
+  aspect: register
+  condition: on any write to the register
+  ambiguity: null
+  quotes:
+  - text: Each write to the register resets the internal prescaler count.
+    lines:
+    - 183
+    - 183
+    chars:
+    - 5700
+    - 5763
+  quote_hash: 366ea8288ab4
+- id: req_2bb8a50038fa
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CTRL
+  section_id: sec_598c2e861eae
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: When enable is set to 1, the wakeup timer counts.
+  aspect: functional
+  condition: enable bit set to 1
+  ambiguity: null
+  quotes:
+  - text: When set to 1, the wakeup timer will count
+    lines:
+    - 191
+    - 191
+    chars:
+    - 5932
+    - 5974
+  quote_hash: 5169749ac74d
+- id: req_ebdc719c18b9
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CTRL
+  section_id: sec_598c2e861eae
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The prescaler field holds the pre-scaler value for the wakeup timer count.
+  aspect: register
+  condition: null
+  ambiguity:
+    code: MISSING_DETAIL
+    note: The relationship between the prescaler value and the count rate is not stated (e.g. divide by
+      N or N+1).
+    question: How does the prescaler value map to the wakeup timer count rate (e.g. one tick every prescaler+1
+      clock cycles)?
+  quotes:
+  - text: Pre-scaler value for wakeup timer count
+    lines:
+    - 195
+    - 195
+    chars:
+    - 6057
+    - 6096
+  quote_hash: 4f8297f4d1da
+- id: req_336ef61dc390
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_THOLD_HI
+  section_id: sec_936a6dd44a46
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_THOLD_HI.threshold_hi: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_THOLD_HI.threshold_hi
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 202
+    - 202
+    chars:
+    - 6246
+    - 6260
+  quote_hash: 4990732e3ce0
+- id: req_250105b72bf4
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_THOLD_HI
+  section_id: sec_936a6dd44a46
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_THOLD_HI.threshold_hi: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_THOLD_HI.threshold_hi
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 203
+    - 203
+    chars:
+    - 6268
+    - 6283
+  quote_hash: 4a7d2bfc2eec
+- id: req_da2a1e056981
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_THOLD_HI
+  section_id: sec_936a6dd44a46
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_THOLD_HI.threshold_hi: occupies bits 31:0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_THOLD_HI.threshold_hi
+  property: bits
+  value: '31:0'
+  quotes:
+  - text: 'bits: "31:0"'
+    lines:
+    - 206
+    - 206
+    chars:
+    - 6337
+    - 6349
+  quote_hash: c439f4248ed1
+- id: req_7b75edec7cb3
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_THOLD_LO
+  section_id: sec_05476ea7e547
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_THOLD_LO.threshold_lo: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_THOLD_LO.threshold_lo
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 214
+    - 214
+    chars:
+    - 6596
+    - 6610
+  quote_hash: 4990732e3ce0
+- id: req_6faf31824dad
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_THOLD_LO
+  section_id: sec_05476ea7e547
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_THOLD_LO.threshold_lo: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_THOLD_LO.threshold_lo
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 215
+    - 215
+    chars:
+    - 6618
+    - 6633
+  quote_hash: 4a7d2bfc2eec
+- id: req_baff08711703
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_THOLD_LO
+  section_id: sec_05476ea7e547
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_THOLD_LO.threshold_lo: occupies bits 31:0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_THOLD_LO.threshold_lo
+  property: bits
+  value: '31:0'
+  quotes:
+  - text: 'bits: "31:0"'
+    lines:
+    - 218
+    - 218
+    chars:
+    - 6687
+    - 6699
+  quote_hash: c439f4248ed1
+- id: req_e31ec3d902fb
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_COUNT_HI
+  section_id: sec_edaaff046ac6
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_COUNT_HI.count_hi: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_COUNT_HI.count_hi
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 226
+    - 226
+    chars:
+    - 6946
+    - 6960
+  quote_hash: 4990732e3ce0
+- id: req_48bea49e8197
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_COUNT_HI
+  section_id: sec_edaaff046ac6
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_COUNT_HI.count_hi: hardware access is hrw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_COUNT_HI.count_hi
+  property: hwaccess
+  value: hrw
+  quotes:
+  - text: 'hwaccess: "hrw"'
+    lines:
+    - 227
+    - 227
+    chars:
+    - 6968
+    - 6983
+  quote_hash: 6b8930582bdb
+- id: req_3c28f1c7270d
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_COUNT_HI
+  section_id: sec_edaaff046ac6
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_COUNT_HI.count_hi: occupies bits 31:0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_COUNT_HI.count_hi
+  property: bits
+  value: '31:0'
+  quotes:
+  - text: 'bits: "31:0"'
+    lines:
+    - 230
+    - 230
+    chars:
+    - 7037
+    - 7049
+  quote_hash: c439f4248ed1
+- id: req_2f0ecd346f2a
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_COUNT_LO
+  section_id: sec_3f1c520b840f
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_COUNT_LO.count_lo: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_COUNT_LO.count_lo
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 240
+    - 240
+    chars:
+    - 7358
+    - 7372
+  quote_hash: 4990732e3ce0
+- id: req_617226252a40
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_COUNT_LO
+  section_id: sec_3f1c520b840f
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_COUNT_LO.count_lo: hardware access is hrw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_COUNT_LO.count_lo
+  property: hwaccess
+  value: hrw
+  quotes:
+  - text: 'hwaccess: "hrw"'
+    lines:
+    - 241
+    - 241
+    chars:
+    - 7380
+    - 7395
+  quote_hash: 6b8930582bdb
+- id: req_b83616cc2fbd
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_COUNT_LO
+  section_id: sec_3f1c520b840f
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_COUNT_LO.count_lo: occupies bits 31:0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_COUNT_LO.count_lo
+  property: bits
+  value: '31:0'
+  quotes:
+  - text: 'bits: "31:0"'
+    lines:
+    - 244
+    - 244
+    chars:
+    - 7449
+    - 7461
+  quote_hash: c439f4248ed1
+- id: req_ad6d4dc419c5
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_REGWEN
+  section_id: sec_f19be4b29bb7
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_REGWEN.regwen: software access is rw0c.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_REGWEN.regwen
+  property: swaccess
+  value: rw0c
+  quotes:
+  - text: 'swaccess: "rw0c"'
+    lines:
+    - 254
+    - 254
+    chars:
+    - 7766
+    - 7782
+  quote_hash: 6bd5c35d7ea7
+- id: req_277324753180
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_REGWEN
+  section_id: sec_f19be4b29bb7
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_REGWEN.regwen: hardware access is none.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_REGWEN.regwen
+  property: hwaccess
+  value: none
+  quotes:
+  - text: 'hwaccess: "none"'
+    lines:
+    - 255
+    - 255
+    chars:
+    - 7790
+    - 7806
+  quote_hash: 69450eacf960
+- id: req_5fd14a0ec46f
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_REGWEN
+  section_id: sec_f19be4b29bb7
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_REGWEN.regwen: reset value is 1.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_REGWEN.regwen
+  property: resval
+  value: '1'
+  quotes:
+  - text: 'resval: 1'
+    lines:
+    - 260
+    - 260
+    chars:
+    - 7978
+    - 7987
+  quote_hash: 17b1c43832a7
+- id: req_9d3ce6a9c451
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_REGWEN
+  section_id: sec_f19be4b29bb7
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_REGWEN.regwen: occupies bits 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_REGWEN.regwen
+  property: bits
+  value: '0'
+  quotes:
+  - text: 'bits: "0"'
+    lines:
+    - 257
+    - 257
+    chars:
+    - 7834
+    - 7843
+  quote_hash: cb646482b8d4
+- id: req_ef667bcdc17b
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_REGWEN
+  section_id: sec_f19be4b29bb7
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Once regwen is cleared, the watchdog configuration is locked until the next reset.
+  aspect: access_control
+  condition: After WDOG_REGWEN.regwen has been cleared, until the next reset
+  ambiguity:
+    code: UNCLEAR_REFERENT
+    note: '"The watchdog configuration" does not name which registers or fields are locked.'
+    question: Which registers/fields (e.g. WDOG_CTRL, WDOG_BARK_THOLD, WDOG_BITE_THOLD) are locked when
+      WDOG_REGWEN.regwen is cleared?
+  quotes:
+  - text: Once cleared, the watchdog configuration will be locked until the next reset.
+    lines:
+    - 259
+    - 259
+    chars:
+    - 7888
+    - 7965
+  quote_hash: b8e93994e9b3
+- id: req_1d171847c294
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_CTRL
+  section_id: sec_25d02efb76b1
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_CTRL.enable: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_CTRL.enable
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 266
+    - 266
+    chars:
+    - 8091
+    - 8105
+  quote_hash: 4990732e3ce0
+- id: req_de1ecc30534a
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_CTRL
+  section_id: sec_25d02efb76b1
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_CTRL.enable: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_CTRL.enable
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 267
+    - 267
+    chars:
+    - 8113
+    - 8128
+  quote_hash: 4a7d2bfc2eec
+- id: req_1d468296c924
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_CTRL
+  section_id: sec_25d02efb76b1
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_CTRL.enable: software writes are enabled only while WDOG_REGWEN allows them.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_CTRL.enable
+  property: regwen
+  value: WDOG_REGWEN
+  quotes:
+  - text: 'regwen: "WDOG_REGWEN"'
+    lines:
+    - 269
+    - 269
+    chars:
+    - 8162
+    - 8183
+  quote_hash: ed906345bef2
+- id: req_9081f248c796
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_CTRL
+  section_id: sec_25d02efb76b1
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_CTRL.enable: occupies bits 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_CTRL.enable
+  property: bits
+  value: '0'
+  quotes:
+  - text: 'bits: "0"'
+    lines:
+    - 271
+    - 271
+    chars:
+    - 8211
+    - 8220
+  quote_hash: cb646482b8d4
+- id: req_00cffeadb402
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_CTRL
+  section_id: sec_25d02efb76b1
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_CTRL.pause_in_sleep: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_CTRL.pause_in_sleep
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 266
+    - 266
+    chars:
+    - 8091
+    - 8105
+  quote_hash: 4990732e3ce0
+- id: req_f04f1ca8abf5
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_CTRL
+  section_id: sec_25d02efb76b1
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_CTRL.pause_in_sleep: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_CTRL.pause_in_sleep
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 267
+    - 267
+    chars:
+    - 8113
+    - 8128
+  quote_hash: 4a7d2bfc2eec
+- id: req_d6e7bd6a0d34
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_CTRL
+  section_id: sec_25d02efb76b1
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_CTRL.pause_in_sleep: software writes are enabled only while WDOG_REGWEN allows them.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_CTRL.pause_in_sleep
+  property: regwen
+  value: WDOG_REGWEN
+  quotes:
+  - text: 'regwen: "WDOG_REGWEN"'
+    lines:
+    - 269
+    - 269
+    chars:
+    - 8162
+    - 8183
+  quote_hash: ed906345bef2
+- id: req_4d918604b60b
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_CTRL
+  section_id: sec_25d02efb76b1
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_CTRL.pause_in_sleep: occupies bits 1.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_CTRL.pause_in_sleep
+  property: bits
+  value: '1'
+  quotes:
+  - text: 'bits: "1"'
+    lines:
+    - 275
+    - 275
+    chars:
+    - 8334
+    - 8343
+  quote_hash: 027058a78852
+- id: req_53a1ea38dde1
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_CTRL
+  section_id: sec_25d02efb76b1
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: When WDOG_CTRL.enable is 1, the watchdog timer counts.
+  aspect: functional
+  condition: WDOG_CTRL.enable is set to 1
+  ambiguity: null
+  quotes:
+  - text: When set to 1, the watchdog timer will count.
+    lines:
+    - 273
+    - 273
+    chars:
+    - 8265
+    - 8310
+  quote_hash: 253cc27bb753
+- id: req_51b0142b7c86
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_CTRL
+  section_id: sec_25d02efb76b1
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: When WDOG_CTRL.pause_in_sleep is 1, the watchdog timer does not count during sleep.
+  aspect: functional
+  condition: WDOG_CTRL.pause_in_sleep is set to 1 and the device is in sleep
+  ambiguity: null
+  quotes:
+  - text: When set to 1, the watchdog timer will not count during sleep.
+    lines:
+    - 277
+    - 277
+    chars:
+    - 8396
+    - 8458
+  quote_hash: 4c93a454cd39
+- id: req_937fdab5abf0
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BARK_THOLD
+  section_id: sec_486605425110
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_BARK_THOLD.threshold: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_BARK_THOLD.threshold
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 283
+    - 283
+    chars:
+    - 8578
+    - 8592
+  quote_hash: 4990732e3ce0
+- id: req_b8d2a4ee0fb6
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BARK_THOLD
+  section_id: sec_486605425110
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_BARK_THOLD.threshold: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_BARK_THOLD.threshold
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 284
+    - 284
+    chars:
+    - 8600
+    - 8615
+  quote_hash: 4a7d2bfc2eec
+- id: req_b3b59ebd1535
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BARK_THOLD
+  section_id: sec_486605425110
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_BARK_THOLD.threshold: software writes are enabled only while WDOG_REGWEN allows them.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_BARK_THOLD.threshold
+  property: regwen
+  value: WDOG_REGWEN
+  quotes:
+  - text: 'regwen: "WDOG_REGWEN"'
+    lines:
+    - 286
+    - 286
+    chars:
+    - 8649
+    - 8670
+  quote_hash: ed906345bef2
+- id: req_94c38545d90c
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BARK_THOLD
+  section_id: sec_486605425110
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_BARK_THOLD.threshold: occupies bits 31:0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_BARK_THOLD.threshold
+  property: bits
+  value: '31:0'
+  quotes:
+  - text: 'bits: "31:0"'
+    lines:
+    - 288
+    - 288
+    chars:
+    - 8698
+    - 8710
+  quote_hash: c439f4248ed1
+- id: req_8c0bd71ffe79
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BARK_THOLD
+  section_id: sec_486605425110
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: A watchdog bark interrupt is generated when the watchdog count reaches the threshold value.
+  aspect: interrupt
+  condition: null
+  ambiguity:
+    code: MISSING_DETAIL
+    note: It is not stated whether the bark fires on count equal to or at/above the threshold, or how
+      many cycles after the count reaches it.
+    question: Does the bark interrupt assert when the watchdog count equals the threshold or when it is
+      greater than or equal to it, and within how many clock cycles?
+  quotes:
+  - text: The count at which a watchdog bark interrupt should be generated.
+    lines:
+    - 290
+    - 290
+    chars:
+    - 8758
+    - 8823
+  quote_hash: e1a7dbbf20db
+- id: req_98d78cacb746
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BITE_THOLD
+  section_id: sec_a7682d5ebb42
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_BITE_THOLD.threshold: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_BITE_THOLD.threshold
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 296
+    - 296
+    chars:
+    - 8943
+    - 8957
+  quote_hash: 4990732e3ce0
+- id: req_67cb50d05e55
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BITE_THOLD
+  section_id: sec_a7682d5ebb42
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_BITE_THOLD.threshold: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_BITE_THOLD.threshold
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 297
+    - 297
+    chars:
+    - 8965
+    - 8980
+  quote_hash: 4a7d2bfc2eec
+- id: req_3f3f183cec31
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BITE_THOLD
+  section_id: sec_a7682d5ebb42
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_BITE_THOLD.threshold: software writes are enabled only while WDOG_REGWEN allows them.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_BITE_THOLD.threshold
+  property: regwen
+  value: WDOG_REGWEN
+  quotes:
+  - text: 'regwen: "WDOG_REGWEN"'
+    lines:
+    - 299
+    - 299
+    chars:
+    - 9014
+    - 9035
+  quote_hash: ed906345bef2
+- id: req_f6cd763beed0
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BITE_THOLD
+  section_id: sec_a7682d5ebb42
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_BITE_THOLD.threshold: occupies bits 31:0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_BITE_THOLD.threshold
+  property: bits
+  value: '31:0'
+  quotes:
+  - text: 'bits: "31:0"'
+    lines:
+    - 301
+    - 301
+    chars:
+    - 9063
+    - 9075
+  quote_hash: c439f4248ed1
+- id: req_26d78488f3f3
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BITE_THOLD
+  section_id: sec_a7682d5ebb42
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: A watchdog bite reset is generated when the watchdog count reaches the threshold value.
+  aspect: functional
+  condition: null
+  ambiguity:
+    code: WEAK_MODAL
+    note: The text uses 'should be generated' and does not say whether the reset triggers on equality
+      or on greater-or-equal.
+    question: Must a bite reset be generated when the watchdog count equals (or reaches) the threshold,
+      and is the comparison equality or greater-than-or-equal?
+  quotes:
+  - text: The count at which a watchdog bite reset should be generated.
+    lines:
+    - 303
+    - 303
+    chars:
+    - 9123
+    - 9184
+  quote_hash: 3c4ac0373c98
+- id: req_703d8de1017b
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_COUNT
+  section_id: sec_98635dd5e716
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_COUNT.count: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_COUNT.count
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 309
+    - 309
+    chars:
+    - 9290
+    - 9304
+  quote_hash: 4990732e3ce0
+- id: req_34cd3e06b97a
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_COUNT
+  section_id: sec_98635dd5e716
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_COUNT.count: hardware access is hrw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_COUNT.count
+  property: hwaccess
+  value: hrw
+  quotes:
+  - text: 'hwaccess: "hrw"'
+    lines:
+    - 310
+    - 310
+    chars:
+    - 9312
+    - 9327
+  quote_hash: 6b8930582bdb
+- id: req_a413ad0d4f34
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_COUNT
+  section_id: sec_98635dd5e716
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WDOG_COUNT.count: occupies bits 31:0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WDOG_COUNT.count
+  property: bits
+  value: '31:0'
+  quotes:
+  - text: 'bits: "31:0"'
+    lines:
+    - 313
+    - 313
+    chars:
+    - 9381
+    - 9393
+  quote_hash: c439f4248ed1
+- id: req_76fb791d1d70
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_STATE
+  section_id: sec_9f99be69ef79
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_STATE.wkup_timer_expired: software access is rw1c.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_STATE.wkup_timer_expired
+  property: swaccess
+  value: rw1c
+  quotes:
+  - text: 'swaccess: "rw1c"'
+    lines:
+    - 323
+    - 323
+    chars:
+    - 9668
+    - 9684
+  quote_hash: 1d5816446cdd
+- id: req_14224d2e6d71
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_STATE
+  section_id: sec_9f99be69ef79
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_STATE.wkup_timer_expired: hardware access is hrw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_STATE.wkup_timer_expired
+  property: hwaccess
+  value: hrw
+  quotes:
+  - text: 'hwaccess: "hrw"'
+    lines:
+    - 324
+    - 324
+    chars:
+    - 9692
+    - 9707
+  quote_hash: 6b8930582bdb
+- id: req_0da65bcb58bd
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_STATE
+  section_id: sec_9f99be69ef79
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_STATE.wkup_timer_expired: occupies bits 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_STATE.wkup_timer_expired
+  property: bits
+  value: '0'
+  quotes:
+  - text: 'bits: "0"'
+    lines:
+    - 326
+    - 326
+    chars:
+    - 9735
+    - 9744
+  quote_hash: cb646482b8d4
+- id: req_497e4c47001b
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_STATE
+  section_id: sec_9f99be69ef79
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_STATE.wdog_timer_bark: software access is rw1c.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_STATE.wdog_timer_bark
+  property: swaccess
+  value: rw1c
+  quotes:
+  - text: 'swaccess: "rw1c"'
+    lines:
+    - 323
+    - 323
+    chars:
+    - 9668
+    - 9684
+  quote_hash: 1d5816446cdd
+- id: req_4e6e3fbdc147
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_STATE
+  section_id: sec_9f99be69ef79
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_STATE.wdog_timer_bark: hardware access is hrw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_STATE.wdog_timer_bark
+  property: hwaccess
+  value: hrw
+  quotes:
+  - text: 'hwaccess: "hrw"'
+    lines:
+    - 324
+    - 324
+    chars:
+    - 9692
+    - 9707
+  quote_hash: 6b8930582bdb
+- id: req_8b6c870e8976
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_STATE
+  section_id: sec_9f99be69ef79
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_STATE.wdog_timer_bark: occupies bits 1.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_STATE.wdog_timer_bark
+  property: bits
+  value: '1'
+  quotes:
+  - text: 'bits: "1"'
+    lines:
+    - 330
+    - 330
+    chars:
+    - 9883
+    - 9892
+  quote_hash: 027058a78852
+- id: req_9d6367ee46e8
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_STATE
+  section_id: sec_9f99be69ef79
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: wkup_timer_expired is raised when the wakeup timer has hit the specified threshold.
+  aspect: interrupt
+  condition: wakeup timer has hit the specified threshold
+  ambiguity: null
+  quotes:
+  - text: Raised if the wakeup timer has hit the specified threshold.
+    lines:
+    - 328
+    - 328
+    chars:
+    - 9801
+    - 9860
+  quote_hash: 25bb80cb07c3
+- id: req_d79d53877898
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_STATE
+  section_id: sec_9f99be69ef79
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: wdog_timer_bark is raised when the watchdog timer has hit the bark threshold.
+  aspect: interrupt
+  condition: watchdog timer has hit the bark threshold
+  ambiguity: null
+  quotes:
+  - text: Raised if the watchdog timer has hit the bark threshold.
+    lines:
+    - 332
+    - 332
+    chars:
+    - 9946
+    - 10002
+  quote_hash: 6a4e164666db
+- id: req_6c814306a202
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  section_id: sec_e64b2920af6a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_TEST.wkup_timer_expired: software access is wo.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST.wkup_timer_expired
+  property: swaccess
+  value: wo
+  quotes:
+  - text: 'swaccess: "wo"'
+    lines:
+    - 340
+    - 340
+    chars:
+    - 10200
+    - 10214
+  quote_hash: af65759a3ab0
+- id: req_9a05d539f1e9
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  section_id: sec_e64b2920af6a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_TEST.wkup_timer_expired: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST.wkup_timer_expired
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 341
+    - 341
+    chars:
+    - 10222
+    - 10237
+  quote_hash: 4a7d2bfc2eec
+- id: req_e855c213923c
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  section_id: sec_e64b2920af6a
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'INTR_TEST.wkup_timer_expired: hardware receives a write-qualifier pulse on software writes
+    (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST.wkup_timer_expired
+  property: hwqe
+  value: 'true'
+  quotes:
+  - text: 'hwqe: "true"'
+    lines:
+    - 343
+    - 343
+    chars:
+    - 10266
+    - 10278
+  quote_hash: 618a036af1ac
+- id: req_254b948b1822
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  section_id: sec_e64b2920af6a
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'INTR_TEST.wkup_timer_expired: the register is implemented outside the register block (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST.wkup_timer_expired
+  property: hwext
+  value: 'true'
+  quotes:
+  - text: 'hwext: "true"'
+    lines:
+    - 342
+    - 342
+    chars:
+    - 10245
+    - 10258
+  quote_hash: 753c61d7d6a9
+- id: req_112c7b5a1f6c
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  section_id: sec_e64b2920af6a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_TEST.wkup_timer_expired: occupies bits 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST.wkup_timer_expired
+  property: bits
+  value: '0'
+  quotes:
+  - text: 'bits: "0"'
+    lines:
+    - 345
+    - 345
+    chars:
+    - 10306
+    - 10315
+  quote_hash: cb646482b8d4
+- id: req_57bafcb29a48
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  section_id: sec_e64b2920af6a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_TEST.wdog_timer_bark: software access is wo.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST.wdog_timer_bark
+  property: swaccess
+  value: wo
+  quotes:
+  - text: 'swaccess: "wo"'
+    lines:
+    - 340
+    - 340
+    chars:
+    - 10200
+    - 10214
+  quote_hash: af65759a3ab0
+- id: req_5a898dfd87f3
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  section_id: sec_e64b2920af6a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_TEST.wdog_timer_bark: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST.wdog_timer_bark
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 341
+    - 341
+    chars:
+    - 10222
+    - 10237
+  quote_hash: 4a7d2bfc2eec
+- id: req_ac3df018a3f6
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  section_id: sec_e64b2920af6a
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'INTR_TEST.wdog_timer_bark: hardware receives a write-qualifier pulse on software writes
+    (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST.wdog_timer_bark
+  property: hwqe
+  value: 'true'
+  quotes:
+  - text: 'hwqe: "true"'
+    lines:
+    - 343
+    - 343
+    chars:
+    - 10266
+    - 10278
+  quote_hash: 618a036af1ac
+- id: req_0793e569f633
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  section_id: sec_e64b2920af6a
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'INTR_TEST.wdog_timer_bark: the register is implemented outside the register block (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST.wdog_timer_bark
+  property: hwext
+  value: 'true'
+  quotes:
+  - text: 'hwext: "true"'
+    lines:
+    - 342
+    - 342
+    chars:
+    - 10245
+    - 10258
+  quote_hash: 753c61d7d6a9
+- id: req_fb471eb4514c
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  section_id: sec_e64b2920af6a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_TEST.wdog_timer_bark: occupies bits 1.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST.wdog_timer_bark
+  property: bits
+  value: '1'
+  quotes:
+  - text: 'bits: "1"'
+    lines:
+    - 349
+    - 349
+    chars:
+    - 10441
+    - 10450
+  quote_hash: 027058a78852
+- id: req_06f288d5aa44
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  section_id: sec_e64b2920af6a
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Writing 1 to INTR_TEST.wkup_timer_expired forces the wkup_timer_expired interrupt.
+  aspect: interrupt
+  condition: software writes 1 to bit 0
+  ambiguity: null
+  quotes:
+  - text: Write 1 to force wkup_timer_expired interrupt.
+    lines:
+    - 347
+    - 347
+    chars:
+    - 10372
+    - 10418
+  quote_hash: ad83301c2bc4
+- id: req_6fb515f507b6
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  section_id: sec_e64b2920af6a
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Writing 1 to INTR_TEST.wdog_timer_bark forces the wdog_timer_bark interrupt.
+  aspect: interrupt
+  condition: software writes 1 to bit 1
+  ambiguity: null
+  quotes:
+  - text: Write 1 to force wdog_timer_bark interrupt.
+    lines:
+    - 351
+    - 351
+    chars:
+    - 10504
+    - 10547
+  quote_hash: 973a4218f654
+- id: req_cc7ca3e59641
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CAUSE
+  section_id: sec_3368d5cf3b17
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_CAUSE.cause: software access is rw0c.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_CAUSE.cause
+  property: swaccess
+  value: rw0c
+  quotes:
+  - text: 'swaccess: "rw0c"'
+    lines:
+    - 357
+    - 357
+    chars:
+    - 10644
+    - 10660
+  quote_hash: 6bd5c35d7ea7
+- id: req_4d305e8738ca
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CAUSE
+  section_id: sec_3368d5cf3b17
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_CAUSE.cause: hardware access is hrw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_CAUSE.cause
+  property: hwaccess
+  value: hrw
+  quotes:
+  - text: 'hwaccess: "hrw"'
+    lines:
+    - 358
+    - 358
+    chars:
+    - 10668
+    - 10683
+  quote_hash: 6b8930582bdb
+- id: req_fb887ab886c6
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CAUSE
+  section_id: sec_3368d5cf3b17
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'WKUP_CAUSE.cause: occupies bits 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: WKUP_CAUSE.cause
+  property: bits
+  value: '0'
+  quotes:
+  - text: 'bits: "0"'
+    lines:
+    - 361
+    - 361
+    chars:
+    - 10737
+    - 10746
+  quote_hash: cb646482b8d4
+- id: req_e476e5156aef
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CAUSE
+  section_id: sec_3368d5cf3b17
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The cause bit indicates that the AON timer requested a wakeup.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: AON timer requested wakeup
+    lines:
+    - 363
+    - 363
+    chars:
+    - 10790
+    - 10816
+  quote_hash: 76817d2bb6d4
+- id: req_5eeb59874b4d
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > interrupt_list
+  section_id: sec_22340de7925e
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The wkup_timer_expired interrupt is raised when the wakeup timer has hit the specified threshold.
+  aspect: interrupt
+  condition: The wakeup timer has hit the specified threshold.
+  ambiguity:
+    code: MISSING_DETAIL
+    note: The 'specified threshold' is not identified in this section.
+    question: Which register or field holds the threshold that the wakeup timer is compared against for
+      wkup_timer_expired?
+  quotes:
+  - text: Raised if the wakeup timer has hit the specified threshold.
+    lines:
+    - 48
+    - 48
+    chars:
+    - 1999
+    - 2058
+  quote_hash: 25bb80cb07c3
+- id: req_8072405972f5
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > interrupt_list
+  section_id: sec_22340de7925e
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The wdog_timer_bark interrupt is raised when the watchdog timer has hit the bark threshold.
+  aspect: interrupt
+  condition: The watchdog timer has hit the bark threshold.
+  ambiguity: null
+  quotes:
+  - text: Raised if the watchdog timer has hit the bark threshold.
+    lines:
+    - 51
+    - 51
+    chars:
+    - 2112
+    - 2168
+  quote_hash: 6a4e164666db
+- id: req_af476b6d2663
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > alert_list
+  section_id: sec_51f0c6e5e2fc
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The fatal_fault alert is triggered when a fatal TL-UL bus integrity fault is detected.
+  aspect: error_handling
+  condition: A fatal TL-UL bus integrity fault is detected
+  ambiguity: null
+  quotes:
+  - text: This fatal alert is triggered when a fatal TL-UL bus integrity fault is detected.
+    lines:
+    - 57
+    - 57
+    chars:
+    - 2248
+    - 2329
+  quote_hash: 9bfed965545b
+- id: req_aae0c53ff5ee
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > wakeup_list
+  section_id: sec_1db926fa4f91
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: wkup_req is raised when the wakeup timer or the watchdog timer has hit the specified threshold.
+  aspect: functional
+  condition: The wakeup timer or watchdog timer has hit the specified threshold
+  ambiguity:
+    code: MISSING_DETAIL
+    note: The text does not say whether wkup_req is cleared, when it is cleared, or whether the threshold
+      is a register-configured value.
+    question: Which registers define the threshold for each timer, and how and when is wkup_req deasserted?
+  quotes:
+  - text: Raised if the wakeup or watchdog timer has hit the specified threshold.
+    lines:
+    - 63
+    - 63
+    chars:
+    - 2406
+    - 2477
+  quote_hash: 88aec06233cb
+- id: req_54d21b5667f7
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > inter_signal_list
+  section_id: sec_255f94b5386e
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The racl_policies signal's policy selection vector parameter selects the policy applied to
+    each register.
+  aspect: access_control
+  condition: null
+  ambiguity:
+    code: UNCLEAR_REFERENT
+    note: The parameter that serves as the policy selection vector is not named, and the mapping from
+      selection value to policy index is not given.
+    question: Which parameter is the policy selection vector, and how does each of its entries map to
+      an index in racl_policies?
+  quotes:
+  - text: The policy selection vector (parameter) selects the policy for each register.
+    lines:
+    - 116
+    - 116
+    chars:
+    - 3712
+    - 3789
+  quote_hash: 981d774fb862
+- id: req_dd5f4f68b902
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > features
+  section_id: sec_2322056c0294
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: 'AON_TIMER.WAKEUP.WAKEUP_CONFIG: the AON_TIMER wake-up period is configurable.'
+  aspect: configuration
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The AON_TIMER wake-up period can be configured.
+    lines:
+    - 133
+    - 133
+    chars:
+    - 4144
+    - 4191
+  quote_hash: a7dd86afd947
+- id: req_b9903ec59f23
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > features
+  section_id: sec_2322056c0294
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: 'AON_TIMER.WAKEUP.WAKEUP_REQUEST: the AON_TIMER can wake up the core from sleep mode.'
+  aspect: functional
+  condition: core is in sleep mode
+  ambiguity: null
+  quotes:
+  - text: The AON_TIMER can wake-up the core from sleep mode.
+    lines:
+    - 138
+    - 138
+    chars:
+    - 4291
+    - 4342
+  quote_hash: a708c8ab39d3
+- id: req_79e6aa170e11
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > features
+  section_id: sec_2322056c0294
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: 'AON_TIMER.WAKEUP.INTERRUPT: the AON_TIMER triggers an interrupt when the wakeup threshold
+    is reached.'
+  aspect: interrupt
+  condition: wakeup threshold is reached
+  ambiguity: null
+  quotes:
+  - text: The AON_TIMER block triggers interrupts when the wakeup threshold is reached.
+    lines:
+    - 143
+    - 143
+    chars:
+    - 4437
+    - 4514
+  quote_hash: c11fee456ffb
+- id: req_be7a928ec2bf
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > features
+  section_id: sec_2322056c0294
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: 'AON_TIMER.WATCHDOG.BARK: the AON_TIMER watchdog barks if not petted within the programmed
+    time.'
+  aspect: functional
+  condition: watchdog not petted within the programmed time
+  ambiguity: null
+  quotes:
+  - text: The AON_TIMER watchdog barks if not petted in the programmed time.
+    lines:
+    - 148
+    - 148
+    chars:
+    - 4606
+    - 4672
+  quote_hash: df3b214953fa
+- id: req_e3479b402bad
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > features
+  section_id: sec_2322056c0294
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: 'AON_TIMER.WATCHDOG.BARK: a watchdog bark triggers an interrupt.'
+  aspect: interrupt
+  condition: watchdog bark occurs
+  ambiguity: null
+  quotes:
+  - text: A bark triggers an interrupt and a wakeup.
+    lines:
+    - 148
+    - 148
+    chars:
+    - 4673
+    - 4715
+  quote_hash: decaacdd07be
+- id: req_e3479b402bad
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > features
+  section_id: sec_2322056c0294
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: 'AON_TIMER.WATCHDOG.BARK: a watchdog bark triggers a wakeup.'
+  aspect: functional
+  condition: watchdog bark occurs
+  ambiguity: null
+  quotes:
+  - text: A bark triggers an interrupt and a wakeup.
+    lines:
+    - 148
+    - 148
+    chars:
+    - 4673
+    - 4715
+  quote_hash: decaacdd07be
+- id: req_c101a5ea79ff
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > features
+  section_id: sec_2322056c0294
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: 'AON_TIMER.WATCHDOG.BITE: the AON_TIMER watchdog bites if not petted within the programmed
+    time.'
+  aspect: functional
+  condition: watchdog not petted within the programmed time
+  ambiguity: null
+  quotes:
+  - text: The AON_TIMER watchdog bites if not petted in the programmed time.
+    lines:
+    - 153
+    - 153
+    chars:
+    - 4807
+    - 4873
+  quote_hash: b87d41c28c97
+- id: req_2c9db1868423
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > features
+  section_id: sec_2322056c0294
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: 'AON_TIMER.WATCHDOG.BITE: a watchdog bite triggers a reset.'
+  aspect: reset
+  condition: watchdog bite occurs
+  ambiguity: null
+  quotes:
+  - text: A bite triggers a reset.
+    lines:
+    - 153
+    - 153
+    chars:
+    - 4874
+    - 4898
+  quote_hash: 0fe37ef3dcd7
+- id: req_67fc5a4c9073
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > features
+  section_id: sec_2322056c0294
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: 'AON_TIMER.WATCHDOG.PAUSE: the watchdog can be configured to pause during sleep mode and
+    resume after wake-up.'
+  aspect: configuration
+  condition: pause configured and device in sleep mode
+  ambiguity: null
+  quotes:
+  - text: Configure the watchdog to pause during sleep mode, resuming after wake-up.
+    lines:
+    - 158
+    - 158
+    chars:
+    - 4991
+    - 5065
+  quote_hash: 2a4caeb9ae2e
+- id: req_5527e873e729
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > features
+  section_id: sec_2322056c0294
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: 'AON_TIMER.WATCHDOG.DISABLE_BY_LC_CTRL: the watchdog is disabled when the life cycle controller
+    escalates.'
+  aspect: functional
+  condition: life cycle controller escalates
+  ambiguity: null
+  quotes:
+  - text: The watchdog is disabled when the life cycle controller escalates.
+    lines:
+    - 163
+    - 163
+    chars:
+    - 5171
+    - 5237
+  quote_hash: 2ae490a70b29
+- id: req_3a17f4230329
+  path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > features
+  section_id: sec_2322056c0294
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: 'AON_TIMER.WATCHDOG.INTERRUPT: an interrupt is triggered when the watchdog bark threshold
+    is reached.'
+  aspect: interrupt
+  condition: watchdog bark threshold is reached
+  ambiguity: null
+  quotes:
+  - text: An interrupt is triggered when the watchdog bark threshold is reached.
+    lines:
+    - 168
+    - 168
+    chars:
+    - 5334
+    - 5404
+  quote_hash: 7e0b951ceae1
+- id: req_d3e14c51367a
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces
+  section_id: sec_03ab644d8240
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The module has primary clock input clk_i.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'Primary Clock: clk_i'
+    lines:
+    - 5
+    - 5
+    chars:
+    - 320
+    - 343
+  quote_hash: 9db43d433922
+- id: req_f47b84a23519
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces
+  section_id: sec_03ab644d8240
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The module has an additional clock input clk_aon_i.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'Other Clocks: clk_aon_i'
+    lines:
+    - 6
+    - 6
+    chars:
+    - 349
+    - 375
+  quote_hash: d0dca6ae68d1
+- id: req_d7613bbbb01d
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces
+  section_id: sec_03ab644d8240
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The module has a TL-UL bus device interface named tl.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'Bus Device Interfaces (TL-UL): tl'
+    lines:
+    - 7
+    - 7
+    chars:
+    - 381
+    - 417
+  quote_hash: 9bcdb0a9753f
+- id: req_89c9e60ffd14
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces
+  section_id: sec_03ab644d8240
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The module has no TL-UL bus host interfaces.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'Bus Host Interfaces (TL-UL): none'
+    lines:
+    - 8
+    - 8
+    chars:
+    - 423
+    - 457
+  quote_hash: 2b7704cbf94f
+- id: req_55b5453c7293
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces
+  section_id: sec_03ab644d8240
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The module has no peripheral pins for chip IO.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'Peripheral Pins for Chip IO: none'
+    lines:
+    - 9
+    - 9
+    chars:
+    - 461
+    - 495
+  quote_hash: cd7339b6d475
+- id: req_ba0f72788fde
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  section_id: sec_399570f2c11d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: nmi_wdog_timer_bark is a 1-bit logic unidirectional signal driven by the module (req).
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: nmi_wdog_timer_bark
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1061
+    - 1080
+  - text: logic
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1083
+    - 1088
+  - text: uni
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1115
+    - 1118
+  - text: req
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1125
+    - 1128
+  - text: '1'
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1139
+    - 1140
+  quote_hash: f75865437490
+- id: req_e3ce9ff0f6e0
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  section_id: sec_399570f2c11d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: wkup_req is a 1-bit logic unidirectional signal driven by the module (req).
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: '1'
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1139
+    - 1140
+  - text: wkup_req
+    lines:
+    - 16
+    - 16
+    chars:
+    - 1280
+    - 1288
+  - text: logic
+    lines:
+    - 16
+    - 16
+    chars:
+    - 1302
+    - 1307
+  - text: uni
+    lines:
+    - 16
+    - 16
+    chars:
+    - 1334
+    - 1337
+  - text: req
+    lines:
+    - 16
+    - 16
+    chars:
+    - 1344
+    - 1347
+  quote_hash: fec3ce24671e
+- id: req_e5a4d1a7b96b
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  section_id: sec_399570f2c11d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: aon_timer_rst_req is a 1-bit logic unidirectional signal driven by the module (req).
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: '1'
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1139
+    - 1140
+  - text: aon_timer_rst_req
+    lines:
+    - 17
+    - 17
+    chars:
+    - 1499
+    - 1516
+  - text: logic
+    lines:
+    - 17
+    - 17
+    chars:
+    - 1521
+    - 1526
+  - text: uni
+    lines:
+    - 17
+    - 17
+    chars:
+    - 1553
+    - 1556
+  - text: req
+    lines:
+    - 17
+    - 17
+    chars:
+    - 1563
+    - 1566
+  quote_hash: 79c0fc8fbed7
+- id: req_2c3ac483c4f8
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  section_id: sec_399570f2c11d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: lc_escalate_en is a 1-bit lc_ctrl_pkg::lc_tx unidirectional input received by the module
+    (rcv).
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: '1'
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1139
+    - 1140
+  - text: lc_escalate_en
+    lines:
+    - 18
+    - 18
+    chars:
+    - 1718
+    - 1732
+  - text: lc_ctrl_pkg::lc_tx
+    lines:
+    - 18
+    - 18
+    chars:
+    - 1740
+    - 1758
+  - text: uni
+    lines:
+    - 18
+    - 18
+    chars:
+    - 1772
+    - 1775
+  - text: rcv
+    lines:
+    - 18
+    - 18
+    chars:
+    - 1782
+    - 1785
+  quote_hash: 8a91fa122bda
+- id: req_945d57662b2e
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  section_id: sec_399570f2c11d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: sleep_mode is a 1-bit logic unidirectional input received by the module (rcv).
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: '1'
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1139
+    - 1140
+  - text: sleep_mode
+    lines:
+    - 19
+    - 19
+    chars:
+    - 1937
+    - 1947
+  - text: logic
+    lines:
+    - 19
+    - 19
+    chars:
+    - 1959
+    - 1964
+  - text: uni
+    lines:
+    - 19
+    - 19
+    chars:
+    - 1991
+    - 1994
+  - text: rcv
+    lines:
+    - 19
+    - 19
+    chars:
+    - 2001
+    - 2004
+  quote_hash: d080870bd36c
+- id: req_7cac5e36c62e
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  section_id: sec_399570f2c11d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: racl_policies is a top_racl_pkg::racl_policy_vec unidirectional input received by the module,
+    carrying the RACL policy vector from a racl_ctrl instance.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: '1'
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1139
+    - 1140
+  - text: racl_policies
+    lines:
+    - 20
+    - 20
+    chars:
+    - 2156
+    - 2169
+  - text: top_racl_pkg::racl_policy_vec
+    lines:
+    - 20
+    - 20
+    chars:
+    - 2178
+    - 2207
+  - text: uni
+    lines:
+    - 20
+    - 20
+    chars:
+    - 2210
+    - 2213
+  - text: rcv
+    lines:
+    - 20
+    - 20
+    chars:
+    - 2220
+    - 2223
+  - text: Incoming RACL policy vector from a racl_ctrl instance.
+    lines:
+    - 20
+    - 20
+    chars:
+    - 2238
+    - 2292
+  quote_hash: fbba49dfb02b
+- id: req_5578bb91e93e
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  section_id: sec_399570f2c11d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The policy selection vector parameter selects the RACL policy for each register.
+  aspect: access_control
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The policy selection vector (parameter) selects the policy for each register.
+    lines:
+    - 20
+    - 20
+    chars:
+    - 2293
+    - 2370
+  quote_hash: 981d774fb862
+- id: req_1031e7058363
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  section_id: sec_399570f2c11d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: racl_error is a top_racl_pkg::racl_error_log unidirectional output driven by the module,
+    carrying the RACL error log information of this module.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: '1'
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1139
+    - 1140
+  - text: racl_error
+    lines:
+    - 21
+    - 21
+    chars:
+    - 2375
+    - 2385
+  - text: top_racl_pkg::racl_error_log
+    lines:
+    - 21
+    - 21
+    chars:
+    - 2397
+    - 2425
+  - text: uni
+    lines:
+    - 21
+    - 21
+    chars:
+    - 2429
+    - 2432
+  - text: req
+    lines:
+    - 21
+    - 21
+    chars:
+    - 2439
+    - 2442
+  - text: RACL error log information of this module.
+    lines:
+    - 21
+    - 21
+    chars:
+    - 2457
+    - 2499
+  quote_hash: 4d0739b797e2
+- id: req_c867fee0065b
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  section_id: sec_399570f2c11d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: tl is a tlul_pkg::tl request/response interface on which the module acts as responder (rsp).
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: '1'
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1139
+    - 1140
+  - text: tl
+    lines:
+    - 22
+    - 22
+    chars:
+    - 2594
+    - 2596
+  - text: tlul_pkg::tl
+    lines:
+    - 22
+    - 22
+    chars:
+    - 2616
+    - 2628
+  - text: req_rsp
+    lines:
+    - 22
+    - 22
+    chars:
+    - 2648
+    - 2655
+  - text: rsp
+    lines:
+    - 22
+    - 22
+    chars:
+    - 2658
+    - 2661
+  quote_hash: e89b39bbf4d1
+- id: req_ecfb9e159c5a
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Interrupts
+  section_id: sec_a9d82c0113c5
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: wkup_timer_expired is an event-type interrupt raised when the wakeup timer hits the specified
+    threshold.
+  aspect: interrupt
+  condition: wakeup timer has hit the specified threshold
+  ambiguity: null
+  quotes:
+  - text: wkup_timer_expired
+    lines:
+    - 28
+    - 28
+    chars:
+    - 3017
+    - 3035
+  - text: Event
+    lines:
+    - 28
+    - 28
+    chars:
+    - 3038
+    - 3043
+  - text: Raised if the wakeup timer has hit the specified threshold.
+    lines:
+    - 28
+    - 28
+    chars:
+    - 3047
+    - 3106
+  quote_hash: 0396404cf5f9
+- id: req_121fb328f3b9
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Interrupts
+  section_id: sec_a9d82c0113c5
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: wdog_timer_bark is an event-type interrupt raised when the watchdog timer hits the bark threshold.
+  aspect: interrupt
+  condition: watchdog timer has hit the bark threshold
+  ambiguity: null
+  quotes:
+  - text: wdog_timer_bark
+    lines:
+    - 29
+    - 29
+    chars:
+    - 3111
+    - 3126
+  - text: Event
+    lines:
+    - 29
+    - 29
+    chars:
+    - 3132
+    - 3137
+  - text: Raised if the watchdog timer has hit the bark threshold.
+    lines:
+    - 29
+    - 29
+    chars:
+    - 3141
+    - 3197
+  quote_hash: 62a7f967f724
+- id: req_81162c2dc937
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Security Alerts
+  section_id: sec_d131fe6dccaa
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The fatal_fault alert is triggered when a fatal TL-UL bus integrity fault is detected.
+  aspect: error_handling
+  condition: A fatal TL-UL bus integrity fault is detected
+  ambiguity: null
+  quotes:
+  - text: fatal_fault
+    lines:
+    - 35
+    - 35
+    chars:
+    - 3428
+    - 3439
+  - text: This fatal alert is triggered when a fatal TL-UL bus integrity fault is detected.
+    lines:
+    - 35
+    - 35
+    chars:
+    - 3443
+    - 3524
+  quote_hash: dc9e528fa77d
+- id: req_ab1c76f4ca1b
+  path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Security Countermeasures
+  section_id: sec_570b0615afea
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The AON_TIMER.BUS.INTEGRITY countermeasure provides an end-to-end bus integrity scheme.
+  aspect: security
+  condition: null
+  ambiguity:
+    code: MISSING_DETAIL
+    note: The integrity scheme is named but its mechanism, coverage and error response are not specified.
+    question: Which integrity scheme (e.g., ECC/parity code) is used, which bus signals does it cover,
+      and what happens when an integrity check fails?
+  quotes:
+  - text: AON_TIMER.BUS.INTEGRITY
+    lines:
+    - 41
+    - 41
+    chars:
+    - 3685
+    - 3708
+  - text: End-to-end bus integrity scheme.
+    lines:
+    - 41
+    - 41
+    chars:
+    - 3711
+    - 3743
+  quote_hash: 2b1cdb83d710
+- id: req_3874f9a44f2d
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Initialization
+  section_id: sec_7633b1b3ecd2
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Software sets WKUP_COUNT_LO, WKUP_COUNT_HI and WDOG_COUNT to zero as the first initialization
+    step.
+  aspect: configuration
+  condition: During initialization, before the timers are enabled
+  ambiguity: null
+  quotes:
+  - text: Set the timer values WKUP_COUNT_LO, WKUP_COUNT_HI and WDOG_COUNT to zero.
+    lines:
+    - 5
+    - 5
+    chars:
+    - 44
+    - 210
+  quote_hash: c09163100d78
+- id: req_02d3eac982f1
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Initialization
+  section_id: sec_7633b1b3ecd2
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Software programs the wakeup pre-scaler value in WKUP_CTRL.
+  aspect: configuration
+  condition: During initialization
+  ambiguity: null
+  quotes:
+  - text: Program the desired wakeup pre-scaler value in WKUP_CTRL.
+    lines:
+    - 6
+    - 6
+    chars:
+    - 214
+    - 299
+  quote_hash: 106e91c22e6f
+- id: req_d38eb6969e30
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Initialization
+  section_id: sec_7633b1b3ecd2
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Software programs the wakeup and watchdog thresholds in WKUP_THOLD_LO, WKUP_THOLD_HI, WDOG_BARK_THOLD
+    and WDOG_BITE_THOLD.
+  aspect: configuration
+  condition: During initialization
+  ambiguity: null
+  quotes:
+  - text: Program the desired thresholds in WKUP_THOLD_LO, WKUP_THOLD_HI, WDOG_BARK_THOLD and WDOG_BITE_THOLD.
+    lines:
+    - 7
+    - 7
+    chars:
+    - 303
+    - 535
+  quote_hash: 2901ebad5da7
+- id: req_568a3dae87da
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Initialization
+  section_id: sec_7633b1b3ecd2
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Software sets the enable bit to 1 in WKUP_CTRL and WDOG_CTRL to start the timers.
+  aspect: configuration
+  condition: After counters, pre-scaler and thresholds are programmed
+  ambiguity: null
+  quotes:
+  - text: Set the enable bit to 1 in the WKUP_CTRL / WDOG_CTRL registers.
+    lines:
+    - 8
+    - 8
+    chars:
+    - 539
+    - 658
+  quote_hash: 7b38f8d7ba45
+- id: req_337bcf50f909
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Initialization
+  section_id: sec_7633b1b3ecd2
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Software can lock the watchdog configuration by writing 0 to the regwen bit in WDOG_REGWEN.
+  aspect: access_control
+  condition: Optional, after the watchdog is enabled
+  ambiguity: null
+  quotes:
+  - text: If desired, lock the watchdog configuration by writing 0 to the `regwen` bit in WDOG_REGWEN.
+    lines:
+    - 9
+    - 9
+    chars:
+    - 662
+    - 784
+  quote_hash: fc8faa9b6a71
+- id: req_bc7056b2a0ce
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Watchdog pet
+  section_id: sec_5d6405aac9fd
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Writing zero to the WDOG_COUNT register pets the watchdog.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Pet the watchdog by writing zero to the [`WDOG_COUNT`](registers.md#wdog_count) register.
+    lines:
+    - 13
+    - 13
+    chars:
+    - 803
+    - 892
+  quote_hash: a484246bb391
+- id: req_6c3b6fd6335e
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access
+  section_id: sec_f4a4a521cf9f
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The wakeup counter and threshold are each 64-bit values accessed through two 32-bit hi and
+    lo registers.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The wakeup counter and threshold are both 64-bit values accessed via two 32-bit hi and lo registers.
+    lines:
+    - 17
+    - 17
+    chars:
+    - 932
+    - 1032
+  quote_hash: 6e2de4d81dcd
+- id: req_916a3bd92e66
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access
+  section_id: sec_f4a4a521cf9f
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The 64-bit counter and threshold values cannot be read or modified in a single atomic access.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: It is not possible to read or modify the 64-bit values in a single atomic access.
+    lines:
+    - 18
+    - 18
+    chars:
+    - 1033
+    - 1114
+  quote_hash: ec08f20f52f3
+- id: req_41943819e401
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the counter
+  section_id: sec_26fa06325de3
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: For target values close to overflow, software disables the timer via WKUP_CTRL while writing
+    the counter.
+  aspect: configuration
+  condition: target counter value is close to overflow (e.g. bits [31:8] set)
+  ambiguity:
+    code: VAGUE
+    note: '"Such values" depends on the undefined notion of "close to overflow", and the exact WKUP_CTRL
+      field to use is not named.'
+    question: What exact range of counter values requires disabling the timer, and which WKUP_CTRL field
+      or bit disables it?
+  quotes:
+  - text: For such values, disable the timer with WKUP_CTRL while writing the counter.
+    lines:
+    - 56
+    - 56
+    chars:
+    - 2949
+    - 3053
+  quote_hash: 97f6ca1c4192
+- id: req_4fff6f6d5480
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the threshold
+  section_id: sec_25e1c95b68ba
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Hardware does not modify WKUP_THOLD_LO and WKUP_THOLD_HI.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The hardware does not alter [`WKUP_THOLD_LO`](registers.md#wkup_thold_lo) and [`WKUP_THOLD_HI`](registers.md#wkup_thold_hi)
+    lines:
+    - 60
+    - 60
+    chars:
+    - 3082
+    - 3175
+  quote_hash: 30e1f0490c1d
+- id: req_928e16c47fe6
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the threshold
+  section_id: sec_7cc19f57fca1
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Disable the wakeup interrupt before writing the threshold registers.
+  aspect: configuration
+  condition: when updating the wakeup threshold
+  ambiguity: null
+  quotes:
+  - text: disable_wakeup_interrupt();
+    lines:
+    - 68
+    - 68
+    chars:
+    - 3603
+    - 3630
+  quote_hash: 0baf9c27cab7
+- id: req_868d6e44fcfa
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the threshold
+  section_id: sec_7cc19f57fca1
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Write WKUP_THOLD_LO with its maximum value (UINT32_MAX) first.
+  aspect: register
+  condition: after the wakeup interrupt is disabled
+  ambiguity: null
+  quotes:
+  - text: // Set the lower word to its maximum value. The resulting threshold will definitely be at least
+      as
+    lines:
+    - 70
+    - 70
+    chars:
+    - 3632
+    - 3730
+  - text: REG_WRITE(WKUP_THOLD_LO, UINT32_MAX);
+    lines:
+    - 72
+    - 72
+    chars:
+    - 3761
+    - 3798
+  quote_hash: 14cac4dab768
+- id: req_b604cf1b44cb
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the threshold
+  section_id: sec_7cc19f57fca1
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Write WKUP_THOLD_HI with the upper 32 bits of the new threshold second.
+  aspect: register
+  condition: after WKUP_THOLD_LO has been set to its maximum value
+  ambiguity: null
+  quotes:
+  - text: // Set the upper word to its desired value. The resulting threshold will still be at least as
+      big
+    lines:
+    - 74
+    - 74
+    chars:
+    - 3800
+    - 3897
+  - text: REG_WRITE(WKUP_THOLD_HI, new_thold >> 32);
+    lines:
+    - 76
+    - 76
+    chars:
+    - 3974
+    - 4016
+  quote_hash: 7a2e10c1530a
+- id: req_f7ff6e35daf0
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the threshold
+  section_id: sec_7cc19f57fca1
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Write WKUP_THOLD_LO with the lower 32 bits of the new threshold third.
+  aspect: register
+  condition: after WKUP_THOLD_HI has been written with its desired value
+  ambiguity: null
+  quotes:
+  - text: // Set the lower word to its desired value.
+    lines:
+    - 78
+    - 78
+    chars:
+    - 4018
+    - 4061
+  - text: REG_WRITE(WKUP_THOLD_LO, new_thold & 0xffff_ffff);
+    lines:
+    - 79
+    - 79
+    chars:
+    - 4062
+    - 4112
+  quote_hash: 1c7772baefa8
+- id: req_b6c38c07c05c
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the threshold
+  section_id: sec_7cc19f57fca1
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Enable the wakeup interrupt after the threshold update is complete.
+  aspect: configuration
+  condition: after the final write of WKUP_THOLD_LO
+  ambiguity: null
+  quotes:
+  - text: enable_wakeup_interrupt();
+    lines:
+    - 81
+    - 81
+    chars:
+    - 4114
+    - 4140
+  quote_hash: 973bb440f1f7
+- id: req_6683f231b6e2
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  section_id: sec_621d34d9838e
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: An interrupt is generated by AON_TIMER when either timer reaches its programmed threshold.
+  aspect: interrupt
+  condition: either timer reaches the programmed threshold
+  ambiguity: null
+  quotes:
+  - text: If either timer reaches the programmed threshold, interrupts are generated from the AON_TIMER
+      module.
+    lines:
+    - 86
+    - 86
+    chars:
+    - 4169
+    - 4270
+  quote_hash: 3bd2a56da89a
+- id: req_d16671fe023d
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  section_id: sec_621d34d9838e
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Clearing the enable bit in WKUP_CTRL disables the wakeup timer.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Disable the wakeup timer by clearing the enable bit in [`WKUP_CTRL`](registers.md#wkup_ctrl).
+    lines:
+    - 87
+    - 87
+    chars:
+    - 4271
+    - 4364
+  quote_hash: abe1eae88248
+- id: req_d86babfe2ed0
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  section_id: sec_621d34d9838e
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Clearing WKUP_COUNT_HI and WKUP_COUNT_LO resets the wakeup timer count.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Reset the timer if desired by clearing [`WKUP_COUNT_HI`](registers.md#wkup_count_hi) and [`WKUP_COUNT_LO`](registers.md#wkup_count_lo)
+    lines:
+    - 88
+    - 88
+    chars:
+    - 4365
+    - 4469
+  quote_hash: 719a8041c8ad
+- id: req_7c692186250b
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  section_id: sec_621d34d9838e
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Setting the enable bit in WKUP_CTRL re-enables the wakeup timer.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: renable by setting the enable bit in [`WKUP_CTRL`](registers.md#wkup_ctrl).
+    lines:
+    - 88
+    - 88
+    chars:
+    - 4504
+    - 4579
+  quote_hash: 8524de7d588a
+- id: req_c81ddbcee809
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  section_id: sec_621d34d9838e
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Writing 1 to INTR_STATE clears the interrupt.
+  aspect: interrupt
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Clear the interrupt by writing 1 into the Interrupt Status Register [`INTR_STATE`](registers.md#intr_state).
+    lines:
+    - 89
+    - 89
+    chars:
+    - 4580
+    - 4688
+  quote_hash: ae09eb833d27
+- id: req_0207b81da704
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  section_id: sec_621d34d9838e
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Writing 0 to WKUP_CAUSE clears the wakeup request when a wakeup event has been caused by
+    the timer.
+  aspect: register
+  condition: WKUP_CAUSE is set
+  ambiguity: null
+  quotes:
+  - text: If the timer has caused a wakeup event ([`WKUP_CAUSE`](registers.md#wkup_cause) is set) then
+      clear the wakeup request by writing 0 to [`WKUP_CAUSE`](registers.md#wkup_cause).
+    lines:
+    - 91
+    - 91
+    chars:
+    - 4690
+    - 4864
+  quote_hash: 8fe4bc4f3b7a
+- id: req_5f70ff9a4dcc
+  path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  section_id: sec_621d34d9838e
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The interrupt retriggers at the next clock tick if the count remains above the threshold
+    after clearing and the timer remains enabled.
+  aspect: interrupt
+  condition: count remains above threshold after clearing and timer remains enabled
+  ambiguity:
+    code: UNCLEAR_REFERENT
+    note: It is unclear which clock's tick is meant for retriggering.
+    question: Which clock (e.g. the AON clock) defines the 'next clock tick' for retriggering the interrupt
+      and wakeup event?
+  quotes:
+  - text: If {[`WKUP_COUNT_HI`](registers.md#wkup_count_hi), [`WKUP_COUNT_LO`](registers.md#wkup_count_lo)}
+      remains above the threshold after clearing the interrupt or wakeup event and the timer remains enabled,
+      the interrupt and wakeup event will trigger again at the next clock tick.
+    lines:
+    - 93
+    - 93
+    chars:
+    - 4866
+    - 5141
+  quote_hash: b390e3b5277d
+- id: req_211b2f9cbae7
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation
+  section_id: sec_fb45f88786d9
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Each timer increments its count while its enable bit is set (wdog_ctrl.enable for WDOG, wkup_ctrl.enable
+    for WKUP).
+  aspect: functional
+  condition: enable signal of the respective timer is set
+  ambiguity: null
+  quotes:
+  - text: Each timer increases its count as long as its enable signal (`wdog_ctrl.enable` for WDOG and
+      `wkup_ctrl.enable` for WKUP) is set.
+    lines:
+    - 4
+    - 4
+    chars:
+    - 161
+    - 290
+  quote_hash: d20bf61d98cf
+- id: req_7c475520732e
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation
+  section_id: sec_fb45f88786d9
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Both timers halt counting when lc_escalate_en_i is set.
+  aspect: functional
+  condition: lc_escalate_en_i is set
+  ambiguity: null
+  quotes:
+  - text: Both timers halt the counting if the signal `lc_escalate_en_i` is set
+    lines:
+    - 5
+    - 5
+    chars:
+    - 291
+    - 360
+  quote_hash: ff3f51df0f66
+- id: req_1febb23f845f
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation
+  section_id: sec_fb45f88786d9
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: intr_wkup_timer_expired_o, intr_wdog_timer_bark_o and nmi_wdog_timer_bark_o are driven on
+    the SYS domain.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The output signals `intr_wkup_timer_expired_o`, `intr_wdog_timer_bark_o` and `nmi_wdog_timer_bark_o`
+      are driven on the SYS domain.
+    lines:
+    - 8
+    - 8
+    chars:
+    - 565
+    - 695
+  quote_hash: e6cd293a6e9c
+- id: req_38b9a7ae71dc
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation
+  section_id: sec_fb45f88786d9
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: wkup_req_o and aon_timer_rst_req_o are driven on the AON domain.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The output signals `wkup_req_o` and `aon_timer_rst_req_o` are driven on the AON domain.
+    lines:
+    - 9
+    - 9
+    chars:
+    - 696
+    - 783
+  quote_hash: b3f8c819e335
+- id: req_efdfaa99c068
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation
+  section_id: sec_fb45f88786d9
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: nmi_wdog_timer_bark_o is a copy of intr_wdog_timer_bark_o.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Note the signal `nmi_wdog_timer_bark_o` is a copy of `intr_wdog_timer_bark_o`.
+    lines:
+    - 10
+    - 10
+    chars:
+    - 784
+    - 862
+  quote_hash: 5af8ec356186
+- id: req_d0a241b76785
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation
+  section_id: sec_fb45f88786d9
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The block has RACL ports racl_policies_i and racl_error_o.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Furthermore, the block also has RACL ports `racl_policies_i` and `racl_error_o`
+    lines:
+    - 11
+    - 11
+    chars:
+    - 863
+    - 941
+  quote_hash: e821ba2bbcd2
+- id: req_0adcf8af4c77
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation
+  section_id: sec_fb45f88786d9
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: RACL ports are enabled by setting parameter EnableRacl to 1.
+  aspect: configuration
+  condition: EnableRacl set to 1
+  ambiguity:
+    code: WEAK_MODAL
+    note: '''should'' is used, so it is unclear whether setting EnableRacl to 1 is mandatory for enabling
+      RACL ports.'
+    question: Is EnableRacl=1 required for the RACL ports to be functional, and what is the behavior when
+      it is 0?
+  quotes:
+  - text: In order to enable the RACL ports, the parameter `EnableRacl` should be set to 1.
+    lines:
+    - 12
+    - 12
+    chars:
+    - 988
+    - 1069
+  quote_hash: 53e3969f6824
+- id: req_f04b03280b4d
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The always-on timer runs on a clock of approximately 200KHz.
+  aspect: timing
+  condition: null
+  ambiguity:
+    code: VAGUE
+    note: The clock frequency is given only as approximate (~200KHz) with no tolerance.
+    question: What is the nominal AON clock frequency and what tolerance must the design support?
+  quotes:
+  - text: The always-on timer will run on a ~200KHz clock.
+    lines:
+    - 20
+    - 20
+    chars:
+    - 1173
+    - 1221
+  quote_hash: b946d1771ddf
+- id: req_9db4561ef169
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The wakeup timer is 64 bits wide.
+  aspect: configuration
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The wakeup timer is 64 bits wide
+    lines:
+    - 21
+    - 21
+    chars:
+    - 1222
+    - 1254
+  quote_hash: 862e71320871
+- id: req_9cbdb952a79a
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The watchdog timer is 32 bits wide.
+  aspect: configuration
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: the watchdog timer is 32 bits wide
+    lines:
+    - 21
+    - 21
+    chars:
+    - 1259
+    - 1293
+  quote_hash: b21f5108cf6f
+- id: req_e330aad93c4a
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The wakeup timer pre-scaler can slow the count so the counter matches a desired time unit.
+  aspect: functional
+  condition: Wakeup timer with pre-scaler configured
+  ambiguity:
+    code: MISSING_DETAIL
+    note: The pre-scaler width, range and division behavior are not stated.
+    question: What is the pre-scaler width and how does its value divide the count rate?
+  quotes:
+  - text: For the wakeup timer, the pre-scaler can be used to slow the count down so the counter value
+      matches some desired time unit (e.g. milliseconds).
+    lines:
+    - 23
+    - 23
+    chars:
+    - 1417
+    - 1561
+  quote_hash: 508ad8e36ab8
+- id: req_a85ff5fb405f
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: TL-UL register accesses in the SYS domain are synchronized to the AON slow clock using the
+    async register generation feature.
+  aspect: timing
+  condition: null
+  ambiguity:
+    code: CONFLICT
+    note: The sentence says register reads are synchronized, but the following text describes the effects
+      on writes.
+    question: Does the async synchronization apply to register writes, reads, or both?
+  quotes:
+  - text: Register reads via the TL-UL interface (SYS domain) are synchronized to the slow clock (AON
+      domain) using the "async" register generation feature.
+    lines:
+    - 25
+    - 25
+    chars:
+    - 1563
+    - 1709
+  quote_hash: d4f3640c9664
+- id: req_5b6b3b2460c6
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: A register write can complete on the bus before the data has reached the underlying register
+    in the AON domain.
+  aspect: timing
+  condition: Write via TL-UL to an async register
+  ambiguity:
+    code: MISSING_DETAIL
+    note: No bound on the delay before the write reaches the AON register is given.
+    question: What is the maximum latency, in AON clock cycles, for a write to reach the underlying register?
+  quotes:
+  - text: This means that writes can complete before the data has reached its underlying register in the
+      slow clock domain.
+    lines:
+    - 26
+    - 26
+    chars:
+    - 1710
+    - 1823
+  quote_hash: 07841c5aa466
+- id: req_b02cdfbafd00
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Reading back a register guarantees that the preceding write to it has completed.
+  aspect: register
+  condition: Software reads back the register after a write
+  ambiguity: null
+  quotes:
+  - text: If software needs to guarantee completion of a register write then it can read back the register
+      value.
+    lines:
+    - 27
+    - 27
+    chars:
+    - 1824
+    - 1927
+  quote_hash: 9d1fce206d28
+- id: req_6f0b22a72ba4
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: A register read-back guarantees completion of all previous writes to the peripheral.
+  aspect: register
+  condition: After a register read-back
+  ambiguity: null
+  quotes:
+  - text: This will guarantee the completion of all previous writes to the peripheral.
+    lines:
+    - 28
+    - 28
+    chars:
+    - 1928
+    - 2004
+  quote_hash: fc7c05f5ca6a
+- id: req_3d3b34fbce9f
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The wakeup count and threshold are each 64-bit values accessed through two 32-bit registers.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The wakeup count and threshold are both 64-bit values accessed through two 32-bit registers.
+    lines:
+    - 30
+    - 30
+    chars:
+    - 2006
+    - 2098
+  quote_hash: c04be5543948
+- id: req_bd838758d346
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Wakeup count bits [63:32] are in WKUP_COUNT_HI.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Bits[63:32] in registers
+    lines:
+    - 31
+    - 31
+    chars:
+    - 2099
+    - 2123
+  - text: WKUP_COUNT_HI
+    lines:
+    - 31
+    - 31
+    chars:
+    - 2126
+    - 2139
+  quote_hash: 794e579b0f7a
+- id: req_c037eb9f72bc
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Wakeup threshold bits [63:32] are in WKUP_THOLD_HI.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Bits[63:32] in registers
+    lines:
+    - 31
+    - 31
+    chars:
+    - 2099
+    - 2123
+  - text: WKUP_THOLD_HI
+    lines:
+    - 31
+    - 31
+    chars:
+    - 2176
+    - 2189
+  quote_hash: 3997f39eecdb
+- id: req_56eeb4aa35c7
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Wakeup count bits [31:0] are in WKUP_COUNT_LO.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Bits[31:0] in registers
+    lines:
+    - 32
+    - 32
+    chars:
+    - 2221
+    - 2244
+  - text: WKUP_COUNT_LO
+    lines:
+    - 32
+    - 32
+    chars:
+    - 2247
+    - 2260
+  quote_hash: 3374c67ad269
+- id: req_354691b06277
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Wakeup threshold bits [31:0] are in the low threshold register.
+  aspect: register
+  condition: null
+  ambiguity:
+    code: CONFLICT
+    note: The text names WKUP_THOLD_HI for bits [31:0] while the link target is wkup_thold_lo, so the
+      register is unclear.
+    question: Is the register holding wakeup threshold bits [31:0] WKUP_THOLD_LO?
+  quotes:
+  - text: Bits[31:0] in registers
+    lines:
+    - 32
+    - 32
+    chars:
+    - 2221
+    - 2244
+  - text: WKUP_THOLD_HI
+    lines:
+    - 32
+    - 32
+    chars:
+    - 2297
+    - 2310
+  quote_hash: f51b17f594db
+- id: req_db76bfb01517
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: A single atomic read or write of the 64-bit wakeup count or threshold is not possible.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: It is not possible to do a single atomic read or write of the 64-bit values.
+    lines:
+    - 33
+    - 33
+    chars:
+    - 2342
+    - 2418
+  quote_hash: 730346639ae6
+- id: req_97b7eb67fec8
+  path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: When integrating the AON timer, clk_aon_i must be started before clk_i.
+  aspect: configuration
+  condition: Integration into a larger design
+  ambiguity: null
+  quotes:
+  - text: When integrating the AON timer into a bigger design, you must start the always-on clock (clk_aon_i)
+      before you start the main clock (clk_i).
+    lines:
+    - 36
+    - 36
+    chars:
+    - 2556
+    - 2700
+  quote_hash: a4e4fd0c33d0
+other_text:
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CTRL
+  section_id: sec_598c2e861eae
+  label: informative
+  reason: Introductory description of the register.
+  ambiguity: null
+  quote:
+    text: Wakeup Timer Control register.
+    lines:
+    - 182
+    - 182
+    chars:
+    - 5657
+    - 5687
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_THOLD_HI
+  section_id: sec_936a6dd44a46
+  label: informative
+  reason: Describes the register's identity and which part of the 64-bit threshold it holds, without stating
+    a testable behavior.
+  ambiguity: null
+  quote:
+    text: Wakeup Timer Threshold Register (bits 63 - 32)
+    lines:
+    - 201
+    - 201
+    chars:
+    - 6191
+    - 6237
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_THOLD_HI
+  section_id: sec_936a6dd44a46
+  label: ambiguous
+  reason: Uses 'should' where a requirement on interrupt generation seems intended, and does not state
+    the comparison or timing.
+  ambiguity:
+    code: WEAK_MODAL
+    note: '''should be generated'' is a weak modal, and the comparison (equal vs greater-or-equal) and
+      timing of the wakeup interrupt are not specified.'
+    question: Must the wakeup interrupt be generated when the 64-bit wakeup count reaches or exceeds the
+      threshold formed by WKUP_THOLD_HI and WKUP_THOLD_LO, and within how many clock cycles?
+  quote:
+    text: The count at which a wakeup interrupt should be generated, top 32 bits.
+    lines:
+    - 208
+    - 208
+    chars:
+    - 6400
+    - 6471
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_THOLD_LO
+  section_id: sec_05476ea7e547
+  label: informative
+  reason: Describes the register name and the bit range it covers, which restates the already-derived
+    bit-position property.
+  ambiguity: null
+  quote:
+    text: Wakeup Timer Threshold Register (bits 31 - 0)
+    lines:
+    - 213
+    - 213
+    chars:
+    - 6542
+    - 6587
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_THOLD_LO
+  section_id: sec_05476ea7e547
+  label: ambiguous
+  reason: Uses 'should' and does not state the comparison (equal, greater-or-equal) or when the interrupt
+    is raised, so it cannot be tested as written.
+  ambiguity:
+    code: WEAK_MODAL
+    note: '''should be generated'' is a weak modal and leaves the comparison condition between the count
+      and threshold undefined.'
+    question: Must a wakeup interrupt be generated when the wakeup count equals or exceeds the threshold,
+      and how soon after that condition is met?
+  quote:
+    text: The count at which a wakeup interrupt should be generated, bottom 32 bits.
+    lines:
+    - 220
+    - 220
+    chars:
+    - 6750
+    - 6824
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_COUNT_HI
+  section_id: sec_edaaff046ac6
+  label: informative
+  reason: Register description that only names the register and the bit range it holds, which the derived
+    bits property already covers.
+  ambiguity: null
+  quote:
+    text: Wakeup Timer Count Register (bits 63 - 32)
+    lines:
+    - 225
+    - 225
+    chars:
+    - 6895
+    - 6937
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_COUNT_HI
+  section_id: sec_edaaff046ac6
+  label: informative
+  reason: Field description that restates the field's meaning and its bit position without stating any
+    testable behavior.
+  ambiguity: null
+  quote:
+    text: The current wakeup counter value, top 32 bits.
+    lines:
+    - 232
+    - 232
+    chars:
+    - 7096
+    - 7142
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_COUNT_LO
+  section_id: sec_3f1c520b840f
+  label: informative
+  reason: Register description that only names the register and the bit range already derived from properties.
+  ambiguity: null
+  quote:
+    text: Wakeup Timer Count Register (bits 31 - 0)
+    lines:
+    - 239
+    - 239
+    chars:
+    - 7308
+    - 7349
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_COUNT_LO
+  section_id: sec_3f1c520b840f
+  label: informative
+  reason: Field description that only restates what the field holds and its 32-bit width, already covered
+    by the bits property.
+  ambiguity: null
+  quote:
+    text: The current wakeup counter value, bottom 32 bits.
+    lines:
+    - 246
+    - 246
+    chars:
+    - 7508
+    - 7557
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_REGWEN
+  section_id: sec_f19be4b29bb7
+  label: informative
+  reason: Descriptive title of the register, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Watchdog Timer Write Enable Register
+    lines:
+    - 253
+    - 253
+    chars:
+    - 7721
+    - 7757
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_CTRL
+  section_id: sec_25d02efb76b1
+  label: informative
+  reason: Describes the register's purpose and does not state testable behavior.
+  ambiguity: null
+  quote:
+    text: Watchdog Timer Control register
+    lines:
+    - 265
+    - 265
+    chars:
+    - 8051
+    - 8082
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BARK_THOLD
+  section_id: sec_486605425110
+  label: informative
+  reason: This is a descriptive title for the register and does not state a testable behavior.
+  ambiguity: null
+  quote:
+    text: Watchdog Timer Bark Threshold Register
+    lines:
+    - 282
+    - 282
+    chars:
+    - 8531
+    - 8569
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_BITE_THOLD
+  section_id: sec_a7682d5ebb42
+  label: informative
+  reason: Descriptive title of the register, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Watchdog Timer Bite Threshold Register
+    lines:
+    - 295
+    - 295
+    chars:
+    - 8896
+    - 8934
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_COUNT
+  section_id: sec_98635dd5e716
+  label: informative
+  reason: Register title that describes what the register is, without stating testable behavior.
+  ambiguity: null
+  quote:
+    text: Watchdog Timer Count Register
+    lines:
+    - 308
+    - 308
+    chars:
+    - 9252
+    - 9281
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WDOG_COUNT
+  section_id: sec_98635dd5e716
+  label: informative
+  reason: Describes the field's meaning, and the access and bit-range properties already cover its testable
+    aspects.
+  ambiguity: null
+  quote:
+    text: The current watchdog counter value.
+    lines:
+    - 315
+    - 315
+    chars:
+    - 9437
+    - 9472
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_STATE
+  section_id: sec_9f99be69ef79
+  label: informative
+  reason: Descriptive title of the register; no testable behavior.
+  ambiguity: null
+  quote:
+    text: Interrupt State Register
+    lines:
+    - 322
+    - 322
+    chars:
+    - 9635
+    - 9659
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > INTR_TEST
+  section_id: sec_e64b2920af6a
+  label: informative
+  reason: It is only a descriptive name for the register and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Interrupt Test Register
+    lines:
+    - 339
+    - 339
+    chars:
+    - 10168
+    - 10191
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CAUSE
+  section_id: sec_3368d5cf3b17
+  label: informative
+  reason: Short register description that summarizes the purpose of the register and states no testable
+    behavior.
+  ambiguity: null
+  quote:
+    text: Wakeup request status
+    lines:
+    - 356
+    - 356
+    chars:
+    - 10614
+    - 10635
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CAUSE
+  section_id: sec_3368d5cf3b17
+  label: informative
+  reason: Only restates the rw0c software access type, which is already derived from properties.
+  ambiguity: null
+  quote:
+    text: write 0 to clear.
+    lines:
+    - 363
+    - 363
+    chars:
+    - 10818
+    - 10835
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > WKUP_CAUSE
+  section_id: sec_3368d5cf3b17
+  label: informative
+  reason: Comment explaining why the register is excluded from a write check; it states no requirement.
+  ambiguity: null
+  quote:
+    text: this could be updated by HW
+    lines:
+    - 366
+    - 366
+    chars:
+    - 10872
+    - 10899
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > reset_request_list
+  section_id: sec_2fcd9e154b9d
+  label: informative
+  reason: It only describes aon_timer_rst_req as a watchdog reset request and gives no testable trigger,
+    timing or behavior.
+  ambiguity: null
+  quote:
+    text: Watchdog reset request.
+    lines:
+    - 68
+    - 68
+    chars:
+    - 2562
+    - 2585
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > inter_signal_list
+  section_id: sec_255f94b5386e
+  label: informative
+  reason: Describes the source and purpose of the racl_policies signal and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Incoming RACL policy vector from a racl_ctrl instance.
+    lines:
+    - 115
+    - 115
+    chars:
+    - 3649
+    - 3703
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > inter_signal_list
+  section_id: sec_255f94b5386e
+  label: informative
+  reason: Only describes what the racl_error signal carries and gives no testable behavior.
+  ambiguity: null
+  quote:
+    text: RACL error log information of this module.
+    lines:
+    - 126
+    - 126
+    chars:
+    - 3991
+    - 4033
+- path: hw/ip/aon_timer/data/aon_timer.hjson
+  heading_path: aon_timer > countermeasures
+  section_id: sec_4e939865dd9f
+  label: informative
+  reason: It only names the BUS.INTEGRITY countermeasure as an end-to-end bus integrity scheme and states
+    no testable behavior.
+  ambiguity: null
+  quote:
+    text: End-to-end bus integrity scheme.
+    lines:
+    - 174
+    - 174
+    chars:
+    - 5497
+    - 5529
+- path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces
+  section_id: sec_03ab644d8240
+  label: reference
+  reason: Only points to the Comportable guideline document.
+  ambiguity: null
+  quote:
+    text: Referring to the Comportable guideline for peripheral device functionality
+    lines:
+    - 4
+    - 4
+    chars:
+    - 104
+    - 179
+- path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces
+  section_id: sec_03ab644d8240
+  label: informative
+  reason: Introduces the list of interfaces that follows.
+  ambiguity: null
+  quote:
+    text: the module aon_timer has the following hardware interfaces defined
+    lines:
+    - 4
+    - 4
+    chars:
+    - 245
+    - 317
+- path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Interrupts
+  section_id: sec_a9d82c0113c5
+  label: informative
+  reason: Table column header, not a behavior.
+  ambiguity: null
+  quote:
+    text: Interrupt Name
+    lines:
+    - 26
+    - 26
+    chars:
+    - 2829
+    - 2843
+- path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Interrupts
+  section_id: sec_a9d82c0113c5
+  label: informative
+  reason: Table column header, not a behavior.
+  ambiguity: null
+  quote:
+    text: Type
+    lines:
+    - 26
+    - 26
+    chars:
+    - 2850
+    - 2854
+- path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Interrupts
+  section_id: sec_a9d82c0113c5
+  label: informative
+  reason: Table column header, not a behavior.
+  ambiguity: null
+  quote:
+    text: Description
+    lines:
+    - 26
+    - 26
+    chars:
+    - 2859
+    - 2870
+- path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Security Alerts
+  section_id: sec_d131fe6dccaa
+  label: informative
+  reason: Table column header, not a requirement.
+  ambiguity: null
+  quote:
+    text: Alert Name
+    lines:
+    - 33
+    - 33
+    chars:
+    - 3226
+    - 3236
+- path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Security Alerts
+  section_id: sec_d131fe6dccaa
+  label: informative
+  reason: Table column header, not a requirement.
+  ambiguity: null
+  quote:
+    text: Description
+    lines:
+    - 33
+    - 33
+    chars:
+    - 3241
+    - 3252
+- path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Security Countermeasures
+  section_id: sec_570b0615afea
+  label: informative
+  reason: Table column header, not a requirement.
+  ambiguity: null
+  quote:
+    text: Countermeasure ID
+    lines:
+    - 39
+    - 39
+    chars:
+    - 3559
+    - 3576
+- path: hw/ip/aon_timer/doc/interfaces.md
+  heading_path: Interfaces > Security Countermeasures
+  section_id: sec_570b0615afea
+  label: informative
+  reason: Table column header, not a requirement.
+  ambiguity: null
+  quote:
+    text: Description
+    lines:
+    - 39
+    - 39
+    chars:
+    - 3585
+    - 3596
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access
+  section_id: sec_f4a4a521cf9f
+  label: ambiguous
+  reason: Written as a mandate but does not state a specific testable behavior.
+  ambiguity:
+    code: VAGUE
+    note: It does not say what care is needed or which race conditions must be avoided.
+    question: Which specific race conditions must software or hardware prevent, and by what mechanism
+      or access ordering?
+  quote:
+    text: Care must be taken to avoid issues due to race conditions caused by this.
+    lines:
+    - 19
+    - 19
+    chars:
+    - 1115
+    - 1188
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access
+  section_id: sec_f4a4a521cf9f
+  label: reference
+  reason: Only introduces the recommendations that follow in other sections.
+  ambiguity: null
+  quote:
+    text: Below are some recommendations on how to access the counter and threshold to avoid problems.
+    lines:
+    - 20
+    - 20
+    chars:
+    - 1189
+    - 1281
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Describes a software-visible hazard of reading the counter in two parts, not a testable hardware
+    requirement.
+  ambiguity: null
+  quote:
+    text: The counter might increment between the read of WKUP_COUNT_HI and the read of WKUP_COUNT_LO.
+    lines:
+    - 24
+    - 24
+    chars:
+    - 1308
+    - 1464
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Explains the consequence of the hazard as background for software.
+  ambiguity: null
+  quote:
+    text: If the WKUP_COUNT_LO value overflows between the two register reads the combined 64-bit value
+      may be incorrect.
+    lines:
+    - 25
+    - 25
+    chars:
+    - 1465
+    - 1608
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Introduces an example scenario.
+  ambiguity: null
+  quote:
+    text: Consider the scenario where the 64-bit counter value is 0x1_ffff_ffff.
+    lines:
+    - 26
+    - 26
+    chars:
+    - 1609
+    - 1681
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Step in the worked example.
+  ambiguity: null
+  quote:
+    text: A read of the WKUP_COUNT_HI value gives 0x1.
+    lines:
+    - 27
+    - 27
+    chars:
+    - 1682
+    - 1760
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Step in the worked example.
+  ambiguity: null
+  quote:
+    text: If the counter then increments to 0x2_0000_0000 then a read of WKUP_COUNT_LO gives 0x0000_00000.
+    lines:
+    - 28
+    - 28
+    chars:
+    - 1761
+    - 1893
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Conclusion of the worked example.
+  ambiguity: null
+  quote:
+    text: The final 64-bit value of 0x1_0000_0000 is incorrect.
+    lines:
+    - 29
+    - 29
+    chars:
+    - 1894
+    - 1949
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Introduces the software pseudo code.
+  ambiguity: null
+  quote:
+    text: 'The pseudo code below provides a method to avoid this issue:'
+    lines:
+    - 30
+    - 30
+    chars:
+    - 1950
+    - 2010
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Example software pseudo code, not a hardware requirement.
+  ambiguity: null
+  quote:
+    text: counter_hi = REG_READ(WKUP_COUNT_HI);
+    lines:
+    - 33
+    - 33
+    chars:
+    - 2016
+    - 2053
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Example software pseudo code.
+  ambiguity: null
+  quote:
+    text: counter_lo = REG_READ(WKUP_COUNT_LO);
+    lines:
+    - 34
+    - 34
+    chars:
+    - 2054
+    - 2091
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Example software pseudo code.
+  ambiguity: null
+  quote:
+    text: counter_hi_2 = REG_READ(WKUP_COUNT_HI);
+    lines:
+    - 35
+    - 35
+    chars:
+    - 2092
+    - 2131
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Comment in the example pseudo code.
+  ambiguity: null
+  quote:
+    text: // If WKUP_COUNT_LO overflowed between first and second read WKUP_COUNT_HI will
+    lines:
+    - 37
+    - 37
+    chars:
+    - 2133
+    - 2212
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Comment in the example pseudo code.
+  ambiguity: null
+  quote:
+    text: // have changed
+    lines:
+    - 38
+    - 38
+    chars:
+    - 2213
+    - 2228
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Example software pseudo code.
+  ambiguity: null
+  quote:
+    text: if counter_hi != counter_hi_2 {
+    lines:
+    - 39
+    - 39
+    chars:
+    - 2229
+    - 2260
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Comment in the example pseudo code.
+  ambiguity: null
+  quote:
+    text: // Read new WKUP_COUNT_LO value and use second WKUP_COUNT_HI read as top 32 bits
+    lines:
+    - 40
+    - 40
+    chars:
+    - 2263
+    - 2343
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Example software pseudo code.
+  ambiguity: null
+  quote:
+    text: counter_lo = REG_READ(WKUP_COUNT_LO);
+    lines:
+    - 41
+    - 41
+    chars:
+    - 2346
+    - 2383
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Example software pseudo code.
+  ambiguity: null
+  quote:
+    text: counter_hi = counter_hi_2;
+    lines:
+    - 42
+    - 42
+    chars:
+    - 2386
+    - 2412
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  label: informative
+  reason: Example software pseudo code.
+  ambiguity: null
+  quote:
+    text: counter_full = counter_hi << 32 | counter_lo;
+    lines:
+    - 45
+    - 45
+    chars:
+    - 2416
+    - 2461
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the counter
+  section_id: sec_26fa06325de3
+  label: informative
+  reason: Background explaining why the write order matters, not a testable requirement.
+  ambiguity: null
+  quote:
+    text: The counter might increment between writes to the two count registers (WKUP_COUNT_HI and WKUP_COUNT_LO).
+    lines:
+    - 50
+    - 50
+    chars:
+    - 2492
+    - 2660
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the counter
+  section_id: sec_26fa06325de3
+  label: ambiguous
+  reason: Software write-ordering guidance phrased with "should", so it is not a firm requirement.
+  ambiguity:
+    code: WEAK_MODAL
+    note: '"Should" leaves it unclear whether writing the low word first is mandatory or only recommended.'
+    question: Is writing WKUP_COUNT_LO before WKUP_COUNT_HI a required sequence, and what behavior must
+      hardware guarantee when it is followed?
+  quote:
+    text: 'To avoid this corrupting the value, software should set the lower word first:'
+    lines:
+    - 51
+    - 51
+    chars:
+    - 2661
+    - 2738
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the counter
+  section_id: sec_26fa06325de3
+  label: informative
+  reason: Step of the recommended software procedure, not a testable hardware behavior.
+  ambiguity: null
+  quote:
+    text: Write WKUP_COUNT_LO.
+    lines:
+    - 52
+    - 52
+    chars:
+    - 2741
+    - 2793
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the counter
+  section_id: sec_26fa06325de3
+  label: informative
+  reason: Step of the recommended software procedure, not a testable hardware behavior.
+  ambiguity: null
+  quote:
+    text: Write WKUP_COUNT_HI.
+    lines:
+    - 53
+    - 53
+    chars:
+    - 2796
+    - 2848
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the counter
+  section_id: sec_26fa06325de3
+  label: ambiguous
+  reason: Caveat about a limitation with no precise, testable condition.
+  ambiguity:
+    code: VAGUE
+    note: '"May not work" and "close to overflow" are not precisely defined, and the bits [31:8] are only
+      an example.'
+    question: For exactly which counter values does the low-word-first write sequence fail, and what is
+      the failure behavior?
+  quote:
+    text: This may not work for a target value that is close to overflow (where e.g. bits [31:8] are set).
+    lines:
+    - 55
+    - 55
+    chars:
+    - 2850
+    - 2948
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the threshold
+  section_id: sec_25e1c95b68ba
+  label: informative
+  reason: Consequence/rationale of hardware not altering the registers, not an independent testable behavior.
+  ambiguity: null
+  quote:
+    text: so there are no race conditions in reading them.
+    lines:
+    - 60
+    - 60
+    chars:
+    - 3207
+    - 3255
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the threshold
+  section_id: sec_7cc19f57fca1
+  label: informative
+  reason: Describes how the threshold is composed of two registers; not a testable behavior by itself.
+  ambiguity: null
+  quote:
+    text: The threshold is written by setting two registers ([`WKUP_THOLD_LO`](registers.md#wkup_thold_lo)
+      and [`WKUP_THOLD_HI`](registers.md#wkup_thold_hi)).
+    lines:
+    - 64
+    - 64
+    chars:
+    - 3284
+    - 3432
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the threshold
+  section_id: sec_7cc19f57fca1
+  label: informative
+  reason: Explains the rationale (interim threshold value) for the procedure.
+  ambiguity: null
+  quote:
+    text: As such, there will be an interim value of the threshold after the first register has been written.
+    lines:
+    - 65
+    - 65
+    chars:
+    - 3433
+    - 3532
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the threshold
+  section_id: sec_7cc19f57fca1
+  label: informative
+  reason: Introduces the procedure and states its rationale; the steps are captured as requirements.
+  ambiguity: null
+  quote:
+    text: 'To avoid this triggering a spurious wakeup, use the method below:'
+    lines:
+    - 66
+    - 66
+    chars:
+    - 3533
+    - 3598
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the threshold
+  section_id: sec_7cc19f57fca1
+  label: informative
+  reason: Rationale comment explaining why the maximum value is written first.
+  ambiguity: null
+  quote:
+    text: // big as the previous value.
+    lines:
+    - 71
+    - 71
+    chars:
+    - 3731
+    - 3760
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Writing the threshold
+  section_id: sec_7cc19f57fca1
+  label: informative
+  reason: Rationale comment explaining why the upper word is written second.
+  ambiguity: null
+  quote:
+    text: // as the desired threshold, so there cannot be any spurious trigger event.
+    lines:
+    - 75
+    - 75
+    chars:
+    - 3898
+    - 3973
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Device Interface Functions (DIFs)
+  section_id: sec_6e285a6957fb
+  label: reference
+  reason: It only points to the DIF header file and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: '[Device Interface Functions](../../../../sw/device/lib/dif/dif_aon_timer.h)'
+    lines:
+    - 97
+    - 97
+    chars:
+    - 5184
+    - 5210
+- path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation
+  section_id: sec_fb45f88786d9
+  label: informative
+  reason: High-level overview of interactions without specific testable behavior.
+  ambiguity: null
+  quote:
+    text: AON Timer interacts with the CPU core and the power manager and reset manager to generate interrupts
+      as well as wakeup and  reset events.
+    lines:
+    - 3
+    - 3
+    chars:
+    - 23
+    - 160
+- path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation
+  section_id: sec_fb45f88786d9
+  label: informative
+  reason: Explains the meaning of the signal rather than stating a behavior of the block.
+  ambiguity: null
+  quote:
+    text: which tells the alert handler is the system is in a "killed" state.
+    lines:
+    - 5
+    - 5
+    chars:
+    - 362
+    - 429
+- path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation
+  section_id: sec_fb45f88786d9
+  label: reference
+  reason: Only points to a diagram.
+  ambiguity: null
+  quote:
+    text: The diagram below depicts high level functionality and connectivity between AON Timer, the PLIC,
+      Power Manager and the Reset Manager.
+    lines:
+    - 7
+    - 7
+    chars:
+    - 431
+    - 564
+- path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation
+  section_id: sec_fb45f88786d9
+  label: reference
+  reason: Only refers to the diagram.
+  ambiguity: null
+  quote:
+    text: which are not depicted in the diagram below.
+    lines:
+    - 11
+    - 11
+    chars:
+    - 943
+    - 987
+- path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Block diagram
+  section_id: sec_5c3fde890f98
+  label: reference
+  reason: It only embeds the block diagram figure and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: '![AON Timer Block Diagram](../doc/aon_timer_block_diagram.svg)'
+    lines:
+    - 16
+    - 16
+    chars:
+    - 1092
+    - 1115
+- path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  label: informative
+  reason: It is a derived, approximate consequence of the clock and widths, not an independently testable
+    requirement.
+  ambiguity: null
+  quote:
+    text: This gives a maximum timeout window of roughly ~6 hours for the watchdog and almost 3 million
+      years for the wakeup timer.
+    lines:
+    - 22
+    - 22
+    chars:
+    - 1295
+    - 1416
+- path: hw/ip/aon_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details
+  section_id: sec_0d077e50455b
+  label: reference
+  reason: It only points to the programmer's guide for suggested access methods.
+  ambiguity: null
+  quote:
+    text: The programmer's guide suggests some ways to access the wakeup count and threshold to avoid
+      issues from race conditions caused by this.
+    lines:
+    - 34
+    - 34
+    chars:
+    - 2419
+    - 2554
+unclassified: []
+dropped:
+- path: hw/ip/aon_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Wakeup count and threshold access > Reading the counter
+  section_id: sec_b930f300f37d
+  kind: informative
+  unverified_quotes:
+  - '}'

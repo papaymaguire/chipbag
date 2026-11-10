@@ -1,0 +1,55 @@
+finding_hash: 3e9ec16b2d6bf3e1
+started_at: '2026-11-10T21:08:23Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no spec text that says which event triggers the hardware reset of TARGET_STATUS. Other
+    text describes handoffs and terminal writes, but never ties the reset to a specific event or cycle.
+    The ownership table does call the "Root writes TARGET_USER_VALID=1" row a handoff to the Target, but
+    nothing links the reset to that row. The reset-to-BUSY text appears only in the two cited places.
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1434
+    line_end: 1434
+    quote: Hardware resets `TARGET_STATUS` to BUSY on each Target handoff.
+    role: supports
+    note: The only statement of the reset. It gives no trigger event and no timing.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1398
+    line_end: 1399
+    quote: '| Root writes `TARGET_USER_VALID=1` while `EXECUTE=1` | The agent named by `TARGET_USER` |'
+    role: context
+    note: The ownership table lists the handoff to the Target and the hardware clears on a terminal write.
+      It never says TARGET_STATUS is reset on that row.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1349
+    line_end: 1353
+    quote: 'Hardware clears
+
+      `TARGET_USER` and `TARGET_USER_VALID` on that write, after which MCU can'
+    role: context
+    note: This describes the clear of TARGET_USER and TARGET_USER_VALID on a terminal write. It says nothing
+      about when TARGET_STATUS goes back to BUSY.
+  searches:
+  - what: TARGET_STATUS and handoff mentions in .md and .rdl files
+    where: whole repo
+    found: The only reset statements are the two cited lines. The Integration Spec sequence diagram (around
+      line 2403) and the other spec text cover terminal writes and the clears of TARGET_USER and TARGET_USER_VALID,
+      not the reset of TARGET_STATUS.
+  near_misses:
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2397
+    line_end: 2404
+    why_not: The sequence diagram shows when TARGET_USER and TARGET_USER_VALID are programmed and cleared.
+      It does not say when TARGET_STATUS is reset to BUSY.
+  items: []
+  new_sources: []
+  resolution: Add one sentence that names the trigger. One option is "hardware sets TARGET_STATUS to BUSY
+    (0) in the same cycle that Root's write of TARGET_USER_VALID=1 takes effect". Also use the enum name
+    CMD_BUSY, or the register's own enum name, in place of "BUSY".
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.07245380000000001
+error: null

@@ -1,0 +1,7 @@
+{"t": "2026-11-10T19:36:22Z", "event": "  \u2192 Grep: DIGEST_(0-)?DIGEST_1[0-9]|DIGEST_0-DIGEST"}
+{"t": "2026-11-10T19:36:22Z", "event": "  \u2192 Grep: DIGEST_1[0-9]|\"DIGEST\"|name: +\"DIGEST"}
+{"t": "2026-11-10T19:36:24Z", "event": "Digest is 16 words; 384 bits = 12 words (0-11). The README text says 12, which is a typo."}
+{"t": "2026-11-10T19:36:29Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:36:33Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:36:37Z", "event": "I submitted the verdict as verified: the README really does contradict itself on the SHA-2 384 digest range.\n\n`hw/ip/hmac/README.md:42` says the 384-bit digest is read from DIGEST_0-DIGEST_12, which is thirteen 32-bit registers. A 384-bit digest is twelve words, so the range should be DIGEST_0-DIGEST_11. The same sentence gives DIGEST_0-DIGEST_7 for 256 bits and DIGEST_0-DIGEST_15 for 512 bits, which are the correct 8 and 16 words.\n\nI did not read the RTL or the generated register code, so I could not say which side the implementation matches. I checked `hw/ip/hmac/data/hmac.hjson`, which defines a DIGEST register array and says nothing specific about 384. I searched the HMAC docs for similar ranges. The other docs only refer to the full DIGEST_0-DIGEST_15 array.\n\nThe fix is to change \"DIGEST_12\" to \"DIGEST_11\" at `hw/ip/hmac/README.md:42`."}
+{"t": "2026-11-10T19:36:37Z", "event": "[5 turns, $0.0445]"}

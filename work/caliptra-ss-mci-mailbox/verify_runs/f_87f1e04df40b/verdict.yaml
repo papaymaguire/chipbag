@@ -1,0 +1,79 @@
+finding_hash: c5620798ad6a1e9d
+started_at: '2026-11-10T20:39:42Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The only test that reads the interrupt counters is mcu_intr_handler. It writes software INTR_TRIG
+    bits, then compares the summed hardware counts with a software tally. It never saturates a counter,
+    never checks the 1-bit pulse, and never triggers soc_req_lock. The cmd_avail rising-edge item is only
+    indirectly exercised through the software-trigger path and an aggregate sum, so I mark it inconclusive.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1565
+    line_end: 1565
+    quote: Will not overflow ('incrsaturate').
+    role: supports
+    note: Saturation requirement; no test drives a counter to 0xFFFFFFFF.
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1548
+    line_end: 1549
+    quote: This is implemented as a down-counter (1-bit) that will
+    role: supports
+    note: Pulse down-counter behavior; no test checks the pulse field.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: context
+    note: 'The only check on counters: it compares the aggregate sum with a software tally, using software
+      INTR_TRIG writes and not a hardware input edge. No saturation check, and soc_req_lock is not triggered.'
+  searches:
+  - what: Tests referencing INTR_COUNT_R / COUNT_INCR_R registers
+    where: src/integration, src/mci
+    found: Only mcu_intr_handler.c reads the counters (summed compare). mci.c only lists the registers
+      as sticky in a reset table. The rest is generated headers and coverage.
+  - what: NOTIF_SOC_REQ_LOCK in mcu_intr_handler
+    where: mcu_intr_handler.c
+    found: Not present, so soc_req_lock is never triggered or counted.
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 206
+    line_end: 219
+    why_not: Sums MBOX1_CMD_AVAIL and ECC_COR counts with others, using software triggers; it does not
+      check saturation, the rising edge of a hardware input, or the pulse field.
+  items:
+  - id: cr_8c05acc52333
+    outcome: verified
+    reason: No test saturates a counter.
+    evidence:
+    - 0
+  - id: cr_8e37e686e23b
+    outcome: inconclusive
+    reason: The software-trigger count check indirectly exercises the increment for cmd_avail, but not
+      a hardware input edge.
+    evidence:
+    - 2
+  - id: cr_8f7eafce5cc8
+    outcome: verified
+    reason: No saturation test for ecc_cor.
+    evidence:
+    - 0
+  - id: cr_909044a1f8f3
+    outcome: verified
+    reason: The pulse field is never checked.
+    evidence:
+    - 1
+  - id: cr_92e293d86fd1
+    outcome: verified
+    reason: soc_req_lock is never triggered in the only counter test.
+    evidence:
+    - 2
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: The only test that stimulates and checks the interrupt counters.
+submissions: 1
+rejections: []
+turns: 15
+cost_usd: 0.144442
+error: null

@@ -1,0 +1,48 @@
+finding_hash: 154c854ff603caf0
+started_at: '2026-11-10T21:01:45Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test or regression sweeps the MCU mailbox SRAM size. The size is a fixed parameter in each
+    testbench build, and the only plan item that mentions sweeping sizes has no implementing test.
+  evidence:
+  - path: src/integration/testbench/tb_top_pkg.sv
+    line_start: 47
+    line_end: 47
+    quote: localparam MCU_MBOX0_SIZE_KB = 256;
+    role: context
+    note: The testbench uses one fixed SRAM size, so no sweep over sizes.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/cptra_smoke_test_mcu_mbox_axi_param.c
+    line_start: 109
+    line_end: 109
+    quote: uint32_t sram_size_kb = cptra_mcu_mbox_get_sram_size_kb(mbox_num);
+    role: context
+    note: The test reads the configured size and adapts to it. It never changes the size or checks configurability.
+  searches:
+  - what: tests or regressions that vary MCU_MBOX*_SIZE_KB, and the plan text 'SRAM size between'
+    where: whole repo
+    found: Only fixed parameter values in caliptra_ss_top.sv, tb_top_pkg.sv and mci_top_tb.sv. The plan
+      text was not found in any file, so no test implements it.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/cptra_smoke_test_mcu_mbox_axi_param.c
+    line_start: 105
+    line_end: 115
+    why_not: It reads the size and adapts to it, but runs with only one size and does not check configurability.
+  - path: src/mci/rtl/mci_top.sv
+    line_start: 954
+    line_end: 956
+    why_not: Init-time assertions check the size bounds, but they run only on the single configured value.
+  items:
+  - id: cr_1fd84d60bc97
+    outcome: verified
+    reason: No test builds or runs more than one SRAM size, so configurability is not tested.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0592981
+error: null

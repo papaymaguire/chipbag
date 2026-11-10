@@ -1,0 +1,8 @@
+{"t": "2026-11-10T20:35:42Z", "event": "  \u2192 Grep: TARGET_USER|target_user"}
+{"t": "2026-11-10T20:35:44Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/docs/CaliptraSSHardwareSpecification.md"}
+{"t": "2026-11-10T20:35:46Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/docs/CaliptraSSHardwareSpecification.md"}
+{"t": "2026-11-10T20:35:46Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mcu_mbox_csr.rdl"}
+{"t": "2026-11-10T20:35:47Z", "event": "Other spec text defines terminal as any non-BUSY value."}
+{"t": "2026-11-10T20:35:51Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:35:54Z", "event": "I withdrew the finding. The ambiguity it describes is answered in the spec.\n\nThe `TARGET_STATUS` field description in `src/mci/rtl/mcu_mbox_csr.rdl:106` says: \"Writing any terminal (non-BUSY) value ends the target's SRAM ownership, clears TARGET_USER and TARGET_USER_VALID, and notifies Root.\" So terminal means any non-BUSY status: `DATA_READY`, `CMD_COMPLETE` or `CMD_FAILURE`. Every one of those clears both registers.\n\nThe hardware spec (`docs/CaliptraSSHardwareSpecification.md:1350`) also ties the clear to the terminal write.\n\nOne small gap remains. A `CMD_BUSY` write is non-terminal, so it should leave both registers unchanged, but the spec only implies that. I noted in the verdict that the spec could state it explicitly."}
+{"t": "2026-11-10T20:35:54Z", "event": "[6 turns, $0.0382]"}

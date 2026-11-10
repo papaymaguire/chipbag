@@ -1,0 +1,64 @@
+finding_hash: ea64192c33702f26
+started_at: '2026-11-10T19:42:46Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The items are register-implementation attributes (hwext, hwqe) on CFG. The HMAC UVM scoreboard
+    checks the behaviour that depends on them, so they are exercised by the randomized smoke tests. I
+    did not read the hmac_smoke_vseq body or the regression list to confirm this.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 160
+    line_end: 160
+    quote: msg = (ral.cfg.endian_swap.get_mirrored_value()) ?
+    role: refutes
+    note: The scoreboard models the endian_swap effect on message data when predicting the digest.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 173
+    line_end: 173
+    quote: invalid_cfg = (`gmv(ral.cfg.digest_size) == SHA2_None) |
+    role: refutes
+    note: The scoreboard tracks digest_size, key_length and hmac_en to predict the DUT behaviour.
+  searches:
+  - what: CFG fields in the DV env
+    where: hw/ip/hmac/dv
+    found: The base vseq sets hmac_en, endian_swap, key_swap and digest_size. The scoreboard models them
+      and the coverage cross samples them.
+  near_misses: []
+  items:
+  - id: cr_98f6488c2d66
+    outcome: withdrawn
+    reason: The scoreboard predicts behaviour from ral.cfg.hmac_en, so a wrong implementation would fail
+      the digest check.
+    evidence:
+    - 1
+  - id: cr_afe1daf5c85e
+    outcome: withdrawn
+    reason: The scoreboard predicts behaviour from ral.cfg.digest_size, which is written through the base
+      vseq's hmac_init, so a wrong write path would fail the digest check.
+    evidence:
+    - 1
+  - id: cr_bf372f75531c
+    outcome: withdrawn
+    reason: The scoreboard uses ral.cfg.key_length in its invalid-configuration check and digest prediction.
+    evidence:
+    - 1
+  - id: cr_bf833396a76a
+    outcome: withdrawn
+    reason: The scoreboard applies endian_swap when it builds the expected message, so the digest comparison
+      fails if the swap is wrong.
+    evidence:
+    - 0
+  - id: cr_c8c51e05df4f
+    outcome: withdrawn
+    reason: The base vseq randomizes key_swap and the coverage crosses sample it. Whether the scoreboard
+      checks it was not confirmed beyond the vseq references.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0656575
+error: null

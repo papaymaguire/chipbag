@@ -1,0 +1,9 @@
+{"t": "2026-11-10T19:36:33Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/sw/device/tests/hmac_error_conditions_test.c"}
+{"t": "2026-11-10T19:36:36Z", "event": "  \u2192 Grep: define TRY_CHECK\\(|define OT_WARN_UNUSED_RESULT|typedef struct status|status_t;"}
+{"t": "2026-11-10T19:36:38Z", "event": "  \u2192 Grep: define TRY_CHECK\\("}
+{"t": "2026-11-10T19:36:39Z", "event": "  \u2192 Grep: kErrorSwHashStartWhenActive|kErrorSwPushMsgWhenDisallowed"}
+{"t": "2026-11-10T19:36:41Z", "event": "Check TRY and CHECK_IMPL to see if CHECK_IMPL logs/aborts itself."}
+{"t": "2026-11-10T19:36:41Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/sw/device/lib/testing/test_framework/check.h"}
+{"t": "2026-11-10T19:36:48Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:36:51Z", "event": "I verified the finding: the error-code checks in `hmac_error_conditions_test` cannot fail the test.\n\n- **`TRY_CHECK`:** it only logs an error and returns a failure status. It does not set `kTestStatusFailed`, unlike `CHECK` (`sw/device/lib/testing/test_framework/check.h:76-79`).\n- **Callers:** `test_main` calls each `run_test_*` function without looking at the returned status and ends with `return true` (`sw/device/tests/hmac_error_conditions_test.c:330-365`).\n\nOnly the `CHECK_STATUS_OK` and `CHECK_DIF_OK` calls can fail the test, and none of them verify an error code. The fix is to use `CHECK` instead of `TRY_CHECK`, or to wrap each call in `test_main` with `CHECK_STATUS_OK`. The verdict is submitted and accepted."}
+{"t": "2026-11-10T19:36:51Z", "event": "[7 turns, $0.0730]"}

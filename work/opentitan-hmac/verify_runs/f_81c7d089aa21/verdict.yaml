@@ -1,0 +1,95 @@
+finding_hash: e00331cacf11566b
+started_at: '2026-11-10T20:56:25Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: 'Three items (1, 4, 5) are covered by randomized smoke stimulus plus scoreboard checks, so
+    I withdrew them. Item 2 (key_length under sideload) has no such test, so it stands. Item 3 is only
+    partly settled: the scoreboard checks hash_start and process with an invalid config, but I found no
+    clear hash_continue case.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 114
+    line_end: 125
+    quote: "constraint hmac_base_vseq::key_length_c {\n  $countones(key_length) == 1 dist {"
+    role: refutes
+    note: Smoke randomizes key_length over the one-hot values (including 128 and 512) and over illegal
+      values. digest_size is randomized the same way, with illegal values included.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 167
+    line_end: 173
+    quote: "  csr_update(.csr(ral.cfg));\n\n  // read digest size and key length after casting from CSRs\
+      \ and update mirrored values\n  csr_rd_digest_size(cast_digest_size);\n  csr_rd_key_length(cast_key_length);"
+    role: refutes
+    note: CFG is written and then read back. csr_rd compares against the scoreboard-predicted mirror.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 359
+    line_end: 364
+    quote: '          // update prediction of digest_size to SHA2_None for all invalid inputs'
+    role: refutes
+    note: The scoreboard predicts SHA2_None for invalid digest_size encodings, so a read-back mismatch
+      fails the test.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 184
+    line_end: 191
+    quote: "              if (!invalid_cfg) begin\n                check_idle(1'b0);"
+    role: context
+    note: For an invalid config the scoreboard checks that the engine stays idle with check_idle(1'b1).
+      The hash_start branch only predicts the error code. I did not find a distinct hash_continue case.
+  searches:
+  - what: key_length, SHA2_None and sideload in hw/ip/hmac/dv
+    where: hw/ip/hmac/dv
+    found: Randomized key_length and digest_size including illegal values, scoreboard prediction of the
+      casts, and invalid-config checks. Sideload appears only in the tb and env plumbing. I found no sequence
+      that varies key_length under sideload.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 173
+    line_end: 177
+    why_not: This covers the hash_start and process invalid-config path. It does not clearly show a distinct
+      hash_continue trigger being blocked.
+  items:
+  - id: cr_1cfd6091fbe9
+    outcome: withdrawn
+    reason: Randomized smoke covers Key_512 and the CFG read-back is checked. The digest is checked against
+      the reference model.
+    evidence:
+    - 0
+    - 1
+  - id: cr_403238c02dda
+    outcome: verified
+    reason: Only the keymgr_dpe sideload test exists, and I found no stimulus that varies key_length under
+      sideload.
+    evidence: []
+  - id: cr_743539d9ed75
+    outcome: inconclusive
+    reason: The scoreboard does check idle state for an invalid config on the process path. I could not
+      confirm that a hash_continue trigger is exercised.
+    evidence:
+    - 3
+  - id: cr_76c33b7101c2
+    outcome: withdrawn
+    reason: Smoke randomizes illegal digest_size values, writes them, and reads back against a scoreboard
+      prediction of SHA2_None.
+    evidence:
+    - 0
+    - 1
+    - 2
+  - id: cr_77c6d3831bb2
+    outcome: withdrawn
+    reason: One-hot randomized key_length covers Key_128, the key_length read-back is checked, and the
+      digest is checked.
+    evidence:
+    - 0
+    - 1
+  new_sources:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    reason: Randomized CFG stimulus and read-back
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    reason: CFG cast prediction and invalid-config checks
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.07778179999999998
+error: null

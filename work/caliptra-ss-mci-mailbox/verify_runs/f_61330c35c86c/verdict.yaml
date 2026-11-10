@@ -1,0 +1,45 @@
+finding_hash: 639188232b793410
+started_at: '2026-11-10T19:37:38Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The prose is inconsistent. The MCU-side test says the Caliptra uC is a valid AXI user. The
+    Caliptra-side test header and its error messages say invalid user, and one of its log lines says "Valid
+    AXI but no Mbox instantiation". The code sets the DMA user to caliptra_uc_axi_id and the mailbox valid
+    users to axi_user_id. The AXI errors it expects come from the mailbox not being instantiated, not
+    from user rejection.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_instantiation/smoke_test_mcu_mbox_instantiation.c
+    line_start: 36
+    line_end: 36
+    quote: // 1. MCU will configure Caliptra uC to be a valid AXI
+    role: supports
+    note: MCU-side intent says the uC is a valid AXI user.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_instantiation/cptra_smoke_test_mcu_mbox_instantiation.c
+    line_start: 41
+    line_end: 41
+    quote: // 1. MCU will configure Caliptra uC to be an invalid AXI
+    role: supports
+    note: Caliptra-side intent says the uC is an invalid AXI user, contradicting the MCU-side comment.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_instantiation/cptra_smoke_test_mcu_mbox_instantiation.c
+    line_start: 60
+    line_end: 60
+    quote: 'Caliptra: CSR Writes and Read as Valid AXI but no Mbox instantiation'
+    role: supports
+    note: This log line says valid AXI, while the error messages that follow say invalid user.
+  searches:
+  - what: valid/invalid wording in both test sources
+    where: smoke_test_mcu_mbox_instantiation directory
+    found: The two sources contradict each other. The messages say invalid user even though the test targets
+      a mailbox that is not instantiated.
+  near_misses: []
+  items: []
+  new_sources: []
+  resolution: Reword the comments and error messages to say that the mailbox is not instantiated, so AXI
+    errors are expected. Remove the invalid-user wording, and unlink the test from plan item p1.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.042552999999999994
+error: null

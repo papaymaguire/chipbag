@@ -1,0 +1,46 @@
+finding_hash: 83527cb8d5f39464
+started_at: '2026-11-10T20:52:32Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Other HMAC spec text answers the question. The CFG field docs and the programmer's guide define
+    which settings are validated at start and what happens when they are invalid. The CMD text is loosely
+    worded, but the behavior is specified elsewhere.
+  evidence:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 186
+    line_end: 186
+    quote: The error is reported when HMAC has been configured incorrectly by SW, i.e. invalid digest
+      size for SHA-2/HMAC modes or invalid key length for HMAC mode.
+    role: refutes
+    note: Defines the SwInvalidConfig error for an invalid digest size or key length.
+  - path: hw/ip/hmac/doc/registers.md
+    line_start: 212
+    line_end: 212
+    quote: it will be blocked from starting and an error is signalled to the SW. If only unkeyed SHA-2
+      is configured (`hmac_en == 0`), starting is not blocked, since this does not require a key.
+    role: refutes
+    note: Defines the start-blocking behavior for an invalid key length and the exception when hmac_en
+      is 0.
+  searches:
+  - what: spec text on configuration before start and on invalid configuration
+    where: hw/ip/hmac docs and hjson
+    found: SwInvalidConfig error code, Key_None blocking start, sideload key rules
+  near_misses:
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 385
+    line_end: 385
+    why_not: This is the vague CMD text itself. The other documents fill in the detail.
+  items: []
+  new_sources:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    reason: Defines the SwInvalidConfig error.
+  resolution: The design blocks start and signals SwInvalidConfig for an invalid digest size or key length.
+    Endian swap, digest swap and interrupt enables are optional settings. The CMD description could cross-reference
+    the error section.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0441039
+error: null

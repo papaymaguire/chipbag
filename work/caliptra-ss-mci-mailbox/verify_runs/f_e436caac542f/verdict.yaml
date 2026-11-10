@@ -1,0 +1,81 @@
+finding_hash: aa9f7c0f4f7fefba
+started_at: '2026-11-10T21:02:03Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I searched the MCU mailbox test suites for stimulus and checks on each of the five items. I
+    found none that fails on a violation. The search was grep-based, not a full read of every test.
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1450
+    line_end: 1450
+    quote: The SRAM is fully addressable and reads are not destructive in this mailbox.
+    role: supports
+    note: I found no test that reads the same location twice and compares the results.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1458
+    line_end: 1458
+    quote: Accesses must be DWORD aligned and BYTE accesses are not supported by the SRAM.
+    role: supports
+    note: I found no test that issues unaligned or byte accesses.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1534
+    line_end: 1534
+    quote: '| `CMD_STATUS` | Unused | RW |'
+    role: supports
+    note: I found no test that checks CMD_STATUS is unused while the MCU holds the lock.
+  searches:
+  - what: non-destructive read or unaligned access tests
+    where: src/integration/test_suites/*mbox*/*.c
+    found: Only an unrelated 'read back' comment in the ecc test.
+  - what: CMD_STATUS use while the MCU holds the lock
+    where: src/integration/test_suites/*mbox*
+    found: Tests exercise CMD_STATUS for user lock and write flows. None checks it is unused under MCU
+      lock.
+  - what: _intr_count_r and interrupt register naming
+    where: src/integration/**/*mbox*
+    found: No matches for _intr_count_r or MCU_MBOX*_CSR INTR macros. Some mailbox tests handle interrupts
+      functionally, but none checks the field naming.
+  - what: mailbox CSR address range (0x0020_0000)
+    where: src/integration/**/*mbox*
+    found: No matches for the range literal. Tests use macro offsets.
+  - what: unaligned or misaligned access tests
+    where: src/integration/test_suites
+    found: No matches.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/cptra_smoke_test_mcu_mbox_pass_data.c
+    line_start: 168
+    line_end: 177
+    why_not: This checks that a user cannot write CMD_STATUS. It does not check that CMD_STATUS is unused
+      under MCU lock.
+  items:
+  - id: cr_499ce5a87381
+    outcome: verified
+    reason: No repeated-read check found.
+    evidence:
+    - 0
+  - id: cr_a3dd90e3ad99
+    outcome: verified
+    reason: No unaligned or byte access test found.
+    evidence:
+    - 1
+  - id: cr_8797911c07bc
+    outcome: verified
+    reason: No check of the register field naming found.
+    evidence: []
+  - id: cr_0d49e75f5219
+    outcome: verified
+    reason: CMD_STATUS is not checked as unused under MCU lock.
+    evidence:
+    - 2
+  - id: cr_22b98fe21dde
+    outcome: verified
+    reason: No address range check found.
+    evidence: []
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 11
+cost_usd: 0.1022649
+error: null

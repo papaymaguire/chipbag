@@ -1,0 +1,10 @@
+{"t": "2026-11-10T21:04:32Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/data/hmac.hjson"}
+{"t": "2026-11-10T21:04:32Z", "event": "  \u2192 Grep: hash_stop|fifo_empty|fifo_full|hash_process|hash_start"}
+{"t": "2026-11-10T21:04:35Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:04:35Z", "event": "  \u2192 Grep: \"cmd\"|hash_stop|hash_process|hash_start"}
+{"t": "2026-11-10T21:04:38Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:04:39Z", "event": "  \u2192 Grep: status"}
+{"t": "2026-11-10T21:04:41Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:04:52Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:04:55Z", "event": "I submitted the verdict: I withdrew the finding, so all five items count as tested.\n\n- **STATUS fifo_empty and fifo_full:** the HMAC scoreboard predicts both bits from its FIFO model. The generic CSR read check compares that prediction to what the register returns.\n- **CMD hash_start, hash_process and hash_stop:** the scoreboard models each command write. Their effect is checked through the idle check, the digest comparison and the `hmac_done` check.\n- **hwext and hwqe:** these are implementation attributes of the register block, not behaviours a test checks directly. The checks above would fail if either were wrong.\n\nI did not trace the individual test sequences or the regression list. I'm less certain about the three CMD items than the two STATUS ones."}
+{"t": "2026-11-10T21:04:55Z", "event": "[9 turns, $0.0793]"}

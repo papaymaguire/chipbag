@@ -1,0 +1,6 @@
+{"t": "2026-11-10T19:36:21Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T19:36:24Z", "event": "  \u2192 Grep: AXI_USER_LOCK.*swwel|MBOX0_AXI_USER_LOCK.*LOCK.*swwel"}
+{"t": "2026-11-10T19:36:26Z", "event": "The swwel is tied to the field's own value, so the field can't be cleared once it is set."}
+{"t": "2026-11-10T19:36:30Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:36:33Z", "event": "I withdrew the finding. The spec doesn't contradict itself.\n\n`LOCK` is a 1-bit field declared `sw=rw` with `swwel`. In `src/mci/rtl/mci_reg_top.sv:648` (and line 663 for MBOX1), `swwel` is wired to the field's own value. So once `LOCK` is 1, software writes are blocked. While it is 0, writing 0 changes nothing and writing 1 sets it. That is the same behaviour as write-1-to-set (RW1-S), so the description and the register definition agree.\n\nAn RDL comment saying that `swwel` tied to the field's own value is how this design implements RW1-S would remove the apparent mismatch."}
+{"t": "2026-11-10T19:36:33Z", "event": "[4 turns, $0.0361]"}

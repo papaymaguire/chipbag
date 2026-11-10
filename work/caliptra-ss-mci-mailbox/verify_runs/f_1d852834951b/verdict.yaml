@@ -1,0 +1,68 @@
+finding_hash: 30bad95a4a518711
+started_at: '2026-11-10T19:38:17Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Other spec text resolves the finding's questions. The lock register's own description names
+    the referent and the one-to-one pairing. The integration spec says what "valid" means in practice.
+    The behaviour for an entry that isn't locked is stated only by implication, not explicitly.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 830
+    line_end: 831
+    quote: "[br]Each bit corresponds to locking the associated MBO0X_VALID_AXI_USER register.\n      \
+      \           [br]Associated MBOX0_VALID_AXI_USER register is only valid once locked by this bit."
+    role: refutes
+    note: The lock register description says each LOCK bit locks the associated VALID_AXI_USER register.
+      That gives the index-n pairing and names the referent. The MBOX1 copy at lines 847-848 is the same
+      text, including the MBOX0 typo.
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2293
+    line_end: 2296
+    quote: 'trusted users will need to configured with the following lockable MCI registers before MBOX
+      can be used by SOC agents:'
+    role: refutes
+    note: 'Trusted users must be configured with the VALID_AXI_USER and AXI_USER_LOCK registers before
+      SoC agents can use the MBOX. This gives "valid" an operational meaning: the entry counts as trusted
+      only once configured and locked.'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1297
+    line_end: 1299
+    quote: These users, a default user 0xFFFF_FFFF, and MCU are the only AXI users that can access or
+      obtain a lock on the mailbox.
+    role: refutes
+    note: Only the 5 trusted users, the default user and MCU can access the mailbox. Any other user gets
+      an AXI error response.
+  searches:
+  - what: VALID_AXI_USER and AXI_USER_LOCK in the RDL and docs
+    where: repo-wide, *.rdl and *.md
+    found: The lock register description, the integration spec section on trusted users, and the hardware
+      spec section on limited trusted AXI users.
+  - what: Hardware spec section "MCU Mailbox Limited Trusted AXI users"
+    where: docs/CaliptraSSHardwareSpecification.md
+    found: Lists who may access the mailbox. It does not explicitly say that an unlocked entry is ignored.
+  near_misses:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1295
+    line_end: 1301
+    why_not: It does not say outright that an unlocked VALID_AXI_USER entry is ignored. That is inferred
+      from "only valid once locked" and the integration spec's "before MBOX can be used". The inference
+      is reasonable, so the finding is withdrawn rather than left inconclusive.
+  items: []
+  new_sources:
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    reason: Section "MCU Mailbox Limited Trusted AXI users" says the VALID_AXI_USER and AXI_USER_LOCK
+      registers must be configured before MBOX can be used.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    reason: Section "MCU Mailbox Limited Trusted AXI users" lists which AXI users may access the mailbox.
+  resolution: The referent is MBOX1_AXI_USER_LOCK[n], paired one-to-one with MBOX1_VALID_AXI_USER[n].
+    Valid means that entry takes part in trusted-user matching only after its lock bit is set. A test
+    writer should expect an unlocked entry to grant nothing. Only MCU and the default user 0xFFFF_FFFF
+    can access the mailbox until entries are locked. Making the unlocked-entry behaviour explicit in the
+    hardware spec would remove the remaining doubt.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0742715
+error: null

@@ -1,0 +1,11 @@
+{"t": "2026-11-10T22:07:54Z", "event": "  \u2192 Grep: wkup_ctrl|WKUP_CTRL"}
+{"t": "2026-11-10T22:07:54Z", "event": "  \u2192 Grep: wkup_ctrl|WKUP_CTRL"}
+{"t": "2026-11-10T22:07:56Z", "event": "There's an alternating_enable_on_off vseq."}
+{"t": "2026-11-10T22:07:57Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv"}
+{"t": "2026-11-10T22:07:57Z", "event": "  \u2192 Grep: alternating_enable"}
+{"t": "2026-11-10T22:07:59Z", "event": "  \u2192 Grep: wkup_ctrl|wkup_count|wkup_enable|wkup_cause"}
+{"t": "2026-11-10T22:08:07Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T22:08:13Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T22:08:20Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T22:08:23Z", "event": "I withdrew the finding, and the verdict was accepted. A test does cover re-enabling the wakeup timer through the `WKUP_CTRL` enable bit after a disable.\n\n- **Stimulus:** `aon_timer_alternating_enable_on_off_vseq` writes the `WKUP_CTRL` enable bit, then disables the timer by backdoor write. It repeats this over 20 loop iterations, so the timer is re-enabled each time after a disable. It is listed in the sim cfg and the testplan.\n- **Check:** The scoreboard (`aon_timer_scoreboard.sv`, around lines 909\u2013914) handles a wakeup timer that is disabled partway and re-enabled later. After the re-enable it re-reads the count, predicts the wakeup interrupt and `wkup_req`, and compares them against the design.\n\nI did not run the simulation. My conclusion comes from reading the sequence and the scoreboard.\n\nThe smoke test only does the initial enable, so it doesn't cover re-enable. I found no `WKUP_CTRL` references under `sw/device/tests`."}
+{"t": "2026-11-10T22:08:23Z", "event": "[9 turns, $0.0854]"}

@@ -1,0 +1,18 @@
+{"t": "2026-11-10T20:39:44Z", "event": "  \u2192 Grep: intr_count_incr"}
+{"t": "2026-11-10T20:39:44Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T20:39:46Z", "event": "Search tests for the interrupt counters."}
+{"t": "2026-11-10T20:39:46Z", "event": "  \u2192 Grep: intr_count_r|intr_count_incr|mbox1_ecc_unc_intr_count|mbox0_target_done_intr_count"}
+{"t": "2026-11-10T20:39:48Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:39:49Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T20:39:50Z", "event": "Only coverage, no checks. Look for tests using the counters by other naming (e.g. in C tests)."}
+{"t": "2026-11-10T20:39:51Z", "event": "  \u2192 Grep: INTR_COUNT|intr_count"}
+{"t": "2026-11-10T20:39:54Z", "event": "  \u2192 Grep: mbox1_ecc_unc.*count|mbox0_target_done.*count|mbox1_soc_req_lock.*count|MBOX[01]_.*INTR_COUNT"}
+{"t": "2026-11-10T20:39:55Z", "event": "Only address defines. Check use in tests."}
+{"t": "2026-11-10T20:39:56Z", "event": "  \u2192 Grep: INTR_COUNT_(INCR_)?R\\b"}
+{"t": "2026-11-10T20:39:59Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T20:39:59Z", "event": "  \u2192 Grep: mbox1.*(ecc|ECC)|MBOX1.*ECC"}
+{"t": "2026-11-10T20:40:04Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T20:40:05Z", "event": "  \u2192 Grep: TARGET_DONE_TRIG|SOC_REQ_LOCK_TRIG"}
+{"t": "2026-11-10T20:40:18Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:40:22Z", "event": "I withdrew the finding: all five items are exercised by an existing test, `mcu_intr_handler`, and the verdict was accepted.\n\nThat test triggers each error and notif interrupt, including `error_mbox1_ecc_unc`, `notif_mbox0_target_done` and `notif_mbox1_soc_req_lock`. It then reads every `*_INTR_COUNT_R` counter. It stops the sim with an error if the hardware counter sum differs from the firmware count. It runs in the nightly directed regressions.\n\nThe `decrvalue = 1` and `counter` items have no direct check of their own. They are covered only indirectly: wrong attributes would give a wrong count, and the sum check would catch that.\n\nThe check is on a sum across counters, not per counter. A fault in one counter could be hidden by an offsetting fault in another. That makes it weaker than a per-counter check, but it is still a check that can fail.\n\nThe only other hits for these counters were coverpoints in `mci_top_cov_if.sv`, which have no checks."}
+{"t": "2026-11-10T20:40:22Z", "event": "[14 turns, $0.1377]"}

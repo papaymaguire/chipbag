@@ -1,0 +1,74 @@
+finding_hash: 43398514352df5a5
+started_at: '2026-11-10T22:07:31Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The aon_timer sim cfg imports the shared tl_access_tests.hjson (providing {name}_tl_intg_err
+    with +run_tl_intg_err and {name}_tl_errors), csr_tests, sec_cm_tests, and the earlgrey chip cfg has
+    chip_sw_aon_timer_wdog_lc_escalate. So the tests are implemented, not just planned. I did not read
+    the common vseq checks in detail (I only found tl_intg_err knobs in cip_base_vseq), so the alert-check
+    claim rests on the shared infrastructure.
+  evidence:
+  - path: hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson
+    line_start: 34
+    line_end: 35
+    quote: "\"{proj_root}/hw/dv/tools/dvsim/tests/tl_access_tests.hjson\",\n                \"{proj_root}/hw/dv/tools/dvsim/tests/sec_cm_tests.hjson\"\
+      ,"
+    role: refutes
+    note: aon_timer imports the shared TL access/integrity and sec_cm test lists.
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 20
+    line_end: 23
+    quote: 'name: "{name}_tl_intg_err"'
+    role: refutes
+    note: Defines the aon_timer_tl_intg_err test run with +run_tl_intg_err.
+  - path: hw/top_earlgrey/dv/chip_sim_cfg.hjson
+    line_start: 1250
+    line_end: 1252
+    quote: 'name: chip_sw_aon_timer_wdog_lc_escalate'
+    role: refutes
+    note: Chip-level test exercising lc_escalate_en.
+  searches:
+  - what: tl_intg_err, csr_rw and sec_cm tests for aon_timer
+    where: aon_timer_sim_cfg.hjson, hw/dv/tools/dvsim/tests
+    found: Imported and present
+  - what: lc_escalate test
+    where: chip_sim_cfg.hjson, sw/device/tests
+    found: Test exists with CHECKs
+  near_misses: []
+  items:
+  - id: cr_6ef5f506c53e
+    outcome: withdrawn
+    reason: csr_rw and tl_access tests are imported in the aon_timer sim cfg.
+    evidence:
+    - 0
+  - id: cr_964013ac3c69
+    outcome: withdrawn
+    reason: tl_errors/tl_access tests are imported, and the tb binds the TL assertions.
+    evidence:
+    - 0
+    - 1
+  - id: cr_a2af3c1b966e
+    outcome: withdrawn
+    reason: The chip-level SW test chip_sw_aon_timer_wdog_lc_escalate exists, and the DV tb drives lc_escalate_en.
+    evidence:
+    - 2
+  - id: cr_ddaa03f4793c
+    outcome: withdrawn
+    reason: aon_timer_tl_intg_err test is imported.
+    evidence:
+    - 0
+    - 1
+  - id: cr_b417ff36fcef
+    outcome: withdrawn
+    reason: The tl_intg_err and sec_cm tests are imported.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.062921
+error: null

@@ -1,0 +1,55 @@
+finding_hash: a2aed0439f2763f0
+started_at: '2026-11-10T20:58:46Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The finding does not name its block. A shared, generic csr_rw and csr_bit_bash test exists
+    and is imported by the sim cfgs of AES, HMAC and KMAC, which are the likely candidates. These tests
+    run the common CSR sequences over every register of the block, and the testplan maps csr_rw and csr_bit_bash
+    to them. I did not open the sequence code that performs the read-back checks, so the checking half
+    of the claim rests on the shared library's standard behaviour.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 29
+    line_end: 40
+    quote: "name: \"{name}_csr_rw\"\n      build_mode: \"cover_reg_top\"\n      run_opts: [\"+csr_rw\"\
+      ]"
+    role: refutes
+    note: Generic csr_rw test, defined per block via {name}. The csr_bit_bash entry follows at lines 37-39.
+      Both are enabled by csr_tests_mode.
+  - path: hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    line_start: 30
+    line_end: 30
+    quote: '"{proj_root}/hw/dv/tools/dvsim/tests/csr_tests.hjson",'
+    role: refutes
+    note: HMAC imports the generic CSR tests. aes_base_sim_cfg.hjson:33 and kmac_base_sim_cfg.hjson:30
+      do the same.
+  - path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+    line_start: 34
+    line_end: 34
+    quote: 'tests: ["{name}{intf}_csr_rw"]'
+    role: refutes
+    note: The imported CSR testplan maps the csr_rw item to the generic test. Line 50 does the same for
+      csr_bit_bash.
+  searches:
+  - what: csr_rw / csr_bit_bash definitions and imports
+    where: hw/dv/tools/dvsim, hw/ip/{aes,hmac,kmac}
+    found: The generic tests are defined in csr_tests.hjson. The AES, HMAC and KMAC sim cfgs import it,
+      and each testplan imports csr_testplan.hjson.
+  - what: csr_tests_mode enablement in the IP cfgs
+    where: hw/ip/hmac/dv
+    found: 'No explicit override. The tests are enabled through the common run_mode definition in csr_tests.hjson
+      (name: csr_tests_mode, uvm_test_seq {name}_common_vseq).'
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    reason: Defines the generic csr_rw and csr_bit_bash tests.
+  - path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+    reason: Maps the CSR plan items to the generic tests.
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.05691500000000001
+error: null

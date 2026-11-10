@@ -1,0 +1,6 @@
+{"t": "2026-11-10T19:45:00Z", "event": "  \u2192 Grep: csr_mem_rw_with_rand_reset"}
+{"t": "2026-11-10T19:45:00Z", "event": "  \u2192 Grep: csr_hw_reset"}
+{"t": "2026-11-10T19:45:02Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/dv; grep -n \"csr_hw_reset\\|csr_mem_rw_with_rand\" -B2 -A6 tools/dvsim/tests/csr_tests.hjson | head -40; grep -n \"csr_excl_item\\|compare\\|exp_data"}
+{"t": "2026-11-10T19:45:09Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:45:11Z", "event": "I withdrew this finding. The reset-value checks it calls planned-only are covered by a generic register test that the repository provides to every block.\n\n- **Stimulus:** `hw/dv/tools/dvsim/tests/csr_tests.hjson` defines `{name}_csr_hw_reset` and `{name}_csr_mem_rw_with_rand_reset` as shared tests, enabled per block through `csr_tests_mode`.\n- **Check:** `hw/dv/sv/csr_utils/csr_hw_reset_seq.sv` reads every CSR and compares it against the reset value in the register model, so a wrong reset value fails the test.\n- **Gap:** the finding doesn't name the block. I did not confirm that its simulation config enables these tests, though the finding itself lists both suites for it."}
+{"t": "2026-11-10T19:45:11Z", "event": "[5 turns, $0.0329]"}

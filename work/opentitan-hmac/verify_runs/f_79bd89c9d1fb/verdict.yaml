@@ -1,0 +1,50 @@
+finding_hash: 33d2d1b450c71a3b
+started_at: '2026-11-10T19:36:35Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The plan item chip_sw_hmac_enc is explicitly linked to this test. It says the HMAC done and
+    FIFO empty interrupts are verified. The test enables both IRQs but only checks irq_serviced == HMAC
+    done, once, after the key-hash step. It never checks a FIFO empty IRQ, and the final HMAC is completed
+    by polling with no interrupt check.
+  evidence:
+  - path: sw/device/tests/hmac_enc_test.c
+    line_start: 98
+    line_end: 98
+    quote: CHECK(irq_serviced == expected_irq);
+    role: supports
+    note: The only interrupt check, and it expects HMAC done.
+  - path: sw/device/tests/hmac_enc_test.c
+    line_start: 110
+    line_end: 111
+    quote: "return status_ok(\n      hmac_testutils_finish_and_check_polled(&hmac, &kHmacRefExpectedDigest));"
+    role: supports
+    note: The final HMAC operation is completed by polling, with no interrupt verification.
+  - path: hw/top_earlgrey/data/ip/chip_hmac_testplan.hjson
+    line_start: 14
+    line_end: 14
+    quote: the HMAC done and FIFO empty interrupts as a part of this test.
+    role: supports
+    note: The plan requires verifying both interrupts.
+  searches:
+  - what: FIFO empty IRQ checks in the test source
+    where: sw/device/tests/hmac_enc_test.c
+    found: The FIFO empty IRQ is enabled at lines 63-70 but never checked. The handler stores irq_serviced
+      and only the HMAC done value is compared.
+  - what: Plan-to-test link
+    where: hw/top_earlgrey/data/ip/chip_hmac_testplan.hjson
+    found: The plan item lists bazel //sw/device/tests:hmac_enc_test, so the link is stated in the repository.
+  near_misses:
+  - path: sw/device/tests/hmac_enc_test.c
+    line_start: 61
+    line_end: 70
+    why_not: This enables the FIFO empty interrupt in the HMAC IP and PLIC, but enabling it is not the
+      same as verifying it.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0473877
+error: null

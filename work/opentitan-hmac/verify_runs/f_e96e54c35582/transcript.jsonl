@@ -1,0 +1,8 @@
+{"t": "2026-11-10T19:38:31Z", "event": "  \u2192 Grep: 384"}
+{"t": "2026-11-10T19:38:36Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:38:37Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/doc/theory_of_operation.md"}
+{"t": "2026-11-10T19:38:37Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/doc/registers.md"}
+{"t": "2026-11-10T19:38:38Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/doc/programmers_guide.md"}
+{"t": "2026-11-10T19:38:45Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:38:47Z", "event": "I withdrew the finding. The DIGEST register description in `hw/ip/hmac/doc/registers.md:423` (and `hw/ip/hmac/data/hmac.hjson:504`) says that for SHA-2 384, DIGEST12..15 \"are truncated; they are irrelevant and should not be read out.\" So a test writer can compare only DIGEST_0..11 and leave the rest unchecked.\n\n`theory_of_operation.md:25` adds that SHA-384 is SHA-512 with the last 128 bits dropped, which gives 384 bits.\n\nThe README says \"DIGEST_0-DIGEST_12\" for SHA-384 (`hw/ip/hmac/README.md:42`), which looks like an off-by-one error. It doesn't change the answer, but it should be corrected to DIGEST_0-DIGEST_11.\n\nI did not check the RTL or the DV scoreboard for what the design actually does with DIGEST12..15 in this mode."}
+{"t": "2026-11-10T19:38:47Z", "event": "[7 turns, $0.0532]"}

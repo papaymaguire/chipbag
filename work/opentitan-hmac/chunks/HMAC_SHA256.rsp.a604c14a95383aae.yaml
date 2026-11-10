@@ -1,0 +1,30 @@
+path: hw/dv/sv/test_vectors/vectors/hmac/HMAC_SHA256.rsp
+scope:
+  kind: whole_file
+model: claude-sonnet-5-5
+cost_usd: 0.026782300000000002
+chunks:
+- title_path: HMAC_SHA256.rsp > Header
+  kind: section
+  line_start: 1
+  line_end: 11
+- title_path: HMAC_SHA256.rsp > InputLen=1024 > Count 0-49
+  kind: entry
+  line_start: 13
+  line_end: 361
+- title_path: HMAC_SHA256.rsp > InputLen=1024 > Count 50-99
+  kind: entry
+  line_start: 363
+  line_end: 711
+- title_path: HMAC_SHA256.rsp > InputLen=1024 > Count 100-149
+  kind: entry
+  line_start: 713
+  line_end: 1061
+- title_path: HMAC_SHA256.rsp > InputLen=1024 > Count 150-199
+  kind: entry
+  line_start: 1063
+  line_end: 1411
+- title_path: HMAC_SHA256.rsp > InputLen=1024 > Count 200-224
+  kind: entry
+  line_start: 1413
+  line_end: 1586

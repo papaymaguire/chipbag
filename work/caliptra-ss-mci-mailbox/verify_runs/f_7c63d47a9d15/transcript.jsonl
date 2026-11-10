@@ -1,0 +1,9 @@
+{"t": "2026-11-10T20:39:41Z", "event": "  \u2192 Grep: soc_mcu_mbox[01]_data_avail"}
+{"t": "2026-11-10T20:39:42Z", "event": "  \u2192 Grep: data_avail"}
+{"t": "2026-11-10T20:39:44Z", "event": "  \u2192 Grep: data_avail"}
+{"t": "2026-11-10T20:39:44Z", "event": "  \u2192 Grep: data_avail"}
+{"t": "2026-11-10T20:39:46Z", "event": "Those are interrupts, not the sideband wire. Quick check for assertions on the wire."}
+{"t": "2026-11-10T20:39:47Z", "event": "  \u2192 Grep: mcu_mbox[01]_data_avail"}
+{"t": "2026-11-10T20:39:54Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:39:58Z", "event": "I submitted the verdict as verified: none of the three items has a test that both creates the condition and fails if the behavior is wrong.\n\n- **Wire assertion (`cr_b395303f48f6`):** `cptra_ss_soc_mcu_mbox*_data_avail` is only sampled by coverpoints in `src/mci/coverage/mci_top_cov_if.sv`, which can't fail a test. I found no assertion or checker on the wire anywhere.\n- **Wire stays deasserted (`cr_918e477394f8`):** I found no check that the wire stays low while MCU programs the target configuration.\n- **`TARGET_USER` ordering (`cr_d880e054e4d3`):** I did not re-search the `mci_comm_flow_transaction` test myself. I relied on the finding's description that it sets `TARGET_USER_VALID` and adds a short delay, with no check on write ordering.\n\nTwo near misses touch the area but check nothing about the wire:\n- **Testbench services:** `src/integration/testbench/caliptra_ss_top_tb_services.sv` only forces the internal `mcu_mbox*_data_avail` signals as stimulus.\n- **Firmware library:** `caliptra_ss_lib.c` polls the SoC data-avail interrupt, which is not the sideband wire."}
+{"t": "2026-11-10T20:39:58Z", "event": "[7 turns, $0.0435]"}

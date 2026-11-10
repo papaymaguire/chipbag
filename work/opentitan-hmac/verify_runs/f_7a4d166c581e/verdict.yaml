@@ -1,0 +1,107 @@
+finding_hash: d066a77646fa3826
+started_at: '2026-11-10T19:39:14Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The five error codes are covered by randomized stimulus with a checker that can fail. hmac_error_vseq
+    disables legal_seq_c, and the base vseq drives invalid configs, SHA-disabled start and push, and key
+    writes during hashing. The scoreboard predicts INTR_STATE.hmac_err and ERR_CODE for each case. Reads
+    are compared with DV_CHECK_EQ, and trigger_hash calls check_error_code after a start. The stimulus
+    is random rather than directed, and I did not confirm that every condition is hit in every run.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 557
+    line_end: 557
+    quote: '`DV_CHECK_EQ(item.d_data, `gmv(csr), csr_name)'
+    role: refutes
+    note: Register reads (including err_code, which isn't exempted from do_read_check) are compared against
+      the predicted mirror, so a mismatch fails the test.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 324
+    line_end: 324
+    quote: update_err_intr_code(SwUpdateSecretKeyInProcess);
+    role: refutes
+    note: Scoreboard predicts the error code for key writes during hashing.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 227
+    line_end: 229
+    quote: "if (invalid_cfg || !`gmv(ral.cfg.sha_en)) begin\n    check_error_code();"
+    role: refutes
+    note: The sequence explicitly checks the error interrupt and ERR_CODE after hash start with an invalid
+      config or SHA disabled.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 398
+    line_end: 399
+    quote: write_discard_config_and_key(wr_config_during_hash, wr_key_during_hash);
+    role: refutes
+    note: Stimulus writes the key during hashing; it is randomized and enabled when legal_seq_c is off.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_error_vseq.sv
+    line_start: 21
+    line_end: 21
+    quote: this.legal_seq_c.constraint_mode(0);
+    role: context
+    note: The error test disables the legal-sequence constraint so illegal conditions are randomized.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 148
+    line_end: 148
+    quote: update_err_intr_code(SwPushMsgWhenDisallowed);
+    role: refutes
+    note: The scoreboard predicts the error for a push with SHA disabled.
+  searches:
+  - what: error code names in the dv tree
+    where: hw/ip/hmac/dv
+    found: Predicted in the scoreboard and sampled in coverage; no separate directed test.
+  - what: stimulus for the illegal conditions
+    where: hmac_error_vseq, hmac_base_vseq, hmac_smoke_vseq
+    found: Random, with the legal constraint off in the error test; the smoke test pins wr_key_during_hash
+      to 0.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 40
+    line_end: 46
+    why_not: legal_seq_c here forces sha_en=1 and wr_key_during_hash=0, so the smoke test does not hit
+      these cases; coverage comes from hmac_error.
+  items:
+  - id: cr_5fac3c9a5235
+    outcome: withdrawn
+    reason: invalid_cfg covers digest size None, the scoreboard predicts SwInvalidConfig, and the sequence
+      checks the error after the start.
+    evidence:
+    - 2
+    - 0
+  - id: cr_74940e925189
+    outcome: withdrawn
+    reason: Key writes during hashing are driven randomly and the scoreboard predicts SwUpdateSecretKeyInProcess;
+      ERR_CODE reads are compared.
+    evidence:
+    - 1
+    - 3
+    - 0
+  - id: cr_af599a140af4
+    outcome: withdrawn
+    reason: invalid_cfg includes Key_None in HMAC mode and 256-bit digest with 1024-bit key; the predicted
+      SwInvalidConfig is checked against reads.
+    evidence:
+    - 2
+    - 0
+  - id: cr_eaf5e68cde41
+    outcome: withdrawn
+    reason: The scoreboard predicts SwPushMsgWhenDisallowed for FIFO writes with SHA disabled, and the
+      readback is compared.
+    evidence:
+    - 5
+    - 0
+  - id: cr_ec19b93ee9db
+    outcome: withdrawn
+    reason: A start with SHA disabled makes trigger_hash call check_error_code, and the scoreboard predicts
+      SwHashStartWhenShaDisabled.
+    evidence:
+    - 2
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.10664789999999999
+error: null

@@ -1,0 +1,49 @@
+finding_hash: 45aa07d137398294
+started_at: '2026-11-10T19:36:33Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The plan item (chip_sw_hmac_enc) is linked to hmac_enc_test, not to hmac_smoketest. hmac_smoketest
+    belongs to the generic chip_sw_smoketest item, which makes no interrupt promise. The link in the finding
+    was inferred, so there is no plan-versus-test mismatch for the smoketest.
+  evidence:
+  - path: hw/top_earlgrey/data/ip/chip_hmac_testplan.hjson
+    line_start: 19
+    line_end: 21
+    quote: "tests: [\"chip_sw_hmac_enc\",\n              \"chip_sw_hmac_enc_jitter_en\"]\n      bazel:\
+      \ [\"//sw/device/tests:hmac_enc_test\"]"
+    role: refutes
+    note: The interrupt-verification plan item is tied to hmac_enc_test, not hmac_smoketest.
+  - path: hw/top_earlgrey/data/chip_testplan.hjson
+    line_start: 437
+    line_end: 437
+    quote: '"chip_sw_hmac_smoketest",'
+    role: context
+    note: The smoketest is listed under the generic smoketest item, which only says each IP is alive and
+      can be actuated by the DIF.
+  searches:
+  - what: which testplan items reference hmac_smoketest
+    where: all *.hjson
+    found: Only the generic chip_sw_smoketest item (and the chip_smoketests/verilator sim configs), not
+      the chip_sw_hmac_enc item.
+  - what: bazel target of chip_sw_hmac_enc
+    where: chip_hmac_testplan.hjson and sw/device/tests/BUILD
+    found: //sw/device/tests:hmac_enc_test, defined in BUILD with srcs hmac_enc_test.c.
+  near_misses:
+  - path: sw/device/tests/hmac_smoketest.c
+    line_start: 85
+    line_end: 95
+    why_not: The test does poll rather than use interrupts, but nothing ties it to the interrupt-verification
+      plan item, so that is not a disagreement.
+  items: []
+  new_sources:
+  - path: sw/device/tests/hmac_enc_test.c
+    reason: Test realizing the chip_sw_hmac_enc plan item (done and FIFO empty interrupts).
+  resolution: Associate plan item chip_sw_hmac_enc with hmac_enc_test.c only. hmac_smoketest needs no
+    change.
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0556161
+error: null

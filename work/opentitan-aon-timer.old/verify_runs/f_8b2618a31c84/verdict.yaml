@@ -1,0 +1,72 @@
+finding_hash: c9ca6e09f92fd95e
+started_at: '2026-11-10T22:07:36Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: All five items are implemented. The first, third and fourth (tl_intg_err, csr_bit_bash, sec_cm_bus_integrity)
+    come from common test lists imported by aon_timer_sim_cfg.hjson. The other two (intr_test_cg, intr_pins_cg)
+    are covergroups sampled by the scoreboard, not tests. I did not read the common vseq code behind the
+    tl_intg_err and csr_bit_bash checks, so those checks are inferred from the test definitions.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 20
+    line_end: 23
+    quote: 'name: "{name}_tl_intg_err"'
+    role: refutes
+    note: Imported by aon_timer_sim_cfg.hjson, so aon_timer_tl_intg_err exists. It covers both tl_intg_err
+      and sec_cm_bus_integrity.
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 37
+    line_end: 39
+    quote: 'name: "{name}_csr_bit_bash"'
+    role: refutes
+    note: Generic csr_bit_bash test, imported by aon_timer_sim_cfg.hjson.
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 355
+    line_end: 355
+    quote: cov.intr_pins_cg.sample(i, cfg.aon_intr_vif.sample_pin(.idx(i)));
+    role: refutes
+    note: intr_pins_cg is sampled by the scoreboard during normal tests. It is a coverage item, not a
+      test.
+  searches:
+  - what: tl_intg_err and csr_bit_bash test definitions, and whether aon_timer imports them
+    where: hw/dv/tools/dvsim/tests, hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson
+    found: Both tests are defined in common lists. aon_timer_sim_cfg.hjson imports csr_tests.hjson and
+      tl_access_tests.hjson.
+  - what: intr_test_cg and intr_pins_cg usage
+    where: hw/ip/aon_timer/dv
+    found: Both covergroups are sampled in aon_timer_scoreboard.sv, at lines 355 and 743-853.
+  near_misses: []
+  items:
+  - id: cp_b45f61de3f01
+    outcome: withdrawn
+    reason: aon_timer_tl_intg_err comes from the imported tl_access_tests.hjson.
+    evidence:
+    - 0
+  - id: cp_c14d35427aed
+    outcome: withdrawn
+    reason: Covergroup sampled in the scoreboard; it is not a test to implement.
+    evidence:
+    - 2
+  - id: cp_d17099555445
+    outcome: withdrawn
+    reason: aon_timer_csr_bit_bash comes from the imported csr_tests.hjson.
+    evidence:
+    - 1
+  - id: cp_d27abeb92887
+    outcome: withdrawn
+    reason: The sec_cm testplan maps to aon_timer_tl_intg_err, which exists via tl_access_tests.hjson.
+    evidence:
+    - 0
+  - id: cp_d9c004f794d2
+    outcome: withdrawn
+    reason: Covergroup sampled in the scoreboard at line 355.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.06463110000000001
+error: null

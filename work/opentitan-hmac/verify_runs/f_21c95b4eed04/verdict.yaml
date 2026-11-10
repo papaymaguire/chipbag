@@ -1,0 +1,81 @@
+finding_hash: 38102e61c944bc3d
+started_at: '2026-11-10T20:54:45Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Items 4 and 5 stand: DV forces sideload off. Item 3 is refuted, because the scoreboard checks
+    the default big-endian key order. Items 1 and 2 are inconclusive: the scoreboard models FIFO depth,
+    but nothing explicit checks the cited statements.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: '// TODO(#31634): Disable sideloading for now.'
+    role: supports
+    note: Sideload is disabled in randomized config, so sideload abort and key stability are never stimulated.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 860
+    line_end: 869
+    quote: '    `uvm_info(`gfn, "Keep the key in big-endian", UVM_HIGH)'
+    role: refutes
+    note: The scoreboard's reference model keeps the key big-endian when key_swap=0, and key_swap=0 is
+      both the default and a randomized value. The DUT digest is compared against this model.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 671
+    line_end: 673
+    quote: hmac_fifo_full  = hmac_fifo_depth == HMAC_MSG_FIFO_DEPTH_WR;
+    role: context
+    note: The scoreboard models FIFO depth and full status, which is only an indirect link to items 1
+      and 2.
+  searches:
+  - what: sideload/abort/SwInvalidConfig in the DV env, tb and sva
+    where: hw/ip/hmac/dv
+    found: Sideload is forced to 0 in the base vseq. The sideload agent is created but has no sequence.
+      The sva directory has only TLUL and CSR asserts.
+  - what: key_swap checks
+    where: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    found: The expected HMAC is computed with and without key swap.
+  - what: FIFO fetch during compression and depth limit
+    where: hw/ip/hmac/dv
+    found: Only a status FIFO depth/full model and coverage. No explicit check of the cited statements.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 199
+    line_end: 219
+    why_not: SwInvalidConfig is modeled for other config errors, not for a sideload key becoming invalid.
+  items:
+  - id: cr_5807f1c5e9f0
+    outcome: inconclusive
+    reason: The scoreboard models FIFO depth and full against the 16/32 entry limit, but nothing explicitly
+      checks pushing during compression.
+    evidence:
+    - 2
+  - id: cr_e293e155b41b
+    outcome: inconclusive
+    reason: No explicit check that the engine does not fetch from the FIFO during compression. The FIFO
+      depth model gives only indirect coverage.
+    evidence:
+    - 2
+  - id: cr_70b0bc9f5caa
+    outcome: withdrawn
+    reason: HMAC scoreboard computes the expected digest with the key kept big-endian when key_swap=0,
+      and key_swap is randomized including 0.
+    evidence:
+    - 1
+  - id: cr_003bb8525faa
+    outcome: verified
+    reason: Sideload is disabled in DV and no abort test exists.
+    evidence:
+    - 0
+  - id: cr_01801357ac87
+    outcome: verified
+    reason: No sideload stimulus or key stability check exists, since sideload is disabled.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0655003
+error: null

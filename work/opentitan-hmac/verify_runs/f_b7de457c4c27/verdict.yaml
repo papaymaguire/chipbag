@@ -1,0 +1,54 @@
+finding_hash: 442c9cfd20b9c999
+started_at: '2026-11-10T20:53:02Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Other spec text lists what happens on revocation mid-operation: abort, SwInvalidConfig, SHA-2/digest/packer/FIFO
+    cleared, return to idle, and no done interrupt. No spec text gives a cycle bound. None says whether
+    an in-flight block compression may continue with the old key. The ambiguity stands.'
+  evidence:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 155
+    line_end: 157
+    quote: The key manager deasserting the valid indication while an operation is in progress aborts that
+      operation and reports the same error.
+    role: context
+    note: Gives the outcome of revocation but no latency in cycles and nothing about in-flight compression.
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 139
+    line_end: 139
+    quote: the key manager revoking the key takes effect immediately
+    role: supports
+    note: '''Immediately'' is the only timing statement and it is unbounded.'
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 111
+    line_end: 111
+    quote: If the key manager revokes the key while an operation is running, that operation is aborted,
+      the digest is cleared, and the same error is reported.
+    role: context
+    note: Repeats the behaviour without any timing.
+  searches:
+  - what: revoke, sideload, key valid, SwInvalidConfig in hmac md docs
+    where: hw/ip/hmac
+    found: Behavioural description in theory_of_operation.md, programmers_guide.md and registers.md. No
+      cycle bound and nothing on in-flight processing.
+  - what: revoke, key_valid, SwInvalidConfig in hmac/data
+    where: hw/ip/hmac/data
+    found: No matches.
+  near_misses:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 152
+    line_end: 157
+    why_not: Lists the reaction steps but gives no timing and does not say whether a compression in flight
+      may finish.
+  items: []
+  new_sources: []
+  resolution: Add a statement to theory_of_operation.md giving the maximum latency in cycles from valid
+    deasserting to abort, ERR_CODE set and idle. State whether a compression already in flight is cancelled
+    or discarded. The RTL was not examined here.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0410311
+error: null

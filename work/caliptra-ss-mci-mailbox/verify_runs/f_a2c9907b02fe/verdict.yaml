@@ -1,0 +1,78 @@
+finding_hash: 8db347d0a3040f12
+started_at: '2026-11-10T19:46:03Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test writes the notif_*_intr_count_incr_r pulse registers or checks event-counter increments
+    for the CPTRA mbox cmd avail, MBOX1 cmd avail or MBOX0 target done notifications. The only references
+    outside the RDL and generated register files are address maps, coverage points and count-register
+    reads that don't check increments.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 214
+    line_end: 215
+    quote: lsu_read_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_MBOX1_CMD_AVAIL_INTR_COUNT_R      ) +
+    role: context
+    note: Reads the count registers only, as part of a sum. It does not touch the incr pulse registers
+      and does not check any increment behavior.
+  searches:
+  - what: notif_*_intr_count_incr names outside mci_reg*
+    where: whole repo
+    found: Only mci_reg_uvm.sv, mci_reg.sv and mci_top_cov_if.sv (coverage points, no checks)
+  - what: NOTIF_*_INTR_COUNT in test suites
+    where: src/integration/test_suites
+    found: mcu_intr_handler.c sums the count registers; libs/mci/mci.c lists them in a register table.
+      Neither checks increments.
+  - what: 'Item cr_abec8d18a27b: write to incr pulse register with swwel gating'
+    where: whole repo (tests, C suites)
+    found: No test writes the incr_r registers; only address defines exist
+  - what: 'Item cr_ac50ef86787c: rising-edge event increments the counter'
+    where: test suites
+    found: No check on increments; only the count registers are summed or listed in a table
+  - what: 'Items cr_ad2b9f5593f2, cr_ad3bc76d7645 and cr_af3a97a3f2b9: counter field, increment by 1,
+      1-bit down-counter pulse'
+    where: test suites, coverage
+    found: Only coverpoints and address defines; no checks
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 582
+    line_end: 586
+    why_not: Register table entries for the count registers (reset/sticky checks), not the incr pulse
+      or counter increment behavior.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4800
+    line_end: 4800
+    why_not: Coverpoints only, with no check that fails a test.
+  items:
+  - id: cr_abec8d18a27b
+    outcome: verified
+    reason: No test writes the incr pulse register and checks the swwel gating.
+    evidence:
+    - 0
+  - id: cr_ac50ef86787c
+    outcome: verified
+    reason: No test checks that the counter increments on the rising edge of the hardware event.
+    evidence:
+    - 0
+  - id: cr_ad2b9f5593f2
+    outcome: verified
+    reason: No test checks the counter field.
+    evidence:
+    - 0
+  - id: cr_ad3bc76d7645
+    outcome: verified
+    reason: No test checks an increment by 1 per event.
+    evidence:
+    - 0
+  - id: cr_af3a97a3f2b9
+    outcome: verified
+    reason: No test checks the 1-bit down-counter pulse behavior.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 10
+cost_usd: 0.0861586
+error: null

@@ -1,0 +1,6 @@
+{"t": "2026-11-10T20:51:59Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/sw/device/tests/hmac_error_conditions_test.c"}
+{"t": "2026-11-10T20:52:00Z", "event": "  \u2192 Grep: kErrorSwPushMsgWhen|kErrorSwHashStartWhenShaDisabled|PushMsgWhenShaDisabled"}
+{"t": "2026-11-10T20:52:02Z", "event": "Spec says the SHA-disabled code isn't used; the IP reports SwPushMsgWhenDisallowed. So the code is right and the comment is just loosely worded; the finding's premise is wrong."}
+{"t": "2026-11-10T20:52:05Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:52:08Z", "event": "I withdrew the finding. The test's expectation is correct, so the comment and the check don't actually contradict each other.\n\nThe HMAC programmer's guide (`hw/ip/hmac/doc/programmers_guide.md:179`) says `SwPushMsgWhenShaDisabled` (0x1) is not used in the current IP. It says the IP reports `SwPushMsgWhenDisallowed` (0x5) instead, so pushing a message while SHA is disabled should produce 0x5. The check at `sw/device/tests/hmac_error_conditions_test.c:157` expects exactly that. The same \"not used\" note appears in `hw/ip/prim/rtl/prim_sha2_pkg.sv`.\n\nI did not look into whether the plan item (p5.k2) is covered elsewhere."}
+{"t": "2026-11-10T20:52:08Z", "event": "[4 turns, $0.0534]"}

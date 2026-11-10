@@ -1,0 +1,80 @@
+finding_hash: 9166f524dbc32db4
+started_at: '2026-11-10T22:07:26Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: The TL-UL assertions are bound into aon_timer for every simulation, so that item is implemented.
+    The two covergroups exist in the shared tl_agent and are sampled by its monitor, but they are coverage,
+    not checks, and the aon_timer env limits outstanding requests to 1, so a plan-to-test mapping is not
+    meaningful.
+  evidence:
+  - path: hw/ip/aon_timer/dv/sva/aon_timer_bind.sv
+    line_start: 7
+    line_end: 9
+    quote: 'bind aon_timer tlul_assert #('
+    role: refutes
+    note: The TL-UL protocol checker is bound into the DUT. It is a sim top in aon_timer_sim_cfg.hjson,
+      so it runs with every test.
+  - path: hw/dv/sv/tl_agent/tl_monitor.sv
+    line_start: 202
+    line_end: 202
+    quote: if (cfg.en_cov) cov.m_max_outstanding_cg.sample(pending_a_req.size());
+    role: context
+    note: The shared TL agent monitor samples the covergroup during any test.
+  - path: hw/dv/sv/tl_agent/tl_monitor.sv
+    line_start: 103
+    line_end: 103
+    quote: if (cfg.en_cov) cov.m_pending_req_on_rst_cg.sample(pending_a_req.size() != 0);
+    role: context
+    note: The covergroup for TL access pending during reset is sampled by the shared monitor.
+  - path: hw/ip/aon_timer/dv/env/aon_timer_env_cfg.sv
+    line_start: 45
+    line_end: 45
+    quote: m_tl_agent_cfg.max_outstanding_req = 1;
+    role: context
+    note: With at most one outstanding request, max_outstanding_cg is trivially hit.
+  searches:
+  - what: covergroup names in the repository
+    where: hw/
+    found: Only in hw/dv/sv/tl_agent (tl_agent_cov.sv, tl_monitor.sv) and the aon_timer README. Not in
+      the aon_timer testplan.
+  - what: tlul_assert in aon_timer DV
+    where: hw/ip/aon_timer/dv
+    found: Bound in sva/aon_timer_bind.sv, which is listed in sim_tops.
+  near_misses:
+  - path: hw/dv/sv/tl_agent/tl_agent_cov.sv
+    line_start: 5
+    line_end: 26
+    why_not: These are coverage definitions, not checks. They are collected automatically under en_cov,
+      so they need no dedicated test.
+  items:
+  - id: cp_e568915a8fd3
+    outcome: inconclusive
+    reason: max_outstanding_cg is sampled by the shared TL monitor in every test, but it is coverage rather
+      than a check. The env sets max_outstanding_req to 1.
+    evidence:
+    - 1
+    - 3
+  - id: cp_ef68605d12b4
+    outcome: inconclusive
+    reason: pending_req_on_rst_cg is sampled by the shared TL monitor on reset. No aon_timer test specifically
+      drives a pending TL access across reset.
+    evidence:
+    - 2
+  - id: cp_f6592c80b9f9
+    outcome: withdrawn
+    reason: tlul_assert is bound into aon_timer through the sim_tops entry aon_timer_bind, so the assertions
+      run with every test and fail it on a protocol violation.
+    evidence:
+    - 0
+  new_sources:
+  - path: hw/dv/sv/tl_agent/tl_agent_cov.sv
+    reason: Defines max_outstanding_cg and pending_req_on_rst_cg.
+  - path: hw/ip/aon_timer/dv/sva/aon_timer_bind.sv
+    reason: Binds the TL-UL protocol assertions into aon_timer.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.052954600000000004
+error: null

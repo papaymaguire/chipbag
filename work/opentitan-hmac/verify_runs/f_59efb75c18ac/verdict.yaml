@@ -1,0 +1,42 @@
+finding_hash: b943469e4c0e6beb
+started_at: '2026-11-10T20:52:42Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The register description in hmac.hjson answers the question. Only SHA2_256, SHA2_384 and SHA2_512
+    are valid. Every other value, including all-zero, is mapped to SHA2_None, which blocks the start and
+    signals an error. I did not check how the error maps to SwInvalidConfig, or whether SHA-2-only and
+    HMAC modes differ.
+  evidence:
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 269
+    line_end: 270
+    quote: Invalid/unsupported values, i.e., values that don't correspond to SHA2_256, SHA2_384, or SHA2_512,
+      are mapped to SHA2_None.
+    role: refutes
+    note: 'Defines the invalid encodings: everything except the three valid codes.'
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 294
+    line_end: 295
+    quote: '4''b1000: Unsupported/invalid values and all-zero values are mapped to SHA2_None.'
+    role: refutes
+    note: All-zero and other reserved codes are treated as SHA2_None, and start is blocked with an error
+      signalled to SW.
+  searches:
+  - what: digest_size, SHA2_NONE and SwInvalidConfig in hmac docs and hjson
+    where: hw/ip/hmac
+    found: The hjson register description defines the invalid digest_size encodings.
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/ip/hmac/data/hmac.hjson
+    reason: The digest_size field description lists which encodings are invalid.
+  resolution: 'Spec text: any digest_size value other than the one-hot SHA2_256 (1), SHA2_384 (2) or SHA2_512
+    (4) is treated as SHA2_None. Starting with that value is blocked and an error is signalled. A test
+    should drive SHA2_None, all-zero and non-one-hot or multi-bit values.'
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0313297
+error: null

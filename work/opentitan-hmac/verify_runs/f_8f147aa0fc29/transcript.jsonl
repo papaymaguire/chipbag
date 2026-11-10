@@ -1,0 +1,9 @@
+{"t": "2026-11-10T20:54:05Z", "event": "  \u2192 Grep: key_length|digest_size"}
+{"t": "2026-11-10T20:54:07Z", "event": "  \u2192 Grep: constraint hmac_base_vseq::(key_length_c|digest_size_c)"}
+{"t": "2026-11-10T20:54:11Z", "event": "  \u2192 Grep: Key_None|SHA2_None|endian_swap|sub-word|wr_mask"}
+{"t": "2026-11-10T20:54:11Z", "event": "  \u2192 Grep: wr_mask|wr_addr_q|byte"}
+{"t": "2026-11-10T20:54:14Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:54:14Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:54:27Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:54:30Z", "event": "I've submitted the verdict, and it was accepted. I withdrew all five items as already tested. The hmac DV environment (`hw/ip/hmac/dv/env`) randomizes illegal and all-zero `key_length` and `digest_size` values, and it writes MSG_FIFO with random sub-word byte masks. The scoreboard predicts the Key_None and SHA2_None mapping and the per-word endian swap, so wrong behavior fails the CFG read check or the digest compare. I didn't run any tests, and I didn't check which tests reach the smoke sequence."}
+{"t": "2026-11-10T20:54:30Z", "event": "[8 turns, $0.0760]"}

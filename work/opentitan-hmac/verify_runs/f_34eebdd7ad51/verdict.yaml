@@ -1,0 +1,36 @@
+finding_hash: c193da93187b7936
+started_at: '2026-11-10T19:36:50Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: wr_key_during_sha_only_cg is a functional covergroup entry, not a test-linked plan item. The
+    scoreboard samples it for any test, so the vseq does not need its own covergroup. Nothing in the repository
+    ties this item to hmac_test_vectors_sha_vseq.
+  evidence:
+  - path: hw/ip/hmac/data/hmac_testplan.hjson
+    line_start: 205
+    line_end: 206
+    quote: "name: wr_key_during_sha_only_cg\n      desc: \"Covers writing key length should be seamless\
+      \ while HMAC is disabled\""
+    role: refutes
+    note: Listed as a covergroup, with no tests linked to it.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 301
+    line_end: 305
+    quote: // Changing the key length should be seamless while HMAC disabled
+    role: refutes
+    note: The scoreboard samples the covergroup on CFG writes, independently of the vseq.
+  searches:
+  - what: wr_key_during_sha_only_cg usages
+    where: hw/ip/hmac
+    found: A testplan covergroup entry, the covergroup definition, and a scoreboard sample point. No test
+      link.
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.031178699999999997
+error: null

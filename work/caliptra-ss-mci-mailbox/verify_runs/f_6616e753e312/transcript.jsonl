@@ -1,0 +1,8 @@
+{"t": "2026-11-10T21:01:05Z", "event": "  \u2192 Grep: MCU_MBOX0_SRAM|mcu_mbox0_sram|MBOX_SRAM|mbox_sram"}
+{"t": "2026-11-10T21:01:05Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/docs/CaliptraSSHardwareSpecification.md"}
+{"t": "2026-11-10T21:01:08Z", "event": "  \u2192 Grep: SRAM|sram"}
+{"t": "2026-11-10T21:01:09Z", "event": "Check for any test of addresses beyond configured SRAM within 2MB."}
+{"t": "2026-11-10T21:01:10Z", "event": "  \u2192 Grep: 0x1F_?FFFF|0x1FFFFF|2MB|MBOX_SRAM_END|SRAM_SIZE|SRAM_DEPTH"}
+{"t": "2026-11-10T21:01:16Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:01:19Z", "event": "I submitted the verdict as verified: no test in the repository checks that the MCU mailbox SRAM occupies 0x0000_0000 to 0x01F_FFFF.\n\n- **What the tests do:** the mailbox smoke tests access SRAM at the base address plus small word offsets. None of them probe the end of the 2MB window or the reserved space beyond the configured SRAM size.\n- **Near miss:** the invalid-AXI test (`cptra_smoke_test_mcu_mbox_invalid_axi.c`) does SRAM writes and reads and expects AXI errors. That only shows an unauthorized accessor is rejected, not where the range ends.\n- **Where the end address appears:** only in the generated address-map defines (`soc_address_map_defines.svh` and `soc_address_map.h`), not in any check.\n\nThe search was a grep over the integration test suites and the wider `src/integration` tree."}
+{"t": "2026-11-10T21:01:20Z", "event": "[6 turns, $0.0431]"}

@@ -1,0 +1,15 @@
+{"t": "2026-11-10T19:40:40Z", "event": "  \u2192 Grep: intr_count_r"}
+{"t": "2026-11-10T19:40:41Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:40:44Z", "event": "  \u2192 Grep: (notif_mbox[01]_(cmd_avail|ecc_cor|target_done)|notif_cptra_mbox_cmd_avail|error_mbox1_ecc_unc)_intr_count"}
+{"t": "2026-11-10T19:40:44Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:40:47Z", "event": "  \u2192 Grep: (?i)(NOTIF_(CPTRA_)?MBOX[01]?_?\\w*|ERROR_MBOX1_ECC_UNC)_INTR_COUNT_R"}
+{"t": "2026-11-10T19:40:50Z", "event": "  \u2192 Grep: (?i)INTR_COUNT_R"}
+{"t": "2026-11-10T19:40:52Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:40:55Z", "event": "Checking whether mcu_intr_handler actually triggers the mbox interrupts that the count check covers."}
+{"t": "2026-11-10T19:40:56Z", "event": "  \u2192 Grep: TRIG_R_(NOTIF_(CPTRA_)?MBOX|ERROR_MBOX)\\w*"}
+{"t": "2026-11-10T19:41:11Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:41:21Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:23Z", "event": "Resubmitting with the covering checks marked as refutes evidence."}
+{"t": "2026-11-10T19:41:32Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:41:37Z", "event": "I submitted the verdict, and it was accepted. Only the saturation item stands as untested. The other four items are covered by an existing test.\n\n- **Counter and increment-by-1 items (cr_0f4287b8ecea, cr_22dc2380458a, cr_363bc0793fc3, cr_3d87302757c0):** `src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c` triggers each of these interrupts. It then reads their hardware count registers, sums them and compares the sum with a firmware count. It ends the simulation with an error on a mismatch (`mcu_intr_handler.c:256`). The check is aggregate, so errors in different counters could in principle cancel out. I withdrew these four items.\n- **Saturation item (cr_3f0d776dda4a):** nothing drives a counter to its maximum. `mcu_intr_handler.c` triggers each interrupt about once, so overflow and saturation are never exercised or checked. The only other reference is a coverpoint in `src/mci/coverage/mci_top_cov_if.sv`, which has no check. This item is verified.\n\nI couldn't use the submit tool directly at first, and the first submission was rejected because the withdrawn items lacked refutes evidence. I fixed that and resubmitted."}
+{"t": "2026-11-10T19:41:37Z", "event": "[12 turns, $0.1948]"}

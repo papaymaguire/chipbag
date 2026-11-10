@@ -1,0 +1,48 @@
+finding_hash: ef00144abd46f986
+started_at: '2026-11-10T20:34:18Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Plan row 122 (SB ECC sets status bit and sends interrupt to MCU) is realized by smoke_test_mcu_mbox_ecc,
+    which checks the status bit and the SB ECC interrupt. Nothing in the repository ties row 122 to the
+    warm-reset test. That test only uses ECC injection to dirty state before a warm reset. The mismatch
+    is therefore an inferred link, not a real inconsistency.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_ecc/smoke_test_mcu_mbox_ecc.c
+    line_start: 104
+    line_end: 107
+    quote: // Check if SB ECC interrupt has been logged
+    role: refutes
+    note: Another test checks the SB ECC interrupt, which is the behavior plan row 122 describes.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_csrs_warm_rst/smoke_test_mcu_mbox_csrs_warm_rst.c
+    line_start: 150
+    line_end: 151
+    quote: // Check that HW status is populated
+    role: context
+    note: The warm-reset test's purpose is CSR reset values; the ECC injection here only dirties state
+      before the reset.
+  searches:
+  - what: interrupt references in the warm_rst test
+    where: smoke_test_mcu_mbox_csrs_warm_rst.c
+    found: none
+  - what: tests covering SB ECC interrupt, and the plan row text
+    where: src/integration/test_suites and docs/Caliptra_Gen2_SS_TestPlan.xlsx
+    found: smoke_test_mcu_mbox_ecc checks the SB ECC interrupt; plan row 122 does not name the warm_rst
+      test
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_csrs_warm_rst/smoke_test_mcu_mbox_csrs_warm_rst.c
+    line_start: 151
+    line_end: 157
+    why_not: The test only checks the HW status bit. That is not a defect, because the test is not the
+      realization of the interrupt plan item.
+  items: []
+  new_sources:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_ecc/smoke_test_mcu_mbox_ecc.c
+    reason: Realizes plan row 122 (SB ECC status bit and interrupt).
+  resolution: Link plan row 122 to smoke_test_mcu_mbox_ecc. The warm-reset test needs no interrupt check.
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0476189
+error: null

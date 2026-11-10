@@ -1,0 +1,70 @@
+finding_hash: e9336bc9c57ec935
+started_at: '2026-11-10T21:11:20Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The HMAC DV scoreboard checks all three behaviours on every status and intr_state read, and
+    the smoke and related vseqs create the stimulus. The finding's "planned only" classification is wrong
+    for all three items. I did not trace the intr_state read check itself, and the item 3 check depends
+    on the smoke vseq's test-side tolerance for fifo_empty timing.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 510
+    line_end: 514
+    quote: "if ((`gmv(ral.status.fifo_depth)   != rd_fifo_depth) &&\n              (`gmv(ral.status.fifo_depth)+1\
+      \ != rd_fifo_depth)) begin\n            `uvm_error(`gfn, $sformatf({\"Check failed, read status.fifo_depth\
+      \ is not matching \","
+    role: refutes
+    note: Checks status.fifo_depth against the model (tolerance +1), and errors on mismatch
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 683
+    line_end: 683
+    quote: // The FIFO empty interrupt is raised only if the message FIFO is actually writable by
+    role: refutes
+    note: Scoreboard models the fifo_empty interrupt conditions (full previously, then empty), which includes
+      the not-writable restrictions
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 391
+    line_end: 392
+    quote: bit intr_state_empty = fifo_empty_intr | last_intr_test_wr[HmacMsgFifoEmpty];
+    role: refutes
+    note: Predicted intr_state.fifo_empty is compared on reads, so a wrong raise or no-raise would fail
+  searches:
+  - what: fifo_empty/fifo_depth in hmac dv
+    where: hw/ip/hmac/dv
+    found: scoreboard prediction and checks, coverage, smoke vseq
+  - what: fifo_empty in sw tests
+    where: sw/device/tests hmac*
+    found: polled fifo empty helpers only
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 209
+    line_end: 217
+    why_not: Comment on one-cycle misalignment for fifo_empty corner cases; shows tolerance but does not
+      remove the check
+  items:
+  - id: cr_0bd7f7a859d0
+    outcome: withdrawn
+    reason: Scoreboard compares read fifo_depth to the model on every status read.
+    evidence:
+    - 0
+  - id: cr_a1a298bba0a5
+    outcome: withdrawn
+    reason: Scoreboard models the interrupt conditions and checks intr_state.
+    evidence:
+    - 1
+    - 2
+  - id: cr_b3cf3229b231
+    outcome: withdrawn
+    reason: The model raises the interrupt when the FIFO empties after being full, and intr_state reads
+      are checked.
+    evidence:
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.07501530000000001
+error: null

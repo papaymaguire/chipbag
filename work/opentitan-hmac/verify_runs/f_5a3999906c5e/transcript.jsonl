@@ -1,0 +1,13 @@
+{"t": "2026-11-10T20:53:45Z", "event": "  \u2192 Grep: SwInvalidConfig|key_length|KEY_NONE|Key_None"}
+{"t": "2026-11-10T20:53:45Z", "event": "  \u2192 Grep: sideload"}
+{"t": "2026-11-10T20:53:48Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:53:48Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T20:53:52Z", "event": "  \u2192 Grep: invalid_cfg|key_length|err_code"}
+{"t": "2026-11-10T20:53:52Z", "event": "  \u2192 Grep: sideload|sideload_hmac"}
+{"t": "2026-11-10T20:53:58Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:53:59Z", "event": "  \u2192 Read: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T20:54:03Z", "event": "  \u2192 Grep: SwInvalidConfig|Key_None"}
+{"t": "2026-11-10T20:54:05Z", "event": "I made a malformed call. Resubmitting with the correct tool."}
+{"t": "2026-11-10T20:54:12Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:54:15Z", "event": "I submitted the verdict: three of the four items stand and one is withdrawn.\n\n- **Stand (cr_59caa8cb74a9, cr_a578aba72de1, cr_fb14b2d5a9e6):** I found no sideload stimulus in the IP-level HMAC verification, and nothing in the scoreboard handles sideload. So no test covers the restart-while-invalid recovery, the key being revoked mid-operation, or `CFG.key_length` reading back the same with no valid key. I did not open `keymgr_dpe_sideload_hmac_test` myself, so the gap analysis for it is unchecked on my side.\n- **Withdrawn (cr_af599a140af4):** The stimulus randomizes illegal key lengths, which the design casts to `Key_None`. The scoreboard marks `Key_None` in HMAC mode as an invalid configuration and predicts `SwInvalidConfig` on a hash start.\n\nMy only evidence that `ERR_CODE` is compared against that prediction is that the scoreboard predicts the error code. I did not trace the actual read comparison."}
+{"t": "2026-11-10T20:54:15Z", "event": "[11 turns, $0.0888]"}

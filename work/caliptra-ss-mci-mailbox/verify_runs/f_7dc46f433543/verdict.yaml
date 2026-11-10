@@ -1,0 +1,81 @@
+finding_hash: f0d7a8d3b71dd339
+started_at: '2026-11-10T19:40:09Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I searched the MCU mailbox smoke tests for the missing part of each of the five items and found
+    nothing that closes any gap. Evidence for cr_4c05e98bd6a2 is read from the Root test code. The other
+    four items were judged from searches of the trusted-user and LOCK usage and from the finding's description
+    of the cited tests, without reading each test in full.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 144
+    line_end: 154
+    quote: '    mcu_mbox_write_target_user_valid(mbox_num, 1);'
+    role: context
+    note: Root sets TARGET_USER_VALID. After this point the test writes CMD_STATUS, CMD and EXECUTE, but
+      never rewrites TARGET_USER or TARGET_USER_VALID.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/cptra_smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 67
+    line_end: 68
+    quote: '    soc_ifc_axi_dma_read_ahb_payload(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_USER + MCU_MBOX_NUM_STRIDE
+      * mbox_num, 0, read_payload, 4, 0);     '
+    role: context
+    note: The Requester reads only the USER CSR and prints it. There is no value check, and CMD, DLEN
+      and EXECUTE are not read.
+  searches:
+  - what: TARGET_USER_VALID usage in the mcu_mbox tests
+    where: src/integration/test_suites
+    found: No post-grant Root or Requester rewrite of TARGET_USER or TARGET_USER_VALID with an unchanged-value
+      check. Only the Target's attempts are checked.
+  - what: Trusted users, 0xFFFFFFFF or trusted AXI user terms
+    where: src/integration/test_suites/smoke_test_mcu_mbox*/*.c
+    found: A single hit, a DMA AXI user set to 0xFFFFFFFF in smoke_test_mcu_mbox.c. No test covers 5 trusted
+      users or default-user positive access.
+  - what: MBOX_LOCK usage in the mcu_mbox tests
+    where: src/integration/test_suites/smoke_test_mcu_mbox*/*.c
+    found: Lock acquisition is used for synchronisation only. No test has each trusted user, the default
+      user and the MCU acquire the lock and checks the grant.
+  - what: Requester CSR reads after acquiring the lock
+    where: cptra_smoke_test_mcu_mbox_write_user_lock.c
+    found: The Requester reads LOCK and USER and prints USER with no check. CMD, DLEN and EXECUTE reads
+      with value checks are absent.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/cptra_smoke_test_mcu_mbox_valid_user.c
+    line_start: 196
+    line_end: 203
+    why_not: This checks that an untrusted USER cannot write TARGET_USER_VALID. It does not check a write
+      after the valid bit is already set.
+  items:
+  - id: cr_7f11ce310155
+    outcome: verified
+    reason: No test checks that all 5 trusted users are accepted and that a non-trusted ID is refused.
+    evidence: []
+  - id: cr_96af8eb4025c
+    outcome: verified
+    reason: No test has the other trusted users read the mailbox CSRs and check the values while another
+      user holds the lock.
+    evidence: []
+  - id: cr_bb5623ddc32e
+    outcome: verified
+    reason: Only negative access for an untrusted user is tested. I found no positive access or lock-grant
+      test for trusted users, the default user or the MCU.
+    evidence: []
+  - id: cr_d52af1aaa92e
+    outcome: verified
+    reason: The Requester only reads USER and prints it, with no check, so there is no value-checked read
+      of the CSRs by a non-MCU lock holder.
+    evidence:
+    - 1
+  - id: cr_4c05e98bd6a2
+    outcome: verified
+    reason: Root never rewrites TARGET_USER or TARGET_USER_VALID after the valid bit is set.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 10
+cost_usd: 0.1298228
+error: null

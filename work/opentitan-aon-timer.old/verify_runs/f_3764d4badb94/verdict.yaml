@@ -1,0 +1,89 @@
+finding_hash: 98c92c19a77c2b59
+started_at: '2026-11-10T22:07:04Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Four of five items are not true gaps. The generic CSR tests (aliasing, rand_reset) are imported
+    by the aon_timer sim cfg and mapped from the plan. The X-value assertions exist in RTL and run in
+    every simulation. mem_walk is an imported generic test, though aon_timer has no memories, so it does
+    nothing. Lockable-field coverage is a coverage item, not a test, so it is collected by every run.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 45
+    line_end: 47
+    quote: "name: \"{name}_csr_aliasing\"\n      build_mode: \"cover_reg_top\"\n      run_opts: [\"+csr_aliasing\"\
+      ]"
+    role: refutes
+    note: Generic aliasing test exists, imported by aon_timer sim cfg.
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 61
+    line_end: 63
+    quote: 'name: "{name}_csr_mem_rw_with_rand_reset"'
+    role: refutes
+    note: Generic rand-reset CSR test exists.
+  - path: hw/ip/aon_timer/rtl/aon_timer.sv
+    line_start: 291
+    line_end: 291
+    quote: '`ASSERT_KNOWN(IntrWkupKnown_A, intr_wkup_timer_expired_o)'
+    role: refutes
+    note: X-checks on outputs are in RTL and run in all sims.
+  - path: hw/dv/tools/dvsim/tests/mem_tests.hjson
+    line_start: 19
+    line_end: 21
+    quote: 'name: "{name}_mem_walk"'
+    role: context
+    note: The generic mem_walk test is imported, but aon_timer has no memory, so it is vacuous.
+  - path: hw/ip/aon_timer/dv/README.md
+    line_start: 162
+    line_end: 164
+    quote: 'Covergroup `dv_base_lockable_field_cov`:'
+    role: context
+    note: A coverage item, not a test.
+  searches:
+  - what: csr_aliasing and rand_reset tests
+    where: hw/dv/tools/dvsim/tests/csr_tests.hjson and aon_timer_sim_cfg.hjson
+    found: Tests defined and imported.
+  - what: ASSERT_KNOWN
+    where: aon_timer rtl
+    found: Assertions on outputs.
+  - what: memories in aon_timer
+    where: aon_timer.hjson
+    found: No memory windows found.
+  near_misses:
+  - path: hw/dv/tools/dvsim/tests/mem_tests.hjson
+    line_start: 19
+    line_end: 21
+    why_not: mem_walk is imported but aon_timer has no memories, so it checks nothing.
+  items:
+  - id: cp_87e74b2a7c0c
+    outcome: withdrawn
+    reason: Test csr_mem_rw_with_rand_reset is defined and imported.
+    evidence:
+    - 1
+  - id: cp_8af9344465d9
+    outcome: withdrawn
+    reason: Test csr_aliasing is defined and imported.
+    evidence:
+    - 0
+  - id: cp_8b8993d192ff
+    outcome: inconclusive
+    reason: Coverage item with regwen-locked fields; collected in all tests, but no dedicated test.
+    evidence:
+    - 4
+  - id: cp_8ded836cfabd
+    outcome: withdrawn
+    reason: ASSERT_KNOWN assertions in RTL check outputs for X in every sim.
+    evidence:
+    - 2
+  - id: cp_9e018b6da1b7
+    outcome: inconclusive
+    reason: Generic mem_walk test is imported, but the design has no memories, so it does nothing.
+    evidence:
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0686987
+error: null

@@ -1,0 +1,97 @@
+finding_hash: 8fb1aac81e253651
+started_at: '2026-11-10T21:03:19Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Items 1 and 3 stand: wipe tests only observe digest registers, and the key, intermediate state
+    and message schedule are never probed. Items 2 and 4 are withdrawn. The smoke sequence randomizes
+    all 32 key words and the scoreboard computes the reference from only the configured-length slice.
+    Smoke also randomizes key_length over all five lengths, and the coverage model has bins for each length
+    and a key_length x digest_size cross.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 26
+    line_end: 26
+    quote: rand bit [31:0]         key[NUM_KEYS];
+    role: refutes
+    note: All 32 key words are randomized, including words beyond the configured length.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 878
+    line_end: 880
+    quote: cryptoc_dpi_pkg::sv_dpi_get_hmac_sha256(big_endian_key[0:3], msg_i, exp_digest[0:7]);
+    role: refutes
+    note: The reference digest uses only the key slice matching the key length. A DUT that consumed extra
+      words would mismatch.
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 71
+    line_end: 77
+    quote: 'key_length: coverpoint cfg[KeyLengthMsb:KeyLengthLsb] {'
+    role: refutes
+    note: The coverage model has a bin for each of the five key lengths.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 322
+    line_end: 327
+    quote: task hmac_base_vseq::wipe_secrets();
+    role: supports
+    note: The wipe stimulus writes a random value to WIPE_SECRET, and the only check is that the digest
+      is corrupted.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 482
+    line_end: 484
+    quote: // If wipe_secret is triggered, ensure the predicted value does not match the read out
+    role: supports
+    note: The check is only on the digest. Internal key, hash state and message schedule are not probed.
+  searches:
+  - what: wipe_secret / secure_wipe in the hmac DV directory
+    where: hw/ip/hmac/dv
+    found: Only the wipe vseq and the scoreboard digest-mismatch check. No probing of internal key, state
+      or message schedule.
+  - what: key randomization and key_length constraint and coverage
+    where: hw/ip/hmac/dv/env
+    found: The key array is fully randomized, the scoreboard uses only the relevant slice, key_length
+      is randomized over all lengths, and cov bins exist.
+  - what: secure_wipe tests in sw/device/tests
+    where: sw/device/tests
+    found: Only BUILD files matched. The finding cites a hmac_secure_wipe_test that checks digest registers
+      only.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 84
+    line_end: 87
+    why_not: Coverage crosses key length and digest size. It does not make the wipe items any more tested.
+  items:
+  - id: cr_03340331c331
+    outcome: verified
+    reason: Only digest corruption or digest values are observed. The key, hash state and schedule are
+      not checked.
+    evidence:
+    - 3
+    - 4
+  - id: cr_9f6c9dac2641
+    outcome: withdrawn
+    reason: Smoke randomizes all 32 key words and the scoreboard reference uses only the configured-length
+      slice, so consuming extra words would fail the check.
+    evidence:
+    - 0
+    - 1
+  - id: cr_aab3a12796d4
+    outcome: verified
+    reason: No test checks that the internal state or key equals the wipe value, and only the digest is
+      observed.
+    evidence:
+    - 3
+    - 4
+  - id: cr_e5d424432a1f
+    outcome: withdrawn
+    reason: Smoke randomizes key_length over the one-hot values with scoreboard checking. The coverage
+      model has per-length bins and a cross with digest size.
+    evidence:
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 12
+cost_usd: 0.1064755
+error: null

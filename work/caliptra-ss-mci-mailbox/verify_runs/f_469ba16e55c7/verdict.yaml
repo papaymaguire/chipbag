@@ -1,0 +1,87 @@
+finding_hash: df6290dbccec643c
+started_at: '2026-11-10T20:35:54Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that covers the missing parts of items 1, 3, 4 and 5. Item 2 is only weakly
+    supported, because pass_data does show a trusted Caliptra user locking and then writing CMD, DLEN
+    and EXECUTE, and the MCU reads DLEN back. Overall the finding stands as partially tested.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mbox_csr_zeros_after_release/smoke_test_mbox_csr_zeros_after_release.c
+    line_start: 103
+    line_end: 103
+    quote: lsu_write_32(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_EXECUTE + MCU_MBOX_NUM_STRIDE * mbox_num, 0);
+    role: context
+    note: The test releases the mailbox and only reads the registers back as 0. It never rewrites them
+      to show they are unlocked.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 211
+    line_end: 211
+    quote: // Wait for the Target to publish a terminal TARGET_STATUS
+    role: context
+    note: The test has a single Target and no second Target is granted.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/cptra_smoke_test_mcu_mbox_pass_data.c
+    line_start: 116
+    line_end: 116
+    quote: soc_ifc_axi_dma_send_ahb_payload(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_CMD + MCU_MBOX_NUM_STRIDE *
+      mbox_num, 0, write_payload, 4, 0);
+    role: context
+    note: Positive flow after the Caliptra user acquires the lock. It covers CMD, DLEN and EXECUTE but
+      not CMD_STATUS or USER, and the readback is weak.
+  searches:
+  - what: 'Item 1: tests for 5 trusted slots and a sixth ID'
+    where: smoke_test_mcu_mbox_axi_param and smoke_test_mcu_mbox_invalid_axi
+    found: axi_param reads MBOX_LOCK once. invalid_axi uses 5 random IDs and then an ID outside them.
+      No test exercises each slot or checks for a sixth.
+  - what: 'Item 2: trusted user lock then CSR writes'
+    where: smoke_test_mcu_mbox_pass_data
+    found: Caliptra acquires the lock and writes CMD, DLEN and EXECUTE. The MCU reads DLEN back. CMD_STATUS
+      and USER are not covered.
+  - what: 'Item 3: untrusted user acquiring the lock, and the default 0xFFFFFFFF or MCU user'
+    where: smoke_test_mcu_mbox_invalid_axi
+    found: MBOX_LOCK is in the list of accesses an invalid user attempts (line 88). No check that the
+      lock stays free, and no positive check for the default user.
+  - what: 'Item 4: second Target user'
+    where: smoke_test_mcu_mbox_target_user
+    found: Only a single Target flow.
+  - what: 'Item 5: rewrite after release'
+    where: smoke_test_mbox_csr_zeros_after_release
+    found: Only reads the registers back as 0 after release.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/cptra_smoke_test_mcu_mbox_pass_data.c
+    line_start: 103
+    line_end: 120
+    why_not: This is a positive trusted-user flow after acquiring the lock. It does not read back all
+      the CSRs the gap names.
+  items:
+  - id: cr_7f11ce310155
+    outcome: verified
+    reason: No test checks every one of the 5 slots or rejects a sixth ID.
+    evidence: []
+  - id: cr_9cdd5a9fb770
+    outcome: inconclusive
+    reason: pass_data has a positive lock-then-write flow, but CMD_STATUS and USER are not exercised and
+      the readback is weak.
+    evidence:
+    - 2
+  - id: cr_bb5623ddc32e
+    outcome: verified
+    reason: No test checks lock denial for an untrusted user, or access by the default user.
+    evidence: []
+  - id: cr_045d5c38ebd5
+    outcome: verified
+    reason: The target_user test has a single Target only.
+    evidence:
+    - 1
+  - id: cr_261014384edd
+    outcome: verified
+    reason: The release test only reads the registers back as 0 and never rewrites them.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 13
+cost_usd: 0.1276027
+error: null

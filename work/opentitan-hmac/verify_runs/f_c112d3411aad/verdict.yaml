@@ -1,0 +1,86 @@
+finding_hash: d6d5b710bee37566
+started_at: '2026-11-10T19:39:30Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'I could not refute items 3, 2 and 5: no test probes the key, internal state or schedule array
+    directly. Items 1 and 4 look covered by hmac_smoke and its scoreboard, so I withdrew them.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 116
+    line_end: 116
+    quote: 1 :/ 4,  // Key_128/Key_256/Key_384/Key_512/Key_1024/Key_None
+    role: refutes
+    note: Key_1024 is randomly selected in HMAC mode, and the scoreboard model checks the digest.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 885
+    line_end: 885
+    quote: end else if (key_length == Key_1024) begin
+    role: refutes
+    note: The model computes the expected digest for a 1024-bit key. Only the key words within the configured
+      length are passed to it.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 26
+    line_end: 26
+    quote: rand bit [31:0]         key[NUM_KEYS];
+    role: context
+    note: All key registers are randomised, so registers beyond the configured length are normally non-zero.
+  searches:
+  - what: key length handling (item 1)
+    where: hw/ip/hmac/dv base vseq and scoreboard
+    found: Key_1024 is in the randomised distribution and the scoreboard model computes the digest for
+      it.
+  - what: wipe checks (items 2 and 5)
+    where: hw/ip/hmac dv sequences and sw/device/tests, matching wipe_secret and WIPE_SECRET
+    found: Only hmac_wipe_secret_vseq and hmac_secure_wipe_test, and both check the digest only. No check
+      on the key, internal state or schedule array.
+  - what: sideload key exposure (item 3)
+    where: hw/ip/hmac dv, matching sideload, hash_stop and secret_key
+    found: No check that the sideloaded key cannot be read through the KEY registers or any other path.
+  - what: key registers beyond the configured length (item 4)
+    where: hmac_base_vseq
+    found: All 32 key words are randomised and the model uses only the configured length, so the check
+      is implicit.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_wipe_secret_vseq.sv
+    line_start: 1
+    line_end: 1
+    why_not: It only checks that the digest changes after a wipe. It does not check the key or internal
+      state against the value written to WIPE_SECRET.
+  items:
+  - id: cr_da1dd380c1d3
+    outcome: withdrawn
+    reason: Key_1024 is in the randomised key-length distribution and the scoreboard model checks the
+      digest.
+    evidence:
+    - 0
+    - 1
+  - id: cr_03340331c331
+    outcome: verified
+    reason: No test probes the key, hash state or schedule array after a wipe. Only the digest is checked.
+    evidence: []
+  - id: cr_419b9981b884
+    outcome: verified
+    reason: I found no check that the sideloaded key cannot be read through the KEY registers or any other
+      path.
+    evidence: []
+  - id: cr_9f6c9dac2641
+    outcome: withdrawn
+    reason: The smoke test randomises all key words and the scoreboard model uses only the configured
+      length. A digest mismatch would therefore expose consumption of key registers beyond that length.
+      The check is implicit, not explicit.
+    evidence:
+    - 2
+    - 1
+  - id: cr_aab3a12796d4
+    outcome: verified
+    reason: The tests only check the digest, not that the key or internal state equals the WIPE_SECRET
+      value.
+    evidence: []
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.0971915
+error: null

@@ -1,0 +1,10 @@
+{"t": "2026-11-10T21:05:18Z", "event": "  \u2192 Grep: 80 cycles|96 cycles|240|cycle count|num_cycles|SHA_CYCLES|block_cycles"}
+{"t": "2026-11-10T21:05:18Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/doc/theory_of_operation.md"}
+{"t": "2026-11-10T21:05:19Z", "event": "Quick check for timing assertions in dv."}
+{"t": "2026-11-10T21:05:20Z", "event": "  \u2192 Grep: ##\\s*\\d+|cycles|throughput|fifo_full"}
+{"t": "2026-11-10T21:05:22Z", "event": "  \u2192 Grep: block_process_cycles|key_process_cycles|hmac_fifo_full"}
+{"t": "2026-11-10T21:05:25Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:05:38Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:05:46Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:05:50Z", "event": "I submitted the verdict as verified overall. Four of the five items are untested and one is withdrawn, because the scoreboard does check it.\n\n- **Withdrawn, item 4** (software cannot push more data once the FIFO is full): the scoreboard in `hw/ip/hmac/dv/env/hmac_scoreboard.sv` models FIFO fullness and the FIFO-empty interrupt. It keeps the FIFO full until a block's processing delay has passed and compares the result with the DUT's status. A wrong fill or drain behaviour would fail the test.\n- **Untested, item 1** (next 16 words fetched only after the current block completes): no test checks the fetch timing. It is only implied by the 65-cycle block model.\n- **Untested, items 2 and 3** (80 cycles per SHA-2 256 block, 96 per SHA-2 384/512 block): `hmac_env_pkg.sv` uses 65 and 81 cycles per block, not the spec's 80 and 96. Nothing checks the DUT's actual latency.\n- **Untested, item 5** (240 extra cycles for HMAC mode): only the 80-cycle key-padding wait is modelled. The 240-cycle total overhead is never measured or checked.\n\nThe first submission was rejected because the withdrawn item had no refutes evidence. The second was accepted."}
+{"t": "2026-11-10T21:05:50Z", "event": "[8 turns, $0.0957]"}

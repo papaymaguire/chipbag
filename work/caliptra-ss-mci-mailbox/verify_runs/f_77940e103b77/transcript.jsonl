@@ -1,0 +1,14 @@
+{"t": "2026-11-10T19:44:16Z", "event": "  \u2192 Grep: intr_count_incr|count_incr_r"}
+{"t": "2026-11-10T19:44:17Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T19:44:18Z", "event": "Only RTL, UVM reg model, and coverage reference them. Check for tests of counters."}
+{"t": "2026-11-10T19:44:19Z", "event": "  \u2192 Grep: intr_count_r|_intr_count\\b|intr_count_incr"}
+{"t": "2026-11-10T19:44:22Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:44:22Z", "event": "  \u2192 Grep: intr_count_incr"}
+{"t": "2026-11-10T19:44:24Z", "event": "  \u2192 Grep: _hw|INTR_COUNT_R"}
+{"t": "2026-11-10T19:44:27Z", "event": "  \u2192 Grep: intr_count_hw|ERROR\\b|fail|!="}
+{"t": "2026-11-10T19:44:28Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:44:34Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T19:44:35Z", "event": "Checking the test run in regression is done; submitting verdict now."}
+{"t": "2026-11-10T19:44:43Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:44:47Z", "event": "I submitted the verdict as verified: four of the five items are untested, and the fifth, `cr_a150fb568d22`, is inconclusive.\n\nThe only test that touches these counters is `mcu_intr_handler`, a directed test in the nightly regressions. It fires each interrupt event once through the software trigger registers. It then sums the `*_INTR_COUNT_R` registers and fails the simulation if that sum differs from the number of events fired (`mcu_intr_handler.c:201-204`).\n\n- **`cr_a150fb568d22` (increments by 1 per event):** this is the one overlap. The test covers it only for software-triggered events, not for the hardware input signal, so I marked it inconclusive. I did not trace the RTL to confirm the trigger drives the same pulse path.\n- **`cr_9b97309f0dd7`, `cr_9f969e4a3656`, `cr_a0d938579904`, `cr_a13c9c256e0e`:** no test reads the `count_incr` pulse registers or checks pulse width, `swwel`, the down-counter or `decrvalue`. A repo-wide search found those registers referenced only in the register RTL, the UVM register model and the coverage interface. The coverage file has coverpoints but no checks.\n\nI did not look at assertion or formal property files, other UVM tests, or test directories beyond that repo-wide search."}
+{"t": "2026-11-10T19:44:47Z", "event": "[11 turns, $0.1132]"}

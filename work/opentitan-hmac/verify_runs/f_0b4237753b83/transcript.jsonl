@@ -1,0 +1,9 @@
+{"t": "2026-11-10T21:03:58Z", "event": "  \u2192 Grep: key_swap"}
+{"t": "2026-11-10T21:04:00Z", "event": "Scoreboard swaps key and compares digest; smoke vseq randomizes key_swap. Check quickly."}
+{"t": "2026-11-10T21:04:01Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:04:01Z", "event": "  \u2192 Grep: key_swap|rand_cfg"}
+{"t": "2026-11-10T21:04:03Z", "event": "key_swap is a rand member in base vseq, and the scoreboard compares the digest against the prediction. That is a real check."}
+{"t": "2026-11-10T21:04:08Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T21:04:13Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:04:16Z", "event": "I withdrew the finding: the key-swap behaviour is checked by a test that can fail.\n\n- **Stimulus:** the smoke sequence randomizes `key_swap` and writes it to the CFG register (`hmac_smoke_vseq.sv:108`).\n- **Check:** the scoreboard swaps the key bytes in its model when `CFG.key_swap` is set (`hmac_scoreboard.sv:862`). It computes the expected HMAC from the swapped key and compares it with the digest the design produces. A wrong swap in the design would make that comparison fail.\n- **Design side:** `hmac.sv:251` applies `conv_endian32` to each key register word using `key_swap`.\n\nThe `cfg_cg` coverage group the finding relied on only records that the field was hit, so it isn't the check."}
+{"t": "2026-11-10T21:04:16Z", "event": "[6 turns, $0.0536]"}

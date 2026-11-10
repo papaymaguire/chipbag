@@ -1,0 +1,38 @@
+finding_hash: e68ed7095fea881a
+started_at: '2026-11-10T19:36:17Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The README gives DIGEST_0-DIGEST_12 for SHA-2 384. A 384-bit digest is twelve 32-bit words,
+    so the range should be DIGEST_0-DIGEST_11. The same sentence uses DIGEST_0-DIGEST_7 for 256 bits (8
+    words) and DIGEST_0-DIGEST_15 for 512 bits (16 words), so the 384 case is the odd one out. I did not
+    read the RTL or the generated register code. I did check the hjson, which defines a DIGEST register
+    array and says nothing more specific about SHA-2 384.
+  evidence:
+  - path: hw/ip/hmac/README.md
+    line_start: 42
+    line_end: 42
+    quote: or from [`DIGEST_0-DIGEST_12`](doc/registers.md#digest) for SHA-2 384
+    role: supports
+    note: Gives 13 registers for a 384-bit digest, which is inconsistent with 384/32 = 12 words.
+  searches:
+  - what: DIGEST_0-DIGEST_N ranges in HMAC docs
+    where: hw/ip/hmac
+    found: Only README.md:42 says DIGEST_12. The other docs use DIGEST_0-DIGEST_15 for the full register
+      array.
+  - what: DIGEST register definition
+    where: hw/ip/hmac/data/hmac.hjson
+    found: A DIGEST register array is defined, with a description referring to DIGEST_0 to DIGEST_15.
+      No 384-specific range is given.
+  near_misses: []
+  items: []
+  new_sources: []
+  resolution: The correct range is DIGEST_0-DIGEST_11 (12 words × 32 bits = 384 bits). Change "DIGEST_12"
+    to "DIGEST_11" in hw/ip/hmac/README.md:42. I did not check what the RTL does, so this is based on
+    the word-count arithmetic and the DIGEST_0-DIGEST_15 array in the hjson.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0445224
+error: null

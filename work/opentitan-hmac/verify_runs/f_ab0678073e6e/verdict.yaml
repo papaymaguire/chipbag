@@ -1,0 +1,54 @@
+finding_hash: bb9303c67645b6e3
+started_at: '2026-11-10T19:43:07Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Item 1 stands: the scoreboard checks digest words 0..11 only for SHA-2 384, and nothing checks
+    DIGEST12-15. Item 2 is covered: sar_different_context restores a 64-bit length with a non-zero upper
+    word and checks the read-back. I did not confirm that this test runs with SHA-2 256.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 491
+    line_end: 497
+    quote: // only check till digest_idx = 7 for SHA-2 256 and till digest_idx = 11 for SHA-2 384
+    role: supports
+    note: Words 12-15 are explicitly not checked for SHA-2 384.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 726
+    line_end: 726
+    quote: '`DV_CHECK_EQ(msg_length_rd, msg_length_rand+msg_b.size()*8)'
+    role: refutes
+    note: The SAR test restores a length such as 'hFFFF_FFFF_FFFF_A800, so the upper word is non-zero.
+      It then checks that the 64-bit {upper,lower} read-back matches.
+  searches:
+  - what: DIGEST12-15 and msg_length_upper in hmac dv
+    where: hw/ip/hmac/dv
+    found: No truncation check for words 12-15. The upper length word is exercised in sar_different_context.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 684
+    line_end: 726
+    why_not: For item 2 it checks length read-back but not the digest computed with the 64-bit length.
+      It does refute the length-register part of the gap, and it applies to SHA-2 256 only if the random
+      config selects it, which I did not confirm.
+  items:
+  - id: cr_a31d2dca5103
+    outcome: verified
+    reason: The scoreboard compares digest words only up to index 11 for SHA-2 384, so nothing checks
+      DIGEST12-15 for truncation.
+    evidence:
+    - 0
+  - id: cr_ad4b53517267
+    outcome: withdrawn
+    reason: sar_different_context restores lengths with a non-zero upper word and checks the read-back.
+      This is a real check on the {upper,lower} length registers. The digest-versus-model part of the
+      gap is still not checked.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0633936
+error: null

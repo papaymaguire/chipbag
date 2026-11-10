@@ -1,0 +1,66 @@
+finding_hash: 447fd6f44ada64d8
+started_at: '2026-11-10T21:04:51Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Both items are exercised by the HMAC DV environment. Item 1 (the register is hwext) is covered
+    by CSR writes and reads that the scoreboard predicts and checks. Item 2 (the SHA-512 128-bit length
+    with a zero-padded upper half) is checked only indirectly, through digest comparison. The huge-length
+    restore case has its digest check skipped.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 700
+    line_end: 707
+    quote: // Override the msg_length value to be able to verify the upper part of the register.
+    role: refutes
+    note: The SAR vseq writes MSG_LENGTH_UPPER with large values and reads it back, so the register is
+      exercised.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1035
+    line_end: 1038
+    quote: void'(ral.msg_length_upper.predict(size_bits[TL_DW*2-1:TL_DW]));
+    role: refutes
+    note: The scoreboard predicts the upper register from the message size, so reads are compared against
+      the prediction.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 532
+    line_end: 535
+    quote: "\"msg_length_upper\": begin\n        if (cfg.sar_skip_ctxt) begin\n          do_read_check\
+      \ = 0;"
+    role: context
+    note: The read check is skipped only in the SAR different-context case.
+  searches:
+  - what: msg_length_upper in the hmac DV and RTL
+    where: hw/ip/hmac
+    found: Scoreboard prediction, read check, vseq writes and reads, and RTL hw.sv wiring
+  - what: msg_length_upper in sw
+    where: sw
+    found: Only drivers and DIF; no SW test checks it
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 532
+    line_end: 541
+    why_not: The read check is skipped in the SAR different-context case, so the huge-length digest is
+      not verified. The other tests still check the register.
+  items:
+  - id: cr_581ad0c1fa81
+    outcome: withdrawn
+    reason: The register is read and written in tests, and the scoreboard predicts and checks its value.
+    evidence:
+    - 0
+    - 1
+  - id: cr_b3a93fda27e3
+    outcome: withdrawn
+    reason: Every SHA-384/512 digest is compared against the DPI model and the NIST vectors, which only
+      match if the upper 64 length bits are zero. This is an implicit check. A huge-length restore is
+      exercised, but its digest check is skipped.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.07970170000000001
+error: null

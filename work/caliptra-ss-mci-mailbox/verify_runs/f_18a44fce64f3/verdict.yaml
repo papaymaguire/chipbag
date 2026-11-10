@@ -1,0 +1,70 @@
+finding_hash: 55d5b54190aff9f4
+started_at: '2026-11-10T20:37:05Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that stimulates the interrupt event counters or checks pulse, rising-edge,
+    saturation or down-counter behaviour. The only non-RTL references are a register mask table in mci.c
+    and a generated coverage interface. These show the registers exist and are excluded from reset-value
+    compares, but they check no behaviour.
+  evidence:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2096
+    line_end: 2098
+    quote: // ERROR_MBOX1_ECC_UNC_INTR_COUNT_INCR_R
+    role: context
+    note: Only a mask entry for register-compare. It does not exercise or check pulse behaviour.
+  searches:
+  - what: count_incr register names across the repo outside the RDL
+    where: whole repo
+    found: Only generated RTL/UVM, the coverage interface, address map headers, the covergroup generator
+      and mci.c.
+  - what: intr_count_incr in the C tests
+    where: src/integration/test_suites
+    found: Only mci.c mask entries (99 entries in total).
+  - what: saturate or incr in the C tests
+    where: src/integration/test_suites/*.c
+    found: Only mci.c and an unrelated LCC test.
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2088
+    line_end: 2106
+    why_not: Mask entries for a reset or access test. They set no events and check no counter or pulse
+      behaviour.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 1
+    line_end: 1
+    why_not: Coverage only, with no check that can fail.
+  items:
+  - id: cr_cbc0fcd7c65d
+    outcome: verified
+    reason: No test checks that the pulse field mirrors the interrupt event.
+    evidence:
+    - 0
+  - id: cr_d349c789c93e
+    outcome: verified
+    reason: No test checks that the counter increments on the rising edge of the event input.
+    evidence:
+    - 0
+  - id: cr_db5c35819d83
+    outcome: verified
+    reason: No test drives a counter to its maximum to check saturation.
+    evidence:
+    - 0
+  - id: cr_dd69e103328e
+    outcome: verified
+    reason: No test checks that the 1-bit down-counter decrements immediately and produces a pulse.
+    evidence:
+    - 0
+  - id: cr_e5160437bc33
+    outcome: verified
+    reason: No test checks saturation of the interrupt event counter.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.0861781
+error: null

@@ -1,0 +1,68 @@
+finding_hash: e1ab18eb7ea76bb2
+started_at: '2026-11-10T20:53:42Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Items cr_59caa8cb74a9, cr_a578aba72de1 and cr_fb14b2d5a9e6 (sideloaded key) stand: the IP-level
+    hmac DV has no sideload stimulus or scoreboard checks, and the top-level keymgr_dpe test covers only
+    part of each. Item cr_af599a140af4 (invalid key length in HMAC mode) is withdrawn: the smoke stimulus
+    randomizes illegal key lengths and the scoreboard predicts SwInvalidConfig for Key_None in HMAC mode.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 173
+    line_end: 174
+    quote: "invalid_cfg = (`gmv(ral.cfg.digest_size) == SHA2_None) |\n                        ((`gmv(ral.cfg.key_length)\
+      \ == Key_None) & `gmv(ral.cfg.hmac_en)) |"
+    role: refutes
+    note: The scoreboard treats Key_None in HMAC mode as an invalid configuration and predicts SwInvalidConfig
+      on a hash start (line 199).
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 117
+    line_end: 117
+    quote: 0 :/ 1   // Illegal -> should get cast to Key_None in HW
+    role: refutes
+    note: The stimulus randomizes illegal key lengths, which are cast to Key_None, so the invalid-key-length
+      case is reached.
+  searches:
+  - what: sideload in hmac DV
+    where: hw/ip/hmac/dv
+    found: Only tb, env config, package and base vseq plumbing. The scoreboard has no sideload handling
+      and there is no sideload vseq.
+  - what: SwInvalidConfig / Key_None
+    where: hw/ip/hmac/dv
+    found: The scoreboard predicts SwInvalidConfig on an invalid config, and the smoke vseq randomizes
+      key_length including illegal values.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 178
+    line_end: 178
+    why_not: Handles invalid_cfg but has no sideload or key-revoke scenario, so it does not cover items
+      1-3.
+  items:
+  - id: cr_59caa8cb74a9
+    outcome: verified
+    reason: No test restarts with hmac_err cleared and the key still invalid. The IP-level DV has no sideload
+      stimulus.
+    evidence: []
+  - id: cr_a578aba72de1
+    outcome: verified
+    reason: No test revokes the key during a running operation and checks hmac_err.
+    evidence: []
+  - id: cr_fb14b2d5a9e6
+    outcome: verified
+    reason: No test checks that CFG.key_length reads back the same with no valid key from the key manager.
+    evidence: []
+  - id: cr_af599a140af4
+    outcome: withdrawn
+    reason: The smoke test randomizes illegal key lengths (Key_None) in HMAC mode. The scoreboard predicts
+      SwInvalidConfig on the start, and ERR_CODE and the interrupt are compared against that prediction.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.0888362
+error: null

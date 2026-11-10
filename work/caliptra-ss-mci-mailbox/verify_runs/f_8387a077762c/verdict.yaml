@@ -1,0 +1,89 @@
+finding_hash: 6fb7ddc359157a63
+started_at: '2026-11-10T19:45:07Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: Two of the five items (the event counters incrementing by 1 per interrupt event) are checked
+    by the mcu_intr_handler test, which is in the nightly regressions. The other three (the decrement-by-1
+    pulse, the 1-bit down-counter pulse and swwel=false) have no test that reads or writes the *_intr_count_incr_r
+    registers. The only references to those registers are in a reset-value mask list in mci.c and in coverage
+    code.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 259
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: refutes
+    note: The test triggers each notif interrupt once and fails the sim if the summed per-source INTR_COUNT_R
+      values differ from the number of triggers. That covers the 'counter increments by 1 per event' items,
+      but only in aggregate.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 220
+    line_end: 221
+    quote: lsu_read_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_MBOX0_SOC_REQ_LOCK_INTR_COUNT_R   ) +
+    role: context
+    note: MBOX0 SOC_REQ_LOCK count is included in the summed hardware count.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2088
+    line_end: 2090
+    quote: // ERROR_INTERNAL_INTR_COUNT_INCR_R
+    role: context
+    note: The only test-side reference to the *_COUNT_INCR_R registers is this reset-value mask list,
+      and it has no notif_mbox entries. It does not exercise the pulse, the decrement or swwel.
+  searches:
+  - what: notif_mbox*_intr_count_incr_r references
+    where: whole repo
+    found: Only the RDL, the generated RTL and UVM register files, and the coverage interface. No test
+      uses them.
+  - what: COUNT_INCR in tests and tools
+    where: src/integration, tools
+    found: mci.c reset mask list (error_* entries only) and a coverage generator script.
+  - what: NOTIF_MBOX*_INTR_COUNT_R in tests
+    where: src/integration/test_suites
+    found: mcu_intr_handler.c triggers and sums these counters, and the test is in the nightly regression
+      lists.
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2088
+    line_end: 2110
+    why_not: Reset mask entries for error_* INCR registers only. They do not touch the notif_mbox registers
+      or check the pulse, the decrement or swwel.
+  items:
+  - id: cr_6883bed01f38
+    outcome: verified
+    reason: No test checks the decrement-by-1 pulse on the notif_mbox0_soc_req_lock INCR register.
+    evidence:
+    - 2
+  - id: cr_6afa6a396511
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers the interrupt and compares the summed event counts with the expected
+      total, failing the sim on mismatch. The check is aggregate, not per register.
+    evidence:
+    - 0
+    - 1
+  - id: cr_6b0e6ce5d2b8
+    outcome: verified
+    reason: No test checks the 1-bit down-counter pulse behaviour for notif_mbox1_soc_req_lock.
+    evidence:
+    - 2
+  - id: cr_701e3a3d1a92
+    outcome: withdrawn
+    reason: MBOX1 TARGET_DONE INTR_COUNT_R is triggered and checked in the aggregate sum, which fails
+      the sim on mismatch.
+    evidence:
+    - 0
+  - id: cr_72ef5cfc7830
+    outcome: verified
+    reason: No test checks that software writes to the notif_mbox1_ecc_cor INCR register have no effect
+      (swwel=false).
+    evidence:
+    - 2
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Triggers all notif interrupts and checks the per-source event counters in aggregate.
+submissions: 1
+rejections: []
+turns: 14
+cost_usd: 0.14215
+error: null

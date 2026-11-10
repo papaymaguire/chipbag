@@ -1,0 +1,55 @@
+finding_hash: 5754ff30bf5981db
+started_at: '2026-11-10T21:03:54Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The HMAC DV scoreboard models the fifo_empty interrupt, including the condition that the FIFO
+    must have been full first, and compares it against intr_state reads. The smoke sequence randomly enables
+    the interrupt and reads intr_state, so the behavior is checked. The plan item is vague, but a real
+    check exists.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 693
+    line_end: 697
+    quote: "if (fifo_full_detected && hmac_fifo_empty) begin\n        pre_fifo_empty_intr = 1;\n     \
+      \ end else begin\n        pre_fifo_empty_intr = 0;\n      end"
+    role: refutes
+    note: Scoreboard predicts the fifo_empty interrupt, including the previously-full condition.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 389
+    line_end: 392
+    quote: end else if (csr_name == "intr_state") begin
+    role: refutes
+    note: The prediction is applied to intr_state reads, which are then compared to the DUT value.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 216
+    line_end: 217
+    quote: // the wait_clk below is implemented to avoid checking intr_state during this period of time
+    role: context
+    note: The smoke sequence deliberately checks intr_state for the fifo_empty interrupt.
+  searches:
+  - what: fifo_empty in hmac dv, rtl and sw
+    where: hw/ip/hmac, sw
+    found: Scoreboard prediction and checking of fifo_empty_intr, smoke vseq randomizing intr_fifo_empty_en,
+      and a tb interrupt pin check.
+  near_misses:
+  - path: hw/ip/hmac/data/hmac_testplan.hjson
+    line_start: 113
+    line_end: 120
+    why_not: The plan item is vague, but the scoreboard implements the check.
+  items:
+  - id: cr_d16dbd9e0ca7
+    outcome: withdrawn
+    reason: The scoreboard predicts the fifo_empty interrupt and checks it through intr_state reads in
+      the smoke test.
+    evidence:
+    - 0
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.07384960000000002
+error: null

@@ -1,0 +1,14 @@
+{"t": "2026-11-10T21:03:22Z", "event": "  \u2192 Grep: wipe_secret|secure_wipe"}
+{"t": "2026-11-10T21:03:23Z", "event": "  \u2192 Grep: key_length|key_len"}
+{"t": "2026-11-10T21:03:25Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T21:03:25Z", "event": "  \u2192 Grep: secure_wipe"}
+{"t": "2026-11-10T21:03:29Z", "event": "  \u2192 Grep: key\\.size|key\\[\\]|key_c"}
+{"t": "2026-11-10T21:03:30Z", "event": "  \u2192 Grep: wr_key|key = |key\\."}
+{"t": "2026-11-10T21:03:32Z", "event": "  \u2192 Grep: key\\b.*(rand|\\[32\\]|size)"}
+{"t": "2026-11-10T21:03:34Z", "event": "Still checking whether the smoke sequence randomizes the unused key words. That matters for item 2."}
+{"t": "2026-11-10T21:03:35Z", "event": "  \u2192 Grep: key\\[|\\bkey;|\\] key"}
+{"t": "2026-11-10T21:03:39Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T21:03:39Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_env_cov.sv"}
+{"t": "2026-11-10T21:03:50Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:03:54Z", "event": "I submitted the verdict as verified overall, with two items standing and two withdrawn.\n\n- **cr_03340331c331 (wipe of secret key, hash state, message schedule): stands.** The wipe sequence and its scoreboard check only observe the digest. Nothing probes the secret key, intermediate hash state or message schedule.\n- **cr_aab3a12796d4 (internal variables reset to the written value): stands.** Same reason: only digest registers are observed, and nothing checks that the internal state equals the wipe value.\n- **cr_9f6c9dac2641 (only relevant key registers consumed): withdrawn.** The smoke sequence randomizes all 32 key words (`hmac_base_vseq.sv:26`). The scoreboard builds its reference from only the slice matching the key length (`hmac_scoreboard.sv:878`). A DUT that consumed extra key words would fail the digest compare.\n- **cr_e5d424432a1f (five key lengths supported): withdrawn.** `key_length_c` randomizes over the valid one-hot lengths, with the scoreboard checking the digest. The coverage model has a bin for each of the five lengths and a cross with digest size (`hmac_env_cov.sv:71-87`).\n\nI did not read the `hmac_secure_wipe_test` source. The finding cites it, and my search of `sw/device/tests` only matched BUILD files."}
+{"t": "2026-11-10T21:03:54Z", "event": "[12 turns, $0.1065]"}

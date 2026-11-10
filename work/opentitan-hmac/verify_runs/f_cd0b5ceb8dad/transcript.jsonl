@@ -1,0 +1,7 @@
+{"t": "2026-11-10T19:38:28Z", "event": "  \u2192 Grep: SwInvalidConfig|SHA2_None|invalid config"}
+{"t": "2026-11-10T19:38:29Z", "event": "The programmer's guide line 186 answers it. Let me check for the interrupt and idle behaviour."}
+{"t": "2026-11-10T19:38:30Z", "event": "  \u2192 Grep: hmac_err"}
+{"t": "2026-11-10T19:38:30Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/doc/programmers_guide.md"}
+{"t": "2026-11-10T19:38:36Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:38:39Z", "event": "I withdrew the finding. The programmer's guide answers most of what it asks.\n\n- **Error code:** `programmers_guide.md:186` says `SwInvalidConfig` (0x6) is reported when HMAC is configured incorrectly, including an invalid digest size.\n- **Interrupt:** `programmers_guide.md:174-175` says HMAC errors are reported through `INTR_STATE.hmac_err`, with the details in `ERR_CODE`.\n- **Engine staying idle:** the guide doesn't state this explicitly for `SHA2_None`. Only the `hjson` wording \"blocked from starting\" covers it.\n\nThe `SHA2_None` description in `hmac.hjson` (and `registers.md`) still doesn't point to that section. I suggested adding a cross-reference there and a sentence saying the engine stays idle."}
+{"t": "2026-11-10T19:38:39Z", "event": "[5 turns, $0.0331]"}

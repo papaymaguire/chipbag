@@ -1,0 +1,10 @@
+{"t": "2026-11-10T21:00:37Z", "event": "  \u2192 Grep: mcu_mbox_ecc|mbox_ecc"}
+{"t": "2026-11-10T21:00:38Z", "event": "  \u2192 Grep: DLEN.*(= ?0|, ?0\\))|TARGET_USER_VALID"}
+{"t": "2026-11-10T21:00:40Z", "event": "Check target_user tests and ecc test quickly."}
+{"t": "2026-11-10T21:00:41Z", "event": "  \u2192 Grep: TARGET_USER_VALID"}
+{"t": "2026-11-10T21:00:41Z", "event": "  \u2192 Grep: ecc|ECC"}
+{"t": "2026-11-10T21:00:44Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c"}
+{"t": "2026-11-10T21:00:45Z", "event": "  \u2192 Grep: DLEN"}
+{"t": "2026-11-10T21:00:57Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:01:02Z", "event": "I submitted the verdict as verified: I found no test that closes any of the five gaps. The submission was accepted. I only skimmed the target_user test, so the last item (`TARGET_USER_VALID`) is the least certain.\n\n- **DLEN = 0 clears the whole SRAM:** The zeroize tests I checked never write DLEN = 0. None reads back the full SRAM to confirm it is cleared.\n- **Clearing flow order:** No test observes the intermediate clearing-start and clearing-end phases.\n- **Single-bit ECC error corrected:** `smoke_test_mcu_mbox_ecc.c` checks only the interrupt and status bits. It never compares the data read back with the data written.\n- **Double-bit ECC error returns invalid data:** The same test checks only status and interrupt. It does not check the data returned on the read that hits the error.\n- **`TARGET_USER_VALID` writable only while 0:** The one write attempt I found comes from the Caliptra target agent in `cptra_smoke_test_mcu_mbox_target_user.c`. It is not an MCU write while `TARGET_USER_VALID` is 1, so it doesn't close the gap."}
+{"t": "2026-11-10T21:01:02Z", "event": "[8 turns, $0.0794]"}

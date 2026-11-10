@@ -1,0 +1,5 @@
+{"t": "2026-11-10T19:36:59Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:37:00Z", "event": "The code waits for assert at line 88 and for release at line 90, so the prose matches the code."}
+{"t": "2026-11-10T19:37:03Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:37:05Z", "event": "I withdrew the finding. The code does what the step description says. In `hw/ip/hmac/dv/env/hmac_scoreboard.sv`, `run_phase` first runs `wait(cfg.under_reset)` at line 88, which waits for reset to be asserted. The `forever` loop then starts with `wait(!cfg.under_reset)` at line 90, which waits for release. So the release wait is in the code, and the finding's premise that it is missing is wrong."}
+{"t": "2026-11-10T19:37:05Z", "event": "[3 turns, $0.0173]"}

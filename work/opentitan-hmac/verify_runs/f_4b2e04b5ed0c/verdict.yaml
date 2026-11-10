@@ -1,0 +1,100 @@
+finding_hash: f3f3cc73dd607a9d
+started_at: '2026-11-10T20:55:43Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The findings for the fifo_empty second-round item and the sideload item stand. The digest-clear
+    item is refuted by the smoke vseq and scoreboard. The digest_swap and key_length hwqe items are exercised
+    functionally, so they are withdrawn. I only read the scoreboard and sequences, not the RTL.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 693
+    line_end: 693
+    quote: if (fifo_full_detected && hmac_fifo_empty) begin
+    role: supports
+    note: The fifo_empty prediction does not model the HMAC second-round suppression.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 211
+    quote: '// TODO(#31634): Disable sideloading for now.'
+    role: supports
+    note: Sideload is forced to 0 in the DV sequences.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 307
+    line_end: 307
+    quote: exp_digest   = '{default:0};  // Digest gets cleared on disabling.
+    role: refutes
+    note: The scoreboard checks that the digest is cleared when sha_en is disabled.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 256
+    line_end: 256
+    quote: // if disable sha, digest should be cleared
+    role: refutes
+    note: The smoke sequence disables sha_en, giving the stimulus for the digest-clear check.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 165
+    line_end: 165
+    quote: ral.cfg.digest_swap.set(digest_swap);
+    role: refutes
+    note: digest_swap is written with random values; the scoreboard checks digests against it.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 168
+    line_end: 168
+    quote: ral.cfg.key_length.set(key_length);
+    role: refutes
+    note: key_length is written with random values and read back; the scoreboard checks the resulting
+      digests.
+  searches:
+  - what: fifo_empty in hmac dv
+    where: hw/ip/hmac/dv
+    found: The scoreboard predicts the interrupt from fifo_full_detected and an empty FIFO only. The HMAC
+      second-round condition appears only in a comment.
+  - what: sideload, digest_swap, key_length in hmac dv
+    where: hw/ip/hmac/dv
+    found: Sideload is disabled by a TODO. digest_swap and key_length are randomized in smoke and the
+      test-vector vseqs, and digest results are compared.
+  - what: digest cleared on sha_en disable
+    where: hw/ip/hmac/dv/env
+    found: The smoke vseq disables sha_en and the scoreboard expects a zero digest.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 100
+    line_end: 100
+    why_not: The fifo_empty cross is coverage only, with no check of second-round suppression.
+  items:
+  - id: cr_8532dccc2de0
+    outcome: verified
+    reason: The scoreboard predicts fifo_empty without modelling the HMAC second-round condition, so suppression
+      during the second round is not checked.
+    evidence:
+    - 0
+  - id: cr_01eaae6544c4
+    outcome: verified
+    reason: Sideload is disabled in the DV sequences, so hwext behaviour of CFG.sideload is not tested.
+    evidence:
+    - 1
+  - id: cr_030b1d53349f
+    outcome: withdrawn
+    reason: digest_swap is randomized in the sequences and the scoreboard flips the expected digest by
+      it, so the write path is exercised.
+    evidence:
+    - 4
+  - id: cr_1046bc3a01de
+    outcome: withdrawn
+    reason: key_length is randomized and read back, and the scoreboard checks the resulting HMAC digests,
+      so the write path is exercised.
+    evidence:
+    - 5
+  - id: cr_10e98e4908dc
+    outcome: withdrawn
+    reason: The smoke vseq disables sha_en and the scoreboard sets the expected digest to zero.
+    evidence:
+    - 2
+    - 3
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.12200239999999998
+error: null

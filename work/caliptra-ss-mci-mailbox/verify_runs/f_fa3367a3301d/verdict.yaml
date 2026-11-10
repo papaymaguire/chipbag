@@ -1,0 +1,45 @@
+finding_hash: 2d9ce0484991d761
+started_at: '2026-11-10T20:43:40Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that closes the named gaps. The mci_comm_flow_transaction test has no CMD_STATUS
+    reads. The target_user test waits for the target's COMPLETE TARGET_STATUS but never finalizes the
+    response or checks a non-BUSY CMD_STATUS. I did not search the staging-flow tests for a CMD readback,
+    so item 1 rests on the finding's own analysis, and I limited my search to two greps.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 211
+    line_end: 212
+    quote: // Wait for the Target to publish a terminal TARGET_STATUS
+    role: context
+    note: The MCU only waits for the target's TARGET_STATUS. No finalize-response step follows.
+  searches:
+  - what: CMD_STATUS in mci_comm_flow_transaction
+    where: repo
+    found: no matches
+  - what: TARGET_STATUS / CMD_STATUS in the target_user tests
+    where: smoke_test_mcu_mbox_target_user
+    found: the MCU waits for COMPLETE, but there is no finalize step
+  near_misses: []
+  items:
+  - id: cr_edff6af5db3e
+    outcome: inconclusive
+    reason: I did not search the staging-flow tests for a CMD or DLEN readback.
+    evidence: []
+  - id: cr_620b876ceb0a
+    outcome: verified
+    reason: mci_comm_flow_transaction has no CMD_STATUS reads.
+    evidence: []
+  - id: cr_83b707b90303
+    outcome: verified
+    reason: The target_user test waits for COMPLETE but has no finalize step.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.046654900000000006
+error: null

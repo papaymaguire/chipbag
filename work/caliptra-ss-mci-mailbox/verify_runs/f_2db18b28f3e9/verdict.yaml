@@ -1,0 +1,70 @@
+finding_hash: 98fec785cb164d93
+started_at: '2026-11-10T19:41:50Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test or checker verifies the incr pulse behaviour for these fields. The *_count_incr_r fields
+    appear only in the generated RTL/UVM register model and as coverpoints in mci_top_cov_if.sv, which
+    sample values without failing anything. Integration tests never reference the incr registers. They
+    only read the *_INTR_COUNT_R registers, and only to sum them (mcu_intr_handler.c) or list them (libs/mci/mci.c).
+  evidence:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 5560
+    line_end: 5560
+    quote: 'INTR_BLOCK_RF_NOTIF_MBOX1_CMD_AVAIL_INTR_COUNT_INCR_R_cp : coverpoint i_mci_reg_top.i_mci_reg.field_storage.intr_block_rf.notif_mbox1_cmd_avail_intr_count_incr_r;'
+    role: context
+    note: Coverage sampling only; no check that fails on wrong behaviour.
+  searches:
+  - what: intr_count_incr references in integration tests
+    where: src/integration
+    found: 0 matches
+  - what: notif_mbox*_intr_count in test suites
+    where: src/integration/test_suites
+    found: Only the _COUNT_R registers, read in mcu_intr_handler.c (summed) and listed in libs/mci/mci.c;
+      no incr pulse check
+  - what: mbox ecc_cor / cmd_avail intr_count names
+    where: whole repo
+    found: Only RTL, UVM register model, rdl and the coverage interface
+  near_misses:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 211
+    line_end: 221
+    why_not: Reads the count registers to sum them; it does not check the incr pulse and has no comparison
+      against expected values.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 5530
+    line_end: 5560
+    why_not: Coverpoints on the incr fields only sample them; they are not checks.
+  items:
+  - id: cr_e74c6fb973fe
+    outcome: verified
+    reason: No test checks that the field is a counter.
+    evidence:
+    - 0
+  - id: cr_e8d0b114da23
+    outcome: verified
+    reason: No test checks the 1-cycle pulse on the event input.
+    evidence:
+    - 0
+  - id: cr_e904756192a7
+    outcome: verified
+    reason: No test checks the 1-cycle pulse on the event input.
+    evidence:
+    - 0
+  - id: cr_ead524d0131a
+    outcome: verified
+    reason: No test checks the 1-cycle pulse on the event input.
+    evidence:
+    - 0
+  - id: cr_ee570505c93a
+    outcome: verified
+    reason: No test checks that the pulse mirrors the event.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0575252
+error: null

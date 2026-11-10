@@ -1,0 +1,77 @@
+finding_hash: 840e377799bda5e3
+started_at: '2026-11-10T21:10:01Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Items 1-3 stand: only the sw test keymgr_dpe_sideload_hmac_test touches sideloading, and it
+    exercises only hash_stop. The DV env has no sideload stimulus. Item 4 is withdrawn: hmac_base_vseq
+    randomizes the write byte mask, so sub-word and unaligned writes are issued and the scoreboard checks
+    the digest.'
+  evidence:
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    line_start: 142
+    line_end: 144
+    quote: "  mmio_region_write32(hmac.base_addr, HMAC_CMD_REG_OFFSET,\n                      1u << HMAC_CMD_HASH_STOP_BIT);\n\
+      \  check_and_clear_invalid_config_error();"
+    role: supports
+    note: Only hash_stop is issued with a sideloaded key; hash_continue is never issued.
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    line_start: 52
+    line_end: 55
+    quote: static const dif_hmac_transaction_t kSideloadConfig = {
+    role: supports
+    note: The sideload config has no conflicting key_length programmed before the run.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 358
+    line_end: 358
+    quote: '`DV_CHECK_FATAL(randomize(wr_addr, wr_mask) with {$countones(wr_mask) <= msg_q.size();})'
+    role: refutes
+    note: Random byte mask and address produce sub-word writes to MSG_FIFO. The scoreboard's digest check
+      covers the packing (item 4).
+  searches:
+  - what: sideload and hash_continue/SwInvalidConfig in the hmac DV env
+    where: hw/ip/hmac/dv
+    found: No sideload stimulus in the DV env. SwInvalidConfig is only used for invalid_cfg in the scoreboard.
+  - what: sideload in sw tests
+    where: sw/device/tests
+    found: Only keymgr_dpe_sideload_hmac_test; it checks hash_stop only.
+  - what: sub-word write stimulus
+    where: hmac_base_vseq.sv wr_msg and burst_wr_msg
+    found: wr_mask and wr_addr are randomized per write.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 198
+    line_end: 219
+    why_not: SwInvalidConfig handling here is for the non-sideload invalid_cfg case, not for a sideloaded
+      key.
+  items:
+  - id: cr_d468d703ae52
+    outcome: verified
+    reason: The test never programs a conflicting CFG.key_length before the sideloaded run, so the override
+      is not shown.
+    evidence:
+    - 1
+  - id: cr_6bc711c2b717
+    outcome: verified
+    reason: hash_continue is never issued with a sideloaded key; only hash_stop is.
+    evidence:
+    - 0
+  - id: cr_f3333982706d
+    outcome: verified
+    reason: hash_continue is not tested with a sideloaded key, and there is no state-unchanged check after
+      the rejected hash_stop beyond the error check.
+    evidence:
+    - 0
+  - id: cr_061121ce8d53
+    outcome: withdrawn
+    reason: The DV vseq randomizes the byte mask and address, so partial writes are issued. The scoreboard
+      digest check fails the test on wrong packing.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.08111479999999999
+error: null

@@ -1,0 +1,40 @@
+finding_hash: ef05d26bf502dd04
+started_at: '2026-11-10T20:52:34Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Other HMAC docs only repeat the same sentence. None says where the padding zeros sit in the
+    KEY_* registers or the last partial word for key_swap=0 versus 1. The finding stands.
+  evidence:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 125
+    line_end: 125
+    quote: The position of these zeros depends on the endianness, thus on the programmed [`CFG.key_swap`](registers.md#cfg--key_swap).
+    role: supports
+    note: Repeats the same statement with no byte positions.
+  - path: hw/ip/hmac/doc/registers.md
+    line_start: 234
+    line_end: 234
+    quote: If 1 the endianness of each KEY_* register is swapped. Default value (value 0) is big endian
+      representation of the KEY_* CSRs.
+    role: supports
+    note: Describes the swap only; gives no padding position.
+  searches:
+  - what: key_swap, padding and zero-pad in the HMAC docs
+    where: hw/ip/hmac (*.md)
+    found: Only the same sentence repeated in registers.md and theory_of_operation.md. Other padding mentions
+      concern SHA-2 message padding and ipad/opad.
+  near_misses:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 123
+    line_end: 123
+    why_not: Says the key registers are big-endian by default and can be swapped, but does not say where
+      the zero padding sits.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.046712100000000006
+error: null

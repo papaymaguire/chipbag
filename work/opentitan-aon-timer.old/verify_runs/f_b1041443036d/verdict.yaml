@@ -1,0 +1,53 @@
+finding_hash: 0cdf8136bdecd0d2
+started_at: '2026-11-10T22:07:51Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The finding's gap is that re-enabling WKUP_CTRL after a disable is never exercised. The aon_timer_alternating_enable_on_off
+    test does exactly that, and the scoreboard checks the result. Its loop writes enable=1, disables the
+    timer by backdoor, then re-enables it on the next iteration. The scoreboard recomputes the count after
+    re-enable and predicts the interrupt and wkup_req.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv
+    line_start: 37
+    line_end: 42
+    quote: 'write_wkup_reg(wkup ? ral.wkup_ctrl.enable : ral.wdog_ctrl.enable, 1);'
+    role: refutes
+    note: 'Stimulus: enable the wkup timer via WKUP_CTRL, then disable it by backdoor. This repeats in
+      a 20-iteration loop, so the timer is re-enabled after a disable.'
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 910
+    line_end: 913
+    quote: // Recalculate wkup_count. This is because it's possible WKUP timer  is disabled mid-way
+    role: refutes
+    note: Scoreboard explicitly handles the timer being disabled mid-way and re-enabled later. It then
+      predicts the wakeup interrupt and wkup_req, which are checked against the DUT.
+  searches:
+  - what: tests that re-enable the wakeup timer after a disable
+    where: hw/ip/aon_timer
+    found: aon_timer_alternating_enable_on_off vseq, listed in the sim cfg and the testplan
+  - what: WKUP_CTRL in sw/device/tests
+    where: sw/device/tests
+    found: no matches
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_smoke_vseq.sv
+    line_start: 1
+    line_end: 40
+    why_not: Smoke only does the initial enable, so it doesn't cover re-enable.
+  items:
+  - id: cr_b47fcc96aafd
+    outcome: withdrawn
+    reason: The alternating_enable_on_off test covers re-enable after a disable. The scoreboard checks
+      the resulting interrupt and wkup_req behavior.
+    evidence:
+    - 0
+    - 1
+  new_sources:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv
+    reason: Stimulus that re-enables the wakeup timer after a disable.
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.0853677
+error: null

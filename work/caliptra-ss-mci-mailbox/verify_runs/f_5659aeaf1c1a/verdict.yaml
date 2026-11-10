@@ -1,0 +1,85 @@
+finding_hash: bc035c294232f59f
+started_at: '2026-11-10T20:38:31Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks the pulse behavior (counter, decrement by 1, swwel, 1-bit down-counter) of the
+    *_intr_count_incr_r registers. They appear only in a coverage interface and in a register-mask table
+    used for generic register tests. I did not read the tests that consume that table, so this is the
+    limit of the search.
+  evidence:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2092
+    line_end: 2094
+    quote: "    // ERROR_MBOX0_ECC_UNC_INTR_COUNT_INCR_R\n    add_mask_entry(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR_MBOX0_ECC_UNC_INTR_COUNT_INCR_R,"
+    role: context
+    note: Only a bit-mask table entry (used for generic register tests); it checks no pulse or decrement
+      behavior. The notif mbox0/mbox1 count_incr registers have no entries in the matches.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4810
+    line_end: 4810
+    quote: 'INTR_BLOCK_RF_ERROR_MBOX0_ECC_UNC_INTR_COUNT_INCR_R_cp : coverpoint'
+    role: context
+    note: Coverage only; no check that can fail.
+  searches:
+  - what: 'item cr_e56ce5f8f0a1: error_mbox1_ecc_unc count_incr swwel'
+    where: whole repo
+    found: only mci.c mask entry and a coverpoint; no write-enable test
+  - what: 'item cr_e5847e39e3ea: error_mbox0_ecc_unc count_incr decrement by 1'
+    where: whole repo
+    found: only mci.c mask entry and a coverpoint; no decrement check
+  - what: 'item cr_e7151b4d15af: notif_mbox0_soc_req_lock count_incr counter'
+    where: whole repo
+    found: no test or non-generated file references it; only coverage and generated register files
+  - what: 'item cr_e729c05476cf: 1-bit down-counter pulse'
+    where: whole repo
+    found: no test checks the pulse behavior
+  - what: 'item cr_e74c6fb973fe: notif_mbox1_ecc_cor count_incr counter'
+    where: whole repo
+    found: no test or non-generated file references it; only coverage and generated register files
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2088
+    line_end: 2110
+    why_not: Mask entries only. They don't create the pulse condition or check the counter, decrement
+      or swwel behavior.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4800
+    line_end: 4830
+    why_not: Coverpoints only; they have no pass/fail check.
+  items:
+  - id: cr_e56ce5f8f0a1
+    outcome: verified
+    reason: No test checks swwel behavior of the pulse field.
+    evidence:
+    - 0
+    - 1
+  - id: cr_e5847e39e3ea
+    outcome: verified
+    reason: No test checks the decrement by 1.
+    evidence:
+    - 0
+    - 1
+  - id: cr_e7151b4d15af
+    outcome: verified
+    reason: No test checks the notif mbox0 soc_req_lock count_incr field as a counter.
+    evidence:
+    - 1
+  - id: cr_e729c05476cf
+    outcome: verified
+    reason: No test checks the 1-bit down-counter pulse behavior.
+    evidence:
+    - 0
+    - 1
+  - id: cr_e74c6fb973fe
+    outcome: verified
+    reason: No test checks the notif mbox1 ecc_cor count_incr field as a counter.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.0836432
+error: null

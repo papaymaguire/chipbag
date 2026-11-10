@@ -1,0 +1,10 @@
+{"t": "2026-11-10T20:57:23Z", "event": "  \u2192 Grep: msg_length|MSG_LENGTH"}
+{"t": "2026-11-10T20:57:26Z", "event": "  \u2192 Grep: msg_length|MSG_LENGTH|msg_len"}
+{"t": "2026-11-10T20:57:29Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T20:57:29Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/data/hmac.hjson"}
+{"t": "2026-11-10T20:57:36Z", "event": "  \u2192 Grep: SHA2_384|SHA2_512|get_hmac_sha"}
+{"t": "2026-11-10T20:57:45Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:57:48Z", "event": "Verdict submission failed because I used the wrong tool name, so I'm retrying with the correct one."}
+{"t": "2026-11-10T20:57:54Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:57:57Z", "event": "The verdict is submitted and accepted. Only one of the four items is confirmed untested.\n\n- **Lower 3 bits ignored (`cr_959451b086ac`):** Confirmed untested. The sequences only write lengths that are multiples of 8, so nothing sets bits [2:0] or checks that they are ignored.\n- **`hwqe` on `MSG_LENGTH_UPPER` (`cr_57ac89f2cad4`):** Withdrawn. `sar_different_context` in `hmac_base_vseq.sv` writes a huge value to the upper register and checks the read-back with `DV_CHECK_EQ`.\n- **`hwext` on `MSG_LENGTH_UPPER` (`cr_581ad0c1fa81`):** Withdrawn, for the same reason.\n- **SHA-384/512 zero-padded 128-bit length (`cr_b3a93fda27e3`):** Withdrawn. The scoreboard compares SHA-384/512 digests against the DPI reference, so a wrong length encoding would fail the digest check.\n\nI submitted the overall outcome as \"verified\" because at least one item stands. The finding as a whole is only partly right."}
+{"t": "2026-11-10T20:57:57Z", "event": "[8 turns, $0.1092]"}

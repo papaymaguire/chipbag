@@ -1,0 +1,50 @@
+finding_hash: 61cf0cb9f41a3088
+started_at: '2026-11-10T19:36:42Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The test does not check SRAM zeroization up to the max DLEN. MCU writes DLEN=250000 and 16
+    SRAM dwords, then Caliptra checks the lock-out. Caliptra's SRAM reads run without the lock and are
+    expected to return 0 whether or not SRAM was cleared. The first read loop never runs, because DLEN
+    has just been read back as 0 and the loop bound is data_length/4.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/cptra_smoke_test_mcu_mbox_usr_lock_out.c
+    line_start: 157
+    line_end: 162
+    quote: for (uint8_t ii = 0; ii < data_length/4; ii++) {
+    role: supports
+    note: data_length was just checked to equal 0, so this loop executes zero iterations. The expected
+      data is all zeros because the reader has no lock.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/cptra_smoke_test_mcu_mbox_usr_lock_out.c
+    line_start: 188
+    line_end: 190
+    quote: if (read_payload[0] != 0) {
+    role: supports
+    note: This reads SRAM without holding the lock, so a nonzero value is not possible whether or not
+      SRAM was cleared. It does not test zeroization.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/smoke_test_mcu_mbox_usr_lock_out_zero.c
+    line_start: 76
+    line_end: 78
+    quote: lsu_write_32(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_DLEN + MCU_MBOX_NUM_STRIDE * mbox_num, 250000);
+    role: context
+    note: The large DLEN is written only to make zeroization take a while. The MCU side never reads SRAM
+      back after releasing the lock.
+  searches:
+  - what: Read both test sources in full for any SRAM read by the lock owner after release
+    where: smoke_test_mcu_mbox_usr_lock_out_zero/*.c
+    found: The MCU side only writes. The Caliptra side reads SRAM without the lock and expects 0. No zeroization
+      check exists.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/cptra_smoke_test_mcu_mbox_usr_lock_out.c
+    line_start: 157
+    line_end: 167
+    why_not: This looks like a data check, but its loop bound is 0 and the expected value is 0 because
+      the reader holds no lock.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.050369300000000006
+error: null

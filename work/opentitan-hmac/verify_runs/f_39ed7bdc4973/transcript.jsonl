@@ -1,0 +1,8 @@
+{"t": "2026-11-10T20:55:17Z", "event": "  \u2192 Grep: save_and_restore|context switch|block.?boundary"}
+{"t": "2026-11-10T20:55:18Z", "event": "Check whether a test attempts a mid-block save and checks failure."}
+{"t": "2026-11-10T20:55:19Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T20:55:20Z", "event": "  \u2192 Grep: mid.?block|partial block|non.?aligned|unaligned"}
+{"t": "2026-11-10T20:55:27Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:55:31Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:55:35Z", "event": "I submitted the verdict as verified: the finding stands, because no test checks that context switches are possible only at message-block boundaries.\n\n- **Stimulus:** `save_and_restore()` in `hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv` waits for the block-boundary trigger before it saves and restores. That only ever exercises the allowed case.\n- **No negative case:** I searched `hw/ip/hmac` for mid-block, partial-block and unaligned saves and found none. Nothing would fail if a mid-block context switch were accepted.\n- **Near miss:** `hmac_scoreboard.sv:239` rounds the message counter up to the block boundary for prediction, but that doesn't check the context-switch restriction."}
+{"t": "2026-11-10T20:55:35Z", "event": "[6 turns, $0.0442]"}

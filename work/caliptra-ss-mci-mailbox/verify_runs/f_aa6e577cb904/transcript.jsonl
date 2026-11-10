@@ -1,0 +1,9 @@
+{"t": "2026-11-10T20:34:21Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_csrs_warm_rst/smoke_test_mcu_mbox_csrs_warm_rst.c"}
+{"t": "2026-11-10T20:34:21Z", "event": "  \u2192 Grep: smoke_test_mcu_mbox_csrs_warm_rst"}
+{"t": "2026-11-10T20:34:25Z", "event": "Check interrupt handling and other tests covering the plan item."}
+{"t": "2026-11-10T20:34:26Z", "event": "  \u2192 Grep: ecc_single|ECC_SINGLE.*(STS|INTR)|sends interrupt to MCU"}
+{"t": "2026-11-10T20:34:27Z", "event": "  \u2192 Grep: intr|irq|isr"}
+{"t": "2026-11-10T20:34:29Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss; python3 -I -c \" import openpyxl wb=openpyxl.load_workbook('docs/Caliptra_Gen2_SS_TestPlan.xlsx') ws=wb['Subsystem Test Plan'] for r in range(118"}
+{"t": "2026-11-10T20:34:37Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:34:40Z", "event": "I withdrew the finding. Plan row 122 (\"SB ECC sets status bit in MBOX and sends interrupt to MCU\") is realized by `smoke_test_mcu_mbox_ecc`, not by the warm-reset test.\n\n`smoke_test_mcu_mbox_ecc.c` checks the single-bit ECC interrupt (it calls `is_only_mcu_mbox_sb_ecc_interrupt_set` and then clears it). Nothing in the repository ties row 122 to `smoke_test_mcu_mbox_csrs_warm_rst`. That test only injects ECC errors to dirty state before a warm reset, and its HW-status check does fail the test if the bit is missing.\n\nThe verdict was accepted."}
+{"t": "2026-11-10T20:34:40Z", "event": "[7 turns, $0.0476]"}

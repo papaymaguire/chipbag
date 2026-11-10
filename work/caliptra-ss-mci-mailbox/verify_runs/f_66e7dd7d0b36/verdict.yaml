@@ -1,0 +1,102 @@
+finding_hash: 8ef593973e144e81
+started_at: '2026-11-10T20:35:59Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'The MCI_MBOX0/1_OWNERSHIP_FLOW tests cover items 2 and 4: they run all three terminal statuses
+    and fail on a wrong SRAM owner or a missing TARGET_DONE notification. I did not find a check for items
+    1, 3 and 5. The finding stands overall, with items 2 and 4 withdrawn.'
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 202
+    line_end: 204
+    quote: '    for (int status = mcu_mbox_csr__mbox_cmd_status__status__mbox_status_e__DATA_READY;'
+    role: refutes
+    note: Runs one transaction for each terminal status, DATA_READY through CMD_FAILURE. Each transaction
+      has the Target write that status to TARGET_STATUS.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 131
+    line_end: 133
+    quote: '    mcu_mbox_write(mci_comm_flow_target_status_addr, mci_comm_flow_target, status);'
+    role: refutes
+    note: After the terminal write the test waits for TARGET_DONE, which fatals if it never sets. It then
+      checks that SRAM ownership has moved to Root, which implies TARGET_USER_VALID was cleared.
+  - path: src/integration/testbench/sv_tests/mci/mci_common_tasks.svh
+    line_start: 490
+    line_end: 491
+    quote: '        if (poll == max_polls)'
+    role: refutes
+    note: The wait for the TARGET_DONE notification fails the test if the notification is never set.
+  - path: src/integration/testbench/sv_tests/mci/mci_common_tasks.svh
+    line_start: 468
+    line_end: 470
+    quote: '    if (data !== exp) begin'
+    role: refutes
+    note: The sram_owner mismatch check increments the error counter, and a non-zero count fails the test.
+  searches:
+  - what: Root re-writes of TARGET_USER_VALID, and non-Root writes to it, in tests and the SV testbench
+    where: src/integration
+    found: The only Root write is the grant in the ownership flow. There is no re-write after the field
+      reads 1, and no check that a Root write is accepted again after hardware clears it.
+  - what: Terminal TARGET_STATUS values and the resulting TARGET_USER_VALID clear and ownership change
+    where: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    found: All three terminal statuses are run. The test checks sram_owner returns to Root. It does not
+      read TARGET_USER_VALID directly.
+  - what: TARGET_STATUS writes attempted while valid_target_req is low
+    where: src/integration
+    found: The ownership flow's non-owner writes are SRAM and EXECUTE only. The smoke tests write TARGET_STATUS
+      only as Root. Nothing tests a future target's write being blocked.
+  - what: TARGET_DONE notification for each terminal status
+    where: src/integration/testbench/sv_tests/mci/mci_common_tasks.svh
+    found: mcu_mbox_wait_clear_notif fatals if TARGET_DONE never sets, and the test runs it for every
+      terminal status. The test does not check that non-terminal values leave the notification unset.
+  - what: Target or SoC writes to CMD_STATUS while it is not MCU-owned
+    where: src/integration
+    found: None. Only the Caliptra uC requester attempt in the smoke tests, which is already partial.
+  near_misses:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 77
+    line_end: 87
+    why_not: Non-owner agents write only SRAM and EXECUTE here. They do not write TARGET_STATUS, TARGET_USER_VALID
+      or CMD_STATUS, so this does not cover items 1, 3 or 5.
+  items:
+  - id: cr_8c87d704146c
+    outcome: verified
+    reason: No check found that Root's re-write of TARGET_USER_VALID is ignored once the field is 1, or
+      that a non-Root write is rejected while it is 0 (the smoke tests only cover part of this).
+    evidence: []
+  - id: cr_2012fb6c7d1b
+    outcome: withdrawn
+    reason: The ownership flow runs DATA_READY, COMPLETE and CMD_FAILURE as terminal Target writes, then
+      checks that SRAM ownership returns to Root. That check does not read TARGET_USER_VALID directly.
+    evidence:
+    - 0
+    - 1
+    - 3
+  - id: cr_7aa648529b38
+    outcome: verified
+    reason: No test attempts a TARGET_STATUS write by the future target while valid_target_req is low,
+      and none checks that the write is rejected again after the field is cleared.
+    evidence: []
+  - id: cr_a5c9e71d90fc
+    outcome: withdrawn
+    reason: Every terminal status in the ownership flow waits for TARGET_DONE, which fatals if it is missing.
+      The test does not check that non-terminal values leave the notification unset.
+    evidence:
+    - 0
+    - 1
+    - 2
+  - id: cr_b84a00bfdcae
+    outcome: verified
+    reason: No test has the Target or a SoC agent write CMD_STATUS while it is not MCU-owned and then
+      checks the value is unchanged. Only the Caliptra uC requester is exercised.
+    evidence: []
+  new_sources:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    reason: SV ownership-flow test that exercises terminal TARGET_STATUS values and the TARGET_DONE notification.
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.1256186
+error: null

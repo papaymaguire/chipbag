@@ -1,0 +1,13 @@
+{"t": "2026-11-10T20:40:25Z", "event": "  \u2192 Grep: intr_count_r|notif_mbox1_soc_req_lock|error_mbox1_ecc_unc_intr_count"}
+{"t": "2026-11-10T20:40:28Z", "event": "  \u2192 Grep: intr_count|mbox1_soc_req_lock|mbox0_ecc_cor|mbox1_ecc_unc"}
+{"t": "2026-11-10T20:40:28Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:40:29Z", "event": "Check the tests touching the counters specifically."}
+{"t": "2026-11-10T20:40:30Z", "event": "  \u2192 Grep: intr_count_r|INTR_COUNT_R"}
+{"t": "2026-11-10T20:40:31Z", "event": "  \u2192 Grep: mbox1_soc_req_lock|mbox0_cmd_avail|mbox0_ecc_cor|mbox1_ecc_unc"}
+{"t": "2026-11-10T20:40:34Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T20:40:36Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler; grep -n \"_hw\\b\\|_hw \" mcu_intr_handler.c | head -30; grep -rn \"COUNT_R\\|count_r\" mcu_intr_handler.c"}
+{"t": "2026-11-10T20:40:40Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler; sed -n 55,160p mcu_intr_handler.c; grep -n \"saturat\" -ri . | head"}
+{"t": "2026-11-10T20:40:43Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss; grep -rn \"mcu_intr_handler\" --include=*.svh --include=*.yml --include=*.yaml --include=*.txt --include=*.json --include=Makefile --include=*.mk "}
+{"t": "2026-11-10T20:40:56Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:40:59Z", "event": "I've submitted the verdict and it was accepted. The finding mostly doesn't stand: only the saturation item (cr_4e89639f30e9) is genuinely untested.\n\nThe other four items are covered by `mcu_intr_handler.c`. It triggers each of these interrupts once, sums the hardware counters, and kills the sim if the sum doesn't match the software count. That check is aggregate and weak, but it can fail if a counter doesn't count or doesn't increment by 1.\n\nI withdrew these four:\n- **cr_477eab914e6b:** `notif_mbox1_soc_req_lock_intr_count_r` is a counter.\n- **cr_62bc300d529d:** `notif_mbox0_cmd_avail_intr_count_r` increments by 1.\n- **cr_647ed59beb3f:** `notif_mbox0_ecc_cor_intr_count_r` is a counter.\n- **cr_7044caee061c:** `error_mbox1_ecc_unc_intr_count_r` increments by 1.\n\nI didn't confirm that `mcu_intr_handler` is in a regression list. My grep for it came back with an error, so that check wasn't done.\n\nNothing further is pending."}
+{"t": "2026-11-10T20:40:59Z", "event": "[11 turns, $0.1544]"}

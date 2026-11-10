@@ -1,0 +1,15 @@
+{"t": "2026-11-10T19:46:44Z", "event": "  \u2192 Grep: mbox_lock|mbox_target_user|mbox_target_status|CMD_FAILURE"}
+{"t": "2026-11-10T19:46:44Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mcu_mbox_csr.rdl"}
+{"t": "2026-11-10T19:46:47Z", "event": "  \u2192 Grep: CMD_FAILURE|MBOX_TARGET_STATUS_STATUS_CMD_FAILURE|TARGET_STATUS.*(3|FAIL)"}
+{"t": "2026-11-10T19:46:48Z", "event": "  \u2192 Grep: precedence|simultaneous|same cycle|hwclr"}
+{"t": "2026-11-10T19:46:50Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c"}
+{"t": "2026-11-10T19:46:53Z", "event": "  \u2192 Grep: target_status"}
+{"t": "2026-11-10T19:46:55Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh"}
+{"t": "2026-11-10T19:46:59Z", "event": "I'm checking whether the ownership-flow test is in the regression lists. If it is, it covers the lock clear and the CMD_FAILURE terminal write."}
+{"t": "2026-11-10T19:47:00Z", "event": "  \u2192 Grep: OWNERSHIP_FLOW"}
+{"t": "2026-11-10T19:47:01Z", "event": "  \u2192 Grep: task automatic mci_comm_flow_end|task automatic mcu_mbox_acquire_lock"}
+{"t": "2026-11-10T19:47:03Z", "event": "  \u2192 Grep: MBOX[01]?_?OWNERSHIP|ownership_flow"}
+{"t": "2026-11-10T19:47:09Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:47:21Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:47:25Z", "event": "I submitted the verdict: three of the five items are untested and two are covered by an existing test, so they are withdrawn.\n\n**Still untested (verified):**\n- **`mbox_lock.lock` hardware precedence (`cr_1090477d2115`):** no test makes a hardware and a software update land in the same cycle.\n- **`mbox_target_user.user` hardware precedence (`cr_a206ba683bb5`):** the same gap.\n- **`mbox_target_user_valid.valid` hardware precedence (`cr_7eea266009ff`):** the same gap.\n\n**Covered by `MCI_MBOX0/1_OWNERSHIP_FLOW` (withdrawn):**\n- **Hardware clearing `lock` (`cr_a7c29b77aa24`):** on release the test checks the owner is none, then re-acquires the lock. Acquiring only succeeds if LOCK reads 0, so the hardware clear is checked.\n- **`CMD_FAILURE` (`cr_7e5a73e500a2`):** the Target writes every terminal status, including `CMD_FAILURE`, to `TARGET_STATUS`. The test then waits for `TARGET_DONE` and checks that the owner is Root.\n\nThis test runs in the nightly regression (`L1_Nightly_Directed` and the master test list).\n\nThe check on `CMD_FAILURE` is of its terminal-status behaviour, not a read-back of the 3 value. The `write_user_lock` test also writes `FAILURE` to `TARGET_STATUS`, but as Root, and only checks the write is rejected, so it is not coverage for this item.\n\nMy first submission was rejected because it contained a placeholder quote. The second was accepted."}
+{"t": "2026-11-10T19:47:25Z", "event": "[13 turns, $0.1439]"}

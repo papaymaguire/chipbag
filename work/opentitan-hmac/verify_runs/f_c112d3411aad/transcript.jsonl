@@ -1,0 +1,11 @@
+{"t": "2026-11-10T19:39:34Z", "event": "  \u2192 Grep: wipe_secret|key_length|KEY_LENGTH"}
+{"t": "2026-11-10T19:39:35Z", "event": "Quick check on key registers beyond length."}
+{"t": "2026-11-10T19:39:36Z", "event": "  \u2192 Grep: key\\[|\\.key|KEY_1024|Key_1024"}
+{"t": "2026-11-10T19:39:41Z", "event": "  \u2192 Grep: key_length|Key_"}
+{"t": "2026-11-10T19:39:52Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:39:59Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:40:03Z", "event": "  \u2192 Grep: secret_key|hash_stop|sideload|wipe_secret"}
+{"t": "2026-11-10T19:40:03Z", "event": "  \u2192 Grep: wipe_secret|WIPE_SECRET"}
+{"t": "2026-11-10T19:40:13Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:40:18Z", "event": "I've submitted the verdict, and it was accepted. The finding stands for three of the five items and is withdrawn for the other two.\n\n- **Withdrawn, key length up to 1024 bits (`cr_da1dd380c1d3`):** `hmac_smoke` picks `Key_1024` at random, and the scoreboard model computes the expected digest for it.\n- **Withdrawn, only relevant key registers consumed (`cr_9f6c9dac2641`):** the smoke test randomises all 32 key words, but the model uses only the configured length. Using the wrong registers would give a wrong digest. The check is implicit, not a dedicated test.\n- **Stands, wipe of internal variables (`cr_03340331c331`):** `hmac_wipe_secret` and `hmac_secure_wipe_test` only check the digest. Nothing checks the key, hash state or message schedule array.\n- **Stands, reset to the WIPE_SECRET value (`cr_aab3a12796d4`):** the same two tests never check that the key or internal state equals the value written to WIPE_SECRET.\n- **Stands, sideloaded key never exposed (`cr_419b9981b884`):** I found no test that tries to read the key through the KEY registers or any other path.\n\nMy search for the sideload and wipe items was a file-level search, not a read of each test. I didn't open the sideload test itself."}
+{"t": "2026-11-10T19:40:18Z", "event": "[9 turns, $0.0972]"}

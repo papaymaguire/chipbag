@@ -1,0 +1,13 @@
+accepted: true
+cost_usd: 0.22277390000000002
+turns: 11
+submissions: 2
+last_errors:
+- 'sources[6] (src/integration/stimulus/L0_Promote_caliptra_ss_top_tb_regression.yml): name glob ''*mbox*''
+  matches no entry'
+- 'sources[7] (src/integration/stimulus/L1_Nightly_Directed_caliptra_ss_top_tb_regression.yml): name glob
+  ''*mbox*'' matches no entry'
+- 'sources[8] (src/integration/stimulus/L1_Nightly_Directed_Strict_caliptra_ss_top_tb_regression.yml):
+  name glob ''*mbox*'' matches no entry'
+- 'sources[9] (src/integration/stimulus/L1_Nightly_Random_caliptra_ss_top_tb_regression.yml): name glob
+  ''*mbox*'' matches no entry'

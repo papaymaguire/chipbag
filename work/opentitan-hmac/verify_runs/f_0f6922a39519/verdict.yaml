@@ -1,0 +1,53 @@
+finding_hash: 61f4d22b1b0afb62
+started_at: '2026-11-10T19:36:17Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The README says SHA-2 384 digest is read from DIGEST_0-DIGEST_12, which is 13 words. The scoreboard
+    checks only idx<12 (DIGEST_0-11). A 384-bit digest is 12 words, so the README is almost certainly
+    off by one, and the test is right. The mismatch is real, but the spec is the likely wrong side.
+  evidence:
+  - path: hw/ip/hmac/README.md
+    line_start: 42
+    line_end: 42
+    quote: or from [`DIGEST_0-DIGEST_12`](doc/registers.md#digest) for SHA-2 384
+    role: supports
+    note: Spec states range through DIGEST_12 (13 words) for 384-bit digest.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 494
+    line_end: 494
+    quote: ((expected_digest_size == SHA2_384) && (digest_idx < 12)) ||
+    role: supports
+    note: Scoreboard checks only DIGEST_0-11 for 384; DIGEST_12 is never compared.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 491
+    line_end: 492
+    quote: // only check till digest_idx = 7 for SHA-2 256 and till digest_idx = 11 for SHA-2 384
+    role: context
+    note: The comment says the remaining digest values are irrelevant for 384, matching 12 words = 384
+      bits.
+  searches:
+  - what: DIGEST_12 / DIGEST_11 references in hw/ip/hmac
+    where: hw/ip/hmac
+    found: Only register package and reg_top definitions; no text restating the 384 range as 0-11 or an
+      exception for DIGEST_12.
+  - what: Scoreboard digest check
+    where: hmac_scoreboard.sv:470-500
+    found: idx<12 for 384.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 493
+    line_end: 497
+    why_not: The idx<12 limit is arithmetically correct for 384 bits (12 words), so it is not a test bug.
+  items: []
+  new_sources: []
+  resolution: 'The README range is likely an off-by-one typo. 384 bits is 12 words, so the digest occupies
+    DIGEST_0-DIGEST_11, and the scoreboard''s idx<12 is correct. Fix: change README.md line 42 to DIGEST_0-DIGEST_11
+    for SHA-2 384. I did not read the RTL digest output logic, so I did not confirm what DIGEST_12 holds
+    for 384.'
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0448103
+error: null

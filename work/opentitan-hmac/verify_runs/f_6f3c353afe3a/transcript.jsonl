@@ -1,0 +1,10 @@
+{"t": "2026-11-10T20:56:11Z", "event": "  \u2192 Grep: tl_intg_err|tlul_assert|csr_rw"}
+{"t": "2026-11-10T20:56:13Z", "event": "  \u2192 Grep: hmac_tl_intg_err|hmac_csr_rw|hmac_alert_test|tl_intg_err"}
+{"t": "2026-11-10T20:56:15Z", "event": "  \u2192 Bash: cd hw/ip/hmac/dv; ls; ls env tests 2>&1 | head -50; grep -rn \"intg\\|csr_rw\\|alert_test\" . | head -20"}
+{"t": "2026-11-10T20:56:17Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv; sed -n 15,60p hmac_sim_cfg.hjson"}
+{"t": "2026-11-10T20:56:20Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/dv/tools/dvsim/tests; grep -n \"name\\|uvm_test_seq\" sec_cm_tests.hjson alert_test.hjson | head -20; grep -n \"name\" csr_tests.hjson | head -5; gre"}
+{"t": "2026-11-10T20:56:23Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/dv/tools/dvsim/tests; cat sec_cm_tests.hjson | head -20; grep -n \"name\" tl_access_tests.hjson; grep -rn \"tl_intg_err\" ../../../sv/cip_lib/*.sv |"}
+{"t": "2026-11-10T20:56:25Z", "event": "  \u2192 Submit_verdict: "}
+{"t": "2026-11-10T20:56:33Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:56:36Z", "event": "I withdrew the finding for all three items. I did not read the common vseq code that does the checking, so that part is inferred from the framework and not confirmed.\n\n- **`tl` device interface (`cr_3514ec92d204`):** `hw/ip/hmac/dv/hmac_sim_cfg.hjson` imports the common CIP test lists. That adds `hmac_csr_rw`, which reads and writes the CSRs over the TL-UL port.\n- **`tl` req_rsp responder (`cr_ceb521c08f4e`):** `hw/ip/hmac/dv/sva/hmac_bind.sv` binds the `tlul_assert` protocol checker to the hmac TL interface, so it runs with every test.\n- **`fatal_fault` alert (`cr_7351afa1afa3`):** the same imports add `hmac_tl_intg_err` and `hmac_alert_test`. `hw/dv/tools/dvsim/tests/tl_access_tests.hjson` defines `hmac_tl_intg_err`. `hmac_env_pkg.sv` registers `fatal_fault` in `LIST_OF_ALERTS`."}
+{"t": "2026-11-10T20:56:36Z", "event": "[9 turns, $0.0564]"}

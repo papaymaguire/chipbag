@@ -1,0 +1,64 @@
+finding_hash: 9e3c1104314eec96
+started_at: '2026-11-10T20:56:08Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The HMAC sim config imports the common CIP test lists. These define {name}_csr_rw, {name}_tl_intg_err,
+    {name}_tl_errors and {name}_alert_test for hmac. The common vseqs and the bound tlul_assert provide
+    the checks. I did not read the common vseq checks, so that part is inferred from the framework, not
+    confirmed.
+  evidence:
+  - path: hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    line_start: 28
+    line_end: 34
+    quote: '"{proj_root}/hw/dv/tools/dvsim/tests/alert_test.hjson",'
+    role: refutes
+    note: Imports common alert_test, tl_access (tl_intg_err), csr and sec_cm test lists into hmac regression.
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 20
+    line_end: 22
+    quote: 'name: "{name}_tl_intg_err"'
+    role: refutes
+    note: Defines hmac_tl_intg_err, which injects TL-UL integrity errors (fatal_fault).
+  - path: hw/ip/hmac/dv/sva/hmac_bind.sv
+    line_start: 7
+    line_end: 9
+    quote: 'bind hmac tlul_assert #('
+    role: refutes
+    note: The tlul_assert protocol checker is bound on the hmac TL interface.
+  - path: hw/ip/hmac/dv/env/hmac_env_pkg.sv
+    line_start: 52
+    line_end: 52
+    quote: parameter string LIST_OF_ALERTS[NUM_ALERTS] = {"fatal_fault"};
+    role: context
+    note: The env registers the fatal_fault alert for checking.
+  searches:
+  - what: tests for tl_intg_err, csr_rw and alert_test
+    where: hw/ip/hmac/dv and hw/dv/tools/dvsim/tests
+    found: The common test hjsons are imported by hmac_sim_cfg.hjson and define the tests.
+  near_misses: []
+  items:
+  - id: cr_3514ec92d204
+    outcome: withdrawn
+    reason: hmac_csr_rw runs from the common csr test list over the TL-UL port.
+    evidence:
+    - 0
+  - id: cr_ceb521c08f4e
+    outcome: withdrawn
+    reason: The tlul_assert checker is bound to the hmac TL interface and runs with every test.
+    evidence:
+    - 2
+  - id: cr_7351afa1afa3
+    outcome: withdrawn
+    reason: hmac_tl_intg_err and hmac_alert_test are in the regression, and fatal_fault is registered
+      in the env.
+    evidence:
+    - 1
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.05644980000000001
+error: null

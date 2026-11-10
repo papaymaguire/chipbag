@@ -1,0 +1,66 @@
+finding_hash: 167ef47edf2f4cdf
+started_at: '2026-11-10T19:41:54Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The scoreboard checks hmac_done interrupt state, but the Event-type property is not explicitly
+    verified. The other four items are static interface declarations, and no test or check exercises them.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 416
+    line_end: 416
+    quote: void'(ral.intr_state.hmac_done.predict(.value(1), .kind(UVM_PREDICT_READ)));
+    role: context
+    note: Scoreboard predicts hmac_done interrupt state; it checks the interrupt firing, not its Event
+      type.
+  searches:
+  - what: hmac_done usage in DV
+    where: hw/ip/hmac/dv
+    found: smoke vseq, scoreboard and tb use it; no check for Event-type semantics
+  - what: TL-UL host interface checks (item 1)
+    where: hw/ip/hmac/dv, hw/ip/hmac/doc/interfaces.md
+    found: only the doc statement; no test checks it
+  - what: clk_i primary clock check (item 2)
+    where: hw/ip/hmac/dv
+    found: the env drives clk_i; no check that it is the primary clock
+  - what: chip IO pins (item 3)
+    where: hw/ip/hmac/dv
+    found: no pins exist, so nothing to test
+  - what: other clocks (item 4)
+    where: hw/ip/hmac/dv
+    found: no other clocks and no check
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 405
+    line_end: 421
+    why_not: Checks that hmac_done fires, not that it is Event-type.
+  items:
+  - id: cr_179a3654a746
+    outcome: verified
+    reason: Static statement; no test checks it.
+    evidence: []
+  - id: cr_1ce0d9febabc
+    outcome: verified
+    reason: No dedicated check that clk_i is the primary clock.
+    evidence: []
+  - id: cr_3627dd0601ce
+    outcome: verified
+    reason: There are no pins, so nothing to test.
+    evidence: []
+  - id: cr_b923d18300df
+    outcome: verified
+    reason: Static statement; no test checks it.
+    evidence: []
+  - id: cr_2677d0527dcb
+    outcome: verified
+    reason: The scoreboard checks hmac_done firing but not its Event type. This is weak and could arguably
+      be withdrawn.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 6
+cost_usd: 0.050523700000000005
+error: null

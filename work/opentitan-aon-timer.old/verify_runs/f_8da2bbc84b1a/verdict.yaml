@@ -1,0 +1,36 @@
+finding_hash: 1e568d8c6f6ddee6
+started_at: '2026-11-10T22:06:29Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Other spec text states both the field width (12 bits) and the division rule (cycles per tick
+    = prescaler + 1). The finding's question is answered.
+  evidence:
+  - path: hw/ip/aon_timer/README.md
+    line_start: 32
+    line_end: 32
+    quote: The number of cycles per tick is one more than the 12-bit [`WKUP_CTRL.prescaler`](doc/registers.md#wkup_ctrl)
+      field.
+    role: refutes
+    note: Gives the width (12 bits) and the rule (prescaler+1 cycles per tick).
+  - path: hw/ip/aon_timer/doc/registers.md
+    line_start: 57
+    line_end: 57
+    quote: '|  12:1  |   rw   |   0x0   | prescaler | Pre-scaler value for wakeup timer count    |'
+    role: refutes
+    note: Register field is bits 12:1, so 12 bits wide, reset value 0.
+  searches:
+  - what: prescaler in aon_timer md/hjson
+    where: hw/ip/aon_timer
+    found: README.md line 32 and registers.md give the width and the division rule
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/ip/aon_timer/README.md
+    reason: States the prescaler width and the +1 division rule
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.024825700000000003
+error: null

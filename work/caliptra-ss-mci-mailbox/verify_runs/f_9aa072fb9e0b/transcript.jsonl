@@ -1,0 +1,12 @@
+{"t": "2026-11-10T20:40:31Z", "event": "  \u2192 Grep: intr_count_r|incrsaturate|intr_count"}
+{"t": "2026-11-10T20:40:32Z", "event": "  \u2192 Grep: notif_mbox0_ecc_cor_intr_count|notif_mbox0_target_done_intr_count|notif_cptra_mbox_cmd_avail_intr_count|error_mbox1_ecc_unc_intr_count"}
+{"t": "2026-11-10T20:40:35Z", "event": "  \u2192 Grep: intr_count_r"}
+{"t": "2026-11-10T20:40:36Z", "event": "  \u2192 Grep: (?i)(mbox0_ecc_cor|mbox0_target_done|cptra_mbox_cmd_avail|mbox1_ecc_unc).*count|count.*(mbox0_ecc_cor|mbox0_target_done|cptra_mbox_cmd_avail|mbox1_ecc_unc)"}
+{"t": "2026-11-10T20:40:38Z", "event": "Check for tests using these macros or generic count tests."}
+{"t": "2026-11-10T20:40:39Z", "event": "  \u2192 Grep: INTR_COUNT_(INCR_)?R|intr_count"}
+{"t": "2026-11-10T20:40:43Z", "event": "  \u2192 Grep: INTR_COUNT_(INCR_)?R|intr_count"}
+{"t": "2026-11-10T20:40:43Z", "event": "  \u2192 Grep: INTR_COUNT_(INCR_)?R|intr_count"}
+{"t": "2026-11-10T20:40:53Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:41:01Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:41:05Z", "event": "I submitted the verdict as verified: none of the five items has a test that checks it.\n\n- **Test software:** none of the four named counters is read or compared anywhere in the test suites. The only counter register access I found is `mcu_isr.c:359-360`, which clears two other counters (debug-locked and scan-mode) and checks nothing. The `intr_count` matches in the test files are a software variable the tests increment themselves.\n- **Other files:** the four counters show up only in the register RDL, the generated register files (`mci_reg.sv`, `mci_reg_uvm.sv`), the address map and `mci_top_cov_if.sv`. That last file is a coverage interface, so it samples the counters but cannot fail a test.\n- **Per item:** I found no test for any of the five items. That covers the increment-by-1 behaviour (`notif_mbox0_ecc_cor` and `notif_cptra_mbox_cmd_avail`) and the counter nature of `notif_mbox0_target_done`. It also covers saturation for `error_mbox1_ecc_unc` and `notif_mbox0_target_done`.\n\nMy searches were limited to `src`, and the last was capped at 30 files, so I did not read every match."}
+{"t": "2026-11-10T20:41:05Z", "event": "[10 turns, $0.0998]"}

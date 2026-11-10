@@ -1,0 +1,44 @@
+finding_hash: 992f3d102c31732b
+started_at: '2026-11-10T19:43:22Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The "validate command, range, and target identity" step is MCU firmware behavior in a sequence
+    diagram. I found no test with stimulus and a check for it. The target_user smoke tests have no validation
+    logic.
+  evidence:
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2396
+    line_end: 2396
+    quote: 'MCU->>MBOX: Validate command, range, and target identity'
+    role: supports
+    note: Validation is an MCU software step, not a hardware-enforced behavior.
+  searches:
+  - what: validat / invalid cmd|target|range in target_user smoke test dir
+    where: src/integration/test_suites/smoke_test_mcu_mbox_target_user
+    found: no matches
+  - what: mcu_mbox target/range/validate across the repo
+    where: repo, excluding docs
+    found: smoke tests for target_user, valid_user, ownership flow; none check MCU validation of command,
+      range or target
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 1
+    line_end: 1
+    why_not: It exercises TARGET_USER register programming, not MCU validation of command, range or target
+      identity. I only grepped this directory and did not read the full file.
+  items:
+  - id: cr_d628ab084b9b
+    outcome: verified
+    reason: 'No test creates an invalid command, range or target and checks that the MCU rejects it. The
+      search was limited: I grepped the target_user test directory and listed the other mcu_mbox tests
+      by filename without reading them.'
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0427633
+error: null

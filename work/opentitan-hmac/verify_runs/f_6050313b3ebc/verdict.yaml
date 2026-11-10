@@ -1,0 +1,76 @@
+finding_hash: 0f1252cf4c6c8d22
+started_at: '2026-11-10T20:55:47Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: Three items (hw_reset, rand_reset, back_pressure) are implemented by existing tests. The remaining
+    two are a covergroup and a checklist status entry, which are not tests, so I mark them inconclusive.
+  evidence:
+  - path: hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    line_start: 73
+    line_end: 75
+    quote: "      name: hmac_back_pressure\n      uvm_test_seq: hmac_back_pressure_vseq\n      run_opts:\
+      \ [\"+zero_delays=1\"]"
+    role: refutes
+    note: back_pressure test exists with zero delays
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 20
+    line_end: 24
+    quote: '      name: "{name}_csr_hw_reset"'
+    role: refutes
+    note: generic csr_hw_reset test, imported by hmac_sim_cfg.hjson line 30
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 61
+    line_end: 63
+    quote: '      name: "{name}_csr_mem_rw_with_rand_reset"'
+    role: refutes
+    note: generic rand reset test
+  - path: hw/ip/hmac/doc/checklist.md
+    line_start: 255
+    line_end: 255
+    quote: Issues        | [NO_ISSUES_PENDING][]             | Done
+    role: context
+    note: checklist status entry, not a testable item
+  searches:
+  - what: back_pressure test
+    where: hw/ip/hmac
+    found: hmac_back_pressure in sim cfg, vseq, testplan
+  - what: csr tests import
+    where: hmac_sim_cfg.hjson
+    found: imports csr_tests.hjson
+  - what: regwen_val covergroup
+    where: csr_testplan.hjson
+    found: covergroup, not a test
+  near_misses: []
+  items:
+  - id: cp_62857800d897
+    outcome: withdrawn
+    reason: hmac_csr_hw_reset exists via csr_tests.hjson
+    evidence:
+    - 1
+  - id: cp_64e6709d9d56
+    outcome: withdrawn
+    reason: hmac_back_pressure test with zero_delays exists
+    evidence:
+    - 0
+  - id: cp_69066ed60ce7
+    outcome: inconclusive
+    reason: It is a covergroup, not a test; no test is expected for it
+    evidence: []
+  - id: cp_6a671c7f7e50
+    outcome: inconclusive
+    reason: It is a checklist status entry, not a testable item
+    evidence:
+    - 3
+  - id: cp_87e74b2a7c0c
+    outcome: withdrawn
+    reason: hmac_csr_mem_rw_with_rand_reset exists via csr_tests.hjson
+    evidence:
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.0680411
+error: null

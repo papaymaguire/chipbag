@@ -1,0 +1,7 @@
+{"t": "2026-11-10T19:37:14Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/asserts/caliptra_ss_top_sva.sv"}
+{"t": "2026-11-10T19:37:15Z", "event": "  \u2192 Grep: SVA ERROR"}
+{"t": "2026-11-10T19:37:17Z", "event": "  \u2192 Grep: SVA ERROR"}
+{"t": "2026-11-10T19:37:22Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:37:25Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:37:28Z", "event": "I submitted the verdict as verified: the finding stands.\n\nThe `all_error_fatal_sram_doublebit_check` assertion in `src/integration/asserts/caliptra_ss_top_sva.sv` (lines 223\u2013227) has only a `$display` in its `else` branch. It has no `$error` or `$fatal`, so a violation prints \"SVA ERROR: all_error_fatal for mcu_sram_ecc_unc is asserted unexpectedly\" and nothing more.\n\nI searched the repo for any other file that references the string \"SVA ERROR\", for example a log scanner that fails the test on it. I found none.\n\nThe fix would be to use `$error` or `$fatal` in the `else` branch, or to add a log scan for \"SVA ERROR\" to the regression.\n\nThe first `submit_verdict` call failed because the tool wasn't available. The second call, through `mcp__verify__submit_verdict`, was accepted."}
+{"t": "2026-11-10T19:37:28Z", "event": "[6 turns, $0.0400]"}

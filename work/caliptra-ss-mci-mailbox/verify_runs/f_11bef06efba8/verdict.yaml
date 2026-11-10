@@ -1,0 +1,67 @@
+finding_hash: 36a945d201217543
+started_at: '2026-11-10T21:00:44Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Item cr_e44c4e0735c0 stands. The only test that ends a transaction in CMD_FAILURE writes the
+    status and never reads it back. Item cr_b84a00bfdcae is covered by the Target-user smoke test, so
+    I withdrew it. The finding as a whole stays verified because one item stands.
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 138
+    line_end: 138
+    quote: mcu_mbox_write(mci_comm_flow_cmd_status_addr, mci_comm_flow_root, status);
+    role: supports
+    note: The ownership flow only writes CMD_STATUS, including CMD_FAILURE. No read-back of the status
+      value appears anywhere in the file.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 64
+    line_end: 65
+    quote: if(mcu_mbox_read_cmd_status(mbox_num) != MCU_MBOX_DATA_READY) {
+    role: refutes
+    note: MCU writes CMD_STATUS, and after the Target (Caliptra uC) attempts a write, MCU checks it is
+      unchanged. This covers the Target-drop and MCU-write-succeeds parts of item 1.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/cptra_smoke_test_mcu_mbox_target_user.c
+    line_start: 173
+    line_end: 173
+    quote: cptra_mcu_mbox_write_cmd_status(mbox_num, mbox_wr_data);
+    role: context
+    note: The Target user attempts a CMD_STATUS write with 0xDEADBEEF.
+  searches:
+  - what: CMD_FAILURE usage in tests and testbench
+    where: src
+    found: Only a write of CMD_FAILURE by the ownership flow and by the non-MCU writers in valid_user
+      and pass_data. No test reads back CMD_FAILURE from CMD_STATUS.
+  - what: Target-user write to CMD_STATUS
+    where: src/integration/test_suites/smoke_test_mcu_mbox_target_user
+    found: The Target writes CMD_STATUS and MCU checks it is unchanged (DATA_READY), so the write is dropped.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/cptra_smoke_test_mcu_mbox_valid_user.c
+    line_start: 170
+    line_end: 170
+    why_not: It writes CMD_FAILURE from a non-MCU agent and expects the write to be dropped. It never
+      checks that a legitimate CMD_FAILURE reads back.
+  items:
+  - id: cr_b84a00bfdcae
+    outcome: withdrawn
+    reason: The Target-user smoke test has the Target attempt a CMD_STATUS write, and MCU checks the status
+      is still DATA_READY. MCU's own write is read back successfully. The valid_user and pass_data tests
+      cover the other SoC agent.
+    evidence:
+    - 1
+    - 2
+  - id: cr_e44c4e0735c0
+    outcome: verified
+    reason: CMD_FAILURE is only written, with no read-back check that CMD_STATUS equals CMD_FAILURE. The
+      ownership flow has no CMD_STATUS read.
+    evidence:
+    - 0
+  new_sources:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    reason: Checks that a Target write to CMD_STATUS is dropped
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.083223
+error: null

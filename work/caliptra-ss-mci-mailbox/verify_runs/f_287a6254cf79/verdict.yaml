@@ -1,0 +1,71 @@
+finding_hash: 0f2e796088c977b9
+started_at: '2026-11-10T20:37:20Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Outside generated register RTL/UVM files, the only reference to these count_incr registers
+    is a coverage interface. I found no test with a check on the pulse or on the swwel behavior.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1554
+    line_end: 1554
+    quote: default decrvalue = 1;
+    role: context
+    note: Source of the requirements; pulse field defined with swwel=false.
+  searches:
+  - what: count_incr names outside rdl
+    where: repo
+    found: only mci_reg.sv, mci_reg_uvm.sv, mci_top_cov_if.sv
+  - what: 'item cr_4d9003ba78b7: notif_mbox1_soc_req_lock count_incr pulse swwel'
+    where: repo excluding mci_reg*
+    found: nothing
+  - what: 'item cr_4ee310cb184b: notif_mbox0_soc_req_lock count_incr'
+    where: repo excluding mci_reg*
+    found: only coverage if
+  - what: 'item cr_51c70a57d16c: notif_mbox0_target_done count_incr'
+    where: repo excluding mci_reg*
+    found: only coverage if
+  - what: 'item cr_56a40256092d: error_mbox0_ecc_unc count_incr pulse'
+    where: repo excluding mci_reg*
+    found: only coverage if
+  - what: 'item cr_6883bed01f38: decrement by 1 of soc_req_lock counter'
+    where: repo excluding mci_reg*
+    found: only coverage if
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 1
+    line_end: 1
+    why_not: Coverage only, no pass/fail check.
+  items:
+  - id: cr_4d9003ba78b7
+    outcome: verified
+    reason: No test found.
+    evidence:
+    - 0
+  - id: cr_4ee310cb184b
+    outcome: verified
+    reason: No test found.
+    evidence:
+    - 0
+  - id: cr_51c70a57d16c
+    outcome: verified
+    reason: No test found.
+    evidence:
+    - 0
+  - id: cr_56a40256092d
+    outcome: verified
+    reason: No test found.
+    evidence:
+    - 0
+  - id: cr_6883bed01f38
+    outcome: verified
+    reason: No test found.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 7
+cost_usd: 0.0548004
+error: null

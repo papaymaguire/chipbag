@@ -1,0 +1,71 @@
+finding_hash: e3b900d45c533cdf
+started_at: '2026-11-10T20:34:50Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The hardware specification has a full ownership decision tree and event table covering LOCK,
+    release/zeroization, EXECUTE, TARGET_USER_VALID and CMD_STATUS. It also states non-owner behaviour
+    (reads return 0, writes dropped) and the HW_STATUS owner encoding. The RDL line alone is terse, but
+    the finding's question is answered elsewhere in the spec.
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1358
+    line_end: 1359
+    quote: 'The SRAM owner is derived from mailbox state. Ownership is a combinational function of the
+      mailbox
+
+      registers, evaluated in the following precedence order.'
+    role: refutes
+    note: Precedence-ordered ownership function with decision tree following.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1382
+    line_end: 1387
+    quote: "Q3 -- No --> HOLD\n    Q3 -- Yes --> Q4\n    Q4 -- No --> Q5\n    Q4 -- Yes --> TGTO\n   \
+      \ Q5 -- No --> HOLD\n    Q5 -- Yes --> ROOTO"
+    role: refutes
+    note: Covers EXECUTE clear and TARGET_USER_VALID clear cases, including the CMD_STATUS dependence.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1503
+    line_end: 1503
+    quote: '| Trusted User Illegal Access | Read:<br>&nbsp;- Data return 0 <br>Write:<br>&nbsp;- Data
+      dropped|'
+    role: refutes
+    note: 'Non-owner SRAM access: reads return 0, writes dropped.'
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1441
+    line_end: 1446
+    quote: '| Value | Owner |
+
+      |---:|---|
+
+      | 0 | None |
+
+      | 1 | Requester/lock holder |
+
+      | 2 | Root AXI user, typically MCU |'
+    role: refutes
+    note: HW_STATUS owner encoding.
+  searches:
+  - what: TARGET_USER_VALID in docs and rdl
+    where: repo
+    found: Hardware spec section 'MCU Mailbox SRAM Ownership' with a decision tree and event table
+  - what: non-owner access behaviour
+    where: docs
+    found: 'Illegal access table: reads return 0, writes dropped'
+  near_misses:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 40
+    line_end: 40
+    why_not: This line is terse, but it is not the only spec text; the hardware spec fills in the mapping.
+  items: []
+  new_sources:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    reason: Contains the ownership truth table and non-owner access behaviour.
+  resolution: The design behaviour is specified in the hardware spec. Optionally, add a pointer from the
+    RDL desc to that section.
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.05698650000000001
+error: null

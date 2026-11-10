@@ -1,0 +1,71 @@
+finding_hash: 9de5d33467b5117b
+started_at: '2026-11-10T19:44:50Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test has both stimulus and a failing check for any of the five items. The nearest tests
+    are the MCU mailbox zeroize tests, which program non-zero DLEN values. No integration test mentions
+    the interrupt count registers, DWORD alignment or non-destructive reads.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_zeroize/smoke_test_mcu_mbox_zeroize.c
+    line_start: 122
+    line_end: 123
+    quote: "    for (uint32_t ii = 0; ii < mbox_dlen/4; ii++) {\n        if(lsu_read_32(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_SRAM_BASE_ADDR+(4*ii)\
+      \ + MCU_MBOX_NUM_STRIDE * mbox_num) != 0) {"
+    role: context
+    note: Zeroization is checked only up to a non-zero max DLEN (mbox_dlen). DLEN = 0 is never written.
+  searches:
+  - what: intr_count_r and mailbox interrupt trigger/status in integration tests
+    where: src/integration
+    found: No matches
+  - what: mailbox tests that write DLEN=0 and check the SRAM
+    where: src/integration/test_suites
+    found: The zeroize tests use non-zero DLEN. mcu_mbox_lock_return_one_during_zeroize uses 10000 and
+      checks only the lock bit.
+  - what: unaligned or destructive-read checks
+    where: mbox test suites
+    found: None
+  near_misses:
+  - path: src/integration/test_suites/mcu_mbox_lock_return_one_during_zeroize/mcu_mbox_lock_return_one_during_zeroize.c
+    line_start: 68
+    line_end: 69
+    why_not: A print message says DLEN 0x0, but the code writes 10000.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/cptra_smoke_test_mcu_mbox_usr_lock_out.c
+    line_start: 99
+    line_end: 99
+    why_not: It sets mbox_dlen = 0, but only as the expected DLEN value read back on the Caliptra side.
+      It does not check that the SRAM is cleared.
+  items:
+  - id: cr_499ce5a87381
+    outcome: verified
+    reason: No test reads the SRAM twice or otherwise checks that reads are non-destructive.
+    evidence:
+    - 0
+  - id: cr_a3dd90e3ad99
+    outcome: verified
+    reason: No test exercises unaligned SRAM accesses.
+    evidence:
+    - 0
+  - id: cr_ccc86edf401d
+    outcome: verified
+    reason: The zeroize tests use a non-zero DLEN. No test writes DLEN = 0 and then checks that the SRAM
+      is cleared.
+    evidence:
+    - 0
+  - id: cr_8797911c07bc
+    outcome: verified
+    reason: No test references the _intr_count_r registers.
+    evidence:
+    - 0
+  - id: cr_0d49e75f5219
+    outcome: verified
+    reason: No test checks CMD_STATUS in the MCU-holds-lock case.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.1029215
+error: null

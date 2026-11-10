@@ -1,0 +1,64 @@
+finding_hash: d94a21c998001981
+started_at: '2026-11-10T22:06:54Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four of five items are untested. The NMI copy requirement is covered by a tb.sv assertion,
+    so that item is withdrawn. RACL is tied off (policies = 0, error left unconnected) with a coverage
+    exclusion file for the non-RACL build. No clock-domain checks exist for the outputs.
+  evidence:
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 72
+    line_end: 72
+    quote: '`ASSERT(wdog_bark_intr_is_nmi, wdog_bark === wdog_bark_nmi, clk, rst_n)'
+    role: refutes
+    note: Checks nmi is a copy of the bark interrupt in every test.
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 25
+    line_end: 26
+    quote: "racl_policy_vec_t racl_policies;\n  assign racl_policies = 0;"
+    role: supports
+    note: RACL policies are tied to 0; racl_error_o is unconnected, so there is no RACL testing.
+  searches:
+  - what: racl and nmi references in aon_timer dv
+    where: hw/ip/aon_timer/dv
+    found: Only tb.sv tie-off, the NMI assertion, and a coverage exclusion file.
+  - what: wkup_req / rst_req checks
+    where: hw/ip/aon_timer/dv
+    found: Scoreboard checks values but not the clock domain.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 1278
+    line_end: 1288
+    why_not: Checks wkup_req value, not the AON clock domain it is driven on.
+  items:
+  - id: cr_517c566609ad
+    outcome: verified
+    reason: EnableRacl is not exercised; only a tie-off exists in the testbench.
+    evidence:
+    - 1
+  - id: cr_625c1cd8c604
+    outcome: withdrawn
+    reason: A tb.sv assertion checks nmi equals bark on every run.
+    evidence:
+    - 0
+  - id: cr_6c14ebc81991
+    outcome: verified
+    reason: No check of the SYS-domain driving for the interrupt outputs was found.
+    evidence: []
+  - id: cr_7aa0f0735984
+    outcome: verified
+    reason: Values are checked but the AON domain is not.
+    evidence: []
+  - id: cr_c98fa20138a9
+    outcome: verified
+    reason: RACL ports are tied off and unchecked.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.053398600000000004
+error: null

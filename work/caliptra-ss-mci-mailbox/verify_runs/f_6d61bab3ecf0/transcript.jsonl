@@ -1,0 +1,10 @@
+{"t": "2026-11-10T19:43:44Z", "event": "  \u2192 Grep: TARGET_STATUS"}
+{"t": "2026-11-10T19:43:45Z", "event": "  \u2192 Grep: mcu_mbox.*(target_user|TARGET_USER)|MBOX_TARGET_USER|TARGET_USER_VALID"}
+{"t": "2026-11-10T19:43:47Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c"}
+{"t": "2026-11-10T19:43:47Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh"}
+{"t": "2026-11-10T19:43:53Z", "event": "  \u2192 Grep: non-responsive|nonresponsive|second target|second Target|next Target"}
+{"t": "2026-11-10T19:43:53Z", "event": "  \u2192 Grep: read_execute|EXECUTE.*(==|!=)"}
+{"t": "2026-11-10T19:44:06Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:44:14Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:44:18Z", "event": "I've submitted the verdict and it was accepted. Four of the five items are untested, and the fifth is covered.\n\n- **Untested (verified):**\n  - A second Target waiting for the first Target's terminal TARGET_STATUS.\n  - Programming and validating the next Target user after the clear.\n  - EXECUTE staying 1 after the terminal TARGET_STATUS. The ownership flow test only implies this, because Root owns the SRAM afterwards. Nothing reads EXECUTE directly.\n  - MCI-reset recovery from a non-responsive Target.\n- **Covered (withdrawn):** \"No software owner when MBOX_LOCK is not set\" is checked in `mci_mbox_ownership_flow.svh`. After EXECUTE=0 the test requires the SRAM owner to be NONE, and non-owner reads must return 0.\n\nI haven't changed anything in the repository."}
+{"t": "2026-11-10T19:44:18Z", "event": "[9 turns, $0.1132]"}

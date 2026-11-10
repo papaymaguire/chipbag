@@ -1,0 +1,97 @@
+finding_hash: d546f46c08e218ca
+started_at: '2026-11-10T19:42:33Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The directed test mcu_intr_handler triggers each MCI error and notif interrupt once. It then
+    reads all the *_INTR_COUNT_R counters and fails if their sum differs from the number of events triggered.
+    This covers all five items, though only through an aggregate check. The test is in the nightly regression.
+    The check does not compare each counter separately, so offsetting errors between two counters could
+    mask a fault.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 65
+    line_end: 65
+    quote: ERROR_MBOX1_ECC_UNC_TRIG_MASK             ); mci_error_intr_count++;
+    role: refutes
+    note: Stimulus for error_mbox1_ecc_unc; the expected count is incremented by 1 for each event.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 201
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: refutes
+    note: Check that fails the test if the summed HW counters, including MBOX1_ECC_UNC, differ from the
+      number of events triggered.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 256
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: refutes
+    note: Same check for the notif counters, including CPTRA_MBOX_CMD_AVAIL, MBOX0_TARGET_DONE and MBOX1_SOC_REQ_LOCK.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 117
+    line_end: 117
+    quote: NOTIF_MBOX1_SOC_REQ_LOCK_TRIG_MASK  ); mci_notif_intr_count++;
+    role: refutes
+    note: Stimulus for the mbox1_soc_req_lock notif interrupt.
+  - path: src/integration/stimulus/testsuites/caliptra_ss_master_test_list.csv
+    line_start: 119
+    line_end: 119
+    quote: mcu_intr_handler
+    role: context
+    note: The test is in the nightly regression.
+  searches:
+  - what: tests reading the intr_count registers
+    where: src/integration/test_suites
+    found: mcu_intr_handler.c reads every count register after triggering each interrupt and compares
+      the sum; libs/mci/mci.c only has a register-property table
+  - what: regression inclusion of mcu_intr_handler
+    where: src/integration/stimulus
+    found: Included in the nightly directed regression lists and the master test list
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 568
+    line_end: 592
+    why_not: Register table for reset and access checks; does not check that the counters increment.
+  items:
+  - id: cr_263337375bbf
+    outcome: withdrawn
+    reason: The test triggers the CPTRA_MBOX_CMD_AVAIL notif and the aggregate counter sum is checked
+      against the event count.
+    evidence:
+    - 2
+  - id: cr_29a5cbd3339c
+    outcome: withdrawn
+    reason: The test triggers MBOX0_TARGET_DONE and the aggregate counter sum is checked against the event
+      count.
+    evidence:
+    - 2
+  - id: cr_2b1a5342bb6d
+    outcome: withdrawn
+    reason: The test triggers MBOX1_ECC_UNC once and the aggregate error counter sum is checked.
+    evidence:
+    - 0
+    - 1
+  - id: cr_2c0e1728aaaa
+    outcome: withdrawn
+    reason: The decrvalue = 1 attribute is only observable as the one-clock pulse that makes the count
+      increment by 1 per event. The test triggers MBOX1_SOC_REQ_LOCK and checks the resulting count in
+      aggregate.
+    evidence:
+    - 3
+    - 2
+  - id: cr_304b89024a55
+    outcome: withdrawn
+    reason: The 'counter' attribute is an implementation property. Its effect, count growth per event,
+      is checked by the aggregate comparison.
+    evidence:
+    - 1
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Directed test that triggers each interrupt and checks the interrupt event counters.
+submissions: 2
+rejections: []
+turns: 13
+cost_usd: 0.15738380000000002
+error: null

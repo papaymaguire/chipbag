@@ -1,0 +1,9 @@
+{"t": "2026-11-10T19:38:43Z", "event": "  \u2192 Grep: hash_continue|SwInvalidConfig"}
+{"t": "2026-11-10T19:38:43Z", "event": "  \u2192 Grep: byte_enable|a_mask|wr_mask|unaligned|partial"}
+{"t": "2026-11-10T19:38:45Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T19:38:46Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:38:49Z", "event": "  \u2192 Grep: hash_continue|hash_stop"}
+{"t": "2026-11-10T19:38:49Z", "event": "  \u2192 Grep: constraint hmac_base_vseq::wr_addr|wr_addr"}
+{"t": "2026-11-10T19:38:57Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:39:01Z", "event": "I submitted the verdict as inconclusive: one of the three items stands and two are withdrawn.\n\n- **Sideloaded key, `hash_stop`/`hash_continue` rejection (`cr_f3333982706d`): stands.** I found no test that writes `CMD.hash_continue` with a sideloaded key. I only searched the top_earlgrey sequences (no matches), so the finding's claim that the keymgr_dpe test covers only `hash_stop` is taken as given.\n- **Packer compacts sub-word writes (`cr_061121ce8d53`): withdrawn.** The HMAC base sequence randomises byte-enable masks, so partial writes are issued (`hmac_base_vseq.sv:358`). The scoreboard digest check would fail on wrong packing.\n- **Any write goes into the single packer entry (`cr_194a75cea966`): withdrawn.** The same sequence randomises the write address across the whole MSG_FIFO range (`hmac_base_vseq.sv:103`), and the digest is checked against the reference.\n\nI did not check whether the tests that use this sequence, such as `hmac_smoke`, actually exercise the randomised path."}
+{"t": "2026-11-10T19:39:01Z", "event": "[8 turns, $0.0611]"}

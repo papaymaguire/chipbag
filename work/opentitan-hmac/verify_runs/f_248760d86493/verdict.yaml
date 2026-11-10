@@ -1,0 +1,62 @@
+finding_hash: 80147a1a514f186d
+started_at: '2026-11-10T21:03:19Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The HMAC DV randomizes a contiguous byte mask and a wr_addr anywhere in the window, so sub-word
+    writes are issued and the scoreboard checks the digest. The mask is independent of address bits [1:0],
+    and the TL layer requires addresses to be size-aligned. I found no test that checks that the write
+    offset depends only on address bits [1:0]. The finding stands as partly tested.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 358
+    line_end: 358
+    quote: '`DV_CHECK_FATAL(randomize(wr_addr, wr_mask) with {$countones(wr_mask) <= msg_q.size();})'
+    role: context
+    note: 'Stimulus: random in-window address and a random byte mask. Address and mask are chosen independently,
+      so the mask is not derived from address bits [1:0].'
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 157
+    line_end: 162
+    quote: foreach (item.a_mask[i]) begin
+    role: context
+    note: The scoreboard builds the expected message from a_mask only and ignores the address, so it can't
+      detect a wrong address-[1:0]-to-offset mapping.
+  - path: hw/dv/sv/tl_agent/tl_seq_item.sv
+    line_start: 37
+    line_end: 37
+    quote: '`define ADDR_ALIGNED_TO_SIZE(a_addr, a_size) ((a_addr & ((1 << a_size) - 1)) == 0)'
+    role: context
+    note: TL requires natural alignment, which limits how address bits [1:0] can be combined with size
+      and mask.
+  searches:
+  - what: byte-lane or address [1:0] handling in the HMAC dv
+    where: hw/ip/hmac/dv
+    found: Only the random wr_addr/wr_mask in hmac_base_vseq, and the mask-based scoreboard model. No
+      check on address bits [1:0].
+  - what: how tl_access handles the address low bits
+    where: hw/dv/sv/tl_agent
+    found: Only alignment constraints in tl_seq_item. I did not fully trace how tl_access sets the size.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 355
+    line_end: 375
+    why_not: It issues sub-word masked writes to random window addresses, and the digest comparison checks
+      the result. But the scoreboard model uses only the mask, and no check ties the offset to address
+      bits [1:0]. I also did not confirm that the low address bits survive alignment.
+  items:
+  - id: cr_5dc8e5c046fb
+    outcome: verified
+    reason: Sub-word writes exist, but the scoreboard ignores the address and the mask is independent
+      of address bits [1:0]. Nothing checks that the offset depends only on those bits.
+    evidence:
+    - 0
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.0730886
+error: null

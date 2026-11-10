@@ -1,0 +1,82 @@
+finding_hash: 77c8e5cdcde0df23
+started_at: '2026-11-10T20:33:51Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The test's order (EXECUTE=1, then TARGET_USER_VALID=1) matches the Hardware Specification's
+    ownership table. Only the Integration Specification's sequence diagram shows the opposite order. So
+    the real problem is two spec documents disagreeing, not a test that violates the spec.
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1398
+    line_end: 1398
+    quote: '| Root writes `TARGET_USER_VALID=1` while `EXECUTE=1` | The agent named by `TARGET_USER` |'
+    role: refutes
+    note: HW spec makes the TARGET_USER_VALID write the handoff, with EXECUTE already 1. This is the test's
+      order.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1397
+    line_end: 1397
+    quote: '| `EXECUTE=1` while `TARGET_USER_VALID=0` | Root |'
+    role: refutes
+    note: 'Setting EXECUTE before the grant is a defined state: Root keeps ownership. The test comment
+      says the same.'
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2327
+    line_end: 2328
+    quote: "    MCU->>MBOX: Write TARGET_USER_VALID=1\n    MCU->>MBOX: Write EXECUTE=1"
+    role: supports
+    note: The integration diagram has EXECUTE after the grant, which conflicts with the HW spec.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 190
+    line_end: 191
+    quote: "// TARGET_USER_VALID stays 0 so Root keeps ownership when EXECUTE is set.\n    mcu_mbox_set_execute(mbox_num);"
+    role: context
+    note: The test writes EXECUTE before the grant.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 208
+    line_end: 209
+    quote: "    mcu_mbox_write_target_user(mbox_num, caliptra_uc_axi_id);\n    mcu_mbox_write_target_user_valid(mbox_num,\
+      \ 1);"
+    role: context
+    note: The grant comes after EXECUTE, so it is the handoff.
+  searches:
+  - what: TARGET_USER_VALID and EXECUTE ordering in the HW spec
+    where: docs/CaliptraSSHardwareSpecification.md
+    found: Ownership table and surrounding text make the TARGET_USER_VALID=1 write, while EXECUTE=1, the
+      handoff to the target.
+  - what: Test flow around the grant
+    where: smoke_test_mcu_mbox_target_user.c lines 170-230
+    found: EXECUTE is set first, then TARGET_USER and TARGET_USER_VALID are written, then the test waits
+      for TARGET_STATUS.
+  near_misses:
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2323
+    line_end: 2342
+    why_not: The diagram does show the opposite order, but the HW spec table is more precise and the test
+      follows it. I did not read the RTL.
+  items: []
+  new_sources:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    reason: Defines the owner-resolution table and the TARGET_USER_VALID grant semantics.
+  resolution: The test is right. Fix the Integration Specification sequence diagram to put `Write EXECUTE=1`
+    before `Write TARGET_USER_VALID=1`, or state that either order is allowed, so that it matches the
+    Hardware Specification.
+  reclassify:
+    category: spec_contradiction
+    title: Integration spec MCU-to-target flow orders EXECUTE and TARGET_USER_VALID opposite to the HW
+      spec
+    explanation: The Integration Specification diagram writes TARGET_USER_VALID=1 and then EXECUTE=1.
+      The Hardware Specification ownership table says EXECUTE=1 with TARGET_USER_VALID=0 leaves Root as
+      owner. It also says Root writing TARGET_USER_VALID=1 while EXECUTE=1 hands ownership to the target.
+      The test follows the Hardware Specification.
+    evidence:
+    - 2
+    - 0
+    - 1
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.07541809999999999
+error: null

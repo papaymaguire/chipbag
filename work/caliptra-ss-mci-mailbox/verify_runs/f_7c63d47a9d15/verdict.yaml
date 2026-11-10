@@ -1,0 +1,57 @@
+finding_hash: cd21913a79cadeea
+started_at: '2026-11-10T20:39:38Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test or checker verifies the soc_mcu_mbox*_data_avail wire behavior or the TARGET_USER ordering.
+    The wire is only sampled by coverpoints. The testbench services only force the internal signals, and
+    the firmware library polls interrupts, not the wire.
+  evidence:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 175
+    line_end: 176
+    quote: 'soc_mcu_mbox0_data_avail_cp: coverpoint  soc_mcu_mbox0_data_avail;'
+    role: context
+    note: Coverage only; it has no pass/fail check.
+  searches:
+  - what: soc_mcu_mbox*_data_avail use
+    where: repo
+    found: Only RTL, top-level wiring, the testbench port and the coverage interface. No assertion or
+      checker.
+  - what: data_avail in testbench services and firmware lib
+    where: src/integration
+    found: The services file only forces the internal mcu_mbox*_data_avail signals. The lib.c functions
+      poll the data_avail interrupt status, not the wire.
+  near_misses:
+  - path: src/integration/testbench/caliptra_ss_top_tb_services.sv
+    line_start: 431
+    line_end: 443
+    why_not: Forces the internal signals as stimulus. It checks nothing about the sideband wire.
+  - path: src/integration/test_suites/libs/caliptra_ss_lib/caliptra_ss_lib.c
+    line_start: 412
+    line_end: 433
+    why_not: Checks the SoC data-avail interrupt, which is a different thing from the sideband wire.
+  items:
+  - id: cr_b395303f48f6
+    outcome: verified
+    reason: The wire is only covered by a coverpoint, with no check that it asserts.
+    evidence:
+    - 0
+  - id: cr_918e477394f8
+    outcome: verified
+    reason: No check that the wire stays low while MCU programs the target configuration.
+    evidence:
+    - 0
+  - id: cr_d880e054e4d3
+    outcome: verified
+    reason: The test only sets TARGET_USER_VALID and adds a delay. Nothing checks the write ordering relative
+      to the notification.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0434544
+error: null

@@ -1,0 +1,12 @@
+{"t": "2026-11-10T19:44:53Z", "event": "  \u2192 Grep: mcu_mbox|MCU_MBOX"}
+{"t": "2026-11-10T19:44:54Z", "event": "  \u2192 Grep: intr_count|DLEN.*0|dlen.*=.*0|unaligned|non-destructive|destructive"}
+{"t": "2026-11-10T19:44:56Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_mbox_lock_return_one_during_zeroize/mcu_mbox_lock_return_one_during_zeroize.c"}
+{"t": "2026-11-10T19:44:57Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_zeroize/smoke_test_mcu_mbox_zeroize.c"}
+{"t": "2026-11-10T19:44:58Z", "event": "  \u2192 Grep: _intr_count_r|MBOX.*INTR.*TRIG|mcu_mbox.*intr.*trig"}
+{"t": "2026-11-10T19:45:01Z", "event": "  \u2192 Grep: zero|DLEN|SRAM"}
+{"t": "2026-11-10T19:45:02Z", "event": "  \u2192 Grep: mbox.*_sts|MBOX.*INTR_STATUS|mbox_sram.*(twice|again|re-?read)"}
+{"t": "2026-11-10T19:45:06Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:45:14Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:45:22Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:45:24Z", "event": "Verdict submitted and accepted: the finding stands, and I found no test covering any of the five items.\n\n- **Zeroize tests:** these check clearing only up to a non-zero DLEN. They never write DLEN = 0.\n- **Other items:** I found no test that mentions the interrupt count registers or CMD_STATUS. Nothing exercises unaligned SRAM accesses or checks that reads are non-destructive.\n\nI did not read every test in the suites. The searches were keyword searches, so a test that covers these items without using those names would have been missed."}
+{"t": "2026-11-10T19:45:24Z", "event": "[11 turns, $0.1029]"}

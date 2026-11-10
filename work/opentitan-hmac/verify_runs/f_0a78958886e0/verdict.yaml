@@ -1,0 +1,54 @@
+finding_hash: 426ee1be933ccff3
+started_at: '2026-11-10T19:37:07Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'Other spec text answers all the questions: the register description lists the key lengths,
+    the one-hot 6-bit encoding, and the error on invalid or unsupported lengths. The Features line is
+    brief, but the full spec is not ambiguous.'
+  evidence:
+  - path: hw/ip/hmac/doc/registers.md
+    line_start: 193
+    line_end: 195
+    quote: This is a 6-bit one-hot encoded field to configure the key length for HMAC.
+    role: refutes
+    note: Defines the field and its encoding.
+  - path: hw/ip/hmac/doc/registers.md
+    line_start: 203
+    line_end: 203
+    quote: starting is blocked and an error is signalled to SW.
+    role: refutes
+    note: Key_None, or Key_1024 with SHA2_256, blocks the start and raises an error.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 186
+    line_end: 186
+    quote: invalid key length for HMAC mode
+    role: refutes
+    note: The error is SwInvalidConfig.
+  - path: hw/ip/hmac/README.md
+    line_start: 32
+    line_end: 32
+    quote: 128/256/384/512/1024-bit keys in HMAC mode
+    role: refutes
+    note: The README itself lists the supported set.
+  searches:
+  - what: key_length in the hmac docs, hjson and README
+    where: hw/ip/hmac
+    found: The register doc lists the supported lengths, the encoding, the SHA-256/1024-bit restriction
+      and the error behavior.
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/ip/hmac/doc/registers.md
+    reason: Defines the CFG.key_length encoding and error behavior.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    reason: Lists SwInvalidConfig for an invalid key length.
+  resolution: The Features line is brief, but CFG.key_length is documented in full in registers.md and
+    hmac.hjson. The set is 128/256/384/512/1024 bits, one-hot in a 6-bit field. Key_None, or Key_1024
+    with SHA-256, blocks the start and reports SwInvalidConfig.
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.034804
+error: null

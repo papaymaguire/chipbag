@@ -1,0 +1,68 @@
+finding_hash: 7b1bdca0887aaf85
+started_at: '2026-11-10T20:56:37Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Items 1 and 3 have no test. Item 2 is covered: the scoreboard compares SHA-2 384 digest reads,
+    but only for DIGEST_0–11, which disagrees with the README''s "DIGEST_0-DIGEST_12".'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 494
+    line_end: 496
+    quote: "((expected_digest_size == SHA2_384) && (digest_idx < 12)) ||\n                    expected_digest_size\
+      \ == SHA2_512) begin\n                `DV_CHECK_EQ(real_digest_val, exp_digest[digest_idx])"
+    role: refutes
+    note: SHA-2 384 digest reads are checked, but only for indices 0-11. DIGEST_12 is not checked, so
+      the README's 0-12 range is not what is verified.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 484
+    line_end: 485
+    quote: if (cfg.wipe_secret_triggered) begin
+    role: context
+    note: The wipe checks only the digest and key registers. They do not touch the message FIFO.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_wipe_secret_vseq.sv
+    line_start: 5
+    line_end: 7
+    quote: // During the transaction, this sequence randomly triggers wipe_secret and uses scb to check
+      if
+    role: context
+    note: The wipe sequence checks the digest only.
+  searches:
+  - what: scoreboard and sequences for digest checks and wipe handling
+    where: hw/ip/hmac/dv/env
+    found: The digest check for SHA-2 384 covers indices 0-11. The wipe check covers the digest only.
+  - what: message FIFO read-blocking or wipe-not-clearing-FIFO checks
+    where: hw/ip/hmac/dv
+    found: None. Only FIFO writes and depth/status are modelled.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_wipe_secret_vseq.sv
+    line_start: 38
+    line_end: 43
+    why_not: It triggers wipe_secret but checks only that the digest changes. It does not check that the
+      message FIFO is left intact.
+  items:
+  - id: cr_4282db4ce90a
+    outcome: verified
+    reason: No test attempts a software read of the message FIFO window or checks the result.
+    evidence:
+    - 1
+  - id: cr_4977ddf1d188
+    outcome: verified
+    reason: SHA-2 384 digest reads are checked, but only DIGEST_0-11. DIGEST_12 is never checked, so the
+      spec's stated range is not what is tested. The spec range may itself be a typo.
+    evidence:
+    - 0
+  - id: cr_8e41a2412a72
+    outcome: verified
+    reason: The wipe checks cover only the digest and key. No check shows the message FIFO is unaffected
+      by a wipe.
+    evidence:
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0654539
+error: null

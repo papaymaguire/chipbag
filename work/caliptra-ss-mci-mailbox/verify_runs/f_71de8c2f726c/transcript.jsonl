@@ -1,0 +1,8 @@
+{"t": "2026-11-10T19:36:59Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/asserts/caliptra_ss_top_sva.sv"}
+{"t": "2026-11-10T19:36:59Z", "event": "  \u2192 Grep: SVA ERROR"}
+{"t": "2026-11-10T19:37:00Z", "event": "Check whether the testbench scans logs or has a fail-on-SVA mechanism."}
+{"t": "2026-11-10T19:37:01Z", "event": "  \u2192 Grep: SVA ERROR"}
+{"t": "2026-11-10T19:37:04Z", "event": "  \u2192 Grep: SVA ERROR"}
+{"t": "2026-11-10T19:37:08Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:37:11Z", "event": "I submitted the verdict as verified: the finding stands.\n\nThe assertion `mci_error_non_fatal_cold_rst_check` in `src/integration/asserts/caliptra_ss_top_sva.sv` (lines 236\u2013239) only has a `$display` in its else branch. It prints \"SVA ERROR: MCI HW ERROR NON FATAL is expected to reset on cold reset\" but does not call `$error` or `$fatal`, so a violation would not fail the test.\n\nI found no `.sv` or non-`.sv` file that scans logs for \"SVA ERROR\". The same print-only pattern is used by the other SVA assertions I saw in the repo. A `HW_ERROR_NON_FATAL` value that survives a cold reset would go unnoticed unless someone reads the log.\n\nI did not modify any files."}
+{"t": "2026-11-10T19:37:11Z", "event": "[6 turns, $0.0377]"}

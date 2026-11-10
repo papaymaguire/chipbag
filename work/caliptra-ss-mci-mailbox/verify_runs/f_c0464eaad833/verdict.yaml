@@ -1,0 +1,89 @@
+finding_hash: ffbe9fe2502dc6f7
+started_at: '2026-11-10T19:46:50Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: The directed test mcu_intr_handler writes every notif and error trigger bit once. It then reads
+    all the *_INTR_COUNT_R counters and kills the sim if the sums differ from the number of triggers.
+    It runs in the nightly directed regressions. That is a real stimulus and a check that can fail, so
+    it covers the counter and pulse items (2–5). The check is a sum, so offsetting errors could be hidden.
+    The test also drives the software trigger registers rather than a real hardware interrupt input edge,
+    so item 1 is not clearly covered.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 112
+    line_end: 113
+    quote: NOTIF_MBOX0_ECC_COR_TRIG_MASK       ); mci_notif_intr_count++;
+    role: refutes
+    note: 'Stimulus: triggers mbox0 ecc_cor and expects the count to increment by one.'
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 259
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: refutes
+    note: 'Check: the sim is killed with an error if the summed hardware counters differ from the expected
+      count.'
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 201
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: refutes
+    note: The error counters, including the mbox0 ECC uncorrectable counter, are checked the same way.
+  - path: src/integration/stimulus/L1_Nightly_Directed_caliptra_ss_top_tb_regression.yml
+    line_start: 124
+    line_end: 124
+    quote: 'mcu_intr_handler/mcu_intr_handler: { weight: 100 }'
+    role: context
+    note: The test is included in the nightly regression.
+  searches:
+  - what: tests referencing count_incr or INTR_COUNT_R
+    where: src/integration
+    found: Only mcu_intr_handler.c reads the counters. The coverage file mci_top_cov_if.sv has coverpoints
+      but no checks.
+  - what: regression inclusion of mcu_intr_handler
+    where: regression ymls
+    found: Included in the nightly directed and strict regressions.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4810
+    line_end: 4810
+    why_not: A coverpoint only, with no check.
+  items:
+  - id: cr_92e293d86fd1
+    outcome: inconclusive
+    reason: The test uses the software trigger register. No test drives a real hardware interrupt input
+      rising edge.
+    evidence:
+    - 0
+    - 1
+  - id: cr_948e0cfb6d3a
+    outcome: withdrawn
+    reason: The error counters are exercised and checked by an aggregate comparison.
+    evidence:
+    - 2
+  - id: cr_96b7a083f521
+    outcome: withdrawn
+    reason: mbox0 ecc_cor is triggered once and the count is checked.
+    evidence:
+    - 0
+    - 1
+  - id: cr_97a9307feeea
+    outcome: withdrawn
+    reason: mbox0 target_done is triggered and its count is part of the checked sum.
+    evidence:
+    - 1
+  - id: cr_991e89c92ef8
+    outcome: withdrawn
+    reason: mbox1 ecc_cor is triggered and its count is part of the checked sum.
+    evidence:
+    - 0
+    - 1
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Test that triggers every interrupt and checks the event counters.
+submissions: 2
+rejections: []
+turns: 14
+cost_usd: 0.1449847
+error: null

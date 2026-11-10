@@ -1,0 +1,9 @@
+{"t": "2026-11-10T19:43:10Z", "event": "  \u2192 Grep: DIGEST1[2-5]|digest\\[1[2-5]\\]|msg_length_upper|MSG_LENGTH_UPPER"}
+{"t": "2026-11-10T19:43:11Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T19:43:12Z", "event": "  \u2192 Grep: digest_1[2-5]|msg_length_upper"}
+{"t": "2026-11-10T19:43:15Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T19:43:15Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:43:18Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:43:26Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:43:29Z", "event": "I've submitted the verdict, and it was accepted, so nothing is left to do.\n\n- **Item 1 (SHA-2 384 truncation):** verified. The scoreboard compares digest words 0..11 only for SHA-2 384, so nothing checks DIGEST12-DIGEST15.\n- **Item 2 (64-bit SHA-2 256 message length):** I withdrew it. `sar_different_context` restores a large length such as `'hFFFF_FFFF_FFFF_A800`, which makes the upper word non-zero. It then checks that the read-back equals that length plus the message size. The digest is not compared against a model using the 64-bit length. I also didn't confirm that this test ever runs with SHA-2 256.\n\nI submitted the overall outcome as verified, with item 2 marked withdrawn."}
+{"t": "2026-11-10T19:43:29Z", "event": "[8 turns, $0.0634]"}

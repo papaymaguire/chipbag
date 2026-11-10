@@ -1,0 +1,6 @@
+{"t": "2026-11-10T22:06:17Z", "event": "  \u2192 Grep: wkup_req|WKUP_CAUSE|wkup_cause"}
+{"t": "2026-11-10T22:06:19Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/README.md"}
+{"t": "2026-11-10T22:06:21Z", "event": "Spec answers bark and sticky-clear; latency is not specified, but the main questions are answered."}
+{"t": "2026-11-10T22:06:26Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T22:06:29Z", "event": "I withdrew the finding. Other specification text answers the question, apart from the clear-to-deassert latency, which the repository doesn't specify.\n\n- **Source:** `hw/ip/aon_timer/README.md` says `wkup_req_o` is raised by the wakeup timer or by a watchdog bark, not a bite.\n- **Clearing:** `wkup_req_o` stays high until software writes 0 to `WKUP_CAUSE`. The README states this in both the wakeup-timer and the watchdog-bark sections, and `hw/ip/aon_timer/doc/programmers_guide.md:91` gives the same clear procedure.\n\nThe verdict was accepted. I suggested in the resolution that the hjson description link to the README text."}
+{"t": "2026-11-10T22:06:29Z", "event": "[4 turns, $0.0330]"}

@@ -1,0 +1,125 @@
+finding_hash: 9f8eccb65cacd81c
+started_at: '2026-11-10T20:58:37Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: All five items have implemented DV stimulus and checks. The scoreboard checks STATUS.fifo_depth
+    against a model on every status read. It compares the full STATUS read, including fifo_full, against
+    the prediction. It models the invalid-config start block and the discard of CFG writes while a hash
+    is running. The vseqs create both conditions. The finding treats these as planned only.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 296
+    line_end: 300
+    quote: "          if (hmac_start) begin\n            if (cfg.en_cov) cov.wr_config_during_hash_cg.sample(1);\n\
+      \            return; // won't update configs if hash start"
+    role: refutes
+    note: Scoreboard models CFG writes being discarded while a hash is running. The mirror is not updated,
+      so later CSR reads of cfg and digest checks would fail if the DUT accepted the write.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 398
+    line_end: 399
+    quote: "          // randomly change key, config regs during msg wr, should trigger error or be discarded\n\
+      \          write_discard_config_and_key(wr_config_during_hash, wr_key_during_hash);"
+    role: refutes
+    note: Stimulus writes CFG during a message write, i.e. while a hash is ongoing.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 172
+    line_end: 188
+    quote: "          invalid_cfg = (`gmv(ral.cfg.digest_size) == SHA2_None) |\n                     \
+      \   ((`gmv(ral.cfg.key_length) == Key_None) & `gmv(ral.cfg.hmac_en)) |\n                       \
+      \ ((`gmv(ral.cfg.digest_size) == SHA2_256) &\n                          (`gmv(ral.cfg.key_length)\
+      \ == Key_1024) &\n                          `gmv(ral.cfg.hmac_en));"
+    role: refutes
+    note: Scoreboard models start being blocked for HMAC with Key_1024 and SHA2_256. It expects the SwInvalidConfig
+      error, and the digest is not updated.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 178
+    line_end: 178
+    quote: '      ((cast_digest_size == SHA2_256) && (cast_key_length == Key_1024) && hmac_en)) begin'
+    role: refutes
+    note: The vseq's hmac_init flags this configuration as invalid_cfg, so the DV stimulus reaches the
+      case.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 503
+    line_end: 514
+    quote: "      \"status\": begin\n        bit [5:0] rd_fifo_depth = item.d_data[HmacStaMsgFifoDepthMsb:HmacStaMsgFifoDepthLsb];"
+    role: refutes
+    note: 'Status reads are checked: fifo_depth is compared against the model with a +1 tolerance, and
+      a mismatch raises uvm_error.'
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 385
+    line_end: 386
+    quote: "                         (hmac_fifo_full  << HmacStaMsgFifoFull)  |\n                    \
+      \     (hmac_fifo_depth << HmacStaMsgFifoDepthLsb);"
+    role: refutes
+    note: The scoreboard predicts STATUS including fifo_full and fifo_depth, from a cycle-based model
+      of the write and read counts.
+  - path: sw/device/tests/hmac_error_conditions_test.c
+    line_start: 205
+    line_end: 206
+    quote: "  TRY_CHECK(hmacerr_reg == kErrorSwInvalidConfig,\n            \"Error code doesn't match\
+      \ expected code\");"
+    role: context
+    note: The chip-level SW test checks the invalid-config error for Key_None and SHA2_None. It does not
+      cover Key_1024 with SHA2_256 specifically.
+  searches:
+  - what: fifo_full, fifo_depth and wr_config_during_hash checks and stimulus
+    where: hw/ip/hmac/dv
+    found: The scoreboard checks STATUS reads and models discarded CFG writes. The base vseq drives CFG
+      writes during a hash.
+  - what: Key_1024 with SHA2_256 invalid config
+    where: hw/ip/hmac/dv, sw/device/tests
+    found: The scoreboard and vseq handle it. The SW test covers only the Key_None and SHA2_None variants.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 45
+    line_end: 45
+    why_not: Smoke sets wr_config_during_hash == 0. Other vseqs randomize it, so the stimulus is reachable
+      outside smoke.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 510
+    line_end: 511
+    why_not: The fifo_depth check tolerates +1, so it is not cycle exact. That is weaker than the finding's
+      premise but still a real check.
+  items:
+  - id: cr_0731a47e9bb2
+    outcome: withdrawn
+    reason: The scoreboard models CFG being unchanged while a hash is running, and the vseq writes CFG
+      during the hash.
+    evidence:
+    - 0
+    - 1
+  - id: cr_74e678770b65
+    outcome: withdrawn
+    reason: The scoreboard and vseq explicitly model the blocked start and the SwInvalidConfig error for
+      hmac_en with Key_1024 and SHA2_256.
+    evidence:
+    - 2
+    - 3
+  - id: cr_c2c3736b2c77
+    outcome: withdrawn
+    reason: A CFG write during a hash is discarded in the model and written randomly by the vseq. Later
+      reads compare against the unchanged mirror.
+    evidence:
+    - 0
+    - 1
+  - id: cr_0bd7f7a859d0
+    outcome: withdrawn
+    reason: The scoreboard compares the read fifo_depth against its model and raises uvm_error on a mismatch.
+    evidence:
+    - 4
+    - 5
+  - id: cr_a0e17a44b5f3
+    outcome: withdrawn
+    reason: The scoreboard predicts fifo_full in STATUS from its model and compares the status read, with
+      fifo_full-posedge handling in the model.
+    evidence:
+    - 5
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.1018939
+error: null

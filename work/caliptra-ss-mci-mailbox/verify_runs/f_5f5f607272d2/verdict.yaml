@@ -1,0 +1,74 @@
+finding_hash: 53bea3ae85ee11e7
+started_at: '2026-11-10T19:43:15Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test or check references the interrupt count-incrementor registers. The only non-RDL/RTL
+    references are functional coverpoints in a coverage interface, which sample values but check nothing.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1548
+    line_end: 1557
+    quote: This is implemented as a down-counter (1-bit) that will
+    role: supports
+    note: Spec behavior (1-bit down-counter pulse, decrvalue=1) that no test checks.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4810
+    line_end: 4810
+    quote: 'INTR_BLOCK_RF_ERROR_MBOX0_ECC_UNC_INTR_COUNT_INCR_R_cp : coverpoint i_mci_reg_top.i_mci_reg.field_storage.intr_block_rf.error_mbox0_ecc_unc_intr_count_incr_r;'
+    role: context
+    note: Coverage only, no pass/fail check.
+  searches:
+  - what: count_incr_r references outside RDL (item cr_134b9577da6e decrement, notif_mbox0_ecc_cor)
+    where: repo
+    found: Only generated mci_reg*.sv and coverage interface
+  - what: intr_count_incr in tests (item cr_156d1497e96f rising edge increment)
+    where: repo excluding mci_reg*
+    found: Only docs and coverage interface
+  - what: notif_mbox1_cmd_avail_intr_count_incr (item cr_15934effe86a)
+    where: repo
+    found: Only generated RTL and coverage coverpoint
+  - what: error_mbox0_ecc_unc_intr_count_incr pulse (item cr_17b3f2ee3de1)
+    where: repo
+    found: Only coverpoint at cov_if line 4810, no check
+  - what: notif_mbox0_cmd_avail_intr_count_incr pulse down-counter (item cr_19033470337c)
+    where: repo
+    found: Only generated RTL and coverage; no test
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4800
+    line_end: 4820
+    why_not: Coverpoints sample the field but check nothing.
+  items:
+  - id: cr_134b9577da6e
+    outcome: verified
+    reason: No test checks it.
+    evidence:
+    - 0
+  - id: cr_156d1497e96f
+    outcome: verified
+    reason: No test checks it.
+    evidence:
+    - 0
+  - id: cr_15934effe86a
+    outcome: verified
+    reason: No test checks it.
+    evidence:
+    - 0
+  - id: cr_17b3f2ee3de1
+    outcome: verified
+    reason: No test checks it.
+    evidence:
+    - 0
+  - id: cr_19033470337c
+    outcome: verified
+    reason: No test checks it.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 7
+cost_usd: 0.05357030000000001
+error: null

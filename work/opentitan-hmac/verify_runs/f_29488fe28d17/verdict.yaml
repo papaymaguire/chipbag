@@ -1,0 +1,87 @@
+finding_hash: 115397283da57d8e
+started_at: '2026-11-10T21:04:17Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Three of the four items have no test that checks them. The SHA-2 384 digest readout is checked
+    by the scoreboard, so that item is withdrawn.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 491
+    line_end: 491
+    quote: // only check till digest_idx = 7 for SHA-2 256 and till digest_idx = 11 for SHA-2 384
+    role: refutes
+    note: The scoreboard compares digest words 0-11 against the expected value for SHA-384, so the 384-bit
+      readout is checked.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: '// TODO(#31634): Disable sideloading for now.'
+    role: supports
+    note: DV forces cfg.sideload to 0, so a sideloaded key is never exercised and non-exposure cannot
+      be checked.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_wipe_secret_vseq.sv
+    line_start: 6
+    line_end: 7
+    quote: // During the transaction, this sequence randomly triggers wipe_secret and uses scb to check
+      if
+    role: context
+    note: The wipe check only covers the digest registers. Nothing checks that the message FIFO is left
+      intact.
+  searches:
+  - what: sideload, key_valid and keymgr in the HMAC DV directory
+    where: hw/ip/hmac/dv
+    found: The sideload agent is wired in, but sideload is disabled in the base vseq. No check that the
+      key is hidden from software.
+  - what: message FIFO read or wipe behaviour in the testplan and scoreboard
+    where: hw/ip/hmac/data/hmac_testplan.hjson and the scoreboard
+    found: Nothing checks that software cannot read the FIFO, and nothing checks that wipe leaves the
+      FIFO intact.
+  - what: DIGEST readout for SHA-384
+    where: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    found: The scoreboard compares digest words 0-11 for SHA-384.
+  - what: sideload and wipe_secret in HMAC software tests
+    where: sw/device/tests
+    found: Found hmac_secure_wipe_test.c and keymgr_dpe_sideload_hmac_test.c, but I did not read them,
+      so this search does not show whether they check non-exposure of the key or FIFO behaviour.
+  near_misses:
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    line_start: 1
+    line_end: 1
+    why_not: I did not read this file. It is a sideload HMAC test and probably checks only the resulting
+      HMAC value, not that the key is hidden from software.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_wipe_secret_vseq.sv
+    line_start: 38
+    line_end: 43
+    why_not: It triggers wipe_secret, but the scoreboard only checks the digest registers, not the message
+      FIFO.
+  items:
+  - id: cr_419b9981b884
+    outcome: verified
+    reason: DV disables sideload, and no check shows the key is hidden from software.
+    evidence:
+    - 1
+  - id: cr_4282db4ce90a
+    outcome: verified
+    reason: I found no test or check that reads the message FIFO from software or confirms that it cannot
+      be read.
+    evidence: []
+  - id: cr_4977ddf1d188
+    outcome: withdrawn
+    reason: The scoreboard does check SHA-384 digest readout, comparing words 0-11 and skipping the rest.
+      The README's 'DIGEST_12' wording looks off by one, but the readout itself is tested.
+    evidence:
+    - 0
+  - id: cr_8e41a2412a72
+    outcome: verified
+    reason: The wipe_secret test only checks that the digest changed. Nothing checks that the message
+      FIFO is left intact.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.08531539999999999
+error: null

@@ -1,0 +1,28 @@
+finding_hash: 0ae604ddaefe5285
+started_at: '2026-11-10T22:06:00Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The comment mentions 'predicting_value', but the code is gated on the `wait_for_we` argument.
+    'predicting_value' appears nowhere else in the aon_timer DV code, so the comment is stale. This is
+    cosmetic and has no functional impact.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 368
+    line_end: 370
+    quote: "// Blocks only if 'predicting_value' = 1\n              if (wait_for_we)"
+    role: supports
+    note: The comment names a variable that does not exist, while the code is gated on wait_for_we.
+  searches:
+  - what: predicting_value
+    where: hw/ip/aon_timer/dv
+    found: Only the comment at line 368; no declaration or use.
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.020888600000000004
+error: null

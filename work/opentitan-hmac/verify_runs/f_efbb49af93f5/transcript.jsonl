@@ -1,0 +1,9 @@
+{"t": "2026-11-10T21:11:19Z", "event": "  \u2192 Grep: sideload|key_valid|keymgr"}
+{"t": "2026-11-10T21:11:19Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/doc/theory_of_operation.md"}
+{"t": "2026-11-10T21:11:20Z", "event": "  \u2192 Grep: sideload|key_valid|keymgr|SwInvalidConfig"}
+{"t": "2026-11-10T21:11:22Z", "event": "Sideloading is disabled in DV, so none of the five items is tested."}
+{"t": "2026-11-10T21:11:26Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T21:11:31Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:11:37Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:11:41Z", "event": "I verified the finding: none of the five key-sideloading requirements is tested in the HMAC DV. Each of the five items is marked verified.\n\nThe randomized config sequence forces `CFG.sideload` to 0, with a TODO referencing #31634 (`hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv:211`). The sideload agent and `tb.sv` wiring exist, but the agent runs with `start_default_seq = 0`, and no sequence drives the key or its valid signal. So these cases have no stimulus at all:\n- `CFG.sideload` with `hmac_en` set or clear.\n- Valid deasserting mid-operation.\n- Packer and FIFO clearing on abort.\n- A key changing during an operation.\n\nI found no test, assertion or other check covering any of them. The scoreboard's `SwInvalidConfig` handling (`hmac_scoreboard.sv:199`, `:219`) is for other configuration errors, not sideload.\n\nMy first two submissions were rejected, once for a tool-name error and once for too few recorded searches. The third was accepted."}
+{"t": "2026-11-10T21:11:41Z", "event": "[7 turns, $0.0664]"}

@@ -1,0 +1,55 @@
+path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+scope:
+  kind: whole_file
+model: claude-sonnet-5-5
+cost_usd: 0.023224599999999998
+file_kind: authored
+chunks:
+- title_path: hmac_base_vseq > class declaration
+  kind: class
+  line_start: 5
+  line_end: 100
+- title_path: hmac_base_vseq > constraints
+  kind: other
+  line_start: 102
+  line_end: 130
+- title_path: hmac_base_vseq > new, dut_init, apply_reset
+  kind: function
+  line_start: 132
+  line_end: 147
+- title_path: hmac_base_vseq > hmac_init
+  kind: function
+  line_start: 149
+  line_end: 190
+- title_path: hmac_base_vseq > config/key/sha_enable and trigger tasks
+  kind: function
+  line_start: 192
+  line_end: 268
+- title_path: hmac_base_vseq > digest and key CSR tasks
+  kind: function
+  line_start: 270
+  line_end: 331
+- title_path: hmac_base_vseq > wr_msg
+  kind: function
+  line_start: 333
+  line_end: 423
+- title_path: hmac_base_vseq > burst_wr_msg
+  kind: function
+  line_start: 425
+  line_end: 504
+- title_path: hmac_base_vseq > msg_length, status, error code tasks
+  kind: function
+  line_start: 506
+  line_end: 548
+- title_path: hmac_base_vseq > save_and_restore tasks
+  kind: function
+  line_start: 550
+  line_end: 642
+- title_path: hmac_base_vseq > sar_different_context
+  kind: function
+  line_start: 643
+  line_end: 752
+- title_path: hmac_base_vseq > save_and_restore_cfg and wait_cycles
+  kind: function
+  line_start: 754
+  line_end: 837

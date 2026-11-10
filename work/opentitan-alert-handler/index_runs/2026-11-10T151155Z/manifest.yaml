@@ -1,0 +1,505 @@
+topic: alert handler
+repo_root: targets/opentitan
+repo_commit: b84154c71810e853c0b37c00e96bb830804dd9f4
+generated_at: '2026-11-10T15:11:55Z'
+model: claude-sonnet-5-5
+confirmed: false
+sources:
+- path: hw/top_earlgrey/ip_autogen/alert_handler/README.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: Alert handler overview/features spec
+  units: 1
+  sha256: 6be55a7a6f2d4901143e11c59b6c489fcc67f6d55289534725e5871e8f745e0f
+- path: hw/top_earlgrey/ip_autogen/alert_handler/data/alert_handler.hjson
+  role: spec
+  scope:
+    kind: whole_file
+  reason: Alert handler register definition (Hjson)
+  units: 1
+  sha256: 5f29cb0e5d345bd05351309aff7f5fdc0fa9696e8fc6155753f207702e068990
+- path: hw/top_earlgrey/ip_autogen/alert_handler/doc/programmers_guide.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: Alert handler programmer's guide
+  units: 1
+  sha256: 5944be1d51fedc04aa2d30d1f9ecb04b8895e270c0b7ea7323b27e7dcff4540a
+- path: hw/top_earlgrey/ip_autogen/alert_handler/doc/theory_of_operation.md
+  role: spec
+  scope:
+    kind: whole_file
+  reason: Alert handler theory of operation
+  units: 1
+  sha256: 9738bbe5b5bcfd8084634eb9c370c8481d65892940587ce2ab009ac6e22c1962
+- path: hw/dv/sv/alert_agent/data/alert_agent_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared alert agent testplan imported by alert handler plan
+  units: 1
+  sha256: e954f252be58eeb1131d5a2bf06517f6cc63da1b3e74015c46f684b9f847b45d
+- path: hw/dv/sv/esc_agent/data/esc_agent_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared escalation agent testplan imported by alert handler plan
+  units: 1
+  sha256: f548cff599c3e46cca292d31a947eca640931ef34dfe63b9ab7d2feca0def239
+- path: hw/dv/tools/dvsim/testplans/alert_test_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared alert_test testplan imported by alert handler
+  units: 1
+  sha256: d528544ca88a548a3de099fcfeddb832c0e016214d865e83f5c2368c1fc45500
+- path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared CSR testplan imported
+  units: 1
+  sha256: 017ecfde886312665da88ac9f4b31e7e640ef3ca3d656ae24f57d300348f538f
+- path: hw/dv/tools/dvsim/testplans/intr_test_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared interrupt testplan imported
+  units: 1
+  sha256: be7ba0d65e58a8a9cc94eb30b4b5acb20a9716f0a5967abbf52ee10739e4eed7
+- path: hw/dv/tools/dvsim/testplans/shadow_reg_errors_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared shadow reg testplan imported
+  units: 1
+  sha256: 0f97b5a87a5e2998574b3250ea600e09ad4954fa771de426c0b7627b0a92212a
+- path: hw/dv/tools/dvsim/testplans/stress_all_with_reset_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared stress/reset testplan imported
+  units: 1
+  sha256: aab1d8b00b2816514dc8cc40c3b3050fbff7b2a6392aa6be06c73ffdf35b6fea
+- path: hw/dv/tools/dvsim/testplans/tl_device_access_types_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Shared TL access testplan imported
+  units: 1
+  sha256: a24dad965c7b7c5eaa591acc1ed8bb1e02be1dd0181cdac84d048c5217e61db1
+- path: hw/top_earlgrey/data/ip/chip_alert_handler_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Chip-level alert handler testplan
+  units: 1
+  sha256: 5e17baa8388980836e1a9cff6458a081fc3f7e25bbb192559f757d1feff8542a
+- path: hw/top_earlgrey/dv/chip_sim_cfg.hjson
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - chip_sw_alert_handler*
+    - chip_sw_alert_test
+  reason: Chip-level alert handler test entries
+  units: 10
+  sha256: da85d0e434186e663ef16daea0c32cab1dccb7b6d03b235ca65ff2b294de51eb
+- path: hw/top_earlgrey/dv/env/seq_lib/chip_sw_alert_handler_entropy_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Chip vseq entropy
+  units: 1
+  sha256: 63552e67e8feb5ac01425c9a70da5a02f8cb2d2e19c7a2b9d05272e1e9f534b5
+- path: hw/top_earlgrey/dv/env/seq_lib/chip_sw_alert_handler_escalation_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Chip vseq escalation
+  units: 1
+  sha256: 2b3b21c5d643ec0605ba26e81045797b406fe4d875839003ec2590cead1a7a8b
+- path: hw/top_earlgrey/dv/env/seq_lib/chip_sw_alert_handler_lpg_clkoff_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Chip vseq LPG clkoff
+  units: 1
+  sha256: c2403a17a334153ab465d559e2b055b780c472550158153c1b47c5c2ba251f71
+- path: hw/top_earlgrey/dv/env/seq_lib/chip_sw_alert_handler_shorten_ping_wait_cycle_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Chip vseq shortened ping wait
+  units: 1
+  sha256: 3034abbb2b3a8a6c9a836ce8ec7c2f52c55242892b932b523cc068d550107600
+- path: hw/top_earlgrey/formal/conn_csvs/alert_handler_esc.csv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Escalation connectivity checks
+  units: 1
+  sha256: 13ec5317267eec3fd541b5a49297913b4a8b6cdefb71f224b8187ff85fc3aa35
+- path: hw/top_earlgrey/formal/top_earlgrey_fpv_prim_cfgs.hjson
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - alert_handler*
+  reason: FPV targets for alert handler timers
+  units: 2
+  sha256: 9289584cf1c2d12e0b826fbeef9a3ed9433091307718443cd60c3228182c4d5e
+- path: hw/top_earlgrey/formal/top_earlgrey_fpv_sec_cm_cfgs.hjson
+  role: verification
+  scope:
+    kind: entries
+    match:
+    - alert_handler*
+  reason: FPV sec_cm target
+  units: 1
+  sha256: 20d8193d636c6364de8038bcc22c6d15c7be691af89efcad2497ffe4ea38245f
+- path: hw/top_earlgrey/ip_autogen/alert_handler/data/alert_handler_sec_cm_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Alert handler security countermeasure testplan
+  units: 1
+  sha256: c7764eb4a784b168b9c551ac228331b85b68e59e50bc2c2cbb4674f33e3391f9
+- path: hw/top_earlgrey/ip_autogen/alert_handler/data/alert_handler_testplan.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Alert handler DV testplan
+  units: 1
+  sha256: 7ee39937f49487a28720eac2c19cb538e7c792ef39906292c6c94ae394065221
+- path: hw/top_earlgrey/ip_autogen/alert_handler/doc/checklist.md
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Sign-off checklist
+  units: 1
+  sha256: 15c04fe97bd2514bd14bd020e6bd91c7a98138234adc918170d9aa91e567dba0
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/README.md
+  role: verification
+  scope:
+    kind: whole_file
+  reason: DV document
+  units: 1
+  sha256: 57b6ed67a1e530505269bf3bb051109ca53092cf65ecfeae1ea1aa6eaf08a1a9
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/alert_handler_sim_cfg.hjson
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Block sim config and regression test list
+  units: 1
+  sha256: 37349afb59842c139ad9aa86bfcb620a601940679e4171b4f243376500345e24
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/cov/alert_handler_cov_bind.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Coverage bind file
+  units: 1
+  sha256: 4c11114145444dad4d9c2c8de139e89984ffa915390932f20d448f504ef8ed96
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/cov/alert_handler_cov_excl.el
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Coverage exclusions
+  units: 1
+  sha256: f8c3d2e6a8567883d7ec5428375ae39738de3233eb37d6ece340b7f6f4a45f59
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/cov/alert_handler_cov_unr.el
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Coverage unreachable exclusions
+  units: 1
+  sha256: ab69c9d597891399be98fd41d1bb99011825008e28e8d1e60f85699257e51ce9
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/alert_handler_env_cfg.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Test configuration class
+  units: 1
+  sha256: 9337b74ce03a9fdc1ede80a4630d492f378bad58c58a4bab77659e7de5d548d0
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/alert_handler_env_cov.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Functional coverage model
+  units: 1
+  sha256: 57db8c676ff53b83426f325619f43f9874f7e205551a229fd97f3dfd23ac2643
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/alert_handler_if.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Alert handler DV interface with probes/checks
+  units: 1
+  sha256: 0c7ebdeb81d9a329514ad2a2ce2f2ea5f090ee916657fe06d2c55a5b5a96ad41
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/alert_handler_scoreboard.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Scoreboard/predictor
+  units: 1
+  sha256: a42b8b7a66a04a4f89f1ca55c9a8b54579a1a27476e983c569404a8e0495a52c
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_alert_accum_saturation_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Accumulator saturation vseq
+  units: 1
+  sha256: 59affe9c39288d468a66fd7d10c6d9d556a2f22703f2860e23263317622e9a77
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_base_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Base vseq
+  units: 1
+  sha256: 1332a50e768e68e26c6d99ad4a57a717c664295555f4094911be7da7bdb06fae
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_common_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Common vseq (CSR/sec_cm)
+  units: 1
+  sha256: 4565842d92ec61448a329a7990321ce8f0d9e619bb90ef34dc8ec1631992f309
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_entropy_stress_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Entropy stress vseq
+  units: 1
+  sha256: fd25c1e5d9bdea7debddc41c779a2c8e70dd6faba42943585d8e4b7daf8e1acf
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_entropy_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Entropy vseq
+  units: 1
+  sha256: 579c33554f45474776ca6a1ccc0452ba4ce53e5b3d330f1340ba34e2f4efc365
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_esc_alert_accum_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Escalation accumulation vseq
+  units: 1
+  sha256: 15f93438029110ca2374099bbfa4704dfb53d1105bdd16f905fb27a379a3dd94
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_esc_intr_timeout_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Escalation interrupt timeout vseq
+  units: 1
+  sha256: 677fa5ce7248cee549c10479b9ad5e5498265e72064fe3b57b708829e4d63ced
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_lpg_stub_clk_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: LPG stub clock vseq
+  units: 1
+  sha256: fd055802902e71f33ae616e0e8fcdb44eb1cefc57664eb3e6634b3a95f567c82
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_lpg_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: LPG vseq
+  units: 1
+  sha256: c893a06b6f282abaa79fde7bf4549cf6ce5c7c2bff8f5193d14fd91a82280711
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_ping_timeout_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Ping timeout vseq
+  units: 1
+  sha256: 0d50ef5008a4d4d5b8a7b0cef31e138a3a8ca2bd045dec51b1bd34ad46d8b513
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_random_alerts_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Random alerts vseq
+  units: 1
+  sha256: 6a9092d4209167502978fdbdde9a280ee5d6210f49f048ebfb7f831af5d27a21
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_random_classes_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Random classes vseq
+  units: 1
+  sha256: 76d0ecebc367ee4a5d7379455538ce0787bd4304022dd85eb3b7a05cf9654197
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_sig_int_fail_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Signal integrity fail vseq
+  units: 1
+  sha256: b19c0404121b24a2a4becbf2ff30d5709a382a7c756ab83b1cd88e46a80049ec
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_smoke_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Smoke vseq
+  units: 1
+  sha256: b3920afd541d71a752c7f4b549d28a2e5fa89685485bdc916eb0736490948879
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/env/seq_lib/alert_handler_stress_all_vseq.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: Stress-all vseq
+  units: 1
+  sha256: 7ca198f121ca269e7d3756165d1c62ceab2490ded68a1e9861d567e7bd6ad886
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/sva/alert_handler_bind.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SVA bind file
+  units: 1
+  sha256: ee1b98b258c67840a315528a5f758a0dba0222cf7e2bf1fc7267d4517334cb10
+- path: hw/top_earlgrey/ip_autogen/alert_handler/dv/tests/alert_handler_base_test.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: UVM base test
+  units: 1
+  sha256: 0090725559cd86ea44cc13021fd010a4002a987457ae62b5db9947ed24e1f1b7
+- path: hw/top_earlgrey/ip_autogen/alert_handler/fpv/tb/alert_handler_esc_timer_bind_fpv.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: FPV bind for esc timer
+  units: 1
+  sha256: dd64d2e1544440f27cabd6feb430036a6b4042df9ae328b99586cd956e5f6fdb
+- path: hw/top_earlgrey/ip_autogen/alert_handler/fpv/tb/alert_handler_esc_timer_tb.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: FPV tb for esc timer
+  units: 1
+  sha256: 77486e7ae22d8cc1fa49831dd737cfc3731456d8d915d4ee234631c100407429
+- path: hw/top_earlgrey/ip_autogen/alert_handler/fpv/tb/alert_handler_ping_timer_bind_fpv.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: FPV bind for ping timer
+  units: 1
+  sha256: b90491590046a7510a954558e677225542b9eaffe587568042ef83e465dc3b34
+- path: hw/top_earlgrey/ip_autogen/alert_handler/fpv/tb/alert_handler_ping_timer_tb.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: FPV tb for ping timer
+  units: 1
+  sha256: c23a16eac87f4f26e128f3c4efb0d723615c336891b3c056812c6b97c73a575d
+- path: hw/top_earlgrey/ip_autogen/alert_handler/fpv/tb/esc_after_load.tcl
+  role: verification
+  scope:
+    kind: whole_file
+  reason: FPV setup for esc timer
+  units: 1
+  sha256: 31ed10f7803ff2a529c64bdcbc8f6b9a3e3683daed986903d050a71b2053189e
+- path: hw/top_earlgrey/ip_autogen/alert_handler/fpv/tb/ping_after_load.tcl
+  role: verification
+  scope:
+    kind: whole_file
+  reason: FPV setup for ping timer
+  units: 1
+  sha256: 5922a93dba41c53146e679b39601570d03c36411193902feef5672640f15163b
+- path: hw/top_earlgrey/ip_autogen/alert_handler/fpv/vip/alert_handler_esc_timer_assert_fpv.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: FPV assertions esc timer
+  units: 1
+  sha256: 78a33f53c956f78abab71c5d7fa17c23ba7f2e14111fccb8bcd89a8d026c8a36
+- path: hw/top_earlgrey/ip_autogen/alert_handler/fpv/vip/alert_handler_ping_timer_assert_fpv.sv
+  role: verification
+  scope:
+    kind: whole_file
+  reason: FPV assertions ping timer
+  units: 1
+  sha256: b55910c37a9fa029801123847866c81d92bbbd90dd6656188c76afe30d1aa5e8
+- path: sw/device/lib/dif/dif_alert_handler_unittest.cc
+  role: verification
+  scope:
+    kind: whole_file
+  reason: DIF unit test
+  units: 1
+  sha256: 841427de6eeac43277684f4331b3908cc923d8d83c1235096491f51dd172c1c3
+- path: sw/device/tests/alert_handler_escalation_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SW escalation test
+  units: 1
+  sha256: 28b6da44d047324cbe850bed531faf246bce0ea51d68b698f6b777887be010e1
+- path: sw/device/tests/alert_handler_lpg_clkoff_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SW LPG clkoff test
+  units: 1
+  sha256: 7e150528bf466d5433888469a990c9234c62bd48f4f40d1e985b534c4bbff0ac
+- path: sw/device/tests/alert_handler_lpg_reset_toggle.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SW LPG reset toggle test
+  units: 1
+  sha256: ed3c2e45f693f3741f40519122250e9f3a2d1ea1862661dc47b1fc2ed33b0e1c
+- path: sw/device/tests/alert_handler_lpg_sleep_mode_pings.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SW LPG sleep pings test
+  units: 1
+  sha256: a93487ef23397eadcc2b580b022079145c71a7228f6cbb99c1d5afc68cb5f53a
+- path: sw/device/tests/alert_handler_ping_ok_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SW ping ok test
+  units: 1
+  sha256: f0bbdd3254581a101ae81fb90f0436948ee505fde81ad74e2c6e17cfa0fc4350
+- path: sw/device/tests/alert_handler_ping_timeout_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SW ping timeout test
+  units: 1
+  sha256: d4f641fa32075b5abd2c4664907e2f1fb5b11ee700bcad436b863e62bde513ae
+- path: sw/device/tests/alert_handler_reverse_ping_in_deep_sleep_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SW reverse ping deep sleep test
+  units: 1
+  sha256: 9ffc5d4908f452492d1cb98d14e717d80af0f286f69203481962851f9fdc4681
+- path: sw/device/tests/sim_dv/alert_handler_entropy_test.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SW entropy test
+  units: 1
+  sha256: 326b96689b76ad7fd860755ca2240399b276287167eed3aceff21c32dabbae6a
+- path: sw/device/tests/sim_dv/alert_handler_lpg_sleep_mode_alerts.c
+  role: verification
+  scope:
+    kind: whole_file
+  reason: SW LPG sleep alerts test
+  units: 1
+  sha256: 03410574e6f6bf46aa7ce4850be2413d33a4826b2f82adf10f2004902c27df2e
+excluded_notable:
+- path: hw/dv/sv/alert_agent
+  reason: Shared agent plumbing
+- path: hw/ip/prim/fpv/tb/prim_alert_rxtx_tb.sv
+  reason: Primitive alert, not the handler
+- path: hw/ip_templates/alert_handler
+  reason: Templates; rendered copies exist in top_earlgrey/ip_autogen
+- path: hw/top_darjeeling/ip_autogen/alert_handler
+  reason: Other top's generated copy
+- path: hw/top_earlgrey/ip_autogen/alert_handler/rtl
+  reason: RTL implementation
+- path: sw/device/tests/sensor_ctrl_alerts_test.c
+  reason: Uses alerts incidentally
+incomplete: false
+notes: null

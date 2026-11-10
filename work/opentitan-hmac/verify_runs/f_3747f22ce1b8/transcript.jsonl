@@ -1,0 +1,4 @@
+{"t": "2026-11-10T20:52:11Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T20:52:14Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:52:16Z", "event": "I withdrew the finding. The clearing step is there: in the `check_err=0` branch of `check_error_code`, line 542 reads `intr_state` into `error_code`, and line 543 writes that same value back with `csr_wr`. The finding's claim that the write-back is missing was wrong. The excerpt it worked from evidently left out line 543. The verdict was accepted."}
+{"t": "2026-11-10T20:52:16Z", "event": "[3 turns, $0.0184]"}

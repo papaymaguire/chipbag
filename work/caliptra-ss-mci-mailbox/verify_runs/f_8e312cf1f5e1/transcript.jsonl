@@ -1,0 +1,17 @@
+{"t": "2026-11-10T20:40:01Z", "event": "  \u2192 Grep: intr_count_incr|count_incr"}
+{"t": "2026-11-10T20:40:02Z", "event": "  \u2192 Grep: intr_count_r|intr_count_incr"}
+{"t": "2026-11-10T20:40:04Z", "event": "Coverage only; check tests for interrupt count regs."}
+{"t": "2026-11-10T20:40:04Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T20:40:06Z", "event": "Likely just reset/reg-access macros. Check for incr usage."}
+{"t": "2026-11-10T20:40:07Z", "event": "  \u2192 Grep: INTR_COUNT_INCR|count_incr"}
+{"t": "2026-11-10T20:40:08Z", "event": "  \u2192 Grep: NOTIF_CPTRA_MBOX_CMD_AVAIL_INTR_COUNT_R|NOTIF_MBOX0_TARGET_DONE_INTR_COUNT_R|ERROR_MBOX0_ECC_UNC_INTR_COUNT_R"}
+{"t": "2026-11-10T20:40:09Z", "event": "Only address maps. Check test C files for the counters."}
+{"t": "2026-11-10T20:40:10Z", "event": "  \u2192 Grep: INTR_COUNT_R\\b|INTR_COUNT_INCR"}
+{"t": "2026-11-10T20:40:12Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T20:40:16Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T20:40:17Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T20:40:21Z", "event": "  \u2192 Grep: TRIG_R_(NOTIF_CPTRA_MBOX_CMD_AVAIL|NOTIF_MBOX1_CMD_AVAIL|NOTIF_MBOX0_TARGET_DONE|ERROR_MBOX0_ECC_UNC)"}
+{"t": "2026-11-10T20:40:36Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:40:45Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:40:49Z", "event": "I've submitted the verdict on finding f_8e312cf1f5e1 and it was accepted, so there's nothing left to run.\n\nThe finding stands as \"untested\" for most items. Only one test touches these counters: `mcu_intr_handler`, which fires events with software `INTR_TRIG` writes. It checks only that the summed hardware counts match a firmware count.\n\n| Item | Outcome | Why |\n|---|---|---|\n| cr_ac50ef86787c (rising edge of the hardware event input) | verified | No test drives the hardware input. Only software triggers are used. |\n| cr_b17476f90b95 (increment triggered by the hardware rising edge) | verified | Same gap as above. |\n| cr_ad3bc76d7645 (increments by 1 per event) | withdrawn | The aggregate-sum check in `mcu_intr_handler` fails if the counts are off. It covers this indirectly. |\n| cr_ad2b9f5593f2 (field is a counter) | inconclusive | Only implied by the counts matching, with no direct check. |\n| cr_af3a97a3f2b9 (1-bit down-counter pulse) | inconclusive | Internal mechanism that no test checks directly. |\n\nThe test runs in the Nightly Directed and Strict regressions."}
+{"t": "2026-11-10T20:40:49Z", "event": "[13 turns, $0.1659]"}

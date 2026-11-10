@@ -1,0 +1,82 @@
+finding_hash: dab6ce92afb4bd2d
+started_at: '2026-11-10T20:41:00Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four of five items have no test with a check. The interrupt item (cr_8797911c07bc) is covered
+    by mcu_intr_handler, which triggers each MBOX interrupt through its _TRIG register and compares the
+    firmware count against the sum of the hardware _INTR_COUNT_R registers. The DWORD-alignment, CMD_STATUS-unused
+    and the two address-range items have no test with a failing check.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: refutes
+    note: Counts firmware-triggered interrupts and compares them to hardware INTR_COUNT_R registers (error
+      block). The notif block, which includes the MBOX0/1 CMD_AVAIL, TARGET_DONE and SOC_REQ_LOCK interrupts,
+      is read and summed the same way at lines 208-222.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 109
+    line_end: 109
+    quote: MCI_REG_INTR_BLOCK_RF_NOTIF0_INTR_TRIG_R_NOTIF_MBOX0_CMD_AVAIL_TRIG_MASK
+    role: refutes
+    note: 'Stimulus: writes the _TRIG register for the MBOX0 interrupt.'
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+    line_start: 145
+    line_end: 147
+    quote: '// MBOX: Write CMD_STATUS for testing'
+    role: context
+    note: MCU writes CMD_STATUS in its own tests. This does not check that CMD_STATUS is unused when MCU
+      holds the lock.
+  searches:
+  - what: unaligned/misaligned access tests
+    where: src/integration/test_suites, src/mci
+    found: No matches in mbox or mci directories.
+  - what: mbox interrupt tests
+    where: test_suites
+    found: Only mcu_intr_handler, which exercises the trig and count registers.
+  - what: CMD_STATUS tests
+    where: test_suites/*mbox*
+    found: Tests write and read CMD_STATUS as a functional register. None checks that it is unused when
+      MCU holds the lock.
+  - what: address map boundary tests
+    where: test_suites
+    found: Tests use the base macros and hit addresses incidentally. None checks the range boundaries.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c
+    line_start: 145
+    line_end: 147
+    why_not: It uses CMD_STATUS but checks nothing about the MCU-lock case.
+  items:
+  - id: cr_a3dd90e3ad99
+    outcome: verified
+    reason: No test of unaligned SRAM access was found.
+    evidence: []
+  - id: cr_8797911c07bc
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers each MBOX interrupt and checks the hardware count registers against
+      its own count.
+    evidence:
+    - 0
+    - 1
+  - id: cr_0d49e75f5219
+    outcome: verified
+    reason: No test checks that CMD_STATUS is unused when MCU holds the lock.
+    evidence:
+    - 2
+  - id: cr_22b98fe21dde
+    outcome: verified
+    reason: No test checks the CSR range boundaries.
+    evidence: []
+  - id: cr_488fae088122
+    outcome: verified
+    reason: No test checks the SRAM range boundaries.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.1140818
+error: null

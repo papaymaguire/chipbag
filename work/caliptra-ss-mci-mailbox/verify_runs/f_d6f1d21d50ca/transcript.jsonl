@@ -1,0 +1,17 @@
+{"t": "2026-11-10T20:42:47Z", "event": "  \u2192 Grep: intr_count_incr_r|count_incr"}
+{"t": "2026-11-10T20:42:48Z", "event": "  \u2192 Grep: notif_mbox0_cmd_avail_intr_count|notif_cptra_mbox_cmd_avail_intr_count|notif_mbox1_ecc_cor_intr_count"}
+{"t": "2026-11-10T20:42:50Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:42:51Z", "event": "Those are unrelated. Check the coverage file and the generic register names."}
+{"t": "2026-11-10T20:42:52Z", "event": "  \u2192 Grep: count_incr"}
+{"t": "2026-11-10T20:42:53Z", "event": "  \u2192 Grep: INTR_COUNT|intr_count_incr|INTR_BLOCK_RF_NOTIF_.*COUNT"}
+{"t": "2026-11-10T20:42:55Z", "event": "  \u2192 Grep: INTR_COUNT"}
+{"t": "2026-11-10T20:42:57Z", "event": "  \u2192 Grep: NOTIF_.*COUNT|INCR_R|saturat"}
+{"t": "2026-11-10T20:42:59Z", "event": "Let me see how the hardware count is checked."}
+{"t": "2026-11-10T20:43:00Z", "event": "  \u2192 Grep: mci_notif_intr_count_hw"}
+{"t": "2026-11-10T20:43:01Z", "event": "  \u2192 Grep: mci_notif_intr_count_hw *[!=]=|mci_notif_intr_count *[!=]="}
+{"t": "2026-11-10T20:43:05Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T20:43:05Z", "event": "  \u2192 Grep: INTR_COUNT_INCR_R|DECR|decr"}
+{"t": "2026-11-10T20:43:08Z", "event": "  \u2192 Grep: COUNT_INCR|INTR_COUNT"}
+{"t": "2026-11-10T20:43:18Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:43:22Z", "event": "I submitted the verdict: four of the five items are untested, and the fifth, `cr_49c8b388dda9`, I withdrew.\n\n- **Withdrawn, `cr_49c8b388dda9` (increment by 1 per event):** `mcu_intr_handler` triggers each notification event once, including the `mbox1_ecc_cor` one. It then fails if the sum of the NOTIF `*_INTR_COUNT_R` registers differs from the number of triggers. This is an aggregate check, so it would not catch two counters that miscounted in opposite directions. The test runs in both nightly directed regressions.\n- **Still untested, `cr_4706175d6d92` (decrement via the `incr_r` pulse):** no test writes any `incr_r` register to decrement a counter.\n- **Still untested, saturation (`cr_4868f6c38d1f`, `cr_48e9dbdcfdb2`, `cr_4b697972bda7`):** no test drives a counter to its maximum to check that it saturates. The only other hits for these registers were coverpoints in `src/mci/coverage/mci_top_cov_if.sv`, which check nothing, and register tables in the test libraries."}
+{"t": "2026-11-10T20:43:22Z", "event": "[14 turns, $0.1092]"}

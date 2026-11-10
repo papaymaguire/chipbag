@@ -1,0 +1,79 @@
+finding_hash: 94b00785be74d78e
+started_at: '2026-11-10T20:37:44Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks the pulse-field properties (counter, decrvalue, swwel) of these
+    count_incr registers. The only references outside the generated register files are coverage points
+    and mask entries in a C library. Neither one checks counter behavior.
+  evidence:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2093
+    line_end: 2094
+    quote: "add_mask_entry(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR_MBOX0_ECC_UNC_INTR_COUNT_INCR_R,\n\
+      \                MCI_REG_INTR_BLOCK_RF_ERROR_MBOX0_ECC_UNC_INTR_COUNT_INCR_R_PULSE_MASK);"
+    role: context
+    note: The pulse field is added as a mask entry, so it is excluded from comparison rather than checked.
+  searches:
+  - what: count_incr references outside rdl/sv
+    where: whole repo
+    found: Only the coverage interface, generated register files, a coverage generator script and mci.c
+      mask entries.
+  - what: mci_top_cov_if.sv count_incr
+    where: src/mci/coverage
+    found: Coverpoints only. They sample the field storage and check nothing.
+  - what: 'notif_mbox0_ecc_cor swwel item: tests/checks for this register'
+    where: whole repo
+    found: No test or check beyond the coverage point and mask entry.
+  - what: notif_mbox1_soc_req_lock counter item
+    where: whole repo
+    found: No test or check found.
+  - what: notif_mbox1_target_done swwel and counter items
+    where: whole repo
+    found: No test or check found.
+  - what: notif_cptra_mbox_cmd_avail decrvalue item
+    where: whole repo
+    found: No test or check found.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4800
+    line_end: 4800
+    why_not: Coverpoint that samples a value but has no check.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2088
+    line_end: 2098
+    why_not: Mask entries exclude the pulse field from comparison. I did not read the surrounding mask-using
+      code, so I'm assuming it is a register reset/access check.
+  items:
+  - id: cr_b74f1ee3c9b5
+    outcome: verified
+    reason: No test found that checks the swwel behavior.
+    evidence:
+    - 0
+  - id: cr_b9707c71a06b
+    outcome: verified
+    reason: No test found that checks the counter behavior.
+    evidence:
+    - 0
+  - id: cr_bd3ec8885ef1
+    outcome: verified
+    reason: No test found that checks the swwel behavior.
+    evidence:
+    - 0
+  - id: cr_bfdfd2d94f4b
+    outcome: verified
+    reason: No test found that checks the counter behavior.
+    evidence:
+    - 0
+  - id: cr_c120cfb2596c
+    outcome: verified
+    reason: No test found that checks the decrement value.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.0796348
+error: null

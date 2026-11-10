@@ -1,0 +1,93 @@
+finding_hash: 43bf9d953c20eef6
+started_at: '2026-11-10T21:05:20Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four of the five items are untested. The digest-clear item (cr_4bb0aa48a9b1) is checked by
+    the scoreboard, so I withdrew it. Sideloading is disabled in DV, so nothing reaches the sideloaded-key
+    error behaviours. The write-lock and single-finalization items have no stimulus or checks aimed at
+    them.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: "// TODO(#31634): Disable sideloading for now.\n  rand_config_value[ral.cfg.sideload.get_lsb_pos()]\
+      \ = 1'b0;"
+    role: supports
+    note: Sideload is never enabled in DV, so the key-invalid behaviours (items 1 and 2) are never stimulated.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 306
+    line_end: 308
+    quote: exp_digest   = '{default:0};  // Digest gets cleared on disabling.
+    role: refutes
+    note: The scoreboard predicts the digest is cleared when sha_en goes 1 to 0, and later digest reads
+      are compared against it (DV_CHECK_EQ at line 496).
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 338
+    line_end: 341
+    quote: "// Predict updated value coming from write iff SHA core is disabled.\n          do_predict\
+      \ = !sha_en;"
+    role: context
+    note: The model encodes the write lock, but no directed stimulus writes DIGEST while sha_en is set
+      and then checks that the write was ignored.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1041
+    line_end: 1043
+    quote: "task hmac_scoreboard::update_err_intr_code(err_code_e err_code_val);\n  if (!`gmv(ral.intr_state.hmac_err))\
+      \ begin"
+    role: context
+    note: The model only updates ERR_CODE when hmac_err is not already pending. This is in the scoreboard,
+      but sideload key errors are never driven, so item 2 stays untested for the sideloaded-key case.
+  searches:
+  - what: sideload / key-invalid / err_code in hmac dv
+    where: hw/ip/hmac/dv
+    found: Sideload is forced to 0 in the base vseq. No key-invalid error test exists.
+  - what: digest clear and digest write lock
+    where: hmac_scoreboard.sv and seq_lib
+    found: The clear on sha_en 1->0 is modelled and compared. csr_wr_digest is only used in the save-and-restore
+      flow, with no write-while-enabled check.
+  - what: hash_process finalized once
+    where: seq_lib
+    found: No test checks that a stream is finalized only once.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 1041
+    line_end: 1057
+    why_not: The generic 'no overwrite while hmac_err is pending' logic covers the other error sources,
+      not the sideloaded key error.
+  items:
+  - id: cr_cf99e411151d
+    outcome: verified
+    reason: Sideload is disabled in DV, so no test makes the key invalid after completion.
+    evidence:
+    - 0
+  - id: cr_ea4b652641c0
+    outcome: verified
+    reason: The scoreboard has the no-overwrite logic, but sideload key errors are not stimulated, so
+      the sideloaded-key case is untested.
+    evidence:
+    - 0
+    - 3
+  - id: cr_4bb0aa48a9b1
+    outcome: withdrawn
+    reason: The scoreboard predicts a zeroed digest on sha_en 1->0 and checks later digest reads against
+      it.
+    evidence:
+    - 1
+  - id: cr_51fc8f2304d3
+    outcome: verified
+    reason: The model supports the lock, but no directed stimulus writes DIGEST while sha_en is set and
+      checks the write was ignored.
+    evidence:
+    - 2
+  - id: cr_d2c659d4c60b
+    outcome: verified
+    reason: No test or check covers finalizing each stream exactly once.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0913414
+error: null

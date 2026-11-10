@@ -1,0 +1,87 @@
+finding_hash: dcb6757b8f5622c5
+started_at: '2026-11-10T19:42:23Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks any of the five items. Sideloading is disabled in the HMAC block-level DV, and
+    the only chip-level sideload test is a stable-key happy path that checks the final digest.
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: "// TODO(#31634): Disable sideloading for now.\n  rand_config_value[ral.cfg.sideload.get_lsb_pos()]\
+      \ = 1'b0;"
+    role: supports
+    note: Block-level DV forces CFG.sideload to 0, so none of the sideload behaviour is exercised.
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 156
+    line_end: 156
+    quote: The SHA-2 engine is disabled, which clears its internal state and the digest
+    role: context
+    note: Abort behaviour (items cr_003bb8525faa and cr_2bd90963e6d1); no test drives the valid indication
+      low mid-operation.
+  - path: hw/top_earlgrey/dv/env/seq_lib/chip_sw_keymgr_dpe_sideload_hmac_vseq.sv
+    line_start: 53
+    line_end: 53
+    quote: cryptoc_dpi_pkg::sv_dpi_get_hmac_sha256(key_words, msg_arr, exp_digest);
+    role: context
+    note: Chip-level test only compares the digest of one operation with a stable key against a reference
+      model.
+  searches:
+  - what: abort / return to idle on key valid deassert (cr_003bb8525faa)
+    where: hw/ip/hmac/dv
+    found: No sequence drives key valid low mid-operation; sideload is forced to 0 in the base vseq.
+  - what: key stability during an operation (cr_01801357ac87)
+    where: hw/ip/hmac/dv and chip-level sideload vseq
+    found: Only the stable-key happy path at chip level; no stability check.
+  - what: key replaced without deasserting valid (cr_291fea02ab56)
+    where: hw/ip/hmac/dv, hw/top_earlgrey/dv grep for hmac sideload
+    found: No test replaces the key mid-operation.
+  - what: SHA-2 engine/digest cleared on abort (cr_2bd90963e6d1)
+    where: hw/ip/hmac/dv
+    found: No abort stimulus, so no check of cleared state.
+  - what: valid held for entire operation (cr_4fa240172006)
+    where: hw/top_earlgrey/dv/env/seq_lib/chip_sw_keymgr_dpe_sideload_hmac_vseq.sv
+    found: Only a digest comparison for a single stable operation; no requirement check.
+  near_misses:
+  - path: hw/top_earlgrey/dv/env/seq_lib/chip_sw_keymgr_dpe_sideload_hmac_vseq.sv
+    line_start: 15
+    line_end: 60
+    why_not: It checks the digest for a stable key and valid asserted. It does not test deasserting valid,
+      key replacement, or the abort/idle behaviour.
+  items:
+  - id: cr_003bb8525faa
+    outcome: verified
+    reason: No test aborts an operation by deasserting valid, so the return to idle is never checked.
+    evidence:
+    - 0
+    - 1
+  - id: cr_01801357ac87
+    outcome: verified
+    reason: The key is only held stable in a happy-path test. No test checks the stability requirement,
+      and the doc says it is not enforced.
+    evidence:
+    - 2
+  - id: cr_291fea02ab56
+    outcome: verified
+    reason: No test replaces the key without deasserting valid.
+    evidence:
+    - 0
+  - id: cr_2bd90963e6d1
+    outcome: verified
+    reason: No test checks that the SHA-2 engine state and digest are cleared on abort.
+    evidence:
+    - 1
+  - id: cr_4fa240172006
+    outcome: verified
+    reason: The chip-level test keeps valid set, but it does not check the inner/outer key-pad requirement
+      or what happens when valid drops.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.09271439999999999
+error: null

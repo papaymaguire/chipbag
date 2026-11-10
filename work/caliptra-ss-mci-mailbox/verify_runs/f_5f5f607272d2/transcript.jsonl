@@ -1,0 +1,10 @@
+{"t": "2026-11-10T19:43:18Z", "event": "  \u2192 Grep: count_incr_r"}
+{"t": "2026-11-10T19:43:18Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T19:43:20Z", "event": "Check whether tests reference the counters at all."}
+{"t": "2026-11-10T19:43:21Z", "event": "  \u2192 Grep: intr_count_incr|_intr_count_r"}
+{"t": "2026-11-10T19:43:22Z", "event": "Only coverage, no test checks."}
+{"t": "2026-11-10T19:43:22Z", "event": "  \u2192 Grep: count_incr"}
+{"t": "2026-11-10T19:43:28Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:43:35Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:43:38Z", "event": "I verified the finding: none of the five items is checked by any test. I searched the repository for references to the interrupt count-incrementor registers outside the RDL and the generated register files. The only hits were the coverage interface (`src/mci/coverage/mci_top_cov_if.sv`) and one mention in the hardware spec doc.\n\nThe coverage interface only has coverpoints on the fields, for example line 4810 for the mbox0 ECC uncorrectable one. Those sample values but never fail a test, so I counted them as near misses. I did not find any stimulus or checker for the decrement-by-1, rising-edge increment or one-bit pulse behaviour.\n\nEach item got a \"verified\" outcome, and the verdict was accepted on the second submission. The first was rejected for recording too few searches."}
+{"t": "2026-11-10T19:43:38Z", "event": "[7 turns, $0.0536]"}

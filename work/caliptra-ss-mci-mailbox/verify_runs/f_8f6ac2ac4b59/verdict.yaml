@@ -1,0 +1,34 @@
+finding_hash: 49437a22bd04bc37
+started_at: '2026-11-10T19:37:01Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The comment says "Checking MBOX USER INFO", but the code only reads the USER register over
+    AXI DMA and prints it with VPRINTF. There is no comparison or fail assignment, so this step cannot
+    fail the test. The MCU-side file only polls USER until it is non-zero, which is a different step.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/cptra_ss_mcu_mbox_test.c
+    line_start: 112
+    line_end: 117
+    quote: '    // Checking MBOX USER INFO'
+    role: supports
+    note: The USER read result is only printed, never compared.
+  searches:
+  - what: MBOX_USER / USER INFO usage
+    where: smoke_test_mcu_mbox dir
+    found: The CPTRA-side read at line 114 is only printed. The MCU-side file only polls USER until it
+      is non-zero.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/smoke_test_mcu_mbox.c
+    line_start: 115
+    line_end: 116
+    why_not: This is the MCU-side wait on USER being non-zero. It is a different test step and does not
+      check the value read in the cptra test.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0259914
+error: null

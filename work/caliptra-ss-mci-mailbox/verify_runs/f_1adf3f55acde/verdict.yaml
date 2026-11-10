@@ -1,0 +1,93 @@
+finding_hash: cfae6d52f280610e
+started_at: '2026-11-10T21:00:44Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four of the five items are untested. The SRAM_OWNER=0 (None) item is covered. The nightly mci_mbox{0,1}_ownership_flow
+    tests release the mailbox with EXECUTE=0 and then read MBOX_HW_STATUS.sram_owner and expect NONE.
+    The other four have no stimulus-and-check pair. Nothing checks that TARGET_STATUS goes to BUSY on
+    a handoff, and nothing checks that a terminal TARGET_STATUS stays hidden from the Requester. No test
+    covers CMD_STATUS being unused when MCU is the Requester. For the BUSY encoding, tests only check
+    that the reset value reads 0 and never decode 0 as BUSY.
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 93
+    line_end: 95
+    quote: "task automatic mci_comm_flow_end(input logic [31:0] user);\n    mcu_mbox_write(mci_comm_flow_execute_addr,\
+      \ user, 0);\n    mci_comm_flow_check_phase(\"released\", MCU_MBOX_OWNER_NONE);"
+    role: refutes
+    note: After release the test checks that sram_owner is NONE (0) through mcu_mbox_check_sram_owner,
+      which counts an error on a mismatch. This covers the SRAM_OWNER=0 item.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 129
+    line_end: 132
+    quote: // Target writes its response and DLEN; a terminal TARGET_STATUS returns the SRAM to Root with
+      TARGET_DONE.
+    role: context
+    note: The flow writes a terminal TARGET_STATUS and checks only the SRAM owner and the notification.
+      It never reads TARGET_STATUS or CMD_STATUS, so it does not check BUSY on handoff or Requester visibility.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_csrs_warm_rst/smoke_test_mcu_mbox_csrs_warm_rst.c
+    line_start: 85
+    line_end: 86
+    quote: if(mcu_mbox_read_target_status(mbox_num) != 0) {
+    role: context
+    note: Only checks that TARGET_STATUS reads 0 at reset. It does not check BUSY decoding or a reset
+      on handoff.
+  searches:
+  - what: Tests that read TARGET_STATUS or CMD_STATUS and compare against BUSY, or check for a reset to
+      BUSY on handoff
+    where: src/integration (test_suites, testbench, libs)
+    found: MCU_MBOX_CMD_BUSY and MCU_MBOX_TARGET_STATUS_CMD_BUSY are only defined in caliptra_ss_lib.h
+      and never used. Tests that touch TARGET_STATUS check access control, or wait for COMPLETE, or check
+      the reset value is 0.
+  - what: SRAM owner NONE check
+    where: testbench/sv_tests/mci
+    found: mci_comm_flow_end checks NONE after release. The flow is in the nightly regression list.
+  - what: Tests of CMD_STATUS being unused when MCU is the Requester, or a terminal Target status being
+      hidden from the Requester
+    where: whole repository
+    found: Nothing found.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 136
+    line_end: 139
+    why_not: Checks that Root cannot write TARGET_STATUS. It does not check that the value is BUSY after
+      a handoff.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 211
+    line_end: 212
+    why_not: Waits for the COMPLETE status. It does not check BUSY on handoff or Requester visibility.
+  items:
+  - id: cr_1742179d80a0
+    outcome: withdrawn
+    reason: mci_mbox_ownership_flow checks sram_owner==NONE after release, and the test runs nightly.
+    evidence:
+    - 0
+  - id: cr_666421936fb3
+    outcome: verified
+    reason: The BUSY=0 encoding is never decoded or checked. Only the reset value 0 is checked.
+    evidence:
+    - 2
+  - id: cr_680e463fd93d
+    outcome: verified
+    reason: No test checks that a terminal TARGET_STATUS is hidden from the Requester until MCU writes
+      CMD_STATUS.
+    evidence:
+    - 1
+  - id: cr_c466f1401b85
+    outcome: verified
+    reason: No test reads TARGET_STATUS after a handoff and checks it is BUSY.
+    evidence:
+    - 1
+  - id: cr_cd3b9f710b55
+    outcome: verified
+    reason: No test covers the case where MCU is the Requester and CMD_STATUS is unused.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.13670859999999999
+error: null

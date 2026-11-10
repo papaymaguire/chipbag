@@ -1,0 +1,13 @@
+{"t": "2026-11-10T21:02:07Z", "event": "  \u2192 Grep: mcu_mbox|MCU_MBOX"}
+{"t": "2026-11-10T21:02:08Z", "event": "  \u2192 Grep: intr_count_r|0x0020_0000|MCU_MBOX0_CSR|unaligned|misaligned"}
+{"t": "2026-11-10T21:02:11Z", "event": "  \u2192 Grep: intr_count|CMD_STATUS|cmd_status"}
+{"t": "2026-11-10T21:02:12Z", "event": "  \u2192 Grep: non-destructive|not destructive|read twice|read back|unaligned|misaligned"}
+{"t": "2026-11-10T21:02:15Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites; sed -n 1,200p mcu_mbox_rand_rdwr/mcu_mbox_rand_rdwr.c | grep -n -i \"read\\|rd\\|check\\|!=\" | head -40; grep -rn \"intr_"}
+{"t": "2026-11-10T21:02:18Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss; sed -n 1450p docs/CaliptraSSHardwareSpecification.md; sed -n 1458p docs/CaliptraSSHardwareSpecification.md; sed -n 1534p docs/CaliptraSSHardware"}
+{"t": "2026-11-10T21:02:28Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:02:30Z", "event": "Checking the remaining items (interrupt registers, address range) before I resubmit."}
+{"t": "2026-11-10T21:02:31Z", "event": "  \u2192 Grep: MCU_MBOX\\d?_CSR_.*(INTR|intr)|_intr_count_r|0x0*20_?0000|0x00200000"}
+{"t": "2026-11-10T21:02:32Z", "event": "  \u2192 Grep: mbox.*(intr|interrupt)|(intr|interrupt).*mbox"}
+{"t": "2026-11-10T21:02:42Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:02:46Z", "event": "I submitted the verdict as verified: I found no test that checks any of the five items, so the finding stands. The search was grep-based, not a full read of every mailbox test. The tests are in `src/integration/test_suites/*mbox*`.\n\n- **Non-destructive reads (`cr_499ce5a87381`):** No test reads the same SRAM location twice and compares the results.\n- **DWORD alignment (`cr_a3dd90e3ad99`):** No test issues unaligned or byte accesses.\n- **Interrupt register naming (`cr_8797911c07bc`):** I found no `_intr_count_r` or mailbox interrupt register macros in the mailbox tests. A few mailbox tests handle interrupts functionally, but none checks the `_en`, `_sts`, `_trig` and `_intr_count_r` naming.\n- **`CMD_STATUS` unused under MCU lock (`cr_0d49e75f5219`):** The pass-data test only checks that a user cannot write `CMD_STATUS`. That is the closest near miss, and it doesn't cover the MCU-lock case.\n- **Mailbox CSR address range (`cr_22b98fe21dde`):** I found no occurrence of the range literal in the mailbox files. Tests use macro offsets and never check the boundary.\n\nThe first submission was rejected because I had recorded too few searches. The second one was accepted."}
+{"t": "2026-11-10T21:02:46Z", "event": "[11 turns, $0.1023]"}

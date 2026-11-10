@@ -1,0 +1,48 @@
+finding_hash: c28a71430557b8cb
+started_at: '2026-11-10T21:08:43Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'No spec text says what happens on a misaligned access to the MCU mailbox SRAM. The other alignment
+    statements found cover different blocks: the MCU SRAM, MCI CSRs and USB AXI.'
+  evidence:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1458
+    line_end: 1458
+    quote: Accesses must be DWORD aligned and BYTE accesses are not supported by the SRAM.
+    role: supports
+    note: Mailbox SRAM requirement with no behavior defined for a violation.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1885
+    line_end: 1885
+    quote: Failure to align the address will result in undefined behavior.
+    role: context
+    note: This sentence is in the MCU SRAM section, not the mailbox, and it says undefined behavior.
+  searches:
+  - what: unaligned/misaligned/DWORD aligned in all .md files
+    where: repo docs
+    found: Only the MCU SRAM, MCI CSR (CPU fault), USB, and DMA byte-count statements. None cover the
+      MCU mailbox SRAM.
+  near_misses:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1885
+    line_end: 1885
+    why_not: Covers MCU SRAM, not the mailbox SRAM, and only says undefined behavior.
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 3000
+    line_end: 3000
+    why_not: Covers the USB AXI interfaces only.
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 1025
+    line_end: 1025
+    why_not: Covers MCU CPU accesses to MCI CSRs, not the mailbox SRAM.
+  items: []
+  new_sources: []
+  resolution: The spec should state the AXI response (SLVERR or OKAY), whether a misaligned write is dropped,
+    aligned down or committed, and what a misaligned read returns.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0346837
+error: null

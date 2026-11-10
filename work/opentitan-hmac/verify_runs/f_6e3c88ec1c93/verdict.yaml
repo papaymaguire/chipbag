@@ -1,0 +1,63 @@
+finding_hash: 0c4384ff60b9fc1f
+started_at: '2026-11-10T20:53:52Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: Key_None is exercised by constrained-random smoke stimulus and checked by the scoreboard, which
+    refutes the claim that it is not exercised (cr_09d332db68fc). The hash_continue trigger and the per-digest
+    key length combinations are only reached by randomization, with no directed guarantee. I could not
+    settle those items from the repository.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 173
+    line_end: 177
+    quote: ((`gmv(ral.cfg.key_length) == Key_None) & `gmv(ral.cfg.hmac_en)) |
+    role: refutes
+    note: Scoreboard treats Key_None with hmac_en as invalid config and predicts idle/error on start.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 114
+    line_end: 118
+    quote: constraint hmac_base_vseq::key_length_c {
+    role: supports
+    note: Key length is randomized, including Key_None and illegal values cast to Key_None; coverage of
+      specific key/digest combos is probabilistic, not directed.
+  searches:
+  - what: Key_None / key_length in hmac dv
+    where: hw/ip/hmac/dv
+    found: Random key_length in base vseq, scoreboard invalid-config prediction for Key_None, coverage
+      cross key_length x digest_size
+  near_misses: []
+  items:
+  - id: cr_312ec44b93bf
+    outcome: inconclusive
+    reason: Randomized only; cross coverage exists but closure is not shown.
+    evidence:
+    - 1
+  - id: cr_6efeed8d8e5c
+    outcome: inconclusive
+    reason: Random plus vectors; no directed guarantee.
+    evidence:
+    - 1
+  - id: cr_7aeb8a3eb040
+    outcome: inconclusive
+    reason: Random only.
+    evidence:
+    - 1
+  - id: cr_09d332db68fc
+    outcome: withdrawn
+    reason: Random smoke hits Key_None with hmac_en, and the scoreboard checks the error and idle prediction.
+    evidence:
+    - 0
+    - 1
+  - id: cr_1beece72f6cd
+    outcome: inconclusive
+    reason: hash_start with Key_None is covered by random stimulus. The hash_continue trigger is not confirmed.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.06599089999999999
+error: null

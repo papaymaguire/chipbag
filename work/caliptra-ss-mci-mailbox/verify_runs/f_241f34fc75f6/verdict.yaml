@@ -1,0 +1,79 @@
+finding_hash: 9e4f7fef3572ded0
+started_at: '2026-11-10T19:41:39Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test or checker was found for the mbox *_intr_count_incr_r pulse fields or the counters
+    they drive. The only references outside the generated register files are coverpoints in mci_top_cov_if.sv.
+    Coverpoints sample values but do not fail a test.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1555
+    line_end: 1557
+    quote: "default counter;\n\n        field {desc = \"Pulse mirrors interrupt event occurrence\"; swwel\
+      \ = false;} pulse = 1'b0;"
+    role: context
+    note: The counter and swwel properties are set in the RDL for the incrementor register.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 5530
+    line_end: 5530
+    quote: 'INTR_BLOCK_RF_NOTIF_MBOX0_TARGET_DONE_INTR_COUNT_INCR_R_cp : coverpoint'
+    role: context
+    note: A coverpoint only, with no check. It is the only non-generated reference to these registers.
+  searches:
+  - what: mbox*_intr_count(_incr) register names in src, excluding mci_reg*
+    where: src/
+    found: Only coverpoints in mci_top_cov_if.sv.
+  - what: intr_count in the mbox smoke test
+    where: src/integration/test_suites/smoke_test_mcu_mbox/cptra_ss_mcu_mbox_test.c
+    found: Only a local variable, intr_count, at line 29.
+  - what: 'item cr_b17476f90b95: error_mbox0_ecc_unc_intr_count rising-edge trigger'
+    where: whole repo
+    found: Only generated register files and the coverage interface.
+  - what: 'item cr_b74f1ee3c9b5: notif_mbox0_ecc_cor incr pulse swwel'
+    where: whole repo
+    found: Only a coverpoint (line 5580).
+  - what: 'item cr_b9707c71a06b: notif_mbox1_soc_req_lock count'
+    where: whole repo
+    found: Only a coverpoint (line 4790).
+  - what: 'items cr_bd3ec8885ef1 and cr_bfdfd2d94f4b: notif_mbox1_target_done incr and count'
+    where: whole repo
+    found: Only coverpoints (lines 4700 and 5540).
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 5530
+    line_end: 5540
+    why_not: Coverpoints sample the register but nothing in them can fail a test.
+  items:
+  - id: cr_b17476f90b95
+    outcome: verified
+    reason: No test or checker for the rising-edge increment trigger.
+    evidence:
+    - 0
+  - id: cr_b74f1ee3c9b5
+    outcome: verified
+    reason: No test checks the swwel behaviour of the pulse field.
+    evidence:
+    - 0
+  - id: cr_b9707c71a06b
+    outcome: verified
+    reason: No check on the counter behaviour for mbox1_soc_req_lock.
+    evidence:
+    - 1
+  - id: cr_bd3ec8885ef1
+    outcome: verified
+    reason: No test checks swwel on the mbox1_target_done pulse field.
+    evidence:
+    - 0
+  - id: cr_bfdfd2d94f4b
+    outcome: verified
+    reason: No check on the counter behaviour for mbox1_target_done.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.09018129999999999
+error: null

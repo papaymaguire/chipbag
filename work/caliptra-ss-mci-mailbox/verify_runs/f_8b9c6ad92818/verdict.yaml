@@ -1,0 +1,70 @@
+finding_hash: 7a3cc8d5867a230e
+started_at: '2026-11-10T19:45:08Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks any of the four items with a check that can fail. The data_avail
+    wire is only forced in the testbench services and covered by coverpoints. The invalid-AXI test checks
+    rejection of an invalid user, which is a different claim from the one in the first item.
+  evidence:
+  - path: src/integration/testbench/caliptra_ss_top_tb_services.sv
+    line_start: 431
+    line_end: 433
+    quote: force `MCI_REG_TOP_PATH.mcu_mbox0_data_avail = 1'b1;
+    role: context
+    note: The testbench only forces data_avail internally. It does not check the wire.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_invalid_axi/cptra_smoke_test_mcu_mbox_invalid_axi.c
+    line_start: 44
+    line_end: 45
+    quote: if (!cptra_axi_dword_write_with_status(addr, xorshift32())) {
+    role: context
+    note: This checks that an invalid user gets an AXI error. It does not check that the mailbox is unusable
+      before VALID_AXI_USER is configured.
+  searches:
+  - what: data_avail in testbench, C tests and libs
+    where: src/integration
+    found: Only declarations, port connections, a force in the tb services and the interrupt-poll helper.
+      No check of the wire's value and no test that fails on it.
+  - what: TARGET_USER_VALID in tests
+    where: src/integration/test_suites
+    found: The target_user test checks that TARGET_USER_VALID is cleared and not changed by the Target.
+      I found no test that checks the order write TARGET_USER, set TARGET_USER_VALID, then notify.
+  - what: VALID_AXI_USER in the invalid_axi test
+    where: src/integration/test_suites/smoke_test_mcu_mbox_invalid_axi
+    found: No matches. The test checks that an invalid user is rejected with an AXI error.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_invalid_axi/cptra_smoke_test_mcu_mbox_invalid_axi.c
+    line_start: 76
+    line_end: 95
+    why_not: It checks invalid-user rejection, not the requirement that the mailbox is unusable until
+      VALID_AXI_USER is configured.
+  items:
+  - id: cr_daf7f972a12c
+    outcome: verified
+    reason: No test checks that SOC agents cannot use the mailbox before VALID_AXI_USER is configured.
+      The invalid_axi test is a near miss.
+    evidence:
+    - 1
+  - id: cr_b395303f48f6
+    outcome: verified
+    reason: No test checks that the data_avail wire asserts. Only coverpoints and a force in the testbench
+      services reference it.
+    evidence:
+    - 0
+  - id: cr_918e477394f8
+    outcome: verified
+    reason: No test checks that the data_avail wire stays deasserted while MCU programs the target configuration.
+    evidence:
+    - 0
+  - id: cr_d880e054e4d3
+    outcome: verified
+    reason: No test checks the order of TARGET_USER, TARGET_USER_VALID and the notification. The tests
+      that touch these registers are stimulus only for this ordering.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.0660711
+error: null

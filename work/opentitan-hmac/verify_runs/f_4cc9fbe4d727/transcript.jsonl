@@ -1,0 +1,10 @@
+{"t": "2026-11-10T19:39:05Z", "event": "  \u2192 Grep: Key_None|KEY_NONE|key_length|digest_size.*None|SHA2_None"}
+{"t": "2026-11-10T19:39:08Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv"}
+{"t": "2026-11-10T19:39:10Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:39:10Z", "event": "  \u2192 Grep: hash_continue|SwInvalidConfig"}
+{"t": "2026-11-10T19:39:13Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv"}
+{"t": "2026-11-10T19:39:14Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:39:30Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:39:40Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:39:45Z", "event": "I've submitted the verdict, and it was accepted. The overall outcome is inconclusive, with a different result for each item:\n\n- **cr_09d332db68fc (Key_None raises an error on start):** withdrawn. Random stimulus reaches Key_None, and the scoreboard expects SwInvalidConfig on hash_start.\n- **cr_1cfd6091fbe9 (6'b001000 selects a 512-bit key):** withdrawn. Random software-key runs include Key_512, and the scoreboard checks the digest against that key length.\n- **cr_b99a398deb96 (invalid digest_size maps to SHA2_None):** withdrawn. The random constraint drives illegal encodings, `hmac_init` reads CFG back, and the scoreboard predicts SHA2_None.\n- **cr_1beece72f6cd (blocked via hash_start or hash_continue):** inconclusive. The scoreboard has a hash_continue branch, but I couldn't confirm any sequence reaches it with Key_None.\n- **cr_403238c02dda (key_length irrelevant when sideloaded):** verified as untested. Random sideload is disabled in the base sequence, and the only sideload test uses KEY_512.\n\nThe three withdrawn items are covered by random stimulus rather than directed tests."}
+{"t": "2026-11-10T19:39:45Z", "event": "[9 turns, $0.1136]"}

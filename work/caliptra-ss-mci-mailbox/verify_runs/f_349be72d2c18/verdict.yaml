@@ -1,0 +1,81 @@
+finding_hash: 13710ff6e27a7aeb
+started_at: '2026-11-10T19:42:11Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks the pulse behaviour of the interrupt count_incr registers. The only non-generated
+    references are mask entries in the MCI C library and coverpoints in the coverage interface. Neither
+    checks the pulse, the decrement or saturation.
+  evidence:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2096
+    line_end: 2098
+    quote: "// ERROR_MBOX1_ECC_UNC_INTR_COUNT_INCR_R\n    add_mask_entry(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR_MBOX1_ECC_UNC_INTR_COUNT_INCR_R,"
+    role: context
+    note: The only test-library reference is a register mask entry. It does not stimulate an interrupt
+      event or check a pulse, decrement or saturation.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4820
+    line_end: 4820
+    quote: 'INTR_BLOCK_RF_ERROR_MBOX1_ECC_UNC_INTR_COUNT_INCR_R_cp : coverpoint'
+    role: context
+    note: This is a coverpoint, not a check, so a wrong behaviour would not fail any test.
+  searches:
+  - what: count_incr / INTR_COUNT_INCR references outside the RDL and generated register RTL
+    where: whole repo
+    found: Only mci.c mask entries, coverage covergroups, the covergroup generator script and generated
+      address-map headers. No test with a check.
+  - what: decrvalue / decrement of error_mbox1_ecc_unc incr counter
+    where: whole repo tests
+    found: No test references it beyond the mask entry and coverpoint.
+  - what: one-clock pulse on the interrupt-setting input
+    where: whole repo tests
+    found: No test or assertion checks it.
+  - what: 1-bit down-counter immediate decrement producing a pulse
+    where: whole repo tests
+    found: No test or assertion checks it.
+  - what: saturation / overflow and the counter field type
+    where: whole repo tests
+    found: No test checks saturation or that the field is a counter.
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 2088
+    line_end: 2110
+    why_not: These are mask entries for register access, not a behavioural check of the pulse.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4800
+    line_end: 4890
+    why_not: These coverpoints only sample the signal and have no checks.
+  items:
+  - id: cr_32694e6feef7
+    outcome: verified
+    reason: No test checks the decrvalue behaviour.
+    evidence:
+    - 0
+  - id: cr_3d4f68eca3da
+    outcome: verified
+    reason: No test checks that the signal pulses for one clock cycle on the interrupt-setting input.
+    evidence:
+    - 0
+  - id: cr_3e59aca31cd9
+    outcome: verified
+    reason: No test checks the immediate decrement or the resulting pulse.
+    evidence:
+    - 0
+  - id: cr_3ecbe358fb05
+    outcome: verified
+    reason: No test checks saturation without overflow.
+    evidence:
+    - 1
+  - id: cr_416033921743
+    outcome: verified
+    reason: No test checks that the field is a counter.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.073549
+error: null

@@ -1,0 +1,40 @@
+finding_hash: 23b9bdca449ff8f8
+started_at: '2026-11-10T20:33:51Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The Caliptra-side comment says the MCU side will check that the SOC-request-while-MCU-lock
+    interrupt is set. The MCU-side pass_data test never reads or checks that interrupt. It does not call
+    the library helper that waits for it, and it has no ISR or interrupt references. Other tests (smoke_test_mcu_mbox_target_user)
+    do use that helper, but this one does not.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/cptra_smoke_test_mcu_mbox_pass_data.c
+    line_start: 365
+    line_end: 367
+    quote: // Attempt to acquire lock even though MCU has the lock (will be checked on MCU side that interrupt
+      is set)
+    role: supports
+    note: Comment promises an MCU-side interrupt check.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 195
+    line_end: 195
+    quote: if (!mcu_mbox_wait_for_soc_req_while_mcu_lock_interrupt(mbox_num, 100000)) {
+    role: context
+    note: Another test does perform this check; pass_data does not.
+  searches:
+  - what: interrupt/intr/SOC_REQ in the pass_data MCU test
+    where: smoke_test_mcu_mbox_pass_data/*.c
+    found: no interrupt check in the MCU-side file; only a comment and unused variables in the Caliptra
+      file
+  - what: soc_req_while_mcu_lock helper usages
+    where: src/integration
+    found: used only in smoke_test_mcu_hitless and smoke_test_mcu_mbox_target_user
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.06411430000000001
+error: null

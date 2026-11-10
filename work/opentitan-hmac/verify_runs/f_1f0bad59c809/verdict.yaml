@@ -1,0 +1,42 @@
+finding_hash: b35f46b503a80bd4
+started_at: '2026-11-10T20:52:24Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No spec text defines what a read of DIGEST12-15 returns in SHA-384 mode. It also doesn't say
+    whether the read causes a bus error. The register docs repeat the same wording. The programmer's guide
+    only says the registers are not to be read and hold irrelevant values.
+  evidence:
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 504
+    line_end: 504
+    quote: For SHA-2 384, {DIGEST12-DIGEST15} are truncated; they are irrelevant and should not be read
+      out.
+    role: supports
+    note: The cited text gives no read value and no error behaviour.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 44
+    line_end: 44
+    quote: For SHA-2 384, only `DIGEST_0`..`11` should be read out, the rest should be truncated out by
+      not being read by the SW.
+    role: supports
+    note: Only says software should not read them. It defines no value and no error.
+  searches:
+  - what: irrelevant, truncat, DIGEST12-15 wording
+    where: hw/ip/hmac docs and hjson
+    found: Only the same wording in registers.md, programmers_guide.md, theory_of_operation.md and hmac.hjson.
+      None defines a read value or whether the read returns an error.
+  near_misses:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 43
+    line_end: 43
+    why_not: Says the unused registers 'would hold irrelevant values'. That is still undefined, so it
+      does not say what a read returns.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.028501
+error: null

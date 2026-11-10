@@ -1,0 +1,83 @@
+finding_hash: 6df91c3ff6ac6103
+started_at: '2026-11-10T19:47:11Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The directed test mcu_intr_handler triggers each of these interrupts through the INTR_TRIG
+    registers. It then reads the hardware count registers and fails the sim if their sum differs from
+    a firmware count that grows by 1 per trigger. That covers items 1-4, though the check is on sums rather
+    than per register. I found no test that pushes any of these counters to its maximum, so the saturation
+    claim (item 5) is untested.
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 109
+    line_end: 110
+    quote: lsu_write_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF0_INTR_TRIG_R, MCI_REG_INTR_BLOCK_RF_NOTIF0_INTR_TRIG_R_NOTIF_MBOX0_CMD_AVAIL_TRIG_MASK     );
+      mci_notif_intr_count++;
+    role: refutes
+    note: 'Stimulus: triggers MBOX0 CMD_AVAIL (line 110 does MBOX1) and bumps the firmware count by 1.
+      The same pattern covers ecc_unc at lines 64-65 and soc_req_lock at lines 116-117.'
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 259
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: refutes
+    note: 'Check: the sum of the hardware notif counts, including MBOX0/1 CMD_AVAIL and SOC_REQ_LOCK,
+      must equal the firmware count, otherwise the sim is killed. Line 201 does the same for the error
+      counts, which include the ECC_UNC counters.'
+  searches:
+  - what: Tests referencing the mbox ecc_unc, cmd_avail and soc_req_lock count registers
+    where: src, excluding the RDL and address-map files
+    found: mcu_intr_handler.c reads and checks them. mci.c only lists them in a reset/access table. mci_top_cov_if.sv
+      only has coverpoints.
+  - what: Any saturation or overflow test of the counters
+    where: src/integration/test_suites
+    found: None found.
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 584
+    line_end: 592
+    why_not: A register reset/access table; it does not check counting.
+  items:
+  - id: cr_872d59b48481
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers MBOX1 SOC_REQ_LOCK. It checks the sum of all notif counts against
+      the firmware count and kills the sim on a mismatch.
+    evidence:
+    - 0
+    - 1
+  - id: cr_93f442797b66
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers MBOX1 CMD_AVAIL. The notif count sum is checked against the firmware
+      count.
+    evidence:
+    - 0
+    - 1
+  - id: cr_98b85c82cd7e
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers MBOX0 ECC_UNC at line 64. The error count sum is checked against
+      the firmware count at line 201.
+    evidence:
+    - 0
+    - 1
+  - id: cr_99a664f7c3be
+    outcome: withdrawn
+    reason: The MBOX1 ECC_UNC counter is triggered at line 65 and read back in the sum check. It counts
+      functionally, so it is a counter.
+    evidence:
+    - 0
+    - 1
+  - id: cr_a0511df283f8
+    outcome: verified
+    reason: No test drives a counter to its maximum value and checks that it saturates. The test only
+      runs a few increments.
+    evidence: []
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Directed test that checks the MCI interrupt counters.
+submissions: 2
+rejections: []
+turns: 13
+cost_usd: 0.181084
+error: null

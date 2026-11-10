@@ -1,0 +1,61 @@
+finding_hash: 3c13bdb28d063cf8
+started_at: '2026-11-10T22:08:41Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'I found no test that checks the clock start order or the read-back guarantee. The thold_lo
+    scoreboard path touches the third requirement''s mechanism but does not check it. The register split
+    (item 2) is exercised only implicitly by the scoreboard, so I could not settle it. The spec line also
+    has a typo: it links WKUP_THOLD_HI where it means WKUP_THOLD_LO. My search of the aon_timer dv directory
+    was a single grep, so it was not exhaustive.'
+  evidence:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 36
+    line_end: 36
+    quote: When integrating the AON timer into a bigger design, you must start the always-on clock (`clk_aon_i`)
+      before you start the main clock (`clk_i`).
+    role: supports
+    note: Integration constraint. I found no dv check or stimulus for the clock start order.
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 462
+    line_end: 462
+    quote: task aon_timer_scoreboard::update_wkup_thold_lo_timely();
+    role: context
+    note: The scoreboard checks the timing of thold_lo register updates. It does not check that a read-back
+      guarantees completion of earlier writes.
+  searches:
+  - what: wkup_thold_lo, clock start order, busy and read-back in aon_timer dv
+    where: hw/ip/aon_timer/dv
+    found: Only scoreboard thold_lo timing updates and CDC busy coverage exclusions. No clock start-order
+      test and no read-back-guarantees-completion check.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 462
+    line_end: 469
+    why_not: It models the timing of thold_lo writes. It does not check that a read-back guarantees completion
+      of earlier writes.
+  items:
+  - id: cr_bfbda21a02ad
+    outcome: verified
+    reason: No test or assertion covers the clk_aon_i-before-clk_i start order.
+    evidence:
+    - 0
+  - id: cr_c0393ad709d5
+    outcome: inconclusive
+    reason: The scoreboard exercises the thold_lo register implicitly, but no check explicitly targets
+      the bits[31:0] mapping. The spec line also has a typo.
+    evidence:
+    - 1
+  - id: cr_c24c1a80fbfe
+    outcome: verified
+    reason: No test reads back a register to confirm earlier writes completed. The scoreboard only checks
+      the timing of the write updates.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0645404
+error: null

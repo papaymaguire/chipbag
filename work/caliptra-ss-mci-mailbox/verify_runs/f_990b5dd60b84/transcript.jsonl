@@ -1,0 +1,14 @@
+{"t": "2026-11-10T19:45:54Z", "event": "  \u2192 Grep: mbox_cmd_status|CMD_BUSY|sram_owner|mbox_hw_status"}
+{"t": "2026-11-10T19:45:57Z", "event": "  \u2192 Grep: CMD_BUSY|CMD_STATUS|sram_owner|SRAM_OWNER|cmd_status"}
+{"t": "2026-11-10T19:46:00Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh"}
+{"t": "2026-11-10T19:46:01Z", "event": "  \u2192 Grep: CMD_BUSY"}
+{"t": "2026-11-10T19:46:03Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh"}
+{"t": "2026-11-10T19:46:04Z", "event": "  \u2192 Grep: MCU_MBOX_CMD_BUSY|MCU_MBOX_OWNER_NONE|mbox_owner_e__NONE"}
+{"t": "2026-11-10T19:46:08Z", "event": "  \u2192 Grep: write_cmd_status|MBOX_CMD_STATUS|valid_root_req|CMD_STATUS"}
+{"t": "2026-11-10T19:46:08Z", "event": "  \u2192 Grep: cmd_status"}
+{"t": "2026-11-10T19:46:11Z", "event": "Checking whether any test covers the hwclr-on-release and CMD_BUSY items, then I'll submit."}
+{"t": "2026-11-10T19:46:13Z", "event": "  \u2192 Grep: cmd_status|CMD_STATUS|mcu_mbox_release|MCU_MBOX_CMD_BUSY"}
+{"t": "2026-11-10T19:46:13Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_valid_user/smoke_test_mcu_mbox_valid_user.c"}
+{"t": "2026-11-10T19:46:30Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:46:35Z", "event": "I submitted the verdict as \"verified\", but only 2 of the 5 items actually stand. The other 3 are withdrawn because I found tests that check them.\n\n| Item | Outcome | Why |\n|---|---|---|\n| CMD_BUSY means the command is not yet complete | Verified (untested) | No test writes CMD_BUSY and checks the busy behavior. The ownership-flow status loop in `mci_mbox_ownership_flow.svh` runs from DATA_READY to CMD_FAILURE and never drives it. |\n| `status` hwclr | Withdrawn | `smoke_test_mbox_csr_zeros_after_release.c` writes CMD_STATUS, releases the mailbox, and fails if CMD_STATUS doesn't read 0. |\n| `precedence=hw` on simultaneous updates | Verified (untested) | No test makes a hardware clear and a software write land in the same cycle. |\n| `swwe=valid_root_req` | Withdrawn | `cptra_smoke_test_mcu_mbox_valid_user.c` has a non-root agent write CMD_STATUS and fails if the value changed. The root write path is exercised in `smoke_test_mcu_mbox_valid_user.c`. |\n| `sram_owner` NONE means no owner | Withdrawn | The ownership flow checks that `sram_owner` reads NONE after release (`mci_mbox_ownership_flow.svh:95`). |\n\n**Suggested fix:** add a test that writes CMD_BUSY as root and checks the SRAM ownership handoff doesn't happen. Add a second test that forces a software write to CMD_STATUS in the same cycle as a release, to check that hw wins."}
+{"t": "2026-11-10T19:46:35Z", "event": "[12 turns, $0.1285]"}

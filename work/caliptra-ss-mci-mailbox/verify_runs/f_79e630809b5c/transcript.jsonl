@@ -1,0 +1,6 @@
+{"t": "2026-11-10T20:34:48Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/cptra_smoke_test_mcu_mbox_write_user_lock.c"}
+{"t": "2026-11-10T20:34:50Z", "event": "The code only prints the value. The MCU side might check it, so I'll look there."}
+{"t": "2026-11-10T20:34:50Z", "event": "  \u2192 Grep: MBOX_USER|USER"}
+{"t": "2026-11-10T20:34:56Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:34:59Z", "event": "I verified the finding and submitted the verdict, which was accepted.\n\nIn `cptra_smoke_test_mcu_mbox_write_user_lock.c`, the step commented \"Checking MBOX USER INFO\" (lines 66\u201368) reads the USER register over AXI DMA. It then only prints the value with `VPRINTF`. Nothing compares it with an expected user, so this step cannot fail the test.\n\nThe MCU-side file (`smoke_test_mcu_mbox_write_user_lock.c`) writes to USER and checks that it did not change. That checks read-only behaviour, not the value the Caliptra side read, so it doesn't refute the finding."}
+{"t": "2026-11-10T20:34:59Z", "event": "[4 turns, $0.0359]"}

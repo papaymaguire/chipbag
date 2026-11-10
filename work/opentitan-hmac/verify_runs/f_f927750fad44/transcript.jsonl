@@ -1,0 +1,11 @@
+{"t": "2026-11-10T20:58:39Z", "event": "  \u2192 Grep: sha_en|msg_length|MSG_LENGTH|digest"}
+{"t": "2026-11-10T20:58:40Z", "event": "  \u2192 Grep: msg_length|digest|sha_en"}
+{"t": "2026-11-10T20:58:42Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:58:43Z", "event": "  \u2192 Grep: msg_length|wr_msg_length"}
+{"t": "2026-11-10T20:58:47Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:58:48Z", "event": "  \u2192 Grep: rd_digest|read_digest|digest.*clear|clear.*digest"}
+{"t": "2026-11-10T20:58:54Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv"}
+{"t": "2026-11-10T20:58:55Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:59:06Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:59:10Z", "event": "I submitted the verdict as withdrawn, so the \"untested\" finding does not stand for the digest-clear and message-length items. It stays open for the two digest register-attribute items.\n\n- **Digest cleared when `CFG.sha_en` goes from 1 to 0 (item 2):** withdrawn. The HMAC scoreboard sets the expected digest to zero on that transition (`hw/ip/hmac/dv/env/hmac_scoreboard.sv:306-308`). The smoke sequence then reads the digest, and the scoreboard compares it with `DV_CHECK_EQ`. I did not confirm that the smoke sequence always disables `sha_en` before that read.\n- **Byte-granular message length (item 5):** withdrawn. The scoreboard predicts the length as bytes times 8 (`hmac_scoreboard.sv:1035-1038`). `msg_length` reads are then checked against that predicted value. I did not confirm that the stimulus uses message sizes that are not multiples of 4 bytes.\n- **`DIGEST` `hwext` and `hwqe`, and `MSG_LENGTH_LOWER` `hwext` (items 1, 3, 4):** inconclusive. These are register attributes with no dedicated check. Digest and length writes are predicted only while the SHA core is off (`hmac_scoreboard.sv:340`), and later reads are compared. That covers them only indirectly."}
+{"t": "2026-11-10T20:59:10Z", "event": "[10 turns, $0.0963]"}

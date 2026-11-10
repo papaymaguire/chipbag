@@ -1,0 +1,79 @@
+finding_hash: a7855694206b8ec0
+started_at: '2026-11-10T19:40:49Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'The two fifo_empty items stand: the scoreboard only predicts the interrupt after the FIFO
+    was full and then drained, with no directed check and no specific check during the HMAC second round.
+    The three key-length items are covered by the randomized smoke sequence, which runs every legal key
+    length and digest size pair under the scoreboard digest check. A key_length x digest_size cross measures
+    that coverage. Those three are withdrawn.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 806
+    line_end: 807
+    quote: (local::hmac_en) -> (key_length != Key_None);
+    role: refutes
+    note: Randomization allows every key length with HMAC enabled. Only SHA-256 with a 1024-bit key is
+      excluded, on the next line.
+  - path: hw/ip/hmac/dv/env/hmac_env_cov.sv
+    line_start: 87
+    line_end: 87
+    quote: 'key_length_x_digest_size: cross key_length, digest_size;'
+    role: refutes
+    note: A cross covers every key length and digest size pair.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 693
+    line_end: 693
+    quote: if (fifo_full_detected && hmac_fifo_empty) begin
+    role: supports
+    note: The model raises fifo_empty only after the FIFO was full and drained. It has no explicit check
+      for the second round.
+  searches:
+  - what: fifo_empty checks
+    where: hw/ip/hmac/dv
+    found: Only the scoreboard model compares it on intr_state reads. There is no directed test.
+  - what: key_length and digest_size randomization and coverage
+    where: hw/ip/hmac/dv/env
+    found: All valid pairs are randomized, a cross covers them, and the scoreboard checks the digests.
+  near_misses: []
+  items:
+  - id: cr_8532dccc2de0
+    outcome: verified
+    reason: No targeted check that fifo_empty stays low during the HMAC second round.
+    evidence:
+    - 2
+  - id: cr_d16dbd9e0ca7
+    outcome: verified
+    reason: The scoreboard model is only an indirect check, and the smoke sequence acknowledges a one-cycle
+      timing misalignment.
+    evidence:
+    - 2
+  - id: cr_312ec44b93bf
+    outcome: withdrawn
+    reason: The randomized smoke test covers 512-bit keys with every digest size. The scoreboard checks
+      the digests and the cross covers each pair.
+    evidence:
+    - 0
+    - 1
+  - id: cr_6efeed8d8e5c
+    outcome: withdrawn
+    reason: The randomized smoke test covers 1024-bit keys with SHA-384 and SHA-512. The scoreboard checks
+      the digests and the cross covers them.
+    evidence:
+    - 0
+    - 1
+  - id: cr_7aeb8a3eb040
+    outcome: withdrawn
+    reason: The randomized smoke test covers 256-bit keys with every digest size. The scoreboard checks
+      the digests and the cross covers each pair.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 16
+cost_usd: 0.09841749999999999
+error: null

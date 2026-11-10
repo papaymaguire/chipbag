@@ -1,0 +1,16 @@
+{"t": "2026-11-10T20:42:38Z", "event": "  \u2192 Grep: MBOX0_AXI_USER_LOCK|MBOX1_AXI_USER_LOCK|mbox_axi_user_lock|MBOX0_VALID_AXI_USER|MBOX1_VALID_AXI_USER"}
+{"t": "2026-11-10T20:42:40Z", "event": "  \u2192 Grep: MBOX[01]_(AXI_USER_LOCK|VALID_AXI_USER)"}
+{"t": "2026-11-10T20:42:41Z", "event": "Check tests/libs."}
+{"t": "2026-11-10T20:42:42Z", "event": "  \u2192 Grep: AXI_USER_LOCK|VALID_AXI_USER"}
+{"t": "2026-11-10T20:42:43Z", "event": "  \u2192 Grep: AXI_USER_LOCK|VALID_AXI_USER"}
+{"t": "2026-11-10T20:42:45Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration; sed -n 236,300p testbench/sv_tests/mci/mci_common_tasks.svh; grep -rn \"mci_axi_user_lock\\|write_mbox_axi_user\\|mbox_axi_user_cfg"}
+{"t": "2026-11-10T20:42:47Z", "event": "Check who uses the lock address task, and the mci.c lists' purpose."}
+{"t": "2026-11-10T20:42:48Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/caliptra-ss; grep -rn \"get_mcu_mbox_axi_user_lock_address\\|get_mcu_mbox_valid_axi_user_address\" --include=*.sv --include=*.svh . | grep -v \"task get_\"; sed -"}
+{"t": "2026-11-10T20:42:50Z", "event": "  \u2192 Grep: get_mcu_mbox_axi_user_lock_address|get_mcu_mbox_valid_axi_user_address"}
+{"t": "2026-11-10T20:42:52Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mci_common_tasks.svh"}
+{"t": "2026-11-10T20:42:52Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/testbench/sv_tests/mci/mcu_mbox_soc_agent_write_fw_image.svh"}
+{"t": "2026-11-10T20:42:56Z", "event": "  \u2192 Grep: unlocked|not locked|without lock|lock.*ignored|ignored.*lock"}
+{"t": "2026-11-10T20:43:06Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:43:16Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:43:18Z", "event": "I've submitted the verdict and it was accepted: the finding stands, and all 5 items are still untested.\n\nNo test checks any of the lock behaviours. The testbench and C libraries only program `MBOX*_VALID_AXI_USER` and then set `MBOX*_AXI_USER_LOCK` as setup. The `mci.c` register tables only list the registers. Nothing writes after the lock is set and checks the write is ignored. Nothing uses an unlocked slot as a negative case.\n\nI'm done; nothing further to run."}
+{"t": "2026-11-10T20:43:18Z", "event": "[13 turns, $0.1577]"}

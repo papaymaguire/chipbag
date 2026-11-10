@@ -1,0 +1,53 @@
+finding_hash: b1094a67e6021011
+started_at: '2026-11-10T19:36:31Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Every error-code comparison in the test uses TRY_CHECK, which only returns an INTERNAL status
+    after logging an error. All seven run_test_* functions return status_t, and test_main calls them without
+    checking the result and then returns true. A wrong error code therefore does not fail the test. Only
+    the CHECK_STATUS_OK and CHECK_DIF_OK calls can fail it, and none of those verify an error code.
+  evidence:
+  - path: sw/device/lib/testing/test_framework/check.h
+    line_start: 76
+    line_end: 79
+    quote: '#define TRY_CHECK(condition, ...) TRY(CHECK_IMPL(condition, ##__VA_ARGS__))'
+    role: supports
+    note: TRY_CHECK only returns a status. It does not call test_status_set(kTestStatusFailed), unlike
+      CHECK.
+  - path: sw/device/tests/hmac_error_conditions_test.c
+    line_start: 330
+    line_end: 332
+    quote: '  run_test_pushmsg_when_shadisabled(&hmac, kData, sizeof(kData), NULL,'
+    role: supports
+    note: The returned status_t is discarded here. The same holds for every later run_test_* call, and
+      test_main finishes with return true.
+  - path: sw/device/tests/hmac_error_conditions_test.c
+    line_start: 317
+    line_end: 318
+    quote: '  TRY_CHECK(hmac_err_reg == kErrorSwHashStartWhenActive,'
+    role: supports
+    note: A representative error-code check that cannot fail the test.
+  searches:
+  - what: TRY_CHECK and CHECK_IMPL definitions
+    where: sw/device/lib/testing/test_framework/check.h
+    found: TRY_CHECK returns a status and only logs an error on mismatch. It does not set the test status
+      to failed.
+  - what: Callers of the run_test_* functions
+    where: sw/device/tests/hmac_error_conditions_test.c
+    found: All callers ignore the returned status, and test_main returns true.
+  near_misses:
+  - path: sw/device/lib/testing/test_framework/check.h
+    line_start: 34
+    line_end: 54
+    why_not: CHECK_IMPL logs LOG_ERROR on a mismatch, but this only logs and does not fail the test.
+  items: []
+  new_sources: []
+  resolution: Replace TRY_CHECK with CHECK in the run_test_* functions, or wrap the calls in test_main
+    with CHECK_STATUS_OK so the error status is propagated.
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0729603
+error: null

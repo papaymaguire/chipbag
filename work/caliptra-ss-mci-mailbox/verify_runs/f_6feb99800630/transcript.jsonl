@@ -1,0 +1,22 @@
+{"t": "2026-11-10T19:44:04Z", "event": "  \u2192 Grep: intr_count_r|notif_mbox\\d_(target_done|cmd_avail)_intr_count|notif_mbox0_soc_req_lock_intr_count"}
+{"t": "2026-11-10T19:44:04Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:44:06Z", "event": "Those matches are likely a different pattern (the \"intr_count\" is probably matching something unrelated). Narrow the search."}
+{"t": "2026-11-10T19:44:07Z", "event": "  \u2192 Grep: notif_mbox\\w*_intr_count|incrsaturate|intr_count_r"}
+{"t": "2026-11-10T19:44:07Z", "event": "  \u2192 Grep: notif_mbox\\w*_intr_count"}
+{"t": "2026-11-10T19:44:10Z", "event": "  \u2192 Grep: notif_mbox\\w*_intr_count"}
+{"t": "2026-11-10T19:44:10Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:44:14Z", "event": "  \u2192 Grep: notif_mbox\\d_(target_done|cmd_avail|soc_req_lock)|NOTIF_MBOX\\d_(TARGET_DONE|CMD_AVAIL|SOC_REQ_LOCK)_INTR_COUNT"}
+{"t": "2026-11-10T19:44:15Z", "event": "Only address defines. Check usage in tests and UVM."}
+{"t": "2026-11-10T19:44:16Z", "event": "  \u2192 Grep: MBOX\\d_(TARGET_DONE|CMD_AVAIL|SOC_REQ_LOCK)_INTR_COUNT"}
+{"t": "2026-11-10T19:44:19Z", "event": "  \u2192 Grep: _INTR_COUNT"}
+{"t": "2026-11-10T19:44:22Z", "event": "  \u2192 Grep: _hw|INTR_COUNT_R|saturat"}
+{"t": "2026-11-10T19:44:24Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:44:31Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T19:44:31Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:44:44Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:44:46Z", "event": "Resubmitting the verdict now. My last call used the wrong tool name."}
+{"t": "2026-11-10T19:44:53Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:44:55Z", "event": "I'll resubmit with the evidence for the withdrawn item marked as refuting."}
+{"t": "2026-11-10T19:45:03Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:45:07Z", "event": "I submitted the verdict as **verified** overall, but I withdrew one of the five items.\n\n- **Saturation (four items):** these stand as untested. No test drives the `notif_mbox1_target_done`, `notif_mbox0_cmd_avail`, `notif_mbox1_cmd_avail` or `notif_mbox0_soc_req_lock` counters toward their maximum. The only checker is a coverpoint in `mci_top_cov_if.sv`, which has no check.\n- **Increment by 1 (`notif_mbox1_target_done`):** withdrawn. `mcu_intr_handler.c` fires this interrupt once and fails the test if the summed hardware counters differ from the firmware count (lines 108 and 256\u2013259). The test is in the nightly directed regression. The check is aggregate only, so it can't isolate this one counter.\n\nMy first submission attempt used a tool name that doesn't exist, and the second was rejected for lacking refuting evidence. The third was accepted."}
+{"t": "2026-11-10T19:45:07Z", "event": "[17 turns, $0.2312]"}

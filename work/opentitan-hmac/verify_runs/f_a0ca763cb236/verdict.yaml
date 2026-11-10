@@ -1,0 +1,69 @@
+finding_hash: 342555fe55a28238
+started_at: '2026-11-10T19:42:35Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks any of the three behaviors. The DV wipe test only checks that the
+    digest changes after a wipe. The one software test checks the wipe value in SHA-256 mode only, with
+    32-bit words.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 330
+    line_end: 332
+    quote: "\"wipe_secret\": begin\n          // Do nothing"
+    role: context
+    note: The scoreboard does no prediction of the wipe value.
+  - path: sw/device/tests/hmac_secure_wipe_test.c
+    line_start: 82
+    line_end: 82
+    quote: // Secure wipe is kSecureWipeValue overwritten to the digest words.
+    role: context
+    note: The test checks the 32-bit wipe value in SHA-256 mode only. It does not check the 64-bit replicated
+      value for SHA-2 384/512.
+  searches:
+  - what: wipe in the HMAC DV environment
+    where: hw/ip/hmac/dv
+    found: The scoreboard only checks that the digest differs from the prediction after a wipe (hmac_scoreboard.sv:482-490).
+      It has no check of the 64-bit replicated wipe value and no check on the message FIFO.
+  - what: wipe_secret in sw/
+    where: sw/device
+    found: hmac_secure_wipe_test.c is the only test. It uses SHA-256 and checks 32-bit digest words, not
+      64-bit words.
+  - what: msg_fifo reads and wipe interaction
+    where: hw/ip/hmac/dv
+    found: No test reads the message FIFO window. No test checks that wiping leaves the FIFO intact.
+  near_misses:
+  - path: sw/device/tests/hmac_secure_wipe_test.c
+    line_start: 78
+    line_end: 96
+    why_not: It checks the 32-bit wipe value in SHA-256 mode, not the 64-bit replication.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 482
+    line_end: 490
+    why_not: It checks only that the digest no longer matches the prediction, not what the wipe value
+      is or what happens to the FIFO.
+  items:
+  - id: cr_1c762e6535de
+    outcome: verified
+    reason: The only software check covers the 32-bit SHA-256 case. The DV scoreboard does not check the
+      wipe value, and nothing covers the 64-bit replicated value for SHA-2 384/512.
+    evidence:
+    - 1
+    - 0
+  - id: cr_4282db4ce90a
+    outcome: verified
+    reason: No test reads the message FIFO and checks that the read is refused.
+    evidence:
+    - 0
+  - id: cr_8e41a2412a72
+    outcome: verified
+    reason: No test checks that FIFO contents survive a wipe. The scoreboard does nothing on a wipe write.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.08145549999999999
+error: null

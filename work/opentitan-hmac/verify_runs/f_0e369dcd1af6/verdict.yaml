@@ -1,0 +1,90 @@
+finding_hash: 0997036eb96c90e1
+started_at: '2026-11-10T21:03:19Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'I found no test that closes the gaps named in the five items. The DV only does indirect checks:
+    the digest is compared by the scoreboard, STATUS reads are compared against a predicted value, and
+    the wipe test only checks that the digest differs. The hmac_idle item is the weakest. The scoreboard
+    does predict STATUS, including idle, on reads, so it is partly covered. No test targets the specific
+    idle conditions the gap lists.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 379
+    line_end: 387
+    quote: if (csr_name == "status") begin
+    role: context
+    note: STATUS reads are checked against a predicted idle/fifo_full value. This is generic and does
+      not target the specific idle conditions.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 482
+    line_end: 484
+    quote: if (cfg.wipe_secret_triggered) begin
+    role: supports
+    note: The wipe check is only that the digest differs. Internal key, state and schedule are not checked.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 322
+    line_end: 326
+    quote: task hmac_base_vseq::wipe_secrets();
+    role: supports
+    note: A random wipe write is issued, with no check of internal state.
+  searches:
+  - what: Key_None with hmac_en=0 not-blocked check, item cr_db590d70ed32
+    where: hw/ip/hmac/dv
+    found: Key_None is randomly exercised. The scoreboard at line 174 only covers the blocked case (Key_None
+      with hmac_en=1). No explicit unblocked check.
+  - what: FIFO full back-pressure check, item cr_1089c5d4e1c7
+    where: hw/ip/hmac (fifo_full)
+    found: The scoreboard tracks FIFO depth for status and interrupt prediction. No check that writes
+      are stalled.
+  - what: hmac_idle checks, item cr_c486e3895381
+    where: hw/ip/hmac/dv
+    found: Only the generic STATUS read prediction. No idle-condition targeted test.
+  - what: wipe_secret internal-value check, item cr_b0906404bd67
+    where: hw/ip/hmac/dv
+    found: Only the digest-differs check at scoreboard line 484.
+  - what: wipe of key, state and message schedule, item cr_b8debfc7325d
+    where: hw/ip/hmac/dv
+    found: No check of internal key, state or schedule.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 653
+    line_end: 720
+    why_not: This tracks FIFO full and empty depth for interrupt and status prediction. It does not check
+      that bus writes are stalled while the FIFO is full.
+  items:
+  - id: cr_db590d70ed32
+    outcome: verified
+    reason: No explicit check that hmac_en=0 with Key_None is not blocked.
+    evidence:
+    - 0
+  - id: cr_1089c5d4e1c7
+    outcome: verified
+    reason: Nothing checks that writes are stalled while the FIFO is full.
+    evidence:
+    - 0
+  - id: cr_c486e3895381
+    outcome: verified
+    reason: Only the generic STATUS read prediction covers idle. The specific idle conditions are not
+      targeted.
+    evidence:
+    - 0
+  - id: cr_b0906404bd67
+    outcome: verified
+    reason: The wipe check only observes that the digest differs.
+    evidence:
+    - 1
+    - 2
+  - id: cr_b8debfc7325d
+    outcome: verified
+    reason: Internal key, state and schedule clearing are not checked.
+    evidence:
+    - 1
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 7
+cost_usd: 0.08990810000000002
+error: null

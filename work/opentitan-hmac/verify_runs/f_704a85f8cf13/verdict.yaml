@@ -1,0 +1,69 @@
+finding_hash: a292b63aab9a5f7f
+started_at: '2026-11-10T20:56:15Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: Three behavioural items (sha_en=0, key_swap=0 big-endian, byte-wise MSG_FIFO writes unaffected
+    by endian_swap) are exercised by the smoke vseq and checked by the scoreboard, so they are withdrawn.
+    The hwext/hwqe items are implementation attributes with no direct check I could find, so they are
+    inconclusive. I did not read the smoke vseq's write code, so the byte-write result rests on the scoreboard
+    model alone.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 861
+    line_end: 870
+    quote: if (`gmv(ral.cfg.key_swap)) begin
+    role: refutes
+    note: Scoreboard predicts digest with key_swap 0 (big-endian kept) and 1 (swapped); key_swap is randomized
+      in smoke vseq.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 147
+    line_end: 148
+    quote: if ((!sha_en) || (!hmac_start && !hmac_continue)) begin
+    role: refutes
+    note: Scoreboard models sha_en=0 behaviour (no processing, digest cleared); smoke vseq drives sha_en=0
+      then enables it.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 157
+    line_end: 163
+    quote: foreach (item.a_mask[i]) begin
+    role: refutes
+    note: Per-byte-mask handling of MSG_FIFO writes; the byte order only matters for multi-byte words,
+      so single-byte writes are checked as unaffected by endian_swap.
+  searches:
+  - what: key_swap, endian_swap, sha_en in hmac dv
+    where: hw/ip/hmac/dv
+    found: Smoke vseq randomizes them; scoreboard models and checks digest; coverage crosses exist.
+  near_misses: []
+  items:
+  - id: cr_c8c51e05df4f
+    outcome: inconclusive
+    reason: hwext is a structural attribute; no direct check found.
+    evidence: []
+  - id: cr_cd581c0937a0
+    outcome: withdrawn
+    reason: Smoke vseq runs with sha_en=0 and the scoreboard checks the resulting behaviour.
+    evidence:
+    - 1
+  - id: cr_d00d322b1664
+    outcome: inconclusive
+    reason: hwqe is structural; it is only indirectly exercised through the key_swap and endian_swap tests.
+    evidence: []
+  - id: cr_d34d2d2c8448
+    outcome: withdrawn
+    reason: Scoreboard models key_swap=0 as big-endian, and the digest comparison fails if the RTL differs.
+    evidence:
+    - 0
+  - id: cr_f37acb3d81a3
+    outcome: withdrawn
+    reason: Scoreboard handles masked byte writes and compares the digest. I did not confirm that the
+      sequences issue single-byte writes.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0566655
+error: null

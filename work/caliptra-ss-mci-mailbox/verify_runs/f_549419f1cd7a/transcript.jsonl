@@ -1,0 +1,17 @@
+{"t": "2026-11-10T19:42:45Z", "event": "  \u2192 Grep: intr_count_incr|count_incr_r"}
+{"t": "2026-11-10T19:42:45Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T19:42:46Z", "event": "Check tests for interrupt counters."}
+{"t": "2026-11-10T19:42:47Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T19:42:49Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:42:50Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:42:51Z", "event": "Only coverage; no checks. Quick check for tests reading counters."}
+{"t": "2026-11-10T19:42:52Z", "event": "  \u2192 Grep: _intr_count_r|INTR_COUNT_R|intr_count_incr"}
+{"t": "2026-11-10T19:42:54Z", "event": "  \u2192 Grep: INTR_COUNT"}
+{"t": "2026-11-10T19:42:55Z", "event": "  \u2192 Grep: INTR_COUNT"}
+{"t": "2026-11-10T19:42:57Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:43:04Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T19:43:05Z", "event": "  \u2192 Grep: 0xFFFFFFFF.*INTR_COUNT|INTR_COUNT.*0xFFFFFFFF|saturat"}
+{"t": "2026-11-10T19:43:14Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:43:23Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:43:26Z", "event": "I submitted the verdict: all 5 items stand as untested. The system accepted it.\n\n- **Pulse items (`cr_193c2e86ca72`, `cr_1bcdcddb3f6d`):** the only test that touches them is `mcu_intr_handler`. It compares the summed hardware counters to the firmware count of triggered events. That check is aggregate and does not check the 1-cycle pulse width.\n- **Saturation (`cr_1e422b850220`):** no test drives a counter to saturation.\n- **`swwel` (`cr_22a6d4baab20`):** no test writes the pulse field.\n- **`decrvalue` (`cr_242db8343387`):** no test checks it directly.\n\nNothing further to do."}
+{"t": "2026-11-10T19:43:26Z", "event": "[14 turns, $0.1334]"}

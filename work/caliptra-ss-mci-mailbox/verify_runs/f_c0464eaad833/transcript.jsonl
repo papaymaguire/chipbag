@@ -1,0 +1,18 @@
+{"t": "2026-11-10T19:46:53Z", "event": "  \u2192 Grep: count_incr_r"}
+{"t": "2026-11-10T19:46:54Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/mci/rtl/mci_reg.rdl"}
+{"t": "2026-11-10T19:46:55Z", "event": "Check tests referencing interrupt counts."}
+{"t": "2026-11-10T19:46:56Z", "event": "  \u2192 Grep: intr_count_r|_intr_count|count_incr"}
+{"t": "2026-11-10T19:46:57Z", "event": "  \u2192 Grep: count_incr_r"}
+{"t": "2026-11-10T19:46:59Z", "event": "  \u2192 Grep: count"}
+{"t": "2026-11-10T19:47:01Z", "event": "  \u2192 Grep: INTR_COUNT_R|_hw\\+\\+|_hw\\b.*!=|_hw\\s*[!=]="}
+{"t": "2026-11-10T19:47:04Z", "event": "  \u2192 Grep: MBOX[01]_(ECC_COR|TARGET_DONE|SOC_REQ_LOCK)_INTR_COUNT_R|count_hw\\s*(!=|==)|!= *mci_(notif|error)_intr_count"}
+{"t": "2026-11-10T19:47:08Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:47:08Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:47:12Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T19:47:16Z", "event": "Checking whether the software trigger and the hardware input feed the same counter increment in the RTL."}
+{"t": "2026-11-10T19:47:17Z", "event": "  \u2192 Grep: notif_mbox0_ecc_cor_intr_count_incr_r.pulse.*(incrthreshold|hwset|next|we)|notif_mbox0_ecc_cor_trig"}
+{"t": "2026-11-10T19:47:29Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:47:31Z", "event": "The evidence entries need a `refutes` role for the withdrawn items, so I'm resubmitting with that fixed."}
+{"t": "2026-11-10T19:47:38Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:47:42Z", "event": "I submitted the verdict as inconclusive overall. Four of the five items are withdrawn and one is inconclusive.\n\nThe test `mcu_intr_handler` covers the counter and pulse behaviour. It triggers every notif and error interrupt once through the software trigger registers. It then reads all the `*_INTR_COUNT_R` counters. It kills the simulation if the summed counts differ from the number of triggers. It is in the nightly directed regressions.\n\n- **cr_948e0cfb6d3a, cr_97a9307feeea, cr_96b7a083f521, cr_991e89c92ef8:** withdrawn. Each of these counters is triggered once and sits inside a checked sum. The check is a sum over all counters, so offsetting errors in two counters could hide a fault.\n- **cr_92e293d86fd1:** inconclusive. The test uses the software trigger registers, and no test I found drives a real hardware interrupt input edge. I did not confirm that the trigger and the hardware input feed the same counter increment.\n\nThe coverage file `mci_top_cov_if.sv` has coverpoints on these counter fields but no checks."}
+{"t": "2026-11-10T19:47:42Z", "event": "[14 turns, $0.1450]"}

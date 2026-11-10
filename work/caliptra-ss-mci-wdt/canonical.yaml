@@ -1,0 +1,3224 @@
+generated_at: '2026-11-10T19:02:44Z'
+model: claude-sonnet-5-5
+cost_usd: 0.0182
+requirements_stats:
+  units: 109
+  clusters: 93
+  clusters_merged: 5
+  largest_cluster: 7
+  canonical: 109
+  merged_groups: 0
+  members_in_merged_groups: 0
+  needs_test: 48
+  conflicts: 0
+  refinements: 0
+  ambiguities_resolved: 0
+  issues: 0
+cases_stats:
+  units: 22
+  clusters: 4
+  clusters_merged: 3
+  largest_cluster: 10
+  plans: 0
+  plans_merged: 0
+  plans_unimplemented: 0
+  tests: 13
+  tests_implemented: 13
+  tests_listed_only: 0
+  tests_multi_file: 0
+  tests_unlisted: 11
+  issues: 0
+checker_stats:
+  roles:
+    checker: 10
+    coverage: 1
+    test: 2
+  tests_with_checker: 2
+requirements:
+- id: cr_d1021cdb24ca
+  statement: The watchdog timer contains two timers.
+  merged: false
+  tier: needs_test
+  aspect: functional
+  members:
+  - req_74aacbc9cfef
+  sources:
+  - docs/CaliptraSSHardwareSpecification.md > Manufacturer Control Interface (MCI) > MCI Feature Descriptions
+    > Watchdog Timer
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_74aacbc9cfef
+    text: The Watchdog timer contains two different timers.
+    lines:
+    - 1274
+    - 1274
+    chars:
+    - 119916
+    - 119965
+- id: cr_c31cbc41b451
+  statement: The two timers can be configured in either Cascade or Independent mode.
+  merged: false
+  tier: needs_test
+  aspect: configuration
+  members:
+  - req_a1b5b6b02612
+  sources:
+  - docs/CaliptraSSHardwareSpecification.md > Manufacturer Control Interface (MCI) > MCI Feature Descriptions
+    > Watchdog Timer
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_a1b5b6b02612
+    text: 'These timers can be configured in two different modes:'
+    lines:
+    - 1274
+    - 1274
+    chars:
+    - 119966
+    - 120020
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_a1b5b6b02612
+    text: Cascade
+    lines:
+    - 1276
+    - 1276
+    chars:
+    - 120025
+    - 120032
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_a1b5b6b02612
+    text: Independent
+    lines:
+    - 1277
+    - 1277
+    chars:
+    - 120036
+    - 120047
+- id: cr_7ae30acfa128
+  statement: In cascade mode, timer 1 timeout triggers an error interrupt.
+  merged: false
+  tier: needs_test
+  aspect: interrupt
+  members:
+  - req_a96f88e1b894
+  sources:
+  - docs/CaliptraSSHardwareSpecification.md > Manufacturer Control Interface (MCI) > MCI Feature Descriptions
+    > Watchdog Timer
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_a96f88e1b894
+    text: 'In cascade mode when the first timer reaches a timeout two things will happen:'
+    lines:
+    - 1279
+    - 1279
+    chars:
+    - 120049
+    - 120127
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_a96f88e1b894
+    text: An error interrupt will be triggered
+    lines:
+    - 1281
+    - 1281
+    chars:
+    - 120132
+    - 120168
+- id: cr_27bb5f1d8f1f
+  statement: In independent mode, a timer timeout asserts an error interrupt.
+  merged: false
+  tier: needs_test
+  aspect: interrupt
+  members:
+  - req_dba2cab91392
+  sources:
+  - docs/CaliptraSSHardwareSpecification.md > Manufacturer Control Interface (MCI) > MCI Feature Descriptions
+    > Watchdog Timer
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_dba2cab91392
+    text: When they timeout an error interrupt will be asserted.
+    lines:
+    - 1289
+    - 1289
+    chars:
+    - 120465
+    - 120519
+- id: cr_9e9a3fb2203b
+  statement: In cascade mode, timer 1 timeout starts Timer 2 counting.
+  merged: false
+  tier: needs_test
+  aspect: functional
+  members:
+  - req_f90cc6ac2e23
+  sources:
+  - docs/CaliptraSSHardwareSpecification.md > Manufacturer Control Interface (MCI) > MCI Feature Descriptions
+    > Watchdog Timer
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_f90cc6ac2e23
+    text: 'In cascade mode when the first timer reaches a timeout two things will happen:'
+    lines:
+    - 1279
+    - 1279
+    chars:
+    - 120049
+    - 120127
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_f90cc6ac2e23
+    text: Timer 2 will start counting
+    lines:
+    - 1282
+    - 1282
+    chars:
+    - 120172
+    - 120199
+- id: cr_2a8e5fb09eff
+  statement: The NMI is never asserted in independent mode.
+  merged: false
+  tier: needs_test
+  aspect: functional
+  members:
+  - req_1b2fd2cc2388
+  sources:
+  - docs/CaliptraSSHardwareSpecification.md > Manufacturer Control Interface (MCI) > MCI Feature Descriptions
+    > Watchdog Timer
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_1b2fd2cc2388
+    text: The NMI will never be asserted while in independent mode.
+    lines:
+    - 1289
+    - 1289
+    chars:
+    - 120520
+    - 120577
+- id: cr_53f341ca2b26
+  statement: In cascade mode, if the WDT is not serviced before Timer 2 times out, the NMI output pin
+    is asserted.
+  merged: false
+  tier: needs_test
+  aspect: functional
+  members:
+  - req_7dc7351c7eb2
+  sources:
+  - docs/CaliptraSSHardwareSpecification.md > Manufacturer Control Interface (MCI) > MCI Feature Descriptions
+    > Watchdog Timer
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_7dc7351c7eb2
+    text: 'If the WDT is not serviced before Timer 2 times out two things happen:'
+    lines:
+    - 1284
+    - 1284
+    chars:
+    - 120201
+    - 120271
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_7dc7351c7eb2
+    text: NMI output pin is asserted
+    lines:
+    - 1286
+    - 1286
+    chars:
+    - 120276
+    - 120302
+- id: cr_8384e15625f8
+  statement: In cascade mode, if the WDT is not serviced before Timer 2 times out, NMI HW_ERROR_FATAL
+    is triggered.
+  merged: false
+  tier: needs_test
+  aspect: error_handling
+  members:
+  - req_92703b044196
+  sources:
+  - docs/CaliptraSSHardwareSpecification.md > Manufacturer Control Interface (MCI) > MCI Feature Descriptions
+    > Watchdog Timer
+  ambiguities:
+  - code: WEAK_MODAL
+    note: It says the NMI HW_ERROR_FATAL 'can' assert error_fatal on the MCI port, without stating when
+      it does.
+    question: Under what conditions is error_fatal asserted on the MCI port when NMI HW_ERROR_FATAL is
+      triggered?
+  ambiguity_resolved: null
+  quotes:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_92703b044196
+    text: 'If the WDT is not serviced before Timer 2 times out two things happen:'
+    lines:
+    - 1284
+    - 1284
+    chars:
+    - 120201
+    - 120271
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_92703b044196
+    text: NMI HW_ERROR_FATAL is triggered which can assert an error_fatal on the MCI port.
+    lines:
+    - 1287
+    - 1287
+    chars:
+    - 120306
+    - 120386
+- id: cr_7e519e5d467b
+  statement: In independent mode, the two timers operate independently of each other.
+  merged: false
+  tier: needs_test
+  aspect: functional
+  members:
+  - req_5ce2aedab7cf
+  sources:
+  - docs/CaliptraSSHardwareSpecification.md > Manufacturer Control Interface (MCI) > MCI Feature Descriptions
+    > Watchdog Timer
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    req_id: req_5ce2aedab7cf
+    text: In Independent mode the two timers are completely independent of each other.
+    lines:
+    - 1289
+    - 1289
+    chars:
+    - 120388
+    - 120464
+- id: cr_c64a879f32e4
+  statement: 'mci_reg.WDT_TIMER1_EN.timer1_en: hardware access is r.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_9362d977dcb5
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER1_EN
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_9362d977dcb5
+    text: hw = r
+    lines:
+    - 685
+    - 685
+    chars:
+    - 37733
+    - 37739
+- id: cr_7a9c679cbb40
+  statement: 'mci_reg.WDT_TIMER1_EN.timer1_en: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_3bc179cb68c7
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER1_EN
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_3bc179cb68c7
+    text: sw = rw
+    lines:
+    - 685
+    - 685
+    chars:
+    - 37741
+    - 37748
+- id: cr_a9d3fa1d1d16
+  statement: 'mci_reg.WDT_TIMER1_TIMEOUT_PERIOD[].timer1_timeout_period: software writes take effect only
+    when mci_reg.axi_mcu_or_mci_soc_config_req is asserted.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_817f20547f64
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER1_TIMEOUT_PERIOD
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_817f20547f64
+    text: swwe = axi_mcu_or_mci_soc_config_req
+    lines:
+    - 697
+    - 697
+    chars:
+    - 38331
+    - 38367
+- id: cr_6c452036f447
+  statement: 'mci_reg.WDT_TIMER1_CTRL.timer1_restart: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req
+    is asserted.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_8c29140158f0
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER1_CTRL
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_8c29140158f0
+    text: swwe = axi_mcu_or_mci_soc_config_req
+    lines:
+    - 691
+    - 691
+    chars:
+    - 38025
+    - 38061
+- id: cr_bf055beaa8ff
+  statement: 'mci_reg.WDT_TIMER1_EN.timer1_en: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req
+    is asserted.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_ab5e6c18f22d
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER1_EN
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_ab5e6c18f22d
+    text: swwe = axi_mcu_or_mci_soc_config_req
+    lines:
+    - 685
+    - 685
+    chars:
+    - 37750
+    - 37786
+- id: cr_47a9e9e5fa43
+  statement: 'mci_reg.WDT_TIMER2_TIMEOUT_PERIOD[].timer2_timeout_period: software writes take effect only
+    when mci_reg.axi_mcu_or_mci_soc_config_req is asserted.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_b06672c6227e
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_TIMEOUT_PERIOD
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_b06672c6227e
+    text: swwe = axi_mcu_or_mci_soc_config_req
+    lines:
+    - 716
+    - 716
+    chars:
+    - 39395
+    - 39431
+- id: cr_63aba301004b
+  statement: 'mci_reg.WDT_TIMER2_CTRL.timer2_restart: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req
+    is asserted.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_b4f18cd906f6
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_CTRL
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_b4f18cd906f6
+    text: swwe = axi_mcu_or_mci_soc_config_req
+    lines:
+    - 710
+    - 710
+    chars:
+    - 39089
+    - 39125
+- id: cr_638b56faf03a
+  statement: 'mci_reg.WDT_TIMER2_EN.timer2_en: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req
+    is asserted.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_daea1c2a0d26
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_EN
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_daea1c2a0d26
+    text: swwe = axi_mcu_or_mci_soc_config_req
+    lines:
+    - 704
+    - 704
+    chars:
+    - 38820
+    - 38856
+- id: cr_728d7577e57a
+  statement: 'mci_reg.WDT_TIMER1_EN.timer1_en: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_de5b1e7c74d2
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER1_EN
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_de5b1e7c74d2
+    text: timer1_en = 1'b0
+    lines:
+    - 685
+    - 685
+    chars:
+    - 37814
+    - 37830
+- id: cr_243eb23d0d15
+  statement: 'mci_reg.WDT_TIMER1_CTRL.timer1_restart: hardware access is r.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_253fc8e6f58e
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER1_CTRL
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_253fc8e6f58e
+    text: hw = r
+    lines:
+    - 691
+    - 691
+    chars:
+    - 38008
+    - 38014
+- id: cr_f8aca587d0a8
+  statement: 'mci_reg.WDT_TIMER1_CTRL.timer1_restart: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_40394a0b3cb1
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER1_CTRL
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_40394a0b3cb1
+    text: sw = rw
+    lines:
+    - 691
+    - 691
+    chars:
+    - 38016
+    - 38023
+- id: cr_ebc8b9829700
+  statement: 'mci_reg.WDT_TIMER1_CTRL.timer1_restart: writing 1 produces a single-cycle pulse, then the
+    field clears.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_9b3a15049c9c
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER1_CTRL
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_9b3a15049c9c
+    text: singlepulse
+    lines:
+    - 691
+    - 691
+    chars:
+    - 38088
+    - 38099
+- id: cr_f3bc46f69d36
+  statement: 'mci_reg.WDT_TIMER1_CTRL.timer1_restart: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_779ed8ed4842
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER1_CTRL
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_779ed8ed4842
+    text: timer1_restart = 1'b0
+    lines:
+    - 691
+    - 691
+    chars:
+    - 38102
+    - 38123
+- id: cr_d0eb2dac9b44
+  statement: 'mci_reg.WDT_TIMER1_TIMEOUT_PERIOD[].timer1_timeout_period: hardware access is r.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_588761848952
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER1_TIMEOUT_PERIOD
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_588761848952
+    text: hw = r
+    lines:
+    - 697
+    - 697
+    chars:
+    - 38314
+    - 38320
+- id: cr_f0fbe4f02e26
+  statement: 'mci_reg.WDT_TIMER1_TIMEOUT_PERIOD[].timer1_timeout_period: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_ff573bd6e431
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER1_TIMEOUT_PERIOD
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_ff573bd6e431
+    text: sw = rw
+    lines:
+    - 697
+    - 697
+    chars:
+    - 38322
+    - 38329
+- id: cr_ab22ce324f9f
+  statement: 'mci_reg.WDT_TIMER1_TIMEOUT_PERIOD[].timer1_timeout_period: reset value is 0xffffffff.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_c19e7eab7ca7
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER1_TIMEOUT_PERIOD
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_c19e7eab7ca7
+    text: timer1_timeout_period[32] = 32'hFFFFFFFF
+    lines:
+    - 697
+    - 697
+    chars:
+    - 38395
+    - 38435
+- id: cr_b9134cd04499
+  statement: 'mci_reg.WDT_TIMER2_EN.timer2_en: hardware access is r.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_ca638ffb3b96
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_EN
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_ca638ffb3b96
+    text: hw = r
+    lines:
+    - 704
+    - 704
+    chars:
+    - 38803
+    - 38809
+- id: cr_9d3445656b36
+  statement: 'mci_reg.WDT_TIMER2_EN.timer2_en: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_9ee972031ad7
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_EN
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_9ee972031ad7
+    text: sw = rw
+    lines:
+    - 704
+    - 704
+    chars:
+    - 38811
+    - 38818
+- id: cr_8a1f37082f15
+  statement: 'mci_reg.WDT_TIMER2_EN.timer2_en: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_464d73b6635e
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_EN
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_464d73b6635e
+    text: timer2_en = 1'b0
+    lines:
+    - 704
+    - 704
+    chars:
+    - 38884
+    - 38900
+- id: cr_636839e0c3cf
+  statement: Setting timer2_en to 1 disables the default cascaded mode of the watchdog timers.
+  merged: false
+  tier: needs_test
+  aspect: functional
+  members:
+  - req_df92b206476c
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_EN
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_df92b206476c
+    text: 'Note: Setting this to 1 will disable the default cascaded mode'
+    lines:
+    - 703
+    - 703
+    chars:
+    - 38648
+    - 38710
+- id: cr_fc16aba2ad78
+  statement: Setting timer2_en to 1 makes both watchdog timers count independently.
+  merged: false
+  tier: needs_test
+  aspect: functional
+  members:
+  - req_bf832e3be0ad
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_EN
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_bf832e3be0ad
+    text: will have both timers count independently
+    lines:
+    - 703
+    - 703
+    chars:
+    - 38715
+    - 38756
+- id: cr_ae7203f8fad8
+  statement: 'mci_reg.WDT_TIMER2_CTRL.timer2_restart: hardware access is r.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_4a2901ffeee9
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_CTRL
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_4a2901ffeee9
+    text: hw = r
+    lines:
+    - 710
+    - 710
+    chars:
+    - 39072
+    - 39078
+- id: cr_e572e6b59d8e
+  statement: 'mci_reg.WDT_TIMER2_CTRL.timer2_restart: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_45a44c42a834
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_CTRL
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_45a44c42a834
+    text: sw = rw
+    lines:
+    - 710
+    - 710
+    chars:
+    - 39080
+    - 39087
+- id: cr_84c1b9ce43eb
+  statement: 'mci_reg.WDT_TIMER2_CTRL.timer2_restart: writing 1 produces a single-cycle pulse, then the
+    field clears.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_b9e5d64e3525
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_CTRL
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_b9e5d64e3525
+    text: singlepulse
+    lines:
+    - 710
+    - 710
+    chars:
+    - 39152
+    - 39163
+- id: cr_8ce1002f422e
+  statement: 'mci_reg.WDT_TIMER2_CTRL.timer2_restart: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_d8be4a9a2388
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_CTRL
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_d8be4a9a2388
+    text: timer2_restart = 1'b0
+    lines:
+    - 710
+    - 710
+    chars:
+    - 39166
+    - 39187
+- id: cr_d7d002092b41
+  statement: 'mci_reg.WDT_TIMER2_TIMEOUT_PERIOD[].timer2_timeout_period: hardware access is r.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_d8af4729fb0f
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_TIMEOUT_PERIOD
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_d8af4729fb0f
+    text: hw = r
+    lines:
+    - 716
+    - 716
+    chars:
+    - 39378
+    - 39384
+- id: cr_8d617e336f1e
+  statement: 'mci_reg.WDT_TIMER2_TIMEOUT_PERIOD[].timer2_timeout_period: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_8790f5b120aa
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_TIMEOUT_PERIOD
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_8790f5b120aa
+    text: sw = rw
+    lines:
+    - 716
+    - 716
+    chars:
+    - 39386
+    - 39393
+- id: cr_2d4aed7d0138
+  statement: 'mci_reg.WDT_TIMER2_TIMEOUT_PERIOD[].timer2_timeout_period: reset value is 0xffffffff.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_5ada9984bf6a
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_TIMER2_TIMEOUT_PERIOD
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_5ada9984bf6a
+    text: timer2_timeout_period[32] = 32'hFFFFFFFF
+    lines:
+    - 716
+    - 716
+    chars:
+    - 39459
+    - 39499
+- id: cr_842b4671d158
+  statement: 'mci_reg.WDT_STATUS.t1_timeout: hardware access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_1e1d02ba30af
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_STATUS
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_1e1d02ba30af
+    text: hw = rw
+    lines:
+    - 723
+    - 723
+    chars:
+    - 39766
+    - 39773
+- id: cr_bd1bdbf1e095
+  statement: 'mci_reg.WDT_STATUS.t1_timeout: software access is r.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_4ac4c0b9f62f
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_STATUS
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_4ac4c0b9f62f
+    text: sw = r
+    lines:
+    - 723
+    - 723
+    chars:
+    - 39775
+    - 39781
+- id: cr_02695f46c44c
+  statement: 'mci_reg.WDT_STATUS.t1_timeout: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_7a05a81ecfc0
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_STATUS
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_7a05a81ecfc0
+    text: t1_timeout = 1'b0
+    lines:
+    - 723
+    - 723
+    chars:
+    - 39810
+    - 39827
+- id: cr_7c055add6571
+  statement: 'mci_reg.WDT_STATUS.t2_timeout: hardware access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_e80125344f19
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_STATUS
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_e80125344f19
+    text: hw = rw
+    lines:
+    - 724
+    - 724
+    chars:
+    - 39871
+    - 39878
+- id: cr_812421b86c63
+  statement: 'mci_reg.WDT_STATUS.t2_timeout: software access is r.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_7d2d93c9b1a1
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_STATUS
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_7d2d93c9b1a1
+    text: sw = r
+    lines:
+    - 724
+    - 724
+    chars:
+    - 39880
+    - 39886
+- id: cr_ec92da98fde2
+  statement: 'mci_reg.WDT_STATUS.t2_timeout: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_2b5f6b52f9db
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_STATUS
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_2b5f6b52f9db
+    text: t2_timeout = 1'b0
+    lines:
+    - 724
+    - 724
+    chars:
+    - 39914
+    - 39931
+- id: cr_5d205b95a4db
+  statement: 'mci_reg.WDT_CFG[].TIMEOUT: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_6860b0ebfd1a
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_CFG
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_6860b0ebfd1a
+    text: sw=rw
+    lines:
+    - 731
+    - 731
+    chars:
+    - 40083
+    - 40088
+- id: cr_e1bc118fb857
+  statement: 'mci_reg.WDT_CFG[].TIMEOUT: hardware access is na.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_970cd010cbfb
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_CFG
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_970cd010cbfb
+    text: hw=na
+    lines:
+    - 731
+    - 731
+    chars:
+    - 40090
+    - 40095
+- id: cr_c1e39b0eba0a
+  statement: 'mci_reg.WDT_CFG[].TIMEOUT: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_532b0623a8d8
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > WDT_CFG
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_532b0623a8d8
+    text: TIMEOUT[32]=0
+    lines:
+    - 731
+    - 731
+    chars:
+    - 40125
+    - 40138
+- id: cr_4c83d4409fef
+  statement: 'mci_reg.MCU_TIMER_CONFIG.clk_period: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_e3d4ab04d859
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_TIMER_CONFIG
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_e3d4ab04d859
+    text: sw=rw
+    lines:
+    - 741
+    - 741
+    chars:
+    - 40558
+    - 40563
+- id: cr_8a59d0399987
+  statement: 'mci_reg.MCU_TIMER_CONFIG.clk_period: hardware access is na.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_a92c9460cd3e
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_TIMER_CONFIG
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_a92c9460cd3e
+    text: hw=na
+    lines:
+    - 741
+    - 741
+    chars:
+    - 40565
+    - 40570
+- id: cr_035fcbb0c1f6
+  statement: 'mci_reg.MCU_TIMER_CONFIG.clk_period: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_630f8986ba0a
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_TIMER_CONFIG
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_630f8986ba0a
+    text: clk_period[32] = 32'h0
+    lines:
+    - 741
+    - 741
+    chars:
+    - 40600
+    - 40622
+- id: cr_2f81ac754a0b
+  statement: The clk_period field holds the system clock period as an integer number of picoseconds.
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_ffba0cb6e2ce
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_TIMER_CONFIG
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_ffba0cb6e2ce
+    text: Clock Period is indicated as an integer number of picoseconds.
+    lines:
+    - 740
+    - 740
+    chars:
+    - 40453
+    - 40515
+- id: cr_8bfac2b9d66f
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_d40cc7f5463b
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_L
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_d40cc7f5463b
+    text: sw = rw
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40893
+    - 40900
+- id: cr_38a389da0de2
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: on simultaneous hardware and software updates, sw takes
+    precedence.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_533ef52f3562
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_L
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_533ef52f3562
+    text: precedence = sw
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40902
+    - 40917
+- id: cr_2b62be56bf05
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: hardware is notified when software modifies the field.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_ea0f8a460270
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_L
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_ea0f8a460270
+    text: swmod = true
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40919
+    - 40931
+- id: cr_d218f63ce45d
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: hardware access is r.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_966fa159dee9
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_L
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_966fa159dee9
+    text: hw = r
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40933
+    - 40939
+- id: cr_aff7593a17bc
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: software writes take effect only when mci_reg.axi_mcu_req
+    is asserted.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_94df3b248eb1
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_L
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_94df3b248eb1
+    text: swwe = axi_mcu_req
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40941
+    - 40959
+- id: cr_3e9013890dc9
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: the field is a counter.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_990bedf6eac2
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_L
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_990bedf6eac2
+    text: counter = true
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40961
+    - 40975
+- id: cr_5a1201a654e5
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: the counter increments by 1.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_f5f3dbfb78f2
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_L
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_f5f3dbfb78f2
+    text: incrvalue = 1
+    lines:
+    - 748
+    - 748
+    chars:
+    - 40977
+    - 40990
+- id: cr_f0c4fe65a776
+  statement: 'mci_reg.MCU_RV_MTIME_L.count_l: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_9950958fde5b
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_L
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_9950958fde5b
+    text: count_l[32] = 32'h0
+    lines:
+    - 748
+    - 748
+    chars:
+    - 41037
+    - 41056
+- id: cr_e1be6a4e01d3
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_2707075aacac
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_H
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_2707075aacac
+    text: sw = rw
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41320
+    - 41327
+- id: cr_3a7501391c31
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: on simultaneous hardware and software updates, sw takes
+    precedence.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_8f18902698c6
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_H
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_8f18902698c6
+    text: precedence = sw
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41329
+    - 41344
+- id: cr_4a8c69cd7bb3
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: hardware is notified when software modifies the field.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_65f9f57d7d26
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_H
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_65f9f57d7d26
+    text: swmod = true
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41346
+    - 41358
+- id: cr_fa3484c91c02
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: hardware access is r.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_ffa17bd1cc88
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_H
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_ffa17bd1cc88
+    text: hw = r
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41360
+    - 41366
+- id: cr_3456fb30114e
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: software writes take effect only when mci_reg.axi_mcu_req
+    is asserted.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_dea41a73cbfa
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_H
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_dea41a73cbfa
+    text: swwe = axi_mcu_req
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41368
+    - 41386
+- id: cr_81e541ae0429
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: the field is a counter.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_d40caa144baf
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_H
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_d40caa144baf
+    text: counter = true
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41388
+    - 41402
+- id: cr_1ff962a312fd
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: the counter increments by 1.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_f4173259a0ff
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_H
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_f4173259a0ff
+    text: incrvalue = 1
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41404
+    - 41417
+- id: cr_5ca6ff1c5d22
+  statement: 'mci_reg.MCU_RV_MTIME_H.count_h: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_ba85bec7cbbb
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIME_H
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_ba85bec7cbbb
+    text: count_h[32] = 32'h0
+    lines:
+    - 755
+    - 755
+    chars:
+    - 41464
+    - 41483
+- id: cr_6bcb67b20551
+  statement: 'mci_reg.MCU_RV_MTIMECMP_L.compare_l: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_eb821ec44e34
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIMECMP_L
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_eb821ec44e34
+    text: sw = rw
+    lines:
+    - 761
+    - 761
+    chars:
+    - 41683
+    - 41690
+- id: cr_41f50b04d7de
+  statement: 'mci_reg.MCU_RV_MTIMECMP_L.compare_l: hardware access is r.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_bc1e93862ce3
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIMECMP_L
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_bc1e93862ce3
+    text: hw = r
+    lines:
+    - 761
+    - 761
+    chars:
+    - 41692
+    - 41698
+- id: cr_3a3d5cbca3d6
+  statement: 'mci_reg.MCU_RV_MTIMECMP_L.compare_l: software writes take effect only when mci_reg.axi_mcu_req
+    is asserted.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_208c4d1bd928
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIMECMP_L
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_208c4d1bd928
+    text: swwe = axi_mcu_req
+    lines:
+    - 761
+    - 761
+    chars:
+    - 41700
+    - 41718
+- id: cr_8be20af69515
+  statement: 'mci_reg.MCU_RV_MTIMECMP_L.compare_l: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_ac0031fcd63c
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIMECMP_L
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_ac0031fcd63c
+    text: compare_l[32] = 32'h0
+    lines:
+    - 761
+    - 761
+    chars:
+    - 41748
+    - 41769
+- id: cr_5dfe66e7f57d
+  statement: 'mci_reg.MCU_RV_MTIMECMP_H.compare_h: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_4f3b3f6498b2
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIMECMP_H
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_4f3b3f6498b2
+    text: sw = rw
+    lines:
+    - 767
+    - 767
+    chars:
+    - 41973
+    - 41980
+- id: cr_22a24ce639e4
+  statement: 'mci_reg.MCU_RV_MTIMECMP_H.compare_h: hardware access is r.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_e772796de688
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIMECMP_H
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_e772796de688
+    text: hw = r
+    lines:
+    - 767
+    - 767
+    chars:
+    - 41982
+    - 41988
+- id: cr_ec500a7b175a
+  statement: 'mci_reg.MCU_RV_MTIMECMP_H.compare_h: software writes take effect only when mci_reg.axi_mcu_req
+    is asserted.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_378203bc5fa8
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIMECMP_H
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_378203bc5fa8
+    text: swwe = axi_mcu_req
+    lines:
+    - 767
+    - 767
+    chars:
+    - 41990
+    - 42008
+- id: cr_beab2331243d
+  statement: 'mci_reg.MCU_RV_MTIMECMP_H.compare_h: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_7f5b2b94e6d1
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_RV_MTIMECMP_H
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_7f5b2b94e6d1
+    text: compare_h[32] = 32'h0
+    lines:
+    - 767
+    - 767
+    chars:
+    - 42038
+    - 42059
+- id: cr_0b29e8dc5a3e
+  statement: 'mci_reg.RESET_REQUEST.mcu_req: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_b3b96a7e3ba2
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > RESET_REQUEST
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_b3b96a7e3ba2
+    text: sw=rw
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42402
+    - 42407
+- id: cr_b2afec8cdeb9
+  statement: 'mci_reg.RESET_REQUEST.mcu_req: hardware access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_8c0c49d398ae
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > RESET_REQUEST
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_8c0c49d398ae
+    text: hw=rw
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42409
+    - 42414
+- id: cr_693d5aecb4af
+  statement: 'mci_reg.RESET_REQUEST.mcu_req: hardware can clear the field (true).'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_c095ed10889e
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > RESET_REQUEST
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_c095ed10889e
+    text: hwclr=true
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42416
+    - 42426
+- id: cr_7afb4201c253
+  statement: 'mci_reg.RESET_REQUEST.mcu_req: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req
+    is asserted.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_1d8715e6bb56
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > RESET_REQUEST
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_1d8715e6bb56
+    text: swwe=axi_mcu_or_mci_soc_config_req
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42428
+    - 42462
+- id: cr_21fcb159fe0b
+  statement: 'mci_reg.RESET_REQUEST.mcu_req: hardware writes take effect only when the write enable is
+    asserted (true).'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_aa33d6b6111c
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > RESET_REQUEST
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_aa33d6b6111c
+    text: we
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42487
+    - 42489
+- id: cr_482f001382d4
+  statement: 'mci_reg.RESET_REQUEST.mcu_req: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_07a5766ce788
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > RESET_REQUEST
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_07a5766ce788
+    text: mcu_req=1'b0
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42492
+    - 42504
+- id: cr_596a2bf229aa
+  statement: When the request field is set, MCI asserts MCU reset.
+  merged: false
+  tier: needs_test
+  aspect: reset
+  members:
+  - req_530c6b38327f
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > RESET_REQUEST
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_530c6b38327f
+    text: Causes MCU reset to be asserted by MCI.
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42328
+    - 42367
+- id: cr_cadc6830658d
+  statement: The request field is cleared when reset is asserted.
+  merged: false
+  tier: needs_test
+  aspect: reset
+  members:
+  - req_5d6c9d04cf3c
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > RESET_REQUEST
+  ambiguities:
+  - code: UNCLEAR_REFERENT
+    note: 'It is not stated which reset clears the field: the MCU reset it causes, or the mci_rst_b reset
+      signal.'
+    question: Does 'reset' mean the MCU reset asserted by MCI as a result of this request, or the mci_rst_b
+      reset of the register block?
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_5d6c9d04cf3c
+    text: Cleared when reset is asserted.
+    lines:
+    - 776
+    - 776
+    chars:
+    - 42368
+    - 42399
+- id: cr_6c5bda189850
+  statement: TAP access to the MCI_BOOTFSM_GO register is read-write when debug intent is set.
+  merged: false
+  tier: needs_test
+  aspect: access_control
+  members:
+  - req_21d8f0d28695
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCI_BOOTFSM_GO
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_21d8f0d28695
+    text: '[br]TAP Access [with debug intent set]: RW'
+    lines:
+    - 783
+    - 783
+    chars:
+    - 42719
+    - 42761
+- id: cr_f09945fb73b7
+  statement: TAP has read/write access to CPTRA_BOOT_GO in debug mode.
+  merged: false
+  tier: needs_test
+  aspect: access_control
+  members:
+  - req_2391abfebe67
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > CPTRA_BOOT_GO
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_2391abfebe67
+    text: 'TAP Access [in debug mode]: RW'
+    lines:
+    - 790
+    - 790
+    chars:
+    - 42976
+    - 43006
+- id: cr_7af775cc3e34
+  statement: TAP has read/write access to the register when in debug mode.
+  merged: false
+  tier: needs_test
+  aspect: access_control
+  members:
+  - req_2ac690f9ad3b
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_NMI_VECTOR
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_2ac690f9ad3b
+    text: 'TAP Access [in debug mode]: RW'
+    lines:
+    - 805
+    - 805
+    chars:
+    - 43868
+    - 43898
+- id: cr_aaddef66f898
+  statement: TAP has read/write access to this register in debug mode.
+  merged: false
+  tier: needs_test
+  aspect: access_control
+  members:
+  - req_71bf76389b2e
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > RESET_REQUEST
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_71bf76389b2e
+    text: 'TAP Access [in debug mode]: RW'
+    lines:
+    - 775
+    - 775
+    chars:
+    - 42245
+    - 42275
+- id: cr_3a16ce569514
+  statement: TAP has read/write access to the register in debug mode.
+  merged: false
+  tier: needs_test
+  aspect: access_control
+  members:
+  - req_b1ab8afa7487
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_b1ab8afa7487
+    text: 'TAP Access [in debug mode]: RW'
+    lines:
+    - 797
+    - 797
+    chars:
+    - 43301
+    - 43331
+- id: cr_24597866a514
+  statement: 'mci_reg.CPTRA_BOOT_GO.go: hardware access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_d2931efa1bff
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > CPTRA_BOOT_GO
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_d2931efa1bff
+    text: hw = rw
+    lines:
+    - 791
+    - 791
+    chars:
+    - 43032
+    - 43039
+- id: cr_dba4c8eb17bd
+  statement: 'mci_reg.CPTRA_BOOT_GO.go: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_e6979854eecc
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > CPTRA_BOOT_GO
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_e6979854eecc
+    text: sw=rw
+    lines:
+    - 791
+    - 791
+    chars:
+    - 43025
+    - 43030
+- id: cr_174d9a6612dc
+  statement: 'mci_reg.MCI_BOOTFSM_GO.go: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_dd644900b2d5
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCI_BOOTFSM_GO
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_dd644900b2d5
+    text: sw=rw
+    lines:
+    - 784
+    - 784
+    chars:
+    - 42780
+    - 42785
+- id: cr_b40b2c8a4285
+  statement: 'mci_reg.MCI_BOOTFSM_GO.go: hardware access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_ee177df5209c
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCI_BOOTFSM_GO
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_ee177df5209c
+    text: hw = rw
+    lines:
+    - 784
+    - 784
+    chars:
+    - 42787
+    - 42794
+- id: cr_c17d872ba768
+  statement: 'mci_reg.MCI_BOOTFSM_GO.go: hardware writes take effect only when the write enable is asserted
+    (true).'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_b9a29f796616
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCI_BOOTFSM_GO
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_b9a29f796616
+    text: we
+    lines:
+    - 784
+    - 784
+    chars:
+    - 42796
+    - 42798
+- id: cr_d967dbc3d523
+  statement: 'mci_reg.MCI_BOOTFSM_GO.go: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_6999989f91f2
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCI_BOOTFSM_GO
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_6999989f91f2
+    text: go=1'b0
+    lines:
+    - 784
+    - 784
+    chars:
+    - 42801
+    - 42808
+- id: cr_3774897bcc3f
+  statement: Writing the go field requests the MCI Boot FSM to deassert Caliptra reset.
+  merged: false
+  tier: needs_test
+  aspect: functional
+  members:
+  - req_81d0bc80f190
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > CPTRA_BOOT_GO
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_81d0bc80f190
+    text: Request Caliptra Reset to be deasserted by the MCI Boot FSM.
+    lines:
+    - 789
+    - 789
+    chars:
+    - 42894
+    - 42954
+- id: cr_8d23d518a328
+  statement: Writing the GO field requests the MCI BootFSM to continue past the breakpoint, allowing MCU
+    and Caliptra to be brought out of reset.
+  merged: false
+  tier: needs_test
+  aspect: functional
+  members:
+  - req_cf4ea3224cab
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCI_BOOTFSM_GO
+  ambiguities:
+  - code: MISSING_DETAIL
+    note: The text does not state which value or write action constitutes the request, or whether it is
+      a level or a pulse.
+    question: Does writing 1 to GO release the BootFSM, and must the bit remain set or is it a one-time
+      request?
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_cf4ea3224cab
+    text: Request MCI BootFSM to continue past the breakpoint allowing MCU and Caliptra to be brought
+      out of reset.
+    lines:
+    - 782
+    - 782
+    chars:
+    - 42596
+    - 42701
+- id: cr_30c8d796ee5e
+  statement: 'mci_reg.CPTRA_BOOT_GO.go: hardware writes take effect only when the write enable is asserted
+    (true).'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_ebfc53f269a5
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > CPTRA_BOOT_GO
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_ebfc53f269a5
+    text: we
+    lines:
+    - 791
+    - 791
+    chars:
+    - 43041
+    - 43043
+- id: cr_2689bd65c925
+  statement: 'mci_reg.CPTRA_BOOT_GO.go: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_0fbdd1281054
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > CPTRA_BOOT_GO
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_0fbdd1281054
+    text: go=1'b0
+    lines:
+    - 791
+    - 791
+    chars:
+    - 43046
+    - 43053
+- id: cr_637720526705
+  statement: 'mci_reg.FW_SRAM_EXEC_REGION_SIZE.size: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_e0ad1a79a315
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_e0ad1a79a315
+    text: sw=rw
+    lines:
+    - 798
+    - 798
+    chars:
+    - 43386
+    - 43391
+- id: cr_d5960c2f611d
+  statement: 'mci_reg.FW_SRAM_EXEC_REGION_SIZE.size: hardware access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_cccfe0d56399
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_cccfe0d56399
+    text: hw=rw
+    lines:
+    - 798
+    - 798
+    chars:
+    - 43393
+    - 43398
+- id: cr_a50218a2692c
+  statement: 'mci_reg.FW_SRAM_EXEC_REGION_SIZE.size: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req__ss_config_unlock
+    is asserted.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_9c07cedc7848
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_9c07cedc7848
+    text: swwe=axi_mcu_or_mci_soc_config_req__ss_config_unlock
+    lines:
+    - 798
+    - 798
+    chars:
+    - 43400
+    - 43452
+- id: cr_7149ed2302b5
+  statement: 'mci_reg.FW_SRAM_EXEC_REGION_SIZE.size: hardware writes take effect only when the write enable
+    is asserted (true).'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_e66dbc317d3a
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_e66dbc317d3a
+    text: we
+    lines:
+    - 798
+    - 798
+    chars:
+    - 43454
+    - 43456
+- id: cr_f8966e52b088
+  statement: 'mci_reg.FW_SRAM_EXEC_REGION_SIZE.size: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_6deafd3ec77a
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_6deafd3ec77a
+    text: size[16] = 16'h0
+    lines:
+    - 798
+    - 798
+    chars:
+    - 43459
+    - 43475
+- id: cr_3423638404c0
+  statement: The size field value is expressed in multiples of 4KiB.
+  merged: false
+  tier: needs_test
+  aspect: functional
+  members:
+  - req_18b7111243dc
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > FW_SRAM_EXEC_REGION_SIZE
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_18b7111243dc
+    text: Size (in multiples of 4KiB)
+    lines:
+    - 798
+    - 798
+    chars:
+    - 43356
+    - 43383
+- id: cr_2a8058a2f98f
+  statement: 'mci_reg.MCU_NMI_VECTOR.vec: hardware access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_4a2cef4bb641
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_NMI_VECTOR
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_4a2cef4bb641
+    text: hw = rw
+    lines:
+    - 806
+    - 806
+    chars:
+    - 43937
+    - 43944
+- id: cr_9ea74aa973cc
+  statement: 'mci_reg.MCU_NMI_VECTOR.vec: hardware writes take effect only when the write enable is asserted
+    (true).'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_5fb27c7cee2c
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_NMI_VECTOR
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_5fb27c7cee2c
+    text: we
+    lines:
+    - 806
+    - 806
+    chars:
+    - 43946
+    - 43948
+- id: cr_82c85caed53d
+  statement: 'mci_reg.MCU_NMI_VECTOR.vec: software access is rw.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_d210cf6ca362
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_NMI_VECTOR
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_d210cf6ca362
+    text: sw = rw
+    lines:
+    - 806
+    - 806
+    chars:
+    - 43950
+    - 43957
+- id: cr_408718719167
+  statement: 'mci_reg.MCU_NMI_VECTOR.vec: software writes take effect only when mci_reg.axi_mcu_or_mci_soc_config_req__ss_config_unlock
+    is asserted.'
+  merged: false
+  tier: needs_test
+  aspect: register
+  members:
+  - req_6c709466e2dd
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_NMI_VECTOR
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_6c709466e2dd
+    text: swwe = axi_mcu_or_mci_soc_config_req__ss_config_unlock
+    lines:
+    - 806
+    - 806
+    chars:
+    - 43959
+    - 44013
+- id: cr_e7bb386dcedf
+  statement: 'mci_reg.MCU_NMI_VECTOR.vec: reset value is 0.'
+  merged: false
+  tier: by_construction
+  aspect: register
+  members:
+  - req_0d28538af2aa
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_NMI_VECTOR
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_0d28538af2aa
+    text: vec[32] = 32'h0
+    lines:
+    - 806
+    - 806
+    chars:
+    - 44016
+    - 44031
+- id: cr_e7262762a535
+  statement: Bit [0] of the NMI vector is ignored to enforce half-word alignment of the address.
+  merged: false
+  tier: needs_test
+  aspect: functional
+  members:
+  - req_6d737ce5658d
+  sources:
+  - src/mci/rtl/mci_reg.rdl > mci_reg > MCU_NMI_VECTOR
+  ambiguities: []
+  ambiguity_resolved: null
+  quotes:
+  - path: src/mci/rtl/mci_reg.rdl
+    req_id: req_6d737ce5658d
+    text: Bit [0] is ignored to enforce half-word alignment of address.
+    lines:
+    - 804
+    - 804
+    chars:
+    - 43786
+    - 43847
+conflicts: []
+refinements: []
+requirement_issues: []
+plans: []
+tests:
+- id: ct_f333dfc5105d
+  name: wdt_status_t1_check
+  summary: Checks that a rising t1_timeout is followed by a rising WDT_STATUS t1_timeout bit in the MCI
+    register output, disabled during reset.
+  status: implemented
+  implemented:
+  - vc_0b87673261fc
+  listed: []
+  listings: []
+  realizes: []
+  files:
+  - src/integration/asserts/caliptra_ss_top_sva.sv
+  checks:
+  - case_id: vc_0b87673261fc
+    text: When t1_timeout rises, the WDT_STATUS.t1_timeout value must rise on the next clock (disabled
+      while cptra_ss_rst_b_i is low); failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: disable iff (~`CPTRA_SS_TB_TOP_NAME.cptra_ss_rst_b_i)
+      lines:
+      - 141
+      - 141
+      chars:
+      - 7024
+      - 7077
+    - text: $rose(`MCI_WDT_PATH.t1_timeout) |=> $rose(`MCI_PATH.mci_reg_hwif_out.WDT_STATUS.t1_timeout.value)
+      lines:
+      - 142
+      - 142
+      chars:
+      - 7082
+      - 7179
+  failing_checks: 0
+  role: checker
+  checked_by: []
+  scope:
+    prefixes:
+    - src/integration
+    tests: 2
+    rationale: Assertion in caliptra_ss_top_sva.sv is bound into the top-level SS testbench, so it runs
+      with every test under src/integration.
+- id: ct_c2784848d855
+  name: independent_wdt_t1_service
+  summary: In independent mode, when the timer1 timeout is serviced, timer1_count is 0 on the next cycle.
+  status: implemented
+  implemented:
+  - vc_2405484d10ff
+  listed: []
+  listings: []
+  realizes: []
+  files:
+  - src/integration/asserts/caliptra_ss_top_sva.sv
+  checks:
+  - case_id: vc_2405484d10ff
+    text: After timer1 timeout serviced with both timers enabled and no t2_timeout, timer1_count must
+      be 0 on the next clock; failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.i_wdt.wdt_timer1_timeout_serviced_qual && `MCI_WDT_PATH.timer1_en && `MCI_WDT_PATH.timer2_en
+        && !`MCI_WDT_PATH.t2_timeout) |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+      lines:
+      - 129
+      - 129
+      chars:
+      - 6321
+      - 6504
+  failing_checks: 0
+  role: checker
+  checked_by: []
+  scope:
+    prefixes:
+    - src/integration
+    tests: 2
+    rationale: Assertion in caliptra_ss_top_sva.sv is bound into the top-level SS testbench, so it runs
+      with every test under src/integration.
+- id: ct_a049c5a60d6c
+  name: cascade_wdt_t2_pet
+  summary: In cascade mode with timer2 disabled, a timer2 restart pet without a t2 timeout makes timer2_count
+    0 on the next cycle.
+  status: implemented
+  implemented:
+  - vc_2ff80de27311
+  listed: []
+  listings: []
+  realizes: []
+  files:
+  - src/integration/asserts/caliptra_ss_top_sva.sv
+  checks:
+  - case_id: vc_2ff80de27311
+    text: After timer2_restart with timer2 disabled and no t2_timeout, timer2_count must be 0 on the next
+      clock; failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.timer2_restart && !`MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t2_timeout) |=>
+        (`MCI_WDT_PATH.i_wdt.timer2_count == 'h0)
+      lines:
+      - 99
+      - 99
+      chars:
+      - 4664
+      - 4797
+  failing_checks: 0
+  role: checker
+  checked_by: []
+  scope:
+    prefixes:
+    - src/integration
+    tests: 2
+    rationale: Assertion in caliptra_ss_top_sva.sv is bound into the top-level SS testbench, so it runs
+      with every test under src/integration.
+- id: ct_d147697bef91
+  name: independent_wdt_t2_service
+  summary: In independent mode, when the timer2 timeout is serviced, timer2_count is 0 on the next cycle.
+  status: implemented
+  implemented:
+  - vc_3d3ea34db036
+  listed: []
+  listings: []
+  realizes: []
+  files:
+  - src/integration/asserts/caliptra_ss_top_sva.sv
+  checks:
+  - case_id: vc_3d3ea34db036
+    text: After timer2 timeout serviced with timer2 enabled, timer2_count must be 0 on the next clock;
+      failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.i_wdt.wdt_timer2_timeout_serviced_qual && `MCI_WDT_PATH.timer2_en) |=> (`MCI_WDT_PATH.i_wdt.timer2_count
+        == 'h0)
+      lines:
+      - 135
+      - 135
+      chars:
+      - 6704
+      - 6831
+  failing_checks: 0
+  role: checker
+  checked_by: []
+  scope:
+    prefixes:
+    - src/integration
+    tests: 2
+    rationale: Assertion in caliptra_ss_top_sva.sv is bound into the top-level SS testbench, so it runs
+      with every test under src/integration.
+- id: ct_79dc987f4a36
+  name: wdt_status_t2_check
+  summary: Checks that a rising t2_timeout is followed by a rising WDT_STATUS t2_timeout bit in the MCI
+    register output, disabled during reset.
+  status: implemented
+  implemented:
+  - vc_5ed2d2fc77e7
+  listed: []
+  listings: []
+  realizes: []
+  files:
+  - src/integration/asserts/caliptra_ss_top_sva.sv
+  checks:
+  - case_id: vc_5ed2d2fc77e7
+    text: When t2_timeout rises, the WDT_STATUS.t2_timeout value must rise on the next clock (disabled
+      while cptra_ss_rst_b_i is low); failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: $rose(`MCI_WDT_PATH.t2_timeout) |=> $rose(`MCI_PATH.mci_reg_hwif_out.WDT_STATUS.t2_timeout.value)
+      lines:
+      - 149
+      - 149
+      chars:
+      - 7402
+      - 7499
+  failing_checks: 0
+  role: checker
+  checked_by: []
+  scope:
+    prefixes:
+    - src/integration
+    tests: 2
+    rationale: Assertion in caliptra_ss_top_sva.sv is bound into the top-level SS testbench, so it runs
+      with every test under src/integration.
+- id: ct_9fa1e52ddd7f
+  name: independent_wdt_t2_pet
+  summary: In independent mode, a timer2 restart pet without a t2 timeout makes timer2_count 0 on the
+    next cycle.
+  status: implemented
+  implemented:
+  - vc_63c46acf4d2a
+  listed: []
+  listings: []
+  realizes: []
+  files:
+  - src/integration/asserts/caliptra_ss_top_sva.sv
+  checks:
+  - case_id: vc_63c46acf4d2a
+    text: After timer2_restart with timer2_en and no t2_timeout, timer2_count must be 0 on the next clock;
+      failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.timer2_restart && `MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t2_timeout) |=>
+        (`MCI_WDT_PATH.i_wdt.timer2_count == 'h0)
+      lines:
+      - 123
+      - 123
+      chars:
+      - 6006
+      - 6138
+  failing_checks: 0
+  role: checker
+  checked_by: []
+  scope:
+    prefixes:
+    - src/integration
+    tests: 2
+    rationale: Assertion in caliptra_ss_top_sva.sv is bound into the top-level SS testbench, so it runs
+      with every test under src/integration.
+- id: ct_9b920c3eccde
+  name: cascade_wdt_t1_pet
+  summary: In cascade mode (timer1 enabled, timer2 not), a timer1 restart pet without a t1 timeout makes
+    timer1_count 0 on the next cycle.
+  status: implemented
+  implemented:
+  - vc_a945c19ebf09
+  listed: []
+  listings: []
+  realizes: []
+  files:
+  - src/integration/asserts/caliptra_ss_top_sva.sv
+  checks:
+  - case_id: vc_a945c19ebf09
+    text: After timer1_restart with timer1_en, timer2 disabled and no t1_timeout, timer1_count must be
+      0 on the next clock; failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.timer1_restart && `MCI_WDT_PATH.timer1_en && !`MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t1_timeout)
+        |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+      lines:
+      - 93
+      - 93
+      chars:
+      - 4333
+      - 4493
+  failing_checks: 0
+  role: checker
+  checked_by: []
+  scope:
+    prefixes:
+    - src/integration
+    tests: 2
+    rationale: Assertion in caliptra_ss_top_sva.sv is bound into the top-level SS testbench, so it runs
+      with every test under src/integration.
+- id: ct_b058210792fe
+  name: independent_wdt_t1_pet
+  summary: In independent mode with both timers enabled, a timer1 restart pet without a t1 timeout makes
+    timer1_count 0 on the next cycle.
+  status: implemented
+  implemented:
+  - vc_cb193fd51bf3
+  listed: []
+  listings: []
+  realizes: []
+  files:
+  - src/integration/asserts/caliptra_ss_top_sva.sv
+  checks:
+  - case_id: vc_cb193fd51bf3
+    text: After timer1_restart with both timers enabled and no t1_timeout, timer1_count must be 0 on the
+      next clock; failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.timer1_restart && `MCI_WDT_PATH.timer1_en && `MCI_WDT_PATH.timer2_en && !`MCI_WDT_PATH.t1_timeout)
+        |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+      lines:
+      - 117
+      - 117
+      chars:
+      - 5668
+      - 5827
+  failing_checks: 0
+  role: checker
+  checked_by: []
+  scope:
+    prefixes:
+    - src/integration
+    tests: 2
+    rationale: Assertion in caliptra_ss_top_sva.sv is bound into the top-level SS testbench, so it runs
+      with every test under src/integration.
+- id: ct_86c131d47ea8
+  name: cascade_wdt_t1_service
+  summary: In cascade mode, when the timer1 timeout is serviced, timer1_count is 0 on the next cycle.
+  status: implemented
+  implemented:
+  - vc_e25f9381c582
+  listed: []
+  listings: []
+  realizes: []
+  files:
+  - src/integration/asserts/caliptra_ss_top_sva.sv
+  checks:
+  - case_id: vc_e25f9381c582
+    text: After timer1 timeout serviced with timer1_en, timer2 disabled and no t2_timeout, timer1_count
+      must be 0 on the next clock; failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.i_wdt.wdt_timer1_timeout_serviced_qual && `MCI_WDT_PATH.timer1_en && !`MCI_WDT_PATH.timer2_en
+        && !`MCI_WDT_PATH.t2_timeout) |=> (`MCI_WDT_PATH.i_wdt.timer1_count == 'h0)
+      lines:
+      - 105
+      - 105
+      chars:
+      - 4972
+      - 5156
+  failing_checks: 0
+  role: checker
+  checked_by: []
+  scope:
+    prefixes:
+    - src/integration
+    tests: 2
+    rationale: Assertion in caliptra_ss_top_sva.sv is bound into the top-level SS testbench, so it runs
+      with every test under src/integration.
+- id: ct_7d0020237326
+  name: cascade_wdt_t2_service
+  summary: In cascade mode, when the timer2 timeout is serviced, timer2_count is 0 on the next cycle.
+  status: implemented
+  implemented:
+  - vc_e9bd7e26db30
+  listed: []
+  listings: []
+  realizes: []
+  files:
+  - src/integration/asserts/caliptra_ss_top_sva.sv
+  checks:
+  - case_id: vc_e9bd7e26db30
+    text: After timer2 timeout serviced with timer2 disabled, timer2_count must be 0 on the next clock;
+      failure only prints a message.
+    fails_test: 'no'
+    quotes:
+    - text: (`MCI_WDT_PATH.i_wdt.wdt_timer2_timeout_serviced_qual && !`MCI_WDT_PATH.timer2_en) |=> (`MCI_WDT_PATH.i_wdt.timer2_count
+        == 'h0)
+      lines:
+      - 111
+      - 111
+      chars:
+      - 5348
+      - 5476
+  failing_checks: 0
+  role: checker
+  checked_by: []
+  scope:
+    prefixes:
+    - src/integration
+    tests: 2
+    rationale: Assertion in caliptra_ss_top_sva.sv is bound into the top-level SS testbench, so it runs
+      with every test under src/integration.
+- id: ct_bfd5ad4b1295
+  name: caliptra_ss_top_cov_grp
+  summary: Per-instance covergroup sampled on the SS clock. It covers AXI manager read/write requests
+    and responses, back-to-back transactions, address-region hits (MCI regs, MCU SRAM, FC regs), and WDT
+    timer enable states with their cross.
+  status: implemented
+  implemented:
+  - vc_42665cac2b41
+  listed: []
+  listings: []
+  realizes: []
+  files:
+  - src/integration/coverage/caliptra_ss_top_cov_if.sv
+  checks:
+  - case_id: vc_42665cac2b41
+    text: Cover single and 5-in-a-row back-to-back AXI read address handshakes.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_rd_txn: coverpoint cptra_ss_cptra_core_m_axi_if_ar_hshake {'
+      lines:
+      - 48
+      - 48
+      chars:
+      - 1899
+      - 1962
+    - text: bins single_axi_rd_txn = (0 => 1 => 0);
+      lines:
+      - 49
+      - 49
+      chars:
+      - 1975
+      - 2014
+    - text: bins b2b_axi_rd_txn = (1 [*5]);
+      lines:
+      - 50
+      - 50
+      chars:
+      - 2027
+      - 2058
+  - case_id: vc_42665cac2b41
+    text: Cover the AXI read response handshake (rvalid && rready) and a single read response pulse.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_rd_rsp: coverpoint cptra_ss_cptra_core_m_axi_if_r_mgr.rvalid && cptra_ss_cptra_core_m_axi_if_r_mgr.rready
+        {'
+      lines:
+      - 52
+      - 52
+      chars:
+      - 2098
+      - 2209
+    - text: bins axi_rd_hshake = {1'b1};
+      lines:
+      - 53
+      - 53
+      chars:
+      - 2222
+      - 2250
+    - text: bins single_axi_rd_rsp = (0 => 1 => 0);
+      lines:
+      - 54
+      - 54
+      chars:
+      - 2263
+      - 2302
+  - case_id: vc_42665cac2b41
+    text: Cover single and 5-in-a-row back-to-back AXI write address handshakes.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_wr_txn: coverpoint cptra_ss_cptra_core_m_axi_if_aw_hshake {'
+      lines:
+      - 56
+      - 56
+      chars:
+      - 2321
+      - 2384
+    - text: bins single_axi_wr_txn = (0 => 1 => 0);
+      lines:
+      - 57
+      - 57
+      chars:
+      - 2397
+      - 2436
+    - text: bins b2b_axi_wr_txn = (1 [*5]);
+      lines:
+      - 58
+      - 58
+      chars:
+      - 2449
+      - 2480
+  - case_id: vc_42665cac2b41
+    text: Cover the AXI write response handshake (bvalid && bready) and a single write response pulse.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_wr_rsp: coverpoint cptra_ss_cptra_core_m_axi_if_w_mgr.bvalid && cptra_ss_cptra_core_m_axi_if_w_mgr.bready
+        {'
+      lines:
+      - 60
+      - 60
+      chars:
+      - 2520
+      - 2631
+    - text: bins axi_wr_hshake = {1'b1};
+      lines:
+      - 61
+      - 61
+      chars:
+      - 2644
+      - 2672
+    - text: bins single_axi_wr_rsp = (0 => 1 => 0);
+      lines:
+      - 62
+      - 62
+      chars:
+      - 2685
+      - 2724
+  - case_id: vc_42665cac2b41
+    text: Cover single and 5-in-a-row back-to-back AXI transactions of either read or write type.
+    fails_test: 'no'
+    quotes:
+    - text: axi_any_txn:coverpoint (cptra_ss_cptra_core_m_axi_if_ar_hshake) || (cptra_ss_cptra_core_m_axi_if_aw_hshake)
+        {
+      lines:
+      - 64
+      - 64
+      chars:
+      - 2743
+      - 2852
+    - text: bins single_axi_txn = (0 => 1 => 0);
+      lines:
+      - 65
+      - 65
+      chars:
+      - 2865
+      - 2901
+    - text: bins b2b_axi_txn = (1 [*5]);
+      lines:
+      - 66
+      - 66
+      chars:
+      - 2914
+      - 2942
+  - case_id: vc_42665cac2b41
+    text: Cover an AXI read request with address in the MCI register range.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_rd_mci_regs: coverpoint cptra_ss_cptra_core_m_axi_if_ar_hshake && cptra_ss_cptra_core_m_axi_if_r_mgr.araddr
+        inside {[`SOC_MCI_TOP_BASE_ADDR:`SOC_MCI_TOP_MCU_TRACE_BUFFER_CSR_BASE_ADDR-4]} {'
+      lines:
+      - 69
+      - 69
+      chars:
+      - 2980
+      - 3173
+    - text: bins axi_rd_req = {1'b1};
+      lines:
+      - 70
+      - 70
+      chars:
+      - 3186
+      - 3211
+  - case_id: vc_42665cac2b41
+    text: Cover an AXI write request with address in the MCI register range.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_wr_mci_regs: coverpoint cptra_ss_cptra_core_m_axi_if_aw_hshake && cptra_ss_cptra_core_m_axi_if_w_mgr.awaddr
+        inside {[`SOC_MCI_TOP_BASE_ADDR:`SOC_MCI_TOP_MCU_TRACE_BUFFER_CSR_BASE_ADDR-4]} {'
+      lines:
+      - 72
+      - 72
+      chars:
+      - 3230
+      - 3423
+    - text: bins axi_wr_req = {1'b1};
+      lines:
+      - 73
+      - 73
+      chars:
+      - 3436
+      - 3461
+  - case_id: vc_42665cac2b41
+    text: Cover an AXI read request with address in the MCU SRAM range.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_rd_mcu_sram: coverpoint cptra_ss_cptra_core_m_axi_if_ar_hshake && cptra_ss_cptra_core_m_axi_if_r_mgr.araddr
+        inside {[`SOC_MCI_TOP_MCU_SRAM_BASE_ADDR:`SOC_MCI_TOP_MCU_SRAM_END_ADDR]} {'
+      lines:
+      - 75
+      - 75
+      chars:
+      - 3480
+      - 3667
+  - case_id: vc_42665cac2b41
+    text: Cover an AXI write request with address in the MCU SRAM range.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_wr_mcu_sram: coverpoint cptra_ss_cptra_core_m_axi_if_aw_hshake && cptra_ss_cptra_core_m_axi_if_w_mgr.awaddr
+        inside {[`SOC_MCI_TOP_MCU_SRAM_BASE_ADDR:`SOC_MCI_TOP_MCU_SRAM_END_ADDR]} {'
+      lines:
+      - 78
+      - 78
+      chars:
+      - 3724
+      - 3911
+  - case_id: vc_42665cac2b41
+    text: Cover an AXI read request with address in the fully-connected (FC) register range 0x7000_0000-0x7000_03FF.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_rd_fc_regs: coverpoint cptra_ss_cptra_core_m_axi_if_ar_hshake && cptra_ss_cptra_core_m_axi_if_r_mgr.araddr
+        inside {[64''h7000_0000:64''h7000_03FF]} {'
+      lines:
+      - 82
+      - 82
+      chars:
+      - 4061
+      - 4212
+  - case_id: vc_42665cac2b41
+    text: Cover an AXI write request with address in the FC register range 0x7000_0000-0x7000_03FF.
+    fails_test: 'no'
+    quotes:
+    - text: 'axi_wr_fc_regs: coverpoint cptra_ss_cptra_core_m_axi_if_aw_hshake && cptra_ss_cptra_core_m_axi_if_w_mgr.awaddr
+        inside {[64''h7000_0000:64''h7000_03FF]} {'
+      lines:
+      - 85
+      - 85
+      chars:
+      - 4269
+      - 4420
+  - case_id: vc_42665cac2b41
+    text: Cover WDT timer1 enable and timer2 enable values and their cross.
+    fails_test: 'no'
+    quotes:
+    - text: 'wdt_t1: coverpoint wdt_timer1_en;'
+      lines:
+      - 92
+      - 92
+      chars:
+      - 4608
+      - 4641
+    - text: 'wdt_t2: coverpoint wdt_timer2_en;'
+      lines:
+      - 93
+      - 93
+      chars:
+      - 4650
+      - 4683
+    - text: 'wdt_t1Xt2: cross wdt_t1, wdt_t2;'
+      lines:
+      - 94
+      - 94
+      chars:
+      - 4692
+      - 4724
+  failing_checks: 0
+  role: coverage
+  checked_by: []
+  scope:
+    prefixes:
+    - src/integration
+    tests: 2
+    rationale: Covergroup in caliptra_ss_top_cov_if.sv is an interface on the top-level SS testbench,
+      sampled during every test under src/integration.
+- id: ct_67663b5d022c
+  name: smoke_test_wdt
+  summary: 'Smoke test of the MCI watchdog timers: runs cascade mode, independent mode and cascade mode
+    with a T2 timeout, checking the T1 and T2 timeout status bits, and handles the NMI-triggered cold
+    reset.'
+  status: implemented
+  implemented:
+  - vc_a49967e28115
+  listed:
+  - vc_4107eb66c86f
+  - vc_4a5a63312f10
+  - vc_6fc0377cf63d
+  - vc_af02ca61ff25
+  - vc_b41e41c3aa6a
+  listings:
+  - src/integration/stimulus/L0_Promote_caliptra_ss_top_tb_regression.yml
+  - src/integration/stimulus/L1_Nightly_Directed_Strict_caliptra_ss_top_tb_regression.yml
+  - src/integration/stimulus/L1_Nightly_Directed_caliptra_ss_top_tb_regression.yml
+  - src/integration/stimulus/testsuites/caliptra_ss_master_test_list.csv
+  - src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.yml
+  realizes: []
+  files:
+  - src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+  checks:
+  - case_id: vc_a49967e28115
+    text: Poll the WDT status register until the T1 timeout bit is set (cascade mode). A timeout is not
+      visible here; only a message is printed afterwards.
+    fails_test: unknown
+    quotes:
+    - text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T1_TIMEOUT_MASK));
+      lines:
+      - 85
+      - 85
+      chars:
+      - 3532
+      - 3624
+  - case_id: vc_a49967e28115
+    text: Poll the WDT status register until the T2 timeout bit is set (independent mode and cascade mode
+      with t2 timeout).
+    fails_test: unknown
+    quotes:
+    - text: while (!(lsu_read_32(SOC_MCI_TOP_MCI_REG_WDT_STATUS) & MCI_REG_WDT_STATUS_T2_TIMEOUT_MASK));
+      lines:
+      - 96
+      - 96
+      chars:
+      - 4069
+      - 4161
+  - case_id: vc_a49967e28115
+    text: The NMI handler checks that the NMI pin bit is set in HW_ERROR_FATAL; otherwise it only logs
+      an error message.
+    fails_test: 'no'
+    quotes:
+    - text: if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK)
+        {
+      lines:
+      - 57
+      - 57
+      chars:
+      - 2423
+      - 2515
+    - text: VPRINTF(ERROR, "Unexpected entry into NMI handler function\n");
+      lines:
+      - 61
+      - 61
+      chars:
+      - 2586
+      - 2649
+  failing_checks: 0
+  role: test
+  checked_by:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+- id: ct_0364c01d7f8e
+  name: smoke_test_wdt_rst
+  summary: Bare-metal WDT smoke test that uses a reboot counter to step through cascaded and independent
+    WDT timer configurations, with each phase ending in a warm, cold or NMI-triggered reset and a final
+    pass after the last reset.
+  status: implemented
+  implemented:
+  - vc_707aa4cc2091
+  listed:
+  - vc_0f75b10bb2f6
+  - vc_308d7b13d9ba
+  - vc_7a3b21473a03
+  - vc_be6c241498ff
+  listings:
+  - src/integration/stimulus/L1_Nightly_Directed_Strict_caliptra_ss_top_tb_regression.yml
+  - src/integration/stimulus/L1_Nightly_Directed_caliptra_ss_top_tb_regression.yml
+  - src/integration/stimulus/testsuites/caliptra_ss_master_test_list.csv
+  - src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.yml
+  realizes: []
+  files:
+  - src/integration/test_suites/smoke_test_wdt_rst/smoke_test_wdt_rst.c
+  checks:
+  - case_id: vc_707aa4cc2091
+    text: The NMI handler reads HW_ERROR_FATAL and tests the NMI pin bit. If it is set, the handler requests
+      a cold reset. Otherwise it only prints an error message.
+    fails_test: 'no'
+    quotes:
+    - text: if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK)
+        {
+      lines:
+      - 58
+      - 58
+      chars:
+      - 2445
+      - 2537
+    - text: VPRINTF(ERROR, "Unexpected entry into NMI handler function\n");
+      lines:
+      - 63
+      - 63
+      chars:
+      - 2639
+      - 2702
+  - case_id: vc_707aa4cc2091
+    text: In phase 5, poll until the HW_ERROR_FATAL NMI pin bit is set. If execution continues past the
+      NMI/reset, handle_error is called, but its failure behaviour is not visible here.
+    fails_test: unknown
+    quotes:
+    - text: while(!(lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK));
+      lines:
+      - 142
+      - 142
+      chars:
+      - 5531
+      - 5627
+    - text: handle_error("WDT timeout in cascade mode is expected to trigger NMI and reset!\n");
+      lines:
+      - 143
+      - 143
+      chars:
+      - 5636
+      - 5720
+  - case_id: vc_707aa4cc2091
+    text: In phase 6, check that the cold reset cleared the hw_error_fatal NMI pin. On mismatch it prints
+      an error and sends a control command with 0x1.
+    fails_test: unknown
+    quotes:
+    - text: if ((*hw_error_fatal && MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK) == 1) {
+      lines:
+      - 146
+      - 146
+      chars:
+      - 5766
+      - 5834
+    - text: SEND_STDOUT_CTRL(0x1);
+      lines:
+      - 148
+      - 148
+      chars:
+      - 5931
+      - 5953
+  failing_checks: 0
+  role: test
+  checked_by:
+  - ct_79dc987f4a36
+  - ct_7d0020237326
+  - ct_86c131d47ea8
+  - ct_9b920c3eccde
+  - ct_9fa1e52ddd7f
+  - ct_a049c5a60d6c
+  - ct_b058210792fe
+  - ct_c2784848d855
+  - ct_d147697bef91
+  - ct_f333dfc5105d
+case_issues: []
+checker_issues: []

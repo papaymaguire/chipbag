@@ -1,0 +1,21 @@
+{"t": "2026-11-10T20:37:42Z", "event": "  \u2192 Grep: intr_count_r|incrsaturate"}
+{"t": "2026-11-10T20:37:42Z", "event": "  \u2192 Grep: notif_mbox0_cmd_avail_intr_count|notif_cptra_mbox_cmd_avail_intr_count|notif_mbox1_soc_req_lock_intr_count|notif_mbox1_ecc_cor_intr_count"}
+{"t": "2026-11-10T20:37:44Z", "event": "Check tests for generic interrupt counter use."}
+{"t": "2026-11-10T20:37:45Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T20:37:47Z", "event": "Probably matching generic names. Look for specific count-register tests."}
+{"t": "2026-11-10T20:37:48Z", "event": "  \u2192 Grep: notif_\\w*_intr_count|NOTIF_\\w*_INTR_COUNT"}
+{"t": "2026-11-10T20:37:48Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T20:37:50Z", "event": "Only address defines; check usage in tests (.c/.sv/.yml) excluding that file."}
+{"t": "2026-11-10T20:37:51Z", "event": "  \u2192 Grep: INTR_COUNT_R"}
+{"t": "2026-11-10T20:37:53Z", "event": "  \u2192 Grep: INTR_COUNT_R"}
+{"t": "2026-11-10T20:37:55Z", "event": "Check whether notif counters for the cited items appear in mcu_intr_handler or mcu_isr."}
+{"t": "2026-11-10T20:37:55Z", "event": "  \u2192 Grep: NOTIF_(MBOX|CPTRA_MBOX)\\w*INTR_COUNT_R"}
+{"t": "2026-11-10T20:37:57Z", "event": "Look at the handler's check context."}
+{"t": "2026-11-10T20:37:58Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T20:38:03Z", "event": "  \u2192 Grep: mci_notif_intr_count|mcu_intr_handler"}
+{"t": "2026-11-10T20:38:17Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:38:27Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:38:29Z", "event": "Need roles \"refutes\"."}
+{"t": "2026-11-10T20:38:37Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:38:41Z", "event": "I submitted the verdict as withdrawn. Four of the five items are covered by an existing test. The saturation item has no test.\n\n- **Items withdrawn (cr_7d0a9813c471, cr_82024f287341, cr_872d51fa5bf2, cr_872d59b48481):** the directed test `mcu_intr_handler` (`src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c`) triggers each notif interrupt once through `INTR_TRIG`. It then reads the hardware count registers, including all four cited ones. It sums them and compares the sum with the firmware's count, and ends the sim with an error on a mismatch. The test is in both Nightly Directed regressions.\n- **Item verified as untested (cr_71500986cef1):** nothing in the repository drives a counter to its maximum to check that it saturates. The only mentions of `incrsaturate` are in the RDL, the generated RTL and the UVM register model.\n\nThe check on the four withdrawn items is an aggregate sum, not a per-register comparison. I treated it as enough because each interrupt fires exactly once and the total must match."}
+{"t": "2026-11-10T20:38:41Z", "event": "[14 turns, $0.1676]"}

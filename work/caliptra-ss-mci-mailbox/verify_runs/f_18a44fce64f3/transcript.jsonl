@@ -1,0 +1,14 @@
+{"t": "2026-11-10T20:37:08Z", "event": "  \u2192 Grep: count_incr_r|intr_count_incr"}
+{"t": "2026-11-10T20:37:09Z", "event": "  \u2192 Grep: notif_mbox[01]_(cmd_avail|soc_req_lock|target_done)_intr_count|error_mbox1_ecc_unc_intr_count"}
+{"t": "2026-11-10T20:37:10Z", "event": "Check for tests touching interrupt counters generally."}
+{"t": "2026-11-10T20:37:12Z", "event": "  \u2192 Grep: intr_count|INTR_COUNT"}
+{"t": "2026-11-10T20:37:13Z", "event": "  \u2192 Grep: intr_count_incr|MBOX[01]_.*INTR_COUNT_INCR"}
+{"t": "2026-11-10T20:37:16Z", "event": "  \u2192 Grep: intr_count_incr|INTR_COUNT_INCR"}
+{"t": "2026-11-10T20:37:16Z", "event": "  \u2192 Grep: saturat|incr_r|count_incr"}
+{"t": "2026-11-10T20:37:19Z", "event": "  \u2192 Grep: add_mask_entry\\(|PULSE_MASK"}
+{"t": "2026-11-10T20:37:20Z", "event": "  \u2192 Grep: void add_mask_entry|mask_table|reg_mask"}
+{"t": "2026-11-10T20:37:21Z", "event": "Masks only exclude fields from reset-value comparison; no behavioral check."}
+{"t": "2026-11-10T20:37:28Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T20:37:35Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:37:38Z", "event": "I submitted the verdict as **verified**: all five items are untested. I found no test that stimulates these interrupt event counters or checks their behaviour.\n\n- **Pulse, rising edge, down-counter and saturation:** no test creates an interrupt event and then checks the pulse, the rising-edge increment, the 1-bit down-counter or saturation.\n- **Near misses:** `src/integration/test_suites/libs/mci/mci.c` has mask entries for these registers (for example around lines 2088\u20132106). They only exclude the pulse fields from register compares and check no counter behaviour. `src/mci/coverage/mci_top_cov_if.sv` is coverage only, with no check that can fail.\n\nOutside the RTL and address-map headers, `mci.c` and the coverage interface were the only references to these registers I found. I only searched the C test suites in depth, not UVM sequences or formal files."}
+{"t": "2026-11-10T20:37:38Z", "event": "[11 turns, $0.0862]"}

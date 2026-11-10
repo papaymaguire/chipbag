@@ -1,0 +1,85 @@
+finding_hash: 54aa472f52d494dd
+started_at: '2026-11-10T19:46:35Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks the lock/swwel behaviour of the MBOX1 valid-user or lock registers. Tests only
+    program and lock the registers via a library helper, or check reset values in mci.c. None writes after
+    lock and checks that the write is ignored. None checks that a user is accepted only once locked, or
+    checks the RW1-S semantics.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 841
+    line_end: 841
+    quote: field {sw=rw; hw=r; swwel;resetsignal = mci_rst_b;} AXI_USER[32]=0xFFFF_FFFF;
+    role: context
+    note: RDL definition of the AXI_USER field with swwel
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/smoke_test_mcu_mbox_axi_param.c
+    line_start: 70
+    line_end: 70
+    quote: mcu_cptra_init_d(.cfg_cptra_dma_axi_user=true
+    role: context
+    note: Only programs and locks the valid users via the init helper; no write-after-lock check, and
+      the test body is empty.
+  searches:
+  - what: MBOX1 valid-user/lock register references
+    where: whole repo
+    found: Only address helpers, reset-value tables in mci.c, and the init helper in caliptra_ss_lib.c;
+      no post-lock write check
+  - what: tests using AXI_USER_LOCK/VALID_AXI_USER
+    where: src/integration/test_suites
+    found: smoke_test_mcu_hitless, smoke_test_mcu_mbox_axi_param and smoke_test_clk_gating only configure
+      or read the registers; none checks swwel or the RW1-S behaviour
+  - what: read-only-after-lock check for AXI_USER (item cr_8429ea5b7749)
+    where: mci.c, sv_tests/mci
+    found: none
+  - what: swwel write-blocked check on AXI_USER and LOCK (items cr_ab2dcc637223, cr_7ad2d7a15e2b)
+    where: tests and libs
+    found: none
+  - what: valid-only-once-locked and RW1-S checks (items cr_8e9d00377b71, cr_a3139c9fee5f)
+    where: tests and libs
+    found: none
+  near_misses:
+  - path: src/integration/testbench/sv_tests/mci/mcu_mbox_soc_agent_write_fw_image.svh
+    line_start: 69
+    line_end: 91
+    why_not: Uses the address helpers only to configure the registers; no check that a write after lock
+      is ignored.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 313
+    line_end: 327
+    why_not: Reset-value and sticky-register tables only; do not test lock behaviour.
+  items:
+  - id: cr_8429ea5b7749
+    outcome: verified
+    reason: No test writes AXI_USER after locking and checks the write is ignored.
+    evidence:
+    - 0
+  - id: cr_ab2dcc637223
+    outcome: verified
+    reason: No test checks that writes are blocked while swwel is asserted.
+    evidence:
+    - 0
+  - id: cr_7ad2d7a15e2b
+    outcome: verified
+    reason: No test writes the LOCK bit again after it is set and checks the result.
+    evidence:
+    - 0
+  - id: cr_8e9d00377b71
+    outcome: verified
+    reason: No test checks that a user is accepted only after locking; the tests only lock and then use
+      the user.
+    evidence:
+    - 1
+  - id: cr_a3139c9fee5f
+    outcome: verified
+    reason: No test checks RW1-S semantics, such as a write of 0 not clearing the bit.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 12
+cost_usd: 0.12168300000000001
+error: null

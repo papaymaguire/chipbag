@@ -1,0 +1,87 @@
+finding_hash: 0e346d3594fdd176
+started_at: '2026-11-10T20:37:38Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'Four of the five items are covered by the directed test mcu_intr_handler. It triggers each
+    notif interrupt once through INTR_TRIG and then compares the sum of all hardware count registers with
+    the firmware''s count, failing the sim on a mismatch. The saturation item (cr_71500986cef1) has no
+    test: nothing drives a counter to its maximum. The check on the other four is an aggregate sum, so
+    it is weaker than a per-register check.'
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 111
+    line_end: 111
+    quote: NOTIF_CPTRA_MBOX_CMD_AVAIL_TRIG_MASK); mci_notif_intr_count++;
+    role: refutes
+    note: 'Stimulus: triggers the cptra_mbox_cmd_avail interrupt once and increments the fw count by 1.'
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 117
+    line_end: 117
+    quote: NOTIF_MBOX1_SOC_REQ_LOCK_TRIG_MASK  ); mci_notif_intr_count++;
+    role: refutes
+    note: Stimulus for mbox1_soc_req_lock.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 215
+    line_end: 221
+    quote: lsu_read_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_CPTRA_MBOX_CMD_AVAIL_INTR_COUNT_R ) +
+    role: refutes
+    note: The hardware counters of the cited registers are read and summed (lines 213-221 cover the cited
+      ones).
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 201
+    line_end: 204
+    quote: if (mci_error_intr_count != mci_error_intr_count_hw) {
+    role: context
+    note: Mismatch check on the error counters; the notif counters are checked the same way.
+  searches:
+  - what: uses of notif *_INTR_COUNT_R registers in tests
+    where: src/integration/test_suites
+    found: mcu_intr_handler.c reads and sums them and compares them with the fw count; libs/mci/mci.c
+      lists them in a register table
+  - what: saturation or overflow test of the counters
+    where: whole repo
+    found: none; only the RDL, generated RTL and UVM register model mention incrsaturate
+  near_misses:
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 582
+    line_end: 592
+    why_not: Register table only (reset and sticky checks), not an increment check.
+  items:
+  - id: cr_71500986cef1
+    outcome: verified
+    reason: No test drives a counter to saturation; the finding stands for this item.
+    evidence: []
+  - id: cr_7d0a9813c471
+    outcome: withdrawn
+    reason: mbox1_ecc_cor is triggered once, and the summed hardware counters must equal the fw count.
+    evidence:
+    - 2
+  - id: cr_82024f287341
+    outcome: withdrawn
+    reason: The cptra_mbox_cmd_avail counter is triggered (line 111) and read back (line 215), and the
+      sum is compared.
+    evidence:
+    - 0
+    - 2
+  - id: cr_872d51fa5bf2
+    outcome: withdrawn
+    reason: The mbox0_cmd_avail counter is triggered and read back, and the sum is compared.
+    evidence:
+    - 2
+  - id: cr_872d59b48481
+    outcome: withdrawn
+    reason: mbox1_soc_req_lock is triggered once (line 117), and the summed counters must equal the fw
+      count.
+    evidence:
+    - 1
+    - 2
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Directed test that triggers each MCI notif interrupt and checks the hardware count registers.
+submissions: 2
+rejections: []
+turns: 14
+cost_usd: 0.1676383
+error: null

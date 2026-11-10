@@ -1,0 +1,65 @@
+finding_hash: a1c5a12f56117315
+started_at: '2026-11-10T19:42:11Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The directed test mci_mbox0/1_ownership_flow covers the missing gap. The Root (MCU) writes
+    a fresh response and DLEN and then writes a non-BUSY CMD_STATUS. The test then checks that SRAM ownership
+    returns to the Requester, and that the Requester reads back the response data. One small shortfall
+    remains: the Requester never reads CMD_STATUS back directly.'
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 136
+    line_end: 139
+    quote: "    // Root finalizes the response and DLEN; a non-BUSY CMD_STATUS returns the SRAM to the\
+      \ Requester.\n    mci_comm_flow_write_data(mci_comm_flow_root);\n    mcu_mbox_write(mci_comm_flow_cmd_status_addr,\
+      \ mci_comm_flow_root, status);\n    mci_comm_flow_check_phase(\"requester-owns-response\", MCU_MBOX_OWNER_REQUESTER);"
+    role: refutes
+    note: The Root writes CMD_STATUS to finalize the response. The check then fails the test unless the
+      SRAM owner is the Requester, which reads the Root's data.
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 83
+    line_end: 84
+    quote: "                if (owner != MCU_MBOX_OWNER_NONE)\n                    mcu_mbox_read_check(addr,\
+      \ users[owner], mci_comm_flow_payload[words[i]]);"
+    role: refutes
+    note: The owner (the Requester after finalization) reads and checks the payload against the expected
+      response.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 212
+    line_end: 212
+    quote: '    if (!mcu_mbox_wait_for_target_status(mbox_num, MCU_MBOX_TARGET_STATUS_COMPLETE, 10000))
+      {'
+    role: context
+    note: The smoke test waits for COMPLETE but does not write CMD_STATUS afterwards. This is the partial
+      coverage the finding cites.
+  searches:
+  - what: CMD_STATUS and TARGET_STATUS usage in tests
+    where: src/integration
+    found: The smoke test does not finalize CMD_STATUS. The sv_test mci_mbox_ownership_flow does, and
+      it is listed in the nightly directed regressions.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 205
+    line_end: 225
+    why_not: This is the test the finding cites. It stops after the target-done interrupt and never exercises
+      the finalization step.
+  items:
+  - id: cr_83b707b90303
+    outcome: withdrawn
+    reason: The ownership-flow test writes CMD_STATUS as the Root, checks that SRAM ownership returns
+      to the Requester, and checks that the Requester reads the response. The test does not read CMD_STATUS
+      back from the Requester, which is a minor residual gap.
+    evidence:
+    - 0
+    - 1
+  new_sources:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    reason: Directed test covering the full Requester -> Root -> Target -> Root -> Requester flow, including
+      finalization.
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.10643369999999999
+error: null

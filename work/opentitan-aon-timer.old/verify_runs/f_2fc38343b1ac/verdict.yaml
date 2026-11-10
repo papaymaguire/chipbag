@@ -1,0 +1,45 @@
+finding_hash: c19c7ce0dda1ab08
+started_at: '2026-11-10T22:08:53Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: A generic csr_hw_reset test exists in the shared dvsim library, and the AES sim config (AES
+    is my best guess at the block) imports it. It writes random values to all CSRs, resets, and compares
+    each against the RAL reset value. The finding names no block, so I could not confirm it applies to
+    the block in question.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 21
+    line_end: 23
+    quote: "name: \"{name}_csr_hw_reset\"\n      build_mode: \"cover_reg_top\"\n      run_opts: [\"+csr_hw_reset\"\
+      ]"
+    role: refutes
+    note: Generic reset-value test, run on every block that imports it.
+  - path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+    line_start: 9
+    line_end: 9
+    quote: Verify the reset values as indicated in the RAL specification.
+    role: refutes
+    note: 'Generic plan item: write random values, reset, read and compare against the RAL reset values.'
+  - path: hw/ip/aes/dv/aes_base_sim_cfg.hjson
+    line_start: 33
+    line_end: 33
+    quote: '"{proj_root}/hw/dv/tools/dvsim/tests/csr_tests.hjson",'
+    role: refutes
+    note: The AES sim config imports the generic CSR tests, so csr_hw_reset runs on AES.
+  searches:
+  - what: csr_hw_reset in the aes, hmac and kmac hw/ip directories
+    where: hw/ip/{aes,hmac,kmac}
+    found: No direct matches; the generic library supplies it.
+  - what: Generic csr_hw_reset test and plan
+    where: hw/dv/tools/dvsim
+    found: csr_tests.hjson and csr_testplan.hjson define csr_hw_reset.
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.0631032
+error: null

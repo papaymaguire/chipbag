@@ -1,0 +1,42 @@
+finding_hash: d5189e068fd9a406
+started_at: '2026-11-10T19:36:51Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The finding links the test to the HMAC block-level coverage item err_code_cg. The repository
+    ties this test only to the chip-level plan item chip_sw_keymgr_dpe_sideload_hmac. That item asks only
+    for SwInvalidConfig on hash_stop and on a blocked start with an invalid sideload key, which the test
+    does. The other error codes belong to the block-level DV plan.
+  evidence:
+  - path: hw/top_earlgrey/data/ip/chip_keymgr_dpe_testplan.hjson
+    line_start: 161
+    line_end: 161
+    quote: '- Verify that `CMD.hash_stop` is rejected with `SwInvalidConfig`.'
+    role: refutes
+    note: The test's actual plan item expects only SwInvalidConfig for hash_stop, not the full set of
+      err_code_cg codes.
+  - path: hw/top_earlgrey/data/ip/chip_keymgr_dpe_testplan.hjson
+    line_start: 168
+    line_end: 168
+    quote: '- Verify that starting is blocked and `SwInvalidConfig` is reported.'
+    role: refutes
+    note: The blocked-start expectation is also only SwInvalidConfig, which the test checks.
+  searches:
+  - what: Where keymgr_dpe_sideload_hmac_test is linked to a plan item
+    where: all *.hjson
+    found: Only chip_keymgr_dpe_testplan.hjson (chip_sw_keymgr_dpe_sideload_hmac) and chip_sim_cfg.hjson.
+      No link to hmac_testplan err_code_cg.
+  near_misses:
+  - path: hw/ip/hmac/data/hmac_testplan.hjson
+    line_start: 181
+    line_end: 188
+    why_not: err_code_cg is a block-level DV coverage item for the HMAC testbench. No link ties it to
+      the chip-level SW test.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.033737300000000005
+error: null

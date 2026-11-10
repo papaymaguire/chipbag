@@ -1,0 +1,41 @@
+finding_hash: 9899aefe2bb354c2
+started_at: '2026-11-10T20:52:52Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No other spec text says what a read of DIGEST8-15 returns in SHA-256 mode or whether it errors.
+    The programmer's guide only says the registers "would hold irrelevant values" and should not be read.
+    Zero is specified only while an operation is in progress, which is a different case.
+  evidence:
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 43
+    line_end: 43
+    quote: For SHA-2 256, only `DIGEST_0`..`7` should be read out, the remaining digest registers are
+      redundant and would hold irrelevant values.
+    role: supports
+    note: Still says 'irrelevant values' and gives no read value or error behaviour.
+  - path: hw/ip/hmac/doc/programmers_guide.md
+    line_start: 100
+    line_end: 100
+    quote: Reads from [`DIGEST_0-DIGEST_15`](registers.md#digest) return zero while the operation is in
+      progress.
+    role: context
+    note: Zero-read applies only while an operation is in progress, not to the idle SHA-256 case.
+  searches:
+  - what: DIGEST and irrelevant across hmac md/hjson docs
+    where: hw/ip/hmac
+    found: Only the 'irrelevant / should not be read out' wording plus the in-progress-returns-zero statements;
+      nothing on stale or zero value for DIGEST8-15 after SHA-256 completion, and nothing on bus errors.
+  near_misses:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 161
+    line_end: 161
+    why_not: Covers the zero-read only during a sideloaded-key operation, not the idle SHA-256 case.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.0317179
+error: null

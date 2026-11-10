@@ -1,0 +1,7 @@
+{"t": "2026-11-10T20:36:28Z", "event": "  \u2192 Grep: TARGET_USER_VALID"}
+{"t": "2026-11-10T20:36:30Z", "event": "  \u2192 Grep: TARGET_USER_VALID"}
+{"t": "2026-11-10T20:36:31Z", "event": "  \u2192 Grep: TARGET_USER_VALID"}
+{"t": "2026-11-10T20:36:33Z", "event": "Nothing evidently covers the gaps; submit."}
+{"t": "2026-11-10T20:36:37Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:36:41Z", "event": "I submitted a verdict of **verified**, but only item `cr_2d3206a4c6cc` was actually confirmed. The other four items are marked inconclusive because I didn't search them in depth.\n\n- **`cr_2d3206a4c6cc` (TARGET_USER and TARGET_USER_VALID writable only while VALID=0):** I found no test that writes `TARGET_USER_VALID` while it is 1. The tests in `smoke_test_mcu_mbox_write_user_lock` and `smoke_test_mcu_mbox_target_user` only write it while it is 0, check it wasn't changed by the Target, or check it was cleared. The finding's gap stands.\n- **`cr_381131113d9e`, `cr_3812998537f7`, `cr_c245e318661a`, `cr_dd3d4e211825`:** I made no targeted searches for these, so I can't confirm or refute them.\n\nThe search was limited to grepping `TARGET_USER_VALID` across the C, header and SystemVerilog files, then reading the two test directories above. I didn't look at regression lists, assertion files or other test directories. My confidence in the one verified item is moderate."}
+{"t": "2026-11-10T20:36:41Z", "event": "[5 turns, $0.0372]"}

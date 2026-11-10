@@ -1,0 +1,50 @@
+finding_hash: f6124408e5efc264
+started_at: '2026-11-10T19:36:33Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The two statements are consistent. mementries=524288 with memwidth=32 declares the maximum
+    address-space window (2MB). The actual SRAM size is set by an integration parameter, so there is no
+    contradiction.
+  evidence:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 39
+    line_end: 39
+    quote: The maximum size is 2MB, but is configurable by the integration team.
+    role: refutes
+    note: The RDL mem is declared at the maximum size (524288 x 32 bits = 2MB). The text says 2MB is the
+      maximum, not the fixed size.
+  - path: src/mci/rtl/mcu_mbox.sv
+    line_start: 40
+    line_end: 40
+    quote: parameter  MCU_MBOX_SRAM_SIZE_KB = 512
+    role: context
+    note: The RTL has a configurable size parameter, defaulting to 512KB, which is below the 2MB maximum.
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 159
+    line_end: 159
+    quote: field {desc = "MCU MBOX0 SRAM SIZE KB. If 0 there is no mailbox"; hw=w; sw=r;} MCU_MBOX0_SRAM_SIZE[12];
+    role: context
+    note: The configured size is reported through a read-only HW_CONFIG0 field, so the size is not fixed.
+  searches:
+  - what: mementries and SRAM size parameters in the MCI RTL
+    where: src/mci/rtl
+    found: mementries=524288 is the maximum window. MCU_MBOX_SRAM_SIZE_KB is a parameter and is exposed
+      in HW_CONFIG0.
+  near_misses:
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 42
+    line_end: 43
+    why_not: The fixed mementries value looks like a fixed size, but in SystemRDL it only declares the
+      maximum address range.
+  items: []
+  new_sources: []
+  resolution: The RDL declares the maximum 2MB window. The RTL parameter MCU_MBOX_SRAM_SIZE_KB sets the
+    actual size, and its default is 512KB. The description could say that mementries is the maximum and
+    that the size is set by MCU_MBOX_SRAM_SIZE_KB. That change is optional.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.051350599999999996
+error: null

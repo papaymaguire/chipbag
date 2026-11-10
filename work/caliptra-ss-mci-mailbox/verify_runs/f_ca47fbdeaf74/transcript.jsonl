@@ -1,0 +1,16 @@
+{"t": "2026-11-10T19:47:14Z", "event": "  \u2192 Grep: mbox[01]_(ecc_unc|soc_req_lock|cmd_avail)_intr_count"}
+{"t": "2026-11-10T19:47:15Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:47:18Z", "event": "  \u2192 Grep: mbox[01]_(ecc_unc|soc_req_lock|cmd_avail)_intr_count|MBOX[01]_(ECC_UNC|SOC_REQ_LOCK|CMD_AVAIL)_INTR_COUNT"}
+{"t": "2026-11-10T19:47:19Z", "event": "Only address-map definitions so far. Check tests and coverage using these."}
+{"t": "2026-11-10T19:47:20Z", "event": "  \u2192 Grep: INTR_COUNT_R\\b"}
+{"t": "2026-11-10T19:47:21Z", "event": "  \u2192 Grep: intr_count"}
+{"t": "2026-11-10T19:47:22Z", "event": "Coverage only. Check the C files."}
+{"t": "2026-11-10T19:47:23Z", "event": "  \u2192 Grep: INTR_COUNT_R\\b"}
+{"t": "2026-11-10T19:47:25Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/caliptra-ss/src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c"}
+{"t": "2026-11-10T19:47:25Z", "event": "  \u2192 Grep: MBOX[01]_(CMD_AVAIL|SOC_REQ_LOCK)_INTR_COUNT"}
+{"t": "2026-11-10T19:47:29Z", "event": "  \u2192 Grep: MBOX[01]_(ECC_UNC|CMD_AVAIL|SOC_REQ_LOCK)"}
+{"t": "2026-11-10T19:47:30Z", "event": "  \u2192 Grep: mcu_intr_handler"}
+{"t": "2026-11-10T19:47:43Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:47:51Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:47:55Z", "event": "I submitted the verdict: items 1\u20134 are withdrawn because a test does check them, and item 5 (saturation) stands as untested.\n\n- **Increment by 1 and counter behaviour (items 1\u20134):** the directed test `mcu_intr_handler` triggers the MBOX0 and MBOX1 ecc_unc, cmd_avail and soc_req_lock interrupts through the trigger registers. It then reads the hardware count registers and kills the simulation if their sum differs from a firmware count that grows by 1 per trigger. The check is on sums rather than per register, so a wrong increment would be caught but not attributed to a specific counter. The test is in the nightly directed regression lists.\n- **Saturation (item 5):** I found no test that pushes any of these counters to its maximum value. The test only runs a few increments.\n\nThe register-table entries in `libs/mci/mci.c` and the coverpoints in `mci_top_cov_if.sv` touch these counters but check nothing about counting."}
+{"t": "2026-11-10T19:47:55Z", "event": "[13 turns, $0.1811]"}

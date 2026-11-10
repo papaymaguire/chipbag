@@ -1,0 +1,5018 @@
+generated_at: '2026-11-10T17:43:46Z'
+model: claude-sonnet-5-5
+manifest_commit: b84154c71810e853c0b37c00e96bb830804dd9f4
+stats:
+  sections: 34
+  requirements: 110
+  property_requirements: 37
+  by_construction: 33
+  ambiguous_text: 7
+  ambiguous_requirements: 16
+  unclassified: 0
+  dropped: 0
+  mean_coverage: 0.998
+  errors: 0
+  llm_calls: 6
+  cost_usd: 0.0503
+skipped_sources: []
+errors: []
+sections:
+- id: sec_79af11e53235
+  path: hw/ip/rv_timer/README.md
+  heading_path: Timer HWIP Technical Specification
+  kind: section
+  chunker: native
+  lines:
+  - 2
+  - 10
+  content_hash: 4e441e1082b04c2b41c7596dd061d6082ca0f54f5f58b46bcb4dd7809604c084
+  coverage: 0.974
+  requirements: 0
+  property_requirements: 0
+  by_construction: 0
+  informative: 3
+  references: 1
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_362903419ba7
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview
+  kind: section
+  chunker: native
+  lines:
+  - 12
+  - 19
+  content_hash: 2569a70a5dbda0a68dffc79107f5abd17cda28ab2506993e58723312050256d9
+  coverage: 1.0
+  requirements: 0
+  property_requirements: 0
+  by_construction: 0
+  informative: 1
+  references: 2
+  ambiguous: 1
+  unclassified: 0
+  dropped: 0
+- id: sec_2a41a9be86e1
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Features
+  kind: section
+  chunker: native
+  lines:
+  - 21
+  - 26
+  content_hash: 7678fb7976c71038c13ae89c6b422fc721aa0aab154e0799e8bdcf0371044c6c
+  coverage: 1.0
+  requirements: 5
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 1
+  unclassified: 0
+  dropped: 0
+- id: sec_b667e8a6651d
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Description
+  kind: section
+  chunker: native
+  lines:
+  - 28
+  - 37
+  content_hash: 24ebb790a234f9c97ad542e3a87c196d361acbc55503b3c326ce10ef1b58cef1
+  coverage: 0.988
+  requirements: 5
+  property_requirements: 0
+  by_construction: 0
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_608f7f8832e8
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Compatibility
+  kind: section
+  chunker: native
+  lines:
+  - 39
+  - 43
+  content_hash: 8e010ee67766680e72a9bc5910e731690026bf5466dad411c5bfa92ff4fbb318
+  coverage: 1.0
+  requirements: 4
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_2fd891429b7a
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CTRL
+  kind: register
+  chunker: native
+  lines:
+  - 138
+  - 153
+  content_hash: ae7cbdb66e73ef8b25927f8c354b1a8c716d971baa76c5be28b9378b5e86b896
+  coverage: 1.0
+  requirements: 4
+  property_requirements: 3
+  by_construction: 3
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_cc369fafa496
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_ENABLE0
+  kind: register
+  chunker: native
+  lines:
+  - 154
+  - 165
+  content_hash: 33783de4a685b73aee9936e5dbfb08f32e8ee9d10902cb4935f596439cf73e5e
+  coverage: 1.0
+  requirements: 3
+  property_requirements: 3
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_cf4e9313bc13
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_STATE0
+  kind: register
+  chunker: native
+  lines:
+  - 166
+  - 179
+  content_hash: 53c4ea1195070956e44cdf8d163e4f3fb3fcf9cbb0d3a2abc11dd3302924aed9
+  coverage: 1.0
+  requirements: 3
+  property_requirements: 3
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_48d4c5ee8220
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_TEST0
+  kind: register
+  chunker: native
+  lines:
+  - 180
+  - 194
+  content_hash: 1cc2b53ac19090adcea9fd8be109a97d12aba3f4d9cdc28e0fa61a98e2d22c81
+  coverage: 1.0
+  requirements: 5
+  property_requirements: 5
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_c5f330c9241a
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CFG0
+  kind: register
+  chunker: native
+  lines:
+  - 195
+  - 203
+  content_hash: 3b27e0abd7bda56deb21dc63ae05fe5df7fd4fd93c72c61cad9b99e5e58a8f3d
+  coverage: 1.0
+  requirements: 7
+  property_requirements: 7
+  by_construction: 7
+  informative: 1
+  references: 0
+  ambiguous: 2
+  unclassified: 0
+  dropped: 0
+- id: sec_80abb4bf0be9
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > TIMER_V_LOWER0
+  kind: register
+  chunker: native
+  lines:
+  - 204
+  - 211
+  content_hash: 65e1c194a418fbc27907cc3a24b2af40cdb05c1c4a2dcf93515687b88c0ec43c
+  coverage: 1.0
+  requirements: 3
+  property_requirements: 3
+  by_construction: 3
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_98056d8acb3c
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > TIMER_V_UPPER0
+  kind: register
+  chunker: native
+  lines:
+  - 212
+  - 219
+  content_hash: faab2c2eddd3468ac381dda943353a6f11a27fbefc50ae7d39b51dd95da6c21e
+  coverage: 1.0
+  requirements: 4
+  property_requirements: 3
+  by_construction: 3
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_885b8d36775c
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_LOWER0_0
+  kind: register
+  chunker: native
+  lines:
+  - 220
+  - 228
+  content_hash: dd598185d2b051bc0edf4281a92ddb49ab3f80bc3490b1734cff8bab6788f4a3
+  coverage: 1.0
+  requirements: 5
+  property_requirements: 5
+  by_construction: 4
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_f4046bc3c5d3
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_UPPER0_0
+  kind: register
+  chunker: native
+  lines:
+  - 229
+  - 239
+  content_hash: 626b1267526dfb3e3aff3efdafd0ef0cc586a8213867a1807bd58500e45a0ee4
+  coverage: 1.0
+  requirements: 6
+  property_requirements: 5
+  by_construction: 4
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_5c9372528999
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > interrupt_list
+  kind: entry
+  chunker: native
+  lines:
+  - 46
+  - 50
+  content_hash: 6ebd7cf32f10b8b93b3c61e4449562f5645f5c9692b78dd54dea01bcf3205be1
+  coverage: 1.0
+  requirements: 1
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_dd7447b03c42
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > alert_list
+  kind: entry
+  chunker: native
+  lines:
+  - 51
+  - 57
+  content_hash: d1f4da3b2f07b0057ceb3136bb3f70f05a2a4d82ef93c8c93897c39afc18ace5
+  coverage: 1.0
+  requirements: 1
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_53b85bf0b418
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > inter_signal_list
+  kind: entry
+  chunker: native
+  lines:
+  - 58
+  - 79
+  content_hash: 898f78314dc6a9adba76b1a64a697d8b00b6412027af0e9185babd84bfd13d51
+  coverage: 1.0
+  requirements: 0
+  property_requirements: 0
+  by_construction: 0
+  informative: 2
+  references: 0
+  ambiguous: 1
+  unclassified: 0
+  dropped: 0
+- id: sec_40f6ae5325f6
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > param_list
+  kind: entry
+  chunker: native
+  lines:
+  - 80
+  - 91
+  content_hash: 10c6a71dbc25d0452b992898cfe60e708c121e98f858ef8f678280871e130852
+  coverage: 1.0
+  requirements: 2
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_c851ea9cd638
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > features
+  kind: entry
+  chunker: native
+  lines:
+  - 92
+  - 128
+  content_hash: fdda4a83f1f99cf1348bf2f8a8f5dee6568f53fc23f7c88531839ee333a612ca
+  coverage: 1.0
+  requirements: 8
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_125435d2d830
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > countermeasures
+  kind: entry
+  chunker: native
+  lines:
+  - 130
+  - 134
+  content_hash: bec992f89d815cec4519249c8019900d34a188056a76daccf4d2037eb39025e8
+  coverage: 1.0
+  requirements: 0
+  property_requirements: 0
+  by_construction: 0
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_212b3a5522e9
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces
+  kind: section
+  chunker: native
+  lines:
+  - 2
+  - 10
+  content_hash: b2a672a6aea88c191c6bebbc22dfdcfca52a5c9fc4e90210bea6811c7f256888
+  coverage: 1.0
+  requirements: 5
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 1
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_d7c4cb0d0ad4
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  kind: section
+  chunker: native
+  lines:
+  - 12
+  - 18
+  content_hash: ff143c5615047d978e2098e2b41341b984943470b4ac67a51d01f91ce5bcee88
+  coverage: 0.981
+  requirements: 4
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_04151395bf5f
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > Interrupts
+  kind: section
+  chunker: native
+  lines:
+  - 20
+  - 24
+  content_hash: de2805b59cee3933abe5ba6a90c1a4c28d08872d06e6af8adf7f623368e8c55a
+  coverage: 1.0
+  requirements: 2
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_ff500861c2a2
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > Security Alerts
+  kind: section
+  chunker: native
+  lines:
+  - 26
+  - 30
+  content_hash: f8f11f7157075f1b4dc9fa5c7f9844d815188b75f0c240b1cdb85e9e8feaecd3
+  coverage: 1.0
+  requirements: 1
+  property_requirements: 0
+  by_construction: 0
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_85f9238b9137
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > Security Countermeasures
+  kind: section
+  chunker: native
+  lines:
+  - 32
+  - 38
+  content_hash: 82e6fad037b94ffc7aea276ec93069c6f5d2340a905e231d4bf1de3a4ff8e39a
+  coverage: 1.0
+  requirements: 1
+  property_requirements: 0
+  by_construction: 0
+  informative: 2
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_0ebe5ecb4445
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Initialization
+  kind: section
+  chunker: native
+  lines:
+  - 4
+  - 9
+  content_hash: 711c30d17285ef6c27211184f84f42580b4b8a07a6a362b5eed28ef26f92be44
+  coverage: 1.0
+  requirements: 3
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_8ec553ced36d
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  kind: section
+  chunker: native
+  lines:
+  - 11
+  - 69
+  content_hash: 411f6673563410a3c992cd58bb9fb5a4553ce5ce76818327aa26362f94842f83
+  coverage: 1.0
+  requirements: 4
+  property_requirements: 0
+  by_construction: 0
+  informative: 23
+  references: 2
+  ambiguous: 1
+  unclassified: 0
+  dropped: 0
+- id: sec_166285e0a31f
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  kind: section
+  chunker: native
+  lines:
+  - 71
+  - 92
+  content_hash: 0ec1cd6a3ab652d7c5b425f93a5a4fb365744d066f4e4e2a8909c4cc5d2ca784
+  coverage: 0.982
+  requirements: 5
+  property_requirements: 0
+  by_construction: 0
+  informative: 8
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_d5b1daa52a51
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  kind: section
+  chunker: native
+  lines:
+  - 94
+  - 100
+  content_hash: eaf6921abb7385d0de2e62607be26d6c4c8bd4cfb24ffb8521081b72ba63065c
+  coverage: 1.0
+  requirements: 4
+  property_requirements: 0
+  by_construction: 0
+  informative: 1
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_e835e2674c14
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Device Interface Functions (DIFs)
+  kind: section
+  chunker: native
+  lines:
+  - 102
+  - 103
+  content_hash: 30b83de28f75dcfeb91c944921acce8670848c410c895be93c69dd5745face1f
+  coverage: 1.0
+  requirements: 0
+  property_requirements: 0
+  by_construction: 0
+  informative: 0
+  references: 1
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_c330c3eacd00
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Block Diagram
+  kind: section
+  chunker: native
+  lines:
+  - 4
+  - 12
+  content_hash: 00f24a3acc516dabdc396b468f01e5fdf93eccffbca0bb92af994b586a9c9b8e
+  coverage: 1.0
+  requirements: 4
+  property_requirements: 0
+  by_construction: 0
+  informative: 1
+  references: 1
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_e23dc1670284
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Tick Generator
+  kind: section
+  chunker: native
+  lines:
+  - 16
+  - 28
+  content_hash: aff561ef73d8dc66aa742a4a90f9f38b6d1a11679bc94a9c941039acd0a49586
+  coverage: 1.0
+  requirements: 3
+  property_requirements: 0
+  by_construction: 0
+  informative: 5
+  references: 0
+  ambiguous: 1
+  unclassified: 0
+  dropped: 0
+- id: sec_b701d049a78b
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  kind: section
+  chunker: native
+  lines:
+  - 30
+  - 120
+  content_hash: 32a0fb4f788f6bba961ec4343b4c099879be6e75b676ac462c916693d4e76594
+  coverage: 1.0
+  requirements: 8
+  property_requirements: 0
+  by_construction: 0
+  informative: 13
+  references: 0
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+- id: sec_61fd0e8ea06b
+  path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  kind: section
+  chunker: native
+  lines:
+  - 2
+  - 48
+  content_hash: 23683b957f9acc65c1f699bd00a62b11a9a4353727b76c4781854b65e8e7db96
+  coverage: 1.0
+  requirements: 0
+  property_requirements: 0
+  by_construction: 0
+  informative: 21
+  references: 12
+  ambiguous: 0
+  unclassified: 0
+  dropped: 0
+requirements:
+- id: req_f4c3bd35ea88
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Features
+  section_id: sec_2a41a9be86e1
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The timer is 64 bits wide.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 64-bit timer with 12-bit prescaler and 8-bit step register
+    lines:
+    - 22
+    - 22
+    chars:
+    - 1266
+    - 1324
+  quote_hash: 8147ca5245a7
+- id: req_f4c3bd35ea88
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Features
+  section_id: sec_2a41a9be86e1
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The timer has a 12-bit prescaler.
+  aspect: configuration
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 64-bit timer with 12-bit prescaler and 8-bit step register
+    lines:
+    - 22
+    - 22
+    chars:
+    - 1266
+    - 1324
+  quote_hash: 8147ca5245a7
+- id: req_f4c3bd35ea88
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Features
+  section_id: sec_2a41a9be86e1
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The timer has an 8-bit step register.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 64-bit timer with 12-bit prescaler and 8-bit step register
+    lines:
+    - 22
+    - 22
+    chars:
+    - 1266
+    - 1324
+  quote_hash: 8147ca5245a7
+- id: req_5c0924e8d9da
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Features
+  section_id: sec_2a41a9be86e1
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The timer complies with RISC-V privileged specification v1.11.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Compliant with RISC-V privileged specification v1.11
+    lines:
+    - 23
+    - 23
+    chars:
+    - 1327
+    - 1379
+  quote_hash: a708ff8caa8b
+- id: req_4632e0ca929c
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Features
+  section_id: sec_2a41a9be86e1
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The number of timers per hart and the number of harts are configurable.
+  aspect: configuration
+  condition: null
+  ambiguity:
+    code: MISSING_DETAIL
+    note: No range or maximum is given for the number of timers per hart or the number of harts.
+    question: What are the allowed ranges for the number of timers per hart and the number of harts?
+  quotes:
+  - text: Configurable number of timers per hart and number of harts
+    lines:
+    - 24
+    - 24
+    chars:
+    - 1382
+    - 1440
+  quote_hash: 9fa8a0831b86
+- id: req_18538ce2ae4e
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Description
+  section_id: sec_b667e8a6651d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Timer module provides a configurable number of 64-bit counters.
+  aspect: configuration
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The timer module provides a configurable number of 64-bit counters
+    lines:
+    - 29
+    - 29
+    chars:
+    - 1588
+    - 1654
+  quote_hash: dfaaa0668559
+- id: req_10650ccf8c97
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Description
+  section_id: sec_b667e8a6651d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Each counter increments by a step value whenever the prescaler times out.
+  aspect: functional
+  condition: prescaler times out
+  ambiguity: null
+  quotes:
+  - text: 'where each
+
+      counter increments by a step value whenever the prescaler times out'
+    lines:
+    - 29
+    - 30
+    chars:
+    - 1655
+    - 1733
+  quote_hash: bf20618a2712
+- id: req_8b8833b7974c
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Description
+  section_id: sec_b667e8a6651d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Each timer generates an interrupt if its counter reaches or exceeds a programmed value.
+  aspect: interrupt
+  condition: counter reaches or is above the programmed value
+  ambiguity: null
+  quotes:
+  - text: 'Each timer
+
+      generates an interrupt if the counter reaches (or is above) a programmed
+
+      value.'
+    lines:
+    - 30
+    - 32
+    chars:
+    - 1735
+    - 1825
+  quote_hash: 5fe03f997d75
+- id: req_ae671c148e5b
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Description
+  section_id: sec_b667e8a6651d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The timer does not consider low-power modes in this version.
+  aspect: functional
+  condition: null
+  ambiguity:
+    code: MISSING_DETAIL
+    note: It is not stated what behavior the timer exhibits when a low-power mode is entered.
+    question: What is the required timer behavior (counting, interrupt, state retention) if a low-power
+      mode is entered?
+  quotes:
+  - text: In this version, the timer doesn't consider low-power modes
+    lines:
+    - 35
+    - 35
+    chars:
+    - 1950
+    - 2009
+  quote_hash: d2d6f0ccf7d9
+- id: req_e34995c8042c
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Description
+  section_id: sec_b667e8a6651d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The timer assumes the clock is neither turned off nor changed during runtime.
+  aspect: timing
+  condition: during runtime
+  ambiguity:
+    code: MISSING_DETAIL
+    note: An assumption is stated but the behavior if the clock is stopped or changed is not specified.
+    question: Is behavior defined if the clock is turned off or changed at runtime, or is it explicitly
+      unsupported?
+  quotes:
+  - text: assumes the clock is neither turned off nor changed during runtime
+    lines:
+    - 36
+    - 36
+    chars:
+    - 2014
+    - 2080
+  quote_hash: 42b06e969379
+- id: req_13c54b6fd0eb
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Compatibility
+  section_id: sec_608f7f8832e8
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The timer IP provides memory-mapped registers equivalent to mtime and mtimecmp usable as
+    RISC-V machine-mode timer registers.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'The timer IP provides memory-mapped registers equivalent to `mtime` and `mtimecmp` which can
+
+      be used as the machine-mode timer registers defined in the RISC-V privileged
+
+      spec.'
+    lines:
+    - 40
+    - 42
+    chars:
+    - 2101
+    - 2276
+  quote_hash: 6d209b4e6f12
+- id: req_c11ccc88f2e8
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Compatibility
+  section_id: sec_608f7f8832e8
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The timer IP has a prescaler feature.
+  aspect: functional
+  condition: null
+  ambiguity:
+    code: MISSING_DETAIL
+    note: Prescaler behavior, range and width are not specified in this section.
+    question: What is the prescaler's width, range and effect on the timer count rate?
+  quotes:
+  - text: 'Additional features such as prescaler, step, and a configurable number of
+
+      timers and harts have been added.'
+    lines:
+    - 42
+    - 43
+    chars:
+    - 2277
+    - 2384
+  quote_hash: e092164be21f
+- id: req_c11ccc88f2e8
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Compatibility
+  section_id: sec_608f7f8832e8
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The timer IP has a step feature.
+  aspect: functional
+  condition: null
+  ambiguity:
+    code: MISSING_DETAIL
+    note: Step behavior, range and width are not specified in this section.
+    question: What is the step's width and range, and how does it affect the timer increment?
+  quotes:
+  - text: 'Additional features such as prescaler, step, and a configurable number of
+
+      timers and harts have been added.'
+    lines:
+    - 42
+    - 43
+    chars:
+    - 2277
+    - 2384
+  quote_hash: e092164be21f
+- id: req_c11ccc88f2e8
+  path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Compatibility
+  section_id: sec_608f7f8832e8
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The number of timers and harts is configurable.
+  aspect: configuration
+  condition: null
+  ambiguity:
+    code: MISSING_DETAIL
+    note: The configurable range or parameter names for timers and harts are not given.
+    question: What are the parameter names and the allowed ranges for the number of timers and harts?
+  quotes:
+  - text: 'Additional features such as prescaler, step, and a configurable number of
+
+      timers and harts have been added.'
+    lines:
+    - 42
+    - 43
+    chars:
+    - 2277
+    - 2384
+  quote_hash: e092164be21f
+- id: req_6f4a8cbfa241
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CTRL
+  section_id: sec_2fd891429b7a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'CTRL.active: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: CTRL.active
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 142
+    - 142
+    chars:
+    - 4299
+    - 4313
+  quote_hash: 4990732e3ce0
+- id: req_b70952759536
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CTRL
+  section_id: sec_2fd891429b7a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'CTRL.active: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: CTRL.active
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 143
+    - 143
+    chars:
+    - 4323
+    - 4338
+  quote_hash: 4a7d2bfc2eec
+- id: req_3dbed6cc156b
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CTRL
+  section_id: sec_2fd891429b7a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'CTRL.active: occupies bits 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: CTRL.active
+  property: bits
+  value: '0'
+  quotes:
+  - text: 'bits: "0"'
+    lines:
+    - 145
+    - 145
+    chars:
+    - 4370
+    - 4379
+  quote_hash: cb646482b8d4
+- id: req_f8391db24d90
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CTRL
+  section_id: sec_2fd891429b7a
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: When CTRL.active is 1, the timer operates.
+  aspect: functional
+  condition: CTRL.active is 1
+  ambiguity: null
+  quotes:
+  - text: If 1, timer operates
+    lines:
+    - 146
+    - 146
+    chars:
+    - 4416
+    - 4436
+  quote_hash: db90133c7cfb
+- id: req_67759db7332f
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_ENABLE0
+  section_id: sec_cc369fafa496
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_ENABLE0.IE: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_ENABLE0.IE
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 158
+    - 158
+    chars:
+    - 4744
+    - 4758
+  quote_hash: 4990732e3ce0
+- id: req_9b50fc6408b8
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_ENABLE0
+  section_id: sec_cc369fafa496
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_ENABLE0.IE: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_ENABLE0.IE
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 159
+    - 159
+    chars:
+    - 4768
+    - 4783
+  quote_hash: 4a7d2bfc2eec
+- id: req_50dfa11e8786
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_ENABLE0
+  section_id: sec_cc369fafa496
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_ENABLE0.IE: occupies bits 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_ENABLE0.IE
+  property: bits
+  value: '0'
+  quotes:
+  - text: 'bits: "0"'
+    lines:
+    - 161
+    - 161
+    chars:
+    - 4815
+    - 4824
+  quote_hash: cb646482b8d4
+- id: req_0763640c587c
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_STATE0
+  section_id: sec_cf4e9313bc13
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_STATE0.IS: software access is rw1c.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_STATE0.IS
+  property: swaccess
+  value: rw1c
+  quotes:
+  - text: 'swaccess: "rw1c"'
+    lines:
+    - 170
+    - 170
+    chars:
+    - 5059
+    - 5075
+  quote_hash: 1d5816446cdd
+- id: req_4b08a738aa87
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_STATE0
+  section_id: sec_cf4e9313bc13
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_STATE0.IS: hardware access is hrw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_STATE0.IS
+  property: hwaccess
+  value: hrw
+  quotes:
+  - text: 'hwaccess: "hrw"'
+    lines:
+    - 171
+    - 171
+    chars:
+    - 5085
+    - 5100
+  quote_hash: 6b8930582bdb
+- id: req_edb37e47a062
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_STATE0
+  section_id: sec_cf4e9313bc13
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_STATE0.IS: occupies bits 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_STATE0.IS
+  property: bits
+  value: '0'
+  quotes:
+  - text: 'bits: "0"'
+    lines:
+    - 173
+    - 173
+    chars:
+    - 5132
+    - 5141
+  quote_hash: cb646482b8d4
+- id: req_177840115604
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_TEST0
+  section_id: sec_48d4c5ee8220
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_TEST0.T: software access is wo.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST0.T
+  property: swaccess
+  value: wo
+  quotes:
+  - text: 'swaccess: "wo"'
+    lines:
+    - 184
+    - 184
+    chars:
+    - 5536
+    - 5550
+  quote_hash: af65759a3ab0
+- id: req_e743123b8780
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_TEST0
+  section_id: sec_48d4c5ee8220
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_TEST0.T: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST0.T
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 185
+    - 185
+    chars:
+    - 5560
+    - 5575
+  quote_hash: 4a7d2bfc2eec
+- id: req_27bf84ecbc28
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_TEST0
+  section_id: sec_48d4c5ee8220
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'INTR_TEST0.T: hardware receives a write-qualifier pulse on software writes (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST0.T
+  property: hwqe
+  value: 'true'
+  quotes:
+  - text: 'hwqe: "true"'
+    lines:
+    - 187
+    - 187
+    chars:
+    - 5608
+    - 5620
+  quote_hash: 618a036af1ac
+- id: req_dcbb61662022
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_TEST0
+  section_id: sec_48d4c5ee8220
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'INTR_TEST0.T: the register is implemented outside the register block (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST0.T
+  property: hwext
+  value: 'true'
+  quotes:
+  - text: 'hwext: "true"'
+    lines:
+    - 186
+    - 186
+    chars:
+    - 5585
+    - 5598
+  quote_hash: 753c61d7d6a9
+- id: req_d98dc3ba42fb
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_TEST0
+  section_id: sec_48d4c5ee8220
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'INTR_TEST0.T: occupies bits 0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: INTR_TEST0.T
+  property: bits
+  value: '0'
+  quotes:
+  - text: 'bits: "0"'
+    lines:
+    - 189
+    - 189
+    chars:
+    - 5652
+    - 5661
+  quote_hash: cb646482b8d4
+- id: req_8e540fcf1c81
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CFG0
+  section_id: sec_c5f330c9241a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'CFG0.prescale: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: CFG0.prescale
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 197
+    - 197
+    chars:
+    - 5941
+    - 5955
+  quote_hash: 4990732e3ce0
+- id: req_f77ebad58fb3
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CFG0
+  section_id: sec_c5f330c9241a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'CFG0.prescale: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: CFG0.prescale
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 198
+    - 198
+    chars:
+    - 5963
+    - 5978
+  quote_hash: 4a7d2bfc2eec
+- id: req_fdcb1fb02125
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CFG0
+  section_id: sec_c5f330c9241a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'CFG0.prescale: occupies bits 11:0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: CFG0.prescale
+  property: bits
+  value: '11:0'
+  quotes:
+  - text: 'bits: "11:0"'
+    lines:
+    - 200
+    - 200
+    chars:
+    - 6006
+    - 6018
+  quote_hash: cc7edc88882c
+- id: req_c25e2765f8da
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CFG0
+  section_id: sec_c5f330c9241a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'CFG0.step: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: CFG0.step
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 197
+    - 197
+    chars:
+    - 5941
+    - 5955
+  quote_hash: 4990732e3ce0
+- id: req_4eded79bd306
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CFG0
+  section_id: sec_c5f330c9241a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'CFG0.step: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: CFG0.step
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 198
+    - 198
+    chars:
+    - 5963
+    - 5978
+  quote_hash: 4a7d2bfc2eec
+- id: req_61a8ac7361f1
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CFG0
+  section_id: sec_c5f330c9241a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'CFG0.step: reset value is 0x1.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: CFG0.step
+  property: resval
+  value: '0x1'
+  quotes:
+  - text: 'resval: "0x1"'
+    lines:
+    - 201
+    - 201
+    chars:
+    - 6115
+    - 6128
+  quote_hash: 8a1f67d9e235
+- id: req_8a8705abe227
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CFG0
+  section_id: sec_c5f330c9241a
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'CFG0.step: occupies bits 23:16.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: CFG0.step
+  property: bits
+  value: '23:16'
+  quotes:
+  - text: 'bits: "23:16"'
+    lines:
+    - 201
+    - 201
+    chars:
+    - 6086
+    - 6099
+  quote_hash: ad6f4718ebac
+- id: req_17f8343a1c8d
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > TIMER_V_LOWER0
+  section_id: sec_80abb4bf0be9
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'TIMER_V_LOWER0.v: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: TIMER_V_LOWER0.v
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 206
+    - 206
+    chars:
+    - 6258
+    - 6272
+  quote_hash: 4990732e3ce0
+- id: req_5dda6b55c553
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > TIMER_V_LOWER0
+  section_id: sec_80abb4bf0be9
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'TIMER_V_LOWER0.v: hardware access is hrw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: TIMER_V_LOWER0.v
+  property: hwaccess
+  value: hrw
+  quotes:
+  - text: 'hwaccess: "hrw"'
+    lines:
+    - 207
+    - 207
+    chars:
+    - 6280
+    - 6295
+  quote_hash: 6b8930582bdb
+- id: req_6c1f3373a368
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > TIMER_V_LOWER0
+  section_id: sec_80abb4bf0be9
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'TIMER_V_LOWER0.v: occupies bits 31:0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: TIMER_V_LOWER0.v
+  property: bits
+  value: '31:0'
+  quotes:
+  - text: 'bits: "31:0"'
+    lines:
+    - 209
+    - 209
+    chars:
+    - 6323
+    - 6335
+  quote_hash: c439f4248ed1
+- id: req_a642453446ef
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > TIMER_V_UPPER0
+  section_id: sec_98056d8acb3c
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'TIMER_V_UPPER0.v: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: TIMER_V_UPPER0.v
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 214
+    - 214
+    chars:
+    - 6463
+    - 6477
+  quote_hash: 4990732e3ce0
+- id: req_d3769f933fc1
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > TIMER_V_UPPER0
+  section_id: sec_98056d8acb3c
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'TIMER_V_UPPER0.v: hardware access is hrw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: TIMER_V_UPPER0.v
+  property: hwaccess
+  value: hrw
+  quotes:
+  - text: 'hwaccess: "hrw"'
+    lines:
+    - 215
+    - 215
+    chars:
+    - 6485
+    - 6500
+  quote_hash: 6b8930582bdb
+- id: req_14af1ebfbcc6
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > TIMER_V_UPPER0
+  section_id: sec_98056d8acb3c
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'TIMER_V_UPPER0.v: occupies bits 31:0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: TIMER_V_UPPER0.v
+  property: bits
+  value: '31:0'
+  quotes:
+  - text: 'bits: "31:0"'
+    lines:
+    - 217
+    - 217
+    chars:
+    - 6528
+    - 6540
+  quote_hash: c439f4248ed1
+- id: req_76d69f70b17a
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > TIMER_V_UPPER0
+  section_id: sec_98056d8acb3c
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: TIMER_V_UPPER0.v holds the upper 32 bits (63:32) of the 64-bit timer value.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Timer value [63:32]
+    lines:
+    - 217
+    - 217
+    chars:
+    - 6560
+    - 6579
+  quote_hash: 121fa9d8ffb7
+- id: req_c67f229c9b80
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_LOWER0_0
+  section_id: sec_885b8d36775c
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'COMPARE_LOWER0_0.v: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: COMPARE_LOWER0_0.v
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 222
+    - 222
+    chars:
+    - 6671
+    - 6685
+  quote_hash: 4990732e3ce0
+- id: req_93f7cec057fc
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_LOWER0_0
+  section_id: sec_885b8d36775c
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'COMPARE_LOWER0_0.v: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: COMPARE_LOWER0_0.v
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 223
+    - 223
+    chars:
+    - 6693
+    - 6708
+  quote_hash: 4a7d2bfc2eec
+- id: req_cda145f0511b
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_LOWER0_0
+  section_id: sec_885b8d36775c
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'COMPARE_LOWER0_0.v: reset value is 0xffffffff.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: COMPARE_LOWER0_0.v
+  property: resval
+  value: '0xffffffff'
+  quotes:
+  - text: 'resval: "0xffffffff"'
+    lines:
+    - 226
+    - 226
+    chars:
+    - 6781
+    - 6801
+  quote_hash: 480e2806eaa2
+- id: req_4b724da4fe58
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_LOWER0_0
+  section_id: sec_885b8d36775c
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'COMPARE_LOWER0_0.v: hardware receives a write-qualifier pulse on software writes (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: COMPARE_LOWER0_0.v
+  property: hwqe
+  value: 'true'
+  quotes:
+  - text: 'hwqe: "true"'
+    lines:
+    - 224
+    - 224
+    chars:
+    - 6716
+    - 6728
+  quote_hash: 618a036af1ac
+- id: req_c21e939a7ffd
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_LOWER0_0
+  section_id: sec_885b8d36775c
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'COMPARE_LOWER0_0.v: occupies bits 31:0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: COMPARE_LOWER0_0.v
+  property: bits
+  value: '31:0'
+  quotes:
+  - text: 'bits: "31:0"'
+    lines:
+    - 226
+    - 226
+    chars:
+    - 6756
+    - 6768
+  quote_hash: c439f4248ed1
+- id: req_2afa28b9bd1e
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_UPPER0_0
+  section_id: sec_f4046bc3c5d3
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'COMPARE_UPPER0_0.v: software access is rw.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: COMPARE_UPPER0_0.v
+  property: swaccess
+  value: rw
+  quotes:
+  - text: 'swaccess: "rw"'
+    lines:
+    - 231
+    - 231
+    chars:
+    - 6928
+    - 6942
+  quote_hash: 4990732e3ce0
+- id: req_459002c2060d
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_UPPER0_0
+  section_id: sec_f4046bc3c5d3
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'COMPARE_UPPER0_0.v: hardware access is hro.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: COMPARE_UPPER0_0.v
+  property: hwaccess
+  value: hro
+  quotes:
+  - text: 'hwaccess: "hro"'
+    lines:
+    - 232
+    - 232
+    chars:
+    - 6950
+    - 6965
+  quote_hash: 4a7d2bfc2eec
+- id: req_c82f85acc9ca
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_UPPER0_0
+  section_id: sec_f4046bc3c5d3
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'COMPARE_UPPER0_0.v: reset value is 0xffffffff.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: COMPARE_UPPER0_0.v
+  property: resval
+  value: '0xffffffff'
+  quotes:
+  - text: 'resval: "0xffffffff"'
+    lines:
+    - 235
+    - 235
+    chars:
+    - 7038
+    - 7058
+  quote_hash: 480e2806eaa2
+- id: req_534162533316
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_UPPER0_0
+  section_id: sec_f4046bc3c5d3
+  source: property
+  tier: needs_test
+  tier_reason: depends on logic outside the generated register block
+  statement: 'COMPARE_UPPER0_0.v: hardware receives a write-qualifier pulse on software writes (true).'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: COMPARE_UPPER0_0.v
+  property: hwqe
+  value: 'true'
+  quotes:
+  - text: 'hwqe: "true"'
+    lines:
+    - 233
+    - 233
+    chars:
+    - 6973
+    - 6985
+  quote_hash: 618a036af1ac
+- id: req_dce299ec4548
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_UPPER0_0
+  section_id: sec_f4046bc3c5d3
+  source: property
+  tier: by_construction
+  tier_reason: generated from the register definition; exercised by generic CSR tests
+  statement: 'COMPARE_UPPER0_0.v: occupies bits 31:0.'
+  aspect: register
+  condition: null
+  ambiguity: null
+  target: COMPARE_UPPER0_0.v
+  property: bits
+  value: '31:0'
+  quotes:
+  - text: 'bits: "31:0"'
+    lines:
+    - 235
+    - 235
+    chars:
+    - 7013
+    - 7025
+  quote_hash: c439f4248ed1
+- id: req_d4bb22741e0e
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_UPPER0_0
+  section_id: sec_f4046bc3c5d3
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: COMPARE_UPPER0_0.v holds the upper 32 bits (63:32) of the timer compare value.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Timer compare value [63:32]
+    lines:
+    - 235
+    - 235
+    chars:
+    - 7067
+    - 7094
+  quote_hash: 1becc21f7d88
+- id: req_fa11afdde0e5
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > interrupt_list
+  section_id: sec_5c9372528999
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Interrupt timer_expired_hart0_timer0 is raised when hart0's timer0 has expired (mtimecmp
+    >= mtime).
+  aspect: interrupt
+  condition: hart0's timer0 expired, i.e. mtimecmp >= mtime
+  ambiguity: null
+  quotes:
+  - text: raised if hart0's timer0 expired (mtimecmp >= mtime)
+    lines:
+    - 48
+    - 48
+    chars:
+    - 1914
+    - 1966
+  quote_hash: e20b2fcc248c
+- id: req_44b225404bb2
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > alert_list
+  section_id: sec_dd7447b03c42
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The fatal_fault alert is triggered when a fatal TL-UL bus integrity fault is detected inside
+    the RV_TIMER unit.
+  aspect: error_handling
+  condition: A fatal TL-UL bus integrity fault is detected inside the RV_TIMER unit
+  ambiguity: null
+  quotes:
+  - text: This fatal alert is triggered when a fatal TL-UL bus integrity fault is detected inside the
+      RV_TIMER unit.
+    lines:
+    - 54
+    - 54
+    chars:
+    - 2045
+    - 2151
+  quote_hash: d14f3f5d1a36
+- id: req_41fa1a62536b
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > param_list
+  section_id: sec_40f6ae5325f6
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Parameter N_HARTS specifies the number of harts.
+  aspect: configuration
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Number of harts
+    lines:
+    - 82
+    - 82
+    chars:
+    - 2819
+    - 2834
+  quote_hash: b8a01f4e9136
+- id: req_d7ab82126f49
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > param_list
+  section_id: sec_40f6ae5325f6
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Parameter N_TIMERS specifies the number of timers per hart.
+  aspect: configuration
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Number of timers per Hart
+    lines:
+    - 87
+    - 87
+    chars:
+    - 2919
+    - 2944
+  quote_hash: a4615414e091
+- id: req_d934ee870238
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > features
+  section_id: sec_c851ea9cd638
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The RV_TIMER block is integrated with the RISC-V CSRs mtime and mtimecmp.
+  aspect: functional
+  condition: null
+  ambiguity:
+    code: MISSING_DETAIL
+    note: The meaning of 'integrated' is not specified (e.g. how mtime/mtimecmp map to RV_TIMER registers).
+    question: How exactly are the RISC-V CSRs mtime and mtimecmp mapped to or integrated with RV_TIMER
+      registers, and what observable behavior defines the integration?
+  quotes:
+  - text: The RV_TIMER block is integrated with the RISC-V CSRs `mtime` and `mtimecmp`.
+    lines:
+    - 95
+    - 95
+    chars:
+    - 3085
+    - 3162
+  quote_hash: 7bd99260503a
+- id: req_141fd657e9dd
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > features
+  section_id: sec_c851ea9cd638
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The RV_TIMER timer can be enabled with the CTRL CSR.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Enable timer with CTRL CSR.
+    lines:
+    - 100
+    - 100
+    chars:
+    - 3245
+    - 3272
+  quote_hash: 52a3643b6afa
+- id: req_1e7d0ef805d4
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > features
+  section_id: sec_c851ea9cd638
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The RV_TIMER timer can be disabled with the CTRL CSR.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Disable timer with CTRL CSR.
+    lines:
+    - 105
+    - 105
+    chars:
+    - 3356
+    - 3384
+  quote_hash: 4ca165241794
+- id: req_71b02fc0fdca
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > features
+  section_id: sec_c851ea9cd638
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The RV_TIMER timer triggers an interrupt when the counter register matches the compare register.
+  aspect: interrupt
+  condition: counter register matches compare register
+  ambiguity: null
+  quotes:
+  - text: The timer triggers interrupts when the counter register matches the compare register.
+    lines:
+    - 110
+    - 110
+    chars:
+    - 3470
+    - 3555
+  quote_hash: cef9e21b4fa7
+- id: req_415949ac8ff2
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > features
+  section_id: sec_c851ea9cd638
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The RV_TIMER timer configures the tick period.
+  aspect: configuration
+  condition: null
+  ambiguity:
+    code: MISSING_DETAIL
+    note: It does not state which register or field configures the tick period, nor the allowed range.
+    question: Which register field sets the RV_TIMER tick period, and what is its valid range and unit?
+  quotes:
+  - text: Configures the tick period.
+    lines:
+    - 115
+    - 115
+    chars:
+    - 3638
+    - 3665
+  quote_hash: 84efa1ffde20
+- id: req_65dc41c1fada
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > features
+  section_id: sec_c851ea9cd638
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The RV_TIMER timer has a 64-bit counter that wraps.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The timer has a 64-bit counter that wraps.
+    lines:
+    - 120
+    - 120
+    chars:
+    - 3749
+    - 3791
+  quote_hash: 622de0df0518
+- id: req_66a57bc9fd36
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > features
+  section_id: sec_c851ea9cd638
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The RV_TIMER timer has a 64-bit compare register.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The timer has a 64-bit compare register
+    lines:
+    - 125
+    - 125
+    chars:
+    - 3875
+    - 3914
+  quote_hash: 78ecea79fe4a
+- id: req_3060416e85d9
+  path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > features
+  section_id: sec_c851ea9cd638
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The RV_TIMER 64-bit compare register triggers an interrupt when it matches the counter.
+  aspect: interrupt
+  condition: compare register matches counter
+  ambiguity: null
+  quotes:
+  - text: that triggers an interrupt when it matches the counter.
+    lines:
+    - 125
+    - 125
+    chars:
+    - 3915
+    - 3970
+  quote_hash: d324d92108e5
+- id: req_e44b22048c8d
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces
+  section_id: sec_212b3a5522e9
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: rv_timer has primary clock clk_i.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'Primary Clock: **`clk_i`**'
+    lines:
+    - 5
+    - 5
+    chars:
+    - 326
+    - 349
+  quote_hash: 9db43d433922
+- id: req_1d8925570693
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces
+  section_id: sec_212b3a5522e9
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: rv_timer has no other clocks.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'Other Clocks: *none*'
+    lines:
+    - 6
+    - 6
+    chars:
+    - 355
+    - 374
+  quote_hash: 775b3a840130
+- id: req_8f4d38533ac1
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces
+  section_id: sec_212b3a5522e9
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: rv_timer has a TL-UL bus device interface named tl.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'Bus Device Interfaces (TL-UL): **`tl`**'
+    lines:
+    - 7
+    - 7
+    chars:
+    - 378
+    - 414
+  quote_hash: 9bcdb0a9753f
+- id: req_0974f53a59a8
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces
+  section_id: sec_212b3a5522e9
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: rv_timer has no TL-UL bus host interfaces.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'Bus Host Interfaces (TL-UL): *none*'
+    lines:
+    - 8
+    - 8
+    chars:
+    - 420
+    - 454
+  quote_hash: 2b7704cbf94f
+- id: req_f88b6aa3a1fe
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces
+  section_id: sec_212b3a5522e9
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: rv_timer has no peripheral pins for chip IO.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'Peripheral Pins for Chip IO: *none*'
+    lines:
+    - 9
+    - 9
+    chars:
+    - 458
+    - 492
+  quote_hash: cd7339b6d475
+- id: req_638afe52fd4f
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  section_id: sec_d7c4cb0d0ad4
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: racl_policies is a unidirectional receive port of type top_racl_pkg::racl_policy_vec, width
+    1, carrying the RACL policy vector from a racl_ctrl instance.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: racl_policies
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1046
+    - 1059
+  - text: top_racl_pkg::racl_policy_vec
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1062
+    - 1091
+  - text: uni
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1094
+    - 1097
+  - text: rcv
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1104
+    - 1107
+  - text: Incoming RACL policy vector from a racl_ctrl instance.
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1122
+    - 1176
+  quote_hash: 9efacef186e2
+- id: req_c9413efb8f0b
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  section_id: sec_d7c4cb0d0ad4
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The policy selection vector parameter selects the RACL policy for each register.
+  aspect: access_control
+  condition: null
+  ambiguity:
+    code: UNCLEAR_REFERENT
+    note: The parameter that holds the policy selection vector is not named and its format is not given.
+    question: What is the name, type and encoding of the policy selection vector parameter, and how does
+      it map to each register?
+  quotes:
+  - text: The policy selection vector (parameter) selects the policy for each register.
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1177
+    - 1254
+  quote_hash: 981d774fb862
+- id: req_998cd7c38922
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  section_id: sec_d7c4cb0d0ad4
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: racl_error is a unidirectional request port of type top_racl_pkg::racl_error_log, width 1,
+    carrying the RACL error log information of this module.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: racl_error
+    lines:
+    - 16
+    - 16
+    chars:
+    - 1259
+    - 1269
+  - text: top_racl_pkg::racl_error_log
+    lines:
+    - 16
+    - 16
+    chars:
+    - 1275
+    - 1303
+  - text: req
+    lines:
+    - 16
+    - 16
+    chars:
+    - 1317
+    - 1320
+  - text: RACL error log information of this module.
+    lines:
+    - 16
+    - 16
+    chars:
+    - 1335
+    - 1377
+  quote_hash: 63d93e642afa
+- id: req_ac250b2491f4
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  section_id: sec_d7c4cb0d0ad4
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: tl is a req_rsp response-side port of type tlul_pkg::tl, width 1.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: tl
+    lines:
+    - 17
+    - 17
+    chars:
+    - 1472
+    - 1474
+  - text: tlul_pkg::tl
+    lines:
+    - 17
+    - 17
+    chars:
+    - 1488
+    - 1500
+  - text: req_rsp
+    lines:
+    - 17
+    - 17
+    chars:
+    - 1520
+    - 1527
+  - text: rsp
+    lines:
+    - 17
+    - 17
+    chars:
+    - 1530
+    - 1533
+  quote_hash: af6ecdb60409
+- id: req_5aa5182f1043
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > Interrupts
+  section_id: sec_04151395bf5f
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Interrupt timer_expired_hart0_timer0 is raised when hart0's timer0 has expired (mtimecmp
+    >= mtime).
+  aspect: interrupt
+  condition: hart0's timer0 expired, i.e. mtimecmp >= mtime
+  ambiguity: null
+  quotes:
+  - text: timer_expired_hart0_timer0
+    lines:
+    - 23
+    - 23
+    chars:
+    - 1891
+    - 1917
+  - text: raised if hart0's timer0 expired (mtimecmp >= mtime)
+    lines:
+    - 23
+    - 23
+    chars:
+    - 1929
+    - 1981
+  quote_hash: 9444b9f85e7f
+- id: req_9b391b56d699
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > Interrupts
+  section_id: sec_04151395bf5f
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: timer_expired_hart0_timer0 is an Event type interrupt.
+  aspect: interrupt
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: timer_expired_hart0_timer0
+    lines:
+    - 23
+    - 23
+    chars:
+    - 1891
+    - 1917
+  - text: Event
+    lines:
+    - 23
+    - 23
+    chars:
+    - 1920
+    - 1925
+  quote_hash: 007dcd87f645
+- id: req_4cb6c9fe68f7
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > Security Alerts
+  section_id: sec_ff500861c2a2
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The fatal_fault alert is triggered when a fatal TL-UL bus integrity fault is detected inside
+    the RV_TIMER unit.
+  aspect: error_handling
+  condition: A fatal TL-UL bus integrity fault is detected inside the RV_TIMER unit
+  ambiguity: null
+  quotes:
+  - text: fatal_fault
+    lines:
+    - 29
+    - 29
+    chars:
+    - 2259
+    - 2270
+  - text: This fatal alert is triggered when a fatal TL-UL bus integrity fault is detected inside the
+      RV_TIMER unit.
+    lines:
+    - 29
+    - 29
+    chars:
+    - 2274
+    - 2380
+  quote_hash: 7dc2b4813f0a
+- id: req_cae26054f6be
+  path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > Security Countermeasures
+  section_id: sec_85f9238b9137
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: RV_TIMER.BUS.INTEGRITY countermeasure is an end-to-end bus integrity scheme.
+  aspect: security
+  condition: null
+  ambiguity:
+    code: MISSING_DETAIL
+    note: The scheme is named but its checking mechanism, coverage and error response are not described.
+    question: What integrity code is used on the bus, which transactions does it cover, and what is the
+      behavior when a check fails?
+  quotes:
+  - text: RV_TIMER.BUS.INTEGRITY
+    lines:
+    - 35
+    - 35
+    chars:
+    - 2539
+    - 2561
+  - text: End-to-end bus integrity scheme.
+    lines:
+    - 35
+    - 35
+    chars:
+    - 2564
+    - 2596
+  quote_hash: f7be2898eb1f
+- id: req_e0463493c42d
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Initialization
+  section_id: sec_0ebe5ecb4445
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Software configures prescaler and step before activating the timer.
+  aspect: configuration
+  condition: Before the timer is activated
+  ambiguity:
+    code: WEAK_MODAL
+    note: '''Is expected to'' does not say whether configuring before activation is mandatory or what
+      hardware does otherwise.'
+    question: Is configuring prescaler and step before activation mandatory, and what is the defined hardware
+      behavior if the timer is activated without it?
+  quotes:
+  - text: Software is expected to configure prescaler and step before activating the timer.
+    lines:
+    - 5
+    - 6
+    chars:
+    - 41
+    - 126
+  quote_hash: bf49902b800d
+- id: req_b6e5fa213068
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Initialization
+  section_id: sec_0ebe5ecb4445
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The prescaler and step fields must be stable for the timer value to increment correctly.
+  aspect: functional
+  condition: While the timer is active
+  ambiguity:
+    code: MISSING_DETAIL
+    note: It does not say how long the fields must be stable or what the timer does if they change.
+    question: During which period must prescaler and step remain unchanged, and what is the timer's defined
+      behavior if they change while it is active?
+  quotes:
+  - text: These two fields need to be stable to correctly increment the timer value.
+    lines:
+    - 6
+    - 7
+    chars:
+    - 127
+    - 201
+  quote_hash: 9a3b40f1dd01
+- id: req_6b284aa310cc
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Initialization
+  section_id: sec_0ebe5ecb4445
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: To change prescaler or step, software de-activates the timer first.
+  aspect: configuration
+  condition: When software wants to change prescaler or step
+  ambiguity:
+    code: WEAK_MODAL
+    note: '''Should'' leaves unclear whether de-activating before changing the fields is required.'
+    question: Is de-activating the timer before changing prescaler or step required, and what happens
+      if a field is written while the timer is active?
+  quotes:
+  - text: If software wants to change these fields, it should de-activate the timer and then proceed.
+    lines:
+    - 7
+    - 8
+    chars:
+    - 202
+    - 293
+  quote_hash: 5af150f8182e
+- id: req_fbe67a96b764
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Timer value registers and compare registers are 64 bits wide.
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The timer IP has 64-bit timer value registers and 64-bit compare registers.
+    lines:
+    - 12
+    - 12
+    chars:
+    - 315
+    - 390
+  quote_hash: 861553a2029c
+- id: req_5fe49b2d52d4
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The register interface has a 32-bit data width, so 64-bit data cannot be accessed in a single
+    request.
+  aspect: interface
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The register interface, however, is set to 32-bit data width.
+    lines:
+    - 12
+    - 13
+    chars:
+    - 391
+    - 452
+  - text: The CPU cannot access 64-bit data in a single request.
+    lines:
+    - 13
+    - 14
+    chars:
+    - 453
+    - 507
+  quote_hash: c39c18d86d93
+- id: req_c493fd83ac9d
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The IP has no latching or blocking mechanism to keep a split 64-bit timer read consistent.
+  aspect: functional
+  condition: Reading the 64-bit timer value as two 32-bit reads
+  ambiguity: null
+  quotes:
+  - text: The IP doesn't have a latching or blocking mechanism to avoid this issue.
+    lines:
+    - 17
+    - 17
+    chars:
+    - 616
+    - 689
+  quote_hash: f8761fef440c
+- id: req_4bbe2b6fee0a
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: After mtime is modified by software, mtimecmp is written after mtime to clear any pending
+    interrupt condition.
+  aspect: interrupt
+  condition: mtime has been modified using the described write sequence
+  ambiguity: null
+  quotes:
+  - text: If the value of `mtime` is modified in this manner then `mtimecmp` shall be written after `mtime`
+      in order to clear any pending interrupt condition.
+    lines:
+    - 67
+    - 68
+    chars:
+    - 2692
+    - 2840
+  quote_hash: 57aec30739c8
+- id: req_486e6ca3b48b
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  section_id: sec_166285e0a31f
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: mtime and mtimecmp are compared as unsigned values.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: because an unsigned comparison is done between mtime and mtimecmp
+    lines:
+    - 73
+    - 74
+    chars:
+    - 2998
+    - 3066
+  quote_hash: 0c99fd2bfc96
+- id: req_333ca265f55b
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  section_id: sec_166285e0a31f
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The time-out event is signaled when mtime passes the comparison value.
+  aspect: functional
+  condition: mtimecmp is close to 0xFFFF_FFFF_FFFF_FFFF
+  ambiguity:
+    code: MISSING_DETAIL
+    note: '''Passes'' does not say whether the event fires at mtime > mtimecmp or mtime >= mtimecmp.'
+    question: Is the time-out event signaled when mtime is greater than mtimecmp, or when mtime is greater
+      than or equal to mtimecmp?
+  quotes:
+  - text: In this case the time-out event will be signaled when mtime passes the comparison value
+    lines:
+    - 76
+    - 77
+    chars:
+    - 3154
+    - 3246
+  quote_hash: 507c19b3f655
+- id: req_3aa72f5157ce
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  section_id: sec_166285e0a31f
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The interrupt is raised when the time-out event occurs.
+  aspect: interrupt
+  condition: mtimecmp is close to 0xFFFF_FFFF_FFFF_FFFF and mtime passes it
+  ambiguity: null
+  quotes:
+  - text: the interrupt will be raised
+    lines:
+    - 77
+    - 78
+    chars:
+    - 3248
+    - 3279
+  quote_hash: 6a7a5d2b4063
+- id: req_b1c67bce497f
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  section_id: sec_166285e0a31f
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The interrupt source is indicated in the corresponding bit of the interrupt status register.
+  aspect: register
+  condition: time-out event signaled
+  ambiguity: null
+  quotes:
+  - text: the source indicated in the corresponding bit of the interrupt status register
+    lines:
+    - 78
+    - 79
+    chars:
+    - 3284
+    - 3365
+  quote_hash: 359298ef9c36
+- id: req_20baa91470ba
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  section_id: sec_166285e0a31f
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: If mtime is greater than mtimecmp, an interrupt is signaled immediately.
+  aspect: interrupt
+  condition: an overflowed comparison value is written to mtimecmp so that mtime > mtimecmp
+  ambiguity: null
+  quotes:
+  - text: If this value is set in `mtimecmp` it would make `mtime` greater than `mtimecmp` and immediately
+      signal an interrupt.
+    lines:
+    - 85
+    - 86
+    chars:
+    - 3758
+    - 3878
+  quote_hash: 889a240f43d4
+- id: req_04d22959eea8
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  section_id: sec_d5b1daa52a51
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: RV_TIMER generates the interrupt when mtime is greater than or equal to mtimecmp.
+  aspect: interrupt
+  condition: mtime >= mtimecmp
+  ambiguity: null
+  quotes:
+  - text: If mtime is greater than or equal to the value of mtimecmp, the interrupt is generated from
+      the RV_TIMER module.
+    lines:
+    - 95
+    - 95
+    chars:
+    - 4264
+    - 4380
+  quote_hash: 3dde4e9ea4dd
+- id: req_11e890c8c121
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  section_id: sec_d5b1daa52a51
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Writing 1 to INTR_STATE0 clears the timer interrupt.
+  aspect: interrupt
+  condition: software writes 1 to INTR_STATE0
+  ambiguity: null
+  quotes:
+  - text: Clearing the interrupt can be done by writing 1 into the Interrupt Status register INTR_STATE0.
+    lines:
+    - 97
+    - 97
+    chars:
+    - 4486
+    - 4637
+  quote_hash: 2a88b576aae9
+- id: req_67147bba2243
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  section_id: sec_d5b1daa52a51
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Updating COMPARE_LOWER0_0 clears the interrupt source.
+  aspect: interrupt
+  condition: software writes COMPARE_LOWER0_0
+  ambiguity:
+    code: MISSING_DETAIL
+    note: It is not stated whether any write clears the interrupt or only a write that makes mtimecmp
+      greater than mtime, and 'can clear' is not definitive.
+    question: Does any write to COMPARE_LOWER0_0 clear the interrupt, or only a write that results in
+      mtimecmp > mtime?
+  quotes:
+  - text: The RV_TIMER module also follows RISC-V Privileged spec that requires the interrupt to be cleared
+      by updating mtimecmp memory-mapped CSRs.
+    lines:
+    - 98
+    - 98
+    chars:
+    - 4638
+    - 4778
+  - text: In this case both COMPARE_LOWER0_0 and COMPARE_UPPER0_0 can clear the interrupt source.
+    lines:
+    - 99
+    - 99
+    chars:
+    - 4779
+    - 4988
+  quote_hash: 4d4dc5b03600
+- id: req_67147bba2243
+  path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  section_id: sec_d5b1daa52a51
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Updating COMPARE_UPPER0_0 clears the interrupt source.
+  aspect: interrupt
+  condition: software writes COMPARE_UPPER0_0
+  ambiguity:
+    code: MISSING_DETAIL
+    note: It is not stated whether any write clears the interrupt or only a write that makes mtimecmp
+      greater than mtime, and 'can clear' is not definitive.
+    question: Does any write to COMPARE_UPPER0_0 clear the interrupt, or only a write that results in
+      mtimecmp > mtime?
+  quotes:
+  - text: The RV_TIMER module also follows RISC-V Privileged spec that requires the interrupt to be cleared
+      by updating mtimecmp memory-mapped CSRs.
+    lines:
+    - 98
+    - 98
+    chars:
+    - 4638
+    - 4778
+  - text: In this case both COMPARE_LOWER0_0 and COMPARE_UPPER0_0 can clear the interrupt source.
+    lines:
+    - 99
+    - 99
+    chars:
+    - 4779
+    - 4988
+  quote_hash: 4d4dc5b03600
+- id: req_e2e98a54c095
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Block Diagram
+  section_id: sec_c330c3eacd00
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: A tick generator creates a tick each time its internal counter reaches the CFG0.prescaler
+    value.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'A tick generator creates a tick every time its internal counter hits the
+
+      [`CFG0.prescaler`](registers.md#cfg0) value.'
+    lines:
+    - 8
+    - 9
+    chars:
+    - 173
+    - 290
+  quote_hash: a777c5575ddb
+- id: req_a9dd60e957b9
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Block Diagram
+  section_id: sec_c330c3eacd00
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Each tick increments mtime by the CFG0.step value.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: 'The tick is used to increment `mtime` by the [`CFG0.step`](registers.md#cfg0)
+
+      value.'
+    lines:
+    - 9
+    - 10
+    chars:
+    - 291
+    - 375
+  quote_hash: 83fc478dc984
+- id: req_804d13da951b
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Block Diagram
+  section_id: sec_c330c3eacd00
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The 64-bit mtime is compared with the 64-bit mtimecmp.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The 64-bit `mtime` value is compared with the 64-bit `mtimecmp`.
+    lines:
+    - 10
+    - 10
+    chars:
+    - 376
+    - 440
+  quote_hash: 5ddd94cfa182
+- id: req_26076c1f0bdf
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Block Diagram
+  section_id: sec_c330c3eacd00
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The timer raises an interrupt when mtime is greater than or equal to mtimecmp.
+  aspect: interrupt
+  condition: mtime >= mtimecmp
+  ambiguity: null
+  quotes:
+  - text: 'If
+
+      `mtime` is greater than or equal to `mtimecmp`, the timer raises an interrupt.'
+    lines:
+    - 10
+    - 11
+    chars:
+    - 441
+    - 522
+  quote_hash: fe773ab9f3ef
+- id: req_efed7f97b89e
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Tick Generator
+  section_id: sec_e23dc1670284
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The tick module generates a fixed-period pulse signal.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: The tick module inside the timer IP is used to generate a fixed period of pulse
+    lines:
+    - 17
+    - 17
+    chars:
+    - 563
+    - 642
+  - text: signal.
+    lines:
+    - 18
+    - 18
+    chars:
+    - 643
+    - 650
+  quote_hash: 79da1c61efa0
+- id: req_6fc3ec73c492
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Tick Generator
+  section_id: sec_e23dc1670284
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: With CFG0.prescaler set to 47 and a 48MHz clock, the tick period is 1us.
+  aspect: configuration
+  condition: System clock is 48MHz and CFG0.prescaler is 47
+  ambiguity: null
+  quotes:
+  - text: For instance, if a system switches between 48MHz and 200MHz clocks, a prescaler
+    lines:
+    - 24
+    - 24
+    chars:
+    - 1019
+    - 1098
+  - text: value of 47 for 48MHz and 199 for 200MHz will generate a 1us tick.
+    lines:
+    - 25
+    - 25
+    chars:
+    - 1099
+    - 1173
+  quote_hash: 99cd46811c3d
+- id: req_6fc3ec73c492
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Tick Generator
+  section_id: sec_e23dc1670284
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: With CFG0.prescaler set to 199 and a 200MHz clock, the tick period is 1us.
+  aspect: configuration
+  condition: System clock is 200MHz and CFG0.prescaler is 199
+  ambiguity: null
+  quotes:
+  - text: For instance, if a system switches between 48MHz and 200MHz clocks, a prescaler
+    lines:
+    - 24
+    - 24
+    chars:
+    - 1019
+    - 1098
+  - text: value of 47 for 48MHz and 199 for 200MHz will generate a 1us tick.
+    lines:
+    - 25
+    - 25
+    chars:
+    - 1099
+    - 1173
+  quote_hash: 99cd46811c3d
+- id: req_7af069ff32ec
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Each hart has its own tick generator and counter.
+  aspect: functional
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Each hart has a set of tick generator and counter.
+    lines:
+    - 32
+    - 32
+    chars:
+    - 1444
+    - 1494
+  quote_hash: e072cfcdbb70
+- id: req_995ba5045b77
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The number of prescalers, steps and mtime registers equals the number of harts.
+  aspect: configuration
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: It means the timer IP has the same number of prescalers, steps, and `mtime` registers as the
+      number of harts.
+    lines:
+    - 32
+    - 33
+    chars:
+    - 1495
+    - 1604
+  quote_hash: 981848fa18a9
+- id: req_afb9be2b1c18
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: This IP version is fixed to one hart and one timer per hart.
+  aspect: configuration
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: This version of the IP is fixed to have one Hart and one Timer per Hart.
+    lines:
+    - 36
+    - 37
+    chars:
+    - 1702
+    - 1774
+  quote_hash: 946fd023df25
+- id: req_3a1998272ba8
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Interrupt timer_expired_hart0_timer0 is raised when hart0's timer0 has expired (mtimecmp
+    >= mtime).
+  aspect: interrupt
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: raised if hart0's timer0 expired (mtimecmp >= mtime)
+    lines:
+    - 48
+    - 48
+    chars:
+    - 2041
+    - 2093
+  quote_hash: e20b2fcc248c
+- id: req_0efea1381c51
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Interrupt timer_expired_hart0_timer1 is raised when hart0's timer1 has expired (mtimecmp
+    >= mtime).
+  aspect: interrupt
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: raised if hart0's timer1 expired (mtimecmp >= mtime)
+    lines:
+    - 51
+    - 51
+    chars:
+    - 2157
+    - 2209
+  quote_hash: 5f555f2c486d
+- id: req_2fc3c4ce6f83
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Interrupt timer_expired_hart1_timer0 is raised when hart1's timer0 has expired (mtimecmp
+    >= mtime).
+  aspect: interrupt
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: raised if hart1's timer0 expired (mtimecmp >= mtime)
+    lines:
+    - 54
+    - 54
+    chars:
+    - 2273
+    - 2325
+  quote_hash: 6f8b4cd90ccd
+- id: req_c5010a218e57
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: Interrupt timer_expired_hart1_timer1 is raised when hart1's timer1 has expired (mtimecmp
+    >= mtime).
+  aspect: interrupt
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: raised if hart1's timer1 expired (mtimecmp >= mtime)
+    lines:
+    - 57
+    - 57
+    chars:
+    - 2389
+    - 2441
+  quote_hash: a4b300d1b544
+- id: req_1958f329ade6
+  path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  source: llm
+  tier: needs_test
+  tier_reason: null
+  statement: The TIMER_V_UPPER1 field v holds timer value bits [63:32].
+  aspect: register
+  condition: null
+  ambiguity: null
+  quotes:
+  - text: Timer value [63:32]
+    lines:
+    - 115
+    - 115
+    chars:
+    - 3942
+    - 3961
+  quote_hash: 121fa9d8ffb7
+other_text:
+- path: hw/ip/rv_timer/README.md
+  heading_path: Timer HWIP Technical Specification
+  section_id: sec_79af11e53235
+  label: informative
+  reason: Table header of a generated regression status table, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: '| Regression | Version | [Stages](https://opentitan.org/book/doc/project_governance/development_stages.html)
+      | Results |'
+    lines:
+    - 3
+    - 3
+    chars:
+    - 151
+    - 267
+- path: hw/ip/rv_timer/README.md
+  heading_path: Timer HWIP Technical Specification
+  section_id: sec_79af11e53235
+  label: informative
+  reason: Project status row giving version, development stages and regression badges, not a hardware
+    requirement.
+  ambiguity: null
+  quote:
+    text: '[`rv_timer`](https://dashboard.reports.lowrisc.org/opentitan/earlgrey/dashboard.html) | 1.1.0
+      | D3, V3 | ![](https://dashboard.reports.lowrisc.org/opentitan/earlgrey/badge/rv_timer/test.svg)
+      ![](https://dashboard.reports.lowrisc.org/opentitan/earlgrey/badge/rv_timer/passing.svg) ![](https://dashboard.reports.lowrisc.org/opentitan/earlgrey/badge/rv_timer/functional.svg)
+      ![](https://dashboard.reports.lowrisc.org/opentitan/earlgrey/badge/rv_timer/code.svg)'
+    lines:
+    - 5
+    - 5
+    chars:
+    - 283
+    - 383
+- path: hw/ip/rv_timer/README.md
+  heading_path: Timer HWIP Technical Specification
+  section_id: sec_79af11e53235
+  label: informative
+  reason: Background statement about tape-out history.
+  ambiguity: null
+  quote:
+    text: This IP has been taped out in Earl Grey 1.0.0.
+    lines:
+    - 7
+    - 7
+    chars:
+    - 742
+    - 788
+- path: hw/ip/rv_timer/README.md
+  heading_path: Timer HWIP Technical Specification
+  section_id: sec_79af11e53235
+  label: reference
+  reason: Only points to external documentation and regression results.
+  ambiguity: null
+  quote:
+    text: The corresponding documentation and regression results can be found [here](https://opentitan.org/earlgrey_1.0.0/book/hw/ip/rv_timer/index.html).
+    lines:
+    - 7
+    - 7
+    chars:
+    - 789
+    - 933
+- path: hw/ip/rv_timer/README.md
+  heading_path: Overview
+  section_id: sec_362903419ba7
+  label: informative
+  reason: Introductory statement describing the purpose of the document.
+  ambiguity: null
+  quote:
+    text: This document specifies RISC-V Timer hardware IP functionality.
+    lines:
+    - 13
+    - 13
+    chars:
+    - 968
+    - 1031
+- path: hw/ip/rv_timer/README.md
+  heading_path: Overview
+  section_id: sec_362903419ba7
+  label: ambiguous
+  reason: States conformance to a guideline, but conformance is not a testable requirement without specific
+    items.
+  ambiguity:
+    code: VAGUE
+    note: Conformance to the Comportable guideline is claimed without stating which guideline requirements
+      apply.
+    question: Which specific Comportable guideline requirements must the RISC-V Timer satisfy (e.g., interface
+      signals, register conventions, interrupt naming)?
+  quote:
+    text: This module conforms to the
+    lines:
+    - 13
+    - 14
+    chars:
+    - 1032
+    - 1059
+- path: hw/ip/rv_timer/README.md
+  heading_path: Overview
+  section_id: sec_362903419ba7
+  label: reference
+  reason: Only points to another document.
+  ambiguity: null
+  quote:
+    text: '[Comportable guideline for peripheral functionality.](../../../doc/contributing/hw/comportability/README.md)'
+    lines:
+    - 15
+    - 15
+    chars:
+    - 1061
+    - 1112
+- path: hw/ip/rv_timer/README.md
+  heading_path: Overview
+  section_id: sec_362903419ba7
+  label: reference
+  reason: Only points to another document for integration overview.
+  ambiguity: null
+  quote:
+    text: See that document for integration overview within the broader top level system.
+    lines:
+    - 16
+    - 17
+    chars:
+    - 1169
+    - 1248
+- path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Features
+  section_id: sec_2a41a9be86e1
+  label: ambiguous
+  reason: It describes a current implementation limit that seems to conflict with the configurability
+    feature and is not stated as a testable requirement.
+  ambiguity:
+    code: CONFLICT
+    note: The note says the implementation connects only one timer for one hart, which contradicts the
+      feature of a configurable number of timers and harts.
+    question: Is the supported configuration limited to one timer and one hart, or must multiple timers
+      and harts work as the configurable feature states?
+  quote:
+    text: 'Note: Although the number of timers is indeed configurable, the implementation currently only
+      connects up one timer for one hart.'
+    lines:
+    - 26
+    - 26
+    chars:
+    - 1442
+    - 1571
+- path: hw/ip/rv_timer/README.md
+  heading_path: Overview > Description
+  section_id: sec_b667e8a6651d
+  label: informative
+  reason: Describes intended use and rationale, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: 'The timer is intended to be used by the processors to check the current
+
+      time relative to the reset or the system power-on.'
+    lines:
+    - 32
+    - 33
+    chars:
+    - 1826
+    - 1948
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CTRL
+  section_id: sec_2fd891429b7a
+  label: informative
+  reason: It is a descriptive title for the register and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Control register
+    lines:
+    - 139
+    - 139
+    chars:
+    - 4222
+    - 4238
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_ENABLE0
+  section_id: sec_cc369fafa496
+  label: informative
+  reason: Register description that only names the register and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Interrupt Enable
+    lines:
+    - 155
+    - 155
+    chars:
+    - 4666
+    - 4682
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_ENABLE0
+  section_id: sec_cc369fafa496
+  label: informative
+  reason: Field description that only labels the IE field and does not state testable behavior beyond
+    the derived properties.
+  ambiguity: null
+  quote:
+    text: Interrupt Enable for timer
+    lines:
+    - 161
+    - 161
+    chars:
+    - 4845
+    - 4871
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_STATE0
+  section_id: sec_cf4e9313bc13
+  label: informative
+  reason: Register title that names the register and states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Interrupt Status
+    lines:
+    - 167
+    - 167
+    chars:
+    - 4981
+    - 4997
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_STATE0
+  section_id: sec_cf4e9313bc13
+  label: informative
+  reason: Field description that only names the field's purpose; access type is already covered by derived
+    properties.
+  ambiguity: null
+  quote:
+    text: Interrupt status for timer
+    lines:
+    - 173
+    - 173
+    chars:
+    - 5162
+    - 5188
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_TEST0
+  section_id: sec_48d4c5ee8220
+  label: informative
+  reason: Descriptive name of the register; it states no testable behavior.
+  ambiguity: null
+  quote:
+    text: Interrupt test register
+    lines:
+    - 181
+    - 181
+    chars:
+    - 5451
+    - 5474
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > INTR_TEST0
+  section_id: sec_48d4c5ee8220
+  label: informative
+  reason: Descriptive label of the field; it states no testable behavior beyond the derived access properties.
+  ambiguity: null
+  quote:
+    text: Interrupt test for timer
+    lines:
+    - 189
+    - 189
+    chars:
+    - 5681
+    - 5705
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CFG0
+  section_id: sec_c5f330c9241a
+  label: informative
+  reason: Describes the purpose of the register without stating testable behavior.
+  ambiguity: null
+  quote:
+    text: Configuration for Hart 0
+    lines:
+    - 196
+    - 196
+    chars:
+    - 5908
+    - 5932
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CFG0
+  section_id: sec_c5f330c9241a
+  label: ambiguous
+  reason: Implies the prescale field controls tick generation but gives no testable relationship between
+    the value and the tick rate.
+  ambiguity:
+    code: MISSING_DETAIL
+    note: It is not stated how the prescale value maps to the tick period (e.g. a tick every prescale
+      or prescale+1 clock cycles).
+    question: How many clock cycles elapse between ticks for a given prescale value (for example, is it
+      prescale+1)?
+  quote:
+    text: Prescaler to generate tick
+    lines:
+    - 200
+    - 200
+    chars:
+    - 6045
+    - 6071
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > CFG0
+  section_id: sec_c5f330c9241a
+  label: ambiguous
+  reason: Implies the step value is added to the timer on each tick, but the text does not say what is
+    incremented or how.
+  ambiguity:
+    code: UNCLEAR_REFERENT
+    note: It is not stated which counter or register is incremented by the step value on each tick.
+    question: Is the step value added to the mtime counter on every tick, and does a step of 0 stop the
+      counter?
+  quote:
+    text: Incremental value for each tick
+    lines:
+    - 201
+    - 201
+    chars:
+    - 6137
+    - 6168
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > TIMER_V_LOWER0
+  section_id: sec_80abb4bf0be9
+  label: informative
+  reason: Register description that names the register's content without stating testable behavior.
+  ambiguity: null
+  quote:
+    text: Timer value Lower
+    lines:
+    - 205
+    - 205
+    chars:
+    - 6232
+    - 6249
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > TIMER_V_LOWER0
+  section_id: sec_80abb4bf0be9
+  label: informative
+  reason: Field description that restates the field's bit range and purpose, already covered by the derived
+    properties.
+  ambiguity: null
+  quote:
+    text: Timer value [31:0]
+    lines:
+    - 209
+    - 209
+    chars:
+    - 6355
+    - 6373
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > TIMER_V_UPPER0
+  section_id: sec_98056d8acb3c
+  label: informative
+  reason: Register description that only names the register as the upper part of the timer value, with
+    no separately testable behavior.
+  ambiguity: null
+  quote:
+    text: Timer value Upper
+    lines:
+    - 213
+    - 213
+    chars:
+    - 6437
+    - 6454
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_LOWER0_0
+  section_id: sec_885b8d36775c
+  label: informative
+  reason: Register description label that names the register without stating testable behavior.
+  ambiguity: null
+  quote:
+    text: Timer value Lower
+    lines:
+    - 221
+    - 221
+    chars:
+    - 6645
+    - 6662
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_LOWER0_0
+  section_id: sec_885b8d36775c
+  label: informative
+  reason: Field description that only restates the field's bit range and role, already covered by the
+    derived properties.
+  ambiguity: null
+  quote:
+    text: Timer compare value [31:0]
+    lines:
+    - 226
+    - 226
+    chars:
+    - 6810
+    - 6836
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > COMPARE_UPPER0_0
+  section_id: sec_f4046bc3c5d3
+  label: informative
+  reason: Register-level description that only names the register as the upper timer value and adds no
+    testable behavior beyond the field description.
+  ambiguity: null
+  quote:
+    text: Timer value Upper
+    lines:
+    - 230
+    - 230
+    chars:
+    - 6902
+    - 6919
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > inter_signal_list
+  section_id: sec_53b85bf0b418
+  label: informative
+  reason: Describes the origin of the racl_policies signal without stating a testable behavior beyond
+    the direction already given by the properties.
+  ambiguity: null
+  quote:
+    text: Incoming RACL policy vector from a racl_ctrl instance.
+    lines:
+    - 65
+    - 65
+    chars:
+    - 2364
+    - 2418
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > inter_signal_list
+  section_id: sec_53b85bf0b418
+  label: ambiguous
+  reason: Reads like required behavior, but the parameter is not named and the selection mapping is not
+    specified, so it cannot be tested as written.
+  ambiguity:
+    code: UNCLEAR_REFERENT
+    note: The 'policy selection vector (parameter)' is not named, so it is unclear which parameter selects
+      the policy for each register.
+    question: What is the exact name of the policy selection vector parameter, and how does each entry
+      map to a register's policy in racl_policies?
+  quote:
+    text: The policy selection vector (parameter) selects the policy for each register.
+    lines:
+    - 66
+    - 66
+    chars:
+    - 2427
+    - 2504
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > inter_signal_list
+  section_id: sec_53b85bf0b418
+  label: informative
+  reason: Describes what the racl_error signal carries without stating testable content such as format
+    or when it is driven.
+  ambiguity: null
+  quote:
+    text: RACL error log information of this module.
+    lines:
+    - 76
+    - 76
+    chars:
+    - 2704
+    - 2746
+- path: hw/ip/rv_timer/data/rv_timer.hjson
+  heading_path: rv_timer > countermeasures
+  section_id: sec_125435d2d830
+  label: informative
+  reason: It only describes what the BUS.INTEGRITY countermeasure is called and gives no testable behavior,
+    value or timing.
+  ambiguity: null
+  quote:
+    text: End-to-end bus integrity scheme.
+    lines:
+    - 132
+    - 132
+    chars:
+    - 4090
+    - 4122
+- path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces
+  section_id: sec_212b3a5522e9
+  label: reference
+  reason: Points to the comportability guideline and introduces the interface list without stating a requirement
+    itself.
+  ambiguity: null
+  quote:
+    text: Referring to the [Comportable guideline for peripheral device functionality](https://opentitan.org/book/doc/contributing/hw/comportability),
+      the module **`rv_timer`** has the following hardware interfaces defined
+    lines:
+    - 4
+    - 4
+    chars:
+    - 111
+    - 323
+- path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > Security Alerts
+  section_id: sec_ff500861c2a2
+  label: informative
+  reason: Table column header, not a behavior.
+  ambiguity: null
+  quote:
+    text: Alert Name
+    lines:
+    - 27
+    - 27
+    chars:
+    - 2007
+    - 2017
+- path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > Security Alerts
+  section_id: sec_ff500861c2a2
+  label: informative
+  reason: Table column header, not a behavior.
+  ambiguity: null
+  quote:
+    text: Description
+    lines:
+    - 27
+    - 27
+    chars:
+    - 2022
+    - 2033
+- path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > Security Countermeasures
+  section_id: sec_85f9238b9137
+  label: informative
+  reason: Table column header, not a requirement.
+  ambiguity: null
+  quote:
+    text: Countermeasure ID
+    lines:
+    - 33
+    - 33
+    chars:
+    - 2415
+    - 2432
+- path: hw/ip/rv_timer/doc/interfaces.md
+  heading_path: Hardware Interfaces > Security Countermeasures
+  section_id: sec_85f9238b9137
+  label: informative
+  reason: Table column header, not a requirement.
+  ambiguity: null
+  quote:
+    text: Description
+    lines:
+    - 33
+    - 33
+    chars:
+    - 2440
+    - 2451
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Background describing the hazard of split reads.
+  ambiguity: null
+  quote:
+    text: However, when split into two reads, it is possible the timer value can increment between the
+      two requests.
+    lines:
+    - 14
+    - 15
+    chars:
+    - 508
+    - 614
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Assigns responsibility to software; not a testable hardware behavior.
+  ambiguity: null
+  quote:
+    text: It is the programmer's responsibility to ensure the correct value is read.
+    lines:
+    - 17
+    - 18
+    chars:
+    - 690
+    - 764
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Worked example of the split read hazard.
+  ambiguity: null
+  quote:
+    text: For instance, if the CPU reads `0xFFFF_FFFF` from lower 32-bit timer value (`mtime`) and `0x0000_0001`
+      from upper 32-bit timer value (`mtimeh`), there is a chance that rather than having the value `0x1_FFFF_FFFF`
+      the timer value has changed from `0x0_FFFF_FFFF` to `0x1_0000_0000` between the two reads.
+    lines:
+    - 18
+    - 22
+    chars:
+    - 765
+    - 1068
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Explanatory background on the hazard.
+  ambiguity: null
+  quote:
+    text: If there is the possibility of an interrupt between the two reads then the counter could have
+      advanced even more.
+    lines:
+    - 22
+    - 24
+    chars:
+    - 1069
+    - 1182
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Describes a software technique, not a hardware requirement.
+  ambiguity: null
+  quote:
+    text: This condition can be detected in a standard way using a third read.
+    lines:
+    - 26
+    - 26
+    chars:
+    - 1184
+    - 1252
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: reference
+  reason: Only points to an external specification figure.
+  ambiguity: null
+  quote:
+    text: Figure 10.1 in the RISC-V unprivileged specification explains how to avoid this.
+    lines:
+    - 26
+    - 27
+    chars:
+    - 1253
+    - 1333
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code.
+  ambiguity: null
+  quote:
+    text: 'again:'
+    lines:
+    - 30
+    - 30
+    chars:
+    - 1342
+    - 1348
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code.
+  ambiguity: null
+  quote:
+    text: rdcycleh  x3
+    lines:
+    - 31
+    - 31
+    chars:
+    - 1353
+    - 1365
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code.
+  ambiguity: null
+  quote:
+    text: rdcycle   x2
+    lines:
+    - 32
+    - 32
+    chars:
+    - 1370
+    - 1382
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code.
+  ambiguity: null
+  quote:
+    text: rdcycleh  x4
+    lines:
+    - 33
+    - 33
+    chars:
+    - 1387
+    - 1399
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code.
+  ambiguity: null
+  quote:
+    text: bne       x3, x4, again
+    lines:
+    - 34
+    - 34
+    chars:
+    - 1404
+    - 1427
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Software guidance introducing the example sequence.
+  ambiguity: null
+  quote:
+    text: Updating `mtimecmp` register also follows a similar approach to avoid a spurious interrupt during
+      the register update.
+    lines:
+    - 37
+    - 38
+    chars:
+    - 1433
+    - 1551
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: reference
+  reason: Only points to an external specification section.
+  ambiguity: null
+  quote:
+    text: Please refer to the `mtimecmp` section in the RISC-V privileged specification.
+    lines:
+    - 38
+    - 39
+    chars:
+    - 1552
+    - 1630
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code comment.
+  ambiguity: null
+  quote:
+    text: '# New comparand is in a1:a0.'
+    lines:
+    - 42
+    - 42
+    chars:
+    - 1641
+    - 1667
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code.
+  ambiguity: null
+  quote:
+    text: li t0, -1
+    lines:
+    - 43
+    - 43
+    chars:
+    - 1668
+    - 1677
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code.
+  ambiguity: null
+  quote:
+    text: li t1, TOP_EARLGREY_RV_TIMER_BASE_ADDR
+    lines:
+    - 44
+    - 44
+    chars:
+    - 1678
+    - 1716
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code.
+  ambiguity: null
+  quote:
+    text: 'sw t0, RV_TIMER_COMPARE_LOWER0_0_REG_OFFSET(t1)   # No smaller than old value.'
+    lines:
+    - 45
+    - 45
+    chars:
+    - 1717
+    - 1795
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code.
+  ambiguity: null
+  quote:
+    text: 'sw a1, RV_TIMER_COMPARE_UPPER0_0_REG_OFFSET(t1)   # No smaller than new value.'
+    lines:
+    - 46
+    - 46
+    chars:
+    - 1796
+    - 1874
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code.
+  ambiguity: null
+  quote:
+    text: 'sw a0, RV_TIMER_COMPARE_LOWER0_0_REG_OFFSET(t1)   # New value.'
+    lines:
+    - 47
+    - 47
+    chars:
+    - 1875
+    - 1937
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Describes typical usage, not required behavior.
+  ambiguity: null
+  quote:
+    text: In typical usage the `mtime` register would not be written,
+    lines:
+    - 50
+    - 50
+    chars:
+    - 1943
+    - 2002
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: ambiguous
+  reason: Uses 'should' for the recommended write sequence, and 'indeterminate result' is not precisely
+    defined.
+  ambiguity:
+    code: WEAK_MODAL
+    note: It is unclear whether the write sequence is mandatory or merely recommended.
+    question: Is the described mtime write sequence required for correct operation, and what exact timer
+      behavior is guaranteed when it is followed or not followed?
+  quote:
+    text: 'but if there is a need to set it to an arbitrary, dynamically-determined value, the following
+      sequence should be used to prevent the operation of the timer yielding an indeterminate result:'
+    lines:
+    - 50
+    - 53
+    chars:
+    - 2003
+    - 2192
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code comment.
+  ambiguity: null
+  quote:
+    text: '# Desired time is in a1:a0'
+    lines:
+    - 56
+    - 56
+    chars:
+    - 2203
+    - 2227
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code.
+  ambiguity: null
+  quote:
+    text: sw x0, RV_TIMER_TIMER_V_LOWER0_0_REG_OFFSET(t1)
+    lines:
+    - 58
+    - 58
+    chars:
+    - 2267
+    - 2314
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code.
+  ambiguity: null
+  quote:
+    text: 'sw a1, RV_TIMER_TIMER_V_UPPER0_0_REG_OFFSET(t1)  # Upper half of target value.'
+    lines:
+    - 59
+    - 59
+    chars:
+    - 2315
+    - 2393
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Example code.
+  ambiguity: null
+  quote:
+    text: 'sw a0, RV_TIMER_TIMER_V_LOWER0_0_REG_OFFSET(t1)  # Lower half of target value.'
+    lines:
+    - 60
+    - 60
+    chars:
+    - 2394
+    - 2472
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Register Access
+  section_id: sec_8ec553ced36d
+  label: informative
+  reason: Rationale for the software write sequence.
+  ambiguity: null
+  quote:
+    text: In the event that the target value of the lower half is close to 0xFFFF_FFFF, this sequence
+      prevents the timer from assuming an incorrect time between the two 32-bit writes required to set
+      the 64-bit timer value.
+    lines:
+    - 63
+    - 65
+    chars:
+    - 2478
+    - 2690
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  section_id: sec_166285e0a31f
+  label: informative
+  reason: Introductory overview of the topic.
+  ambiguity: null
+  quote:
+    text: There are some peculiarities when mtime and mtimecmp get close to the end of the 64-bit integer
+      range.
+    lines:
+    - 72
+    - 73
+    chars:
+    - 2876
+    - 2982
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  section_id: sec_166285e0a31f
+  label: informative
+  reason: General caution to the programmer, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: care is needed
+    lines:
+    - 74
+    - 74
+    chars:
+    - 3068
+    - 3082
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  section_id: sec_166285e0a31f
+  label: informative
+  reason: Introduces the list of examples.
+  ambiguity: null
+  quote:
+    text: 'A couple of cases are:'
+    lines:
+    - 74
+    - 74
+    chars:
+    - 3084
+    - 3106
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  section_id: sec_166285e0a31f
+  label: informative
+  reason: Heading of the first example case.
+  ambiguity: null
+  quote:
+    text: mtimecmp close to 0xFFFF_FFFF_FFFF_FFFF.
+    lines:
+    - 76
+    - 76
+    chars:
+    - 3112
+    - 3153
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  section_id: sec_166285e0a31f
+  label: informative
+  reason: Describes a software-visible consequence of the wrap and interrupt latency, not a hardware requirement.
+  ambiguity: null
+  quote:
+    text: However, if there is a delay in servicing the interrupt the mtime value could wrap to zero (and
+      continue to increment) so the value read by the interrupt service routine will be less than the
+      comparison value.
+    lines:
+    - 79
+    - 81
+    chars:
+    - 3367
+    - 3584
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  section_id: sec_166285e0a31f
+  label: informative
+  reason: Describes a software computation hazard.
+  ambiguity: null
+  quote:
+    text: When the timer is setup to trigger a timeout some number of timer ticks into the future, the
+      computation of the comparison value mtime + timeout may overflow.
+    lines:
+    - 83
+    - 85
+    chars:
+    - 3589
+    - 3757
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  section_id: sec_166285e0a31f
+  label: informative
+  reason: Suggested software workaround, not a hardware requirement.
+  ambiguity: null
+  quote:
+    text: A possible solution is to have an intermediate interrupt by setting the mtimecmp to 64-bit all-ones,
+      0xFFFF_FFFF_FFFF_FFFF.
+    lines:
+    - 87
+    - 88
+    chars:
+    - 3882
+    - 4012
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Timer behaviour close to 2^64
+  section_id: sec_166285e0a31f
+  label: informative
+  reason: Software guidance for the workaround, not a hardware requirement.
+  ambiguity: null
+  quote:
+    text: Then the service routine for that interrupt will need to poll mtime until it wraps (which could
+      take up to a timer clock tick) before scheduling the required interrupt using the originally computed
+      mtimecmp value.
+    lines:
+    - 88
+    - 91
+    chars:
+    - 4013
+    - 4239
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Interrupt Handling
+  section_id: sec_d5b1daa52a51
+  label: informative
+  reason: Describes core behavior outside the RV_TIMER module, not a testable requirement of this IP.
+  ambiguity: null
+  quote:
+    text: If the core enables the timer interrupt in MIE CSR, it jumps into the timer interrupt service
+      routine.
+    lines:
+    - 96
+    - 96
+    chars:
+    - 4381
+    - 4485
+- path: hw/ip/rv_timer/doc/programmers_guide.md
+  heading_path: Programmer's Guide > Device Interface Functions (DIFs)
+  section_id: sec_e835e2674c14
+  label: reference
+  reason: It only points to the DIF header file and states no behavior.
+  ambiguity: null
+  quote:
+    text: '[Device Interface Functions](../../../../sw/device/lib/dif/dif_rv_timer.h)'
+    lines:
+    - 103
+    - 103
+    chars:
+    - 5031
+    - 5057
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Block Diagram
+  section_id: sec_c330c3eacd00
+  label: reference
+  reason: Only points to a block diagram figure.
+  ambiguity: null
+  quote:
+    text: '![Timer Block Diagram](../doc/timer_block_diagram.svg)'
+    lines:
+    - 5
+    - 5
+    chars:
+    - 43
+    - 62
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Block Diagram
+  section_id: sec_c330c3eacd00
+  label: informative
+  reason: Overview of the module's composition, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: The timer module is composed of tick generators, counters, and comparators.
+    lines:
+    - 7
+    - 7
+    chars:
+    - 97
+    - 172
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Tick Generator
+  section_id: sec_e23dc1670284
+  label: informative
+  reason: Describes the benefit of the tick module rather than a testable behavior.
+  ambiguity: null
+  quote:
+    text: This allows creation of a call-clock timer tick such as 1us or 10us
+    lines:
+    - 18
+    - 18
+    chars:
+    - 651
+    - 718
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Tick Generator
+  section_id: sec_e23dc1670284
+  label: informative
+  reason: Rationale continuing the benefit statement.
+  ambiguity: null
+  quote:
+    text: regardless of the system clock period.
+    lines:
+    - 19
+    - 19
+    chars:
+    - 719
+    - 757
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Tick Generator
+  section_id: sec_e23dc1670284
+  label: informative
+  reason: Motivational statement.
+  ambiguity: null
+  quote:
+    text: It is useful if the system has more than one clock as a clock source.
+    lines:
+    - 19
+    - 20
+    chars:
+    - 758
+    - 827
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Tick Generator
+  section_id: sec_e23dc1670284
+  label: informative
+  reason: Describes the intended firmware usage model, not a hardware requirement.
+  ambiguity: null
+  quote:
+    text: The firmware just needs to adjust the CFG0.prescaler value and the actual timer interrupt handling
+      routine does not need a variable clock period to update mtimecmp.
+    lines:
+    - 20
+    - 22
+    chars:
+    - 828
+    - 1017
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Tick Generator
+  section_id: sec_e23dc1670284
+  label: informative
+  reason: States a limitation of this version as background.
+  ambiguity: null
+  quote:
+    text: In this version, the timer only supports a single fixed clock,
+    lines:
+    - 26
+    - 26
+    chars:
+    - 1174
+    - 1236
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Tick Generator
+  section_id: sec_e23dc1670284
+  label: ambiguous
+  reason: Weak-modal firmware guidance with no checkable criterion.
+  ambiguity:
+    code: WEAK_MODAL
+    note: '''should change appropriately'' does not say whether this is a mandatory requirement or what
+      value is appropriate.'
+    question: Is firmware required to set CFG0.prescaler to match the fixed clock frequency, and what
+      formula or value defines the correct setting?
+  quote:
+    text: so the firmware should change CFG0.prescaler appropriately.
+    lines:
+    - 26
+    - 27
+    chars:
+    - 1237
+    - 1319
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  label: informative
+  reason: General architecture overview; the fixed configuration of this version is stated separately.
+  ambiguity: null
+  quote:
+    text: The timer IP supports more than one HART and/or more than one timer per hart.
+    lines:
+    - 31
+    - 31
+    chars:
+    - 1366
+    - 1443
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  label: informative
+  reason: Describes a general capability, not a testable behavior of this version.
+  ambiguity: null
+  quote:
+    text: Each hart can have multiple sets of `mtimecmp`, comparator logic, and expire interrupt signals.
+    lines:
+    - 35
+    - 36
+    chars:
+    - 1606
+    - 1701
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  label: informative
+  reason: Introduces an example.
+  ambiguity: null
+  quote:
+    text: Below is an example configuration file for `N_TIMER` 2 and `N_HARTS` 2.
+    lines:
+    - 39
+    - 39
+    chars:
+    - 1776
+    - 1847
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  label: informative
+  reason: Describes the example configuration.
+  ambiguity: null
+  quote:
+    text: It has separate interrupts per timer and a set of interrupt enable and state registers per Hart.
+    lines:
+    - 40
+    - 41
+    chars:
+    - 1848
+    - 1944
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  label: informative
+  reason: Descriptive register label.
+  ambiguity: null
+  quote:
+    text: Configuration for Hart 0
+    lines:
+    - 65
+    - 65
+    chars:
+    - 2547
+    - 2571
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  label: informative
+  reason: Brief field description with no testable detail.
+  ambiguity: null
+  quote:
+    text: Prescaler to generate tick
+    lines:
+    - 69
+    - 69
+    chars:
+    - 2684
+    - 2710
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  label: informative
+  reason: Brief field description.
+  ambiguity: null
+  quote:
+    text: Incremental value for each tick
+    lines:
+    - 70
+    - 70
+    chars:
+    - 2776
+    - 2807
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  label: informative
+  reason: Descriptive register label.
+  ambiguity: null
+  quote:
+    text: Interrupt Enable
+    lines:
+    - 76
+    - 76
+    chars:
+    - 2902
+    - 2918
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  label: informative
+  reason: Descriptive field label.
+  ambiguity: null
+  quote:
+    text: Interrupt Enable for timer
+    lines:
+    - 82
+    - 82
+    chars:
+    - 3072
+    - 3098
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  label: informative
+  reason: Descriptive register label.
+  ambiguity: null
+  quote:
+    text: Interrupt Status
+    lines:
+    - 88
+    - 88
+    chars:
+    - 3189
+    - 3205
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  label: informative
+  reason: Descriptive field label.
+  ambiguity: null
+  quote:
+    text: Interrupt status for timer
+    lines:
+    - 94
+    - 94
+    chars:
+    - 3359
+    - 3385
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  label: informative
+  reason: Descriptive register label.
+  ambiguity: null
+  quote:
+    text: Configuration for Hart 1
+    lines:
+    - 101
+    - 101
+    chars:
+    - 3484
+    - 3508
+- path: hw/ip/rv_timer/doc/theory_of_operation.md
+  heading_path: Theory of Operation > Design Details > Configurable number of timers and harts
+  section_id: sec_b701d049a78b
+  label: informative
+  reason: Descriptive register label.
+  ambiguity: null
+  quote:
+    text: Timer value Upper
+    lines:
+    - 111
+    - 111
+    chars:
+    - 3819
+    - 3836
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Introductory statement of the checklist's purpose.
+  ambiguity: null
+  quote:
+    text: This checklist is for [Development Stage](../../../../doc/project_governance/development_stages.md)
+      transitions for the [RV Timer DIF](../../../../hw/ip/rv_timer/README.md).
+    lines:
+    - 3
+    - 3
+    chars:
+    - 26
+    - 199
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: reference
+  reason: Only points to the project checklist document.
+  ambiguity: null
+  quote:
+    text: All checklist items refer to the content in the [Checklist](../../../../doc/project_governance/checklist/README.md).
+    lines:
+    - 4
+    - 4
+    chars:
+    - 200
+    - 316
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Sub-heading.
+  ambiguity: null
+  quote:
+    text: DIF Checklist
+    lines:
+    - 6
+    - 6
+    chars:
+    - 322
+    - 335
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Sub-heading naming a development stage.
+  ambiguity: null
+  quote:
+    text: S1
+    lines:
+    - 8
+    - 8
+    chars:
+    - 346
+    - 348
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Table header row.
+  ambiguity: null
+  quote:
+    text: Type           | Item                   | Resolution  | Note/Collaterals
+    lines:
+    - 10
+    - 10
+    chars:
+    - 355
+    - 427
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Checklist status entry, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Implementation | [DIF_EXISTS][]         | Done        |
+    lines:
+    - 12
+    - 12
+    chars:
+    - 502
+    - 548
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Checklist status entry, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Implementation | [DIF_USED_IN_TREE][]   | Done        |
+    lines:
+    - 13
+    - 13
+    chars:
+    - 558
+    - 604
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Checklist status entry, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Tests          | [DIF_TEST_ON_DEVICE][] | Done        |
+    lines:
+    - 14
+    - 14
+    chars:
+    - 614
+    - 660
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: reference
+  reason: Link definition pointing to the checklist document.
+  ambiguity: null
+  quote:
+    text: '[DIF_EXISTS]:         ../../../../doc/project_governance/checklist/README.md#dif_exists'
+    lines:
+    - 16
+    - 16
+    chars:
+    - 671
+    - 758
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: reference
+  reason: Link definition pointing to the checklist document.
+  ambiguity: null
+  quote:
+    text: '[DIF_USED_IN_TREE]:   ../../../../doc/project_governance/checklist/README.md#dif_used_in_tree'
+    lines:
+    - 17
+    - 17
+    chars:
+    - 759
+    - 852
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: reference
+  reason: Link definition pointing to the checklist document.
+  ambiguity: null
+  quote:
+    text: '[DIF_TEST_ON_DEVICE]: ../../../../doc/project_governance/checklist/README.md#dif_test_on_device'
+    lines:
+    - 18
+    - 18
+    chars:
+    - 853
+    - 948
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Sub-heading naming a development stage.
+  ambiguity: null
+  quote:
+    text: S2
+    lines:
+    - 20
+    - 20
+    chars:
+    - 954
+    - 956
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Table header row.
+  ambiguity: null
+  quote:
+    text: Type           | Item                        | Resolution  | Note/Collaterals
+    lines:
+    - 10
+    - 10
+    chars:
+    - 355
+    - 427
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Checklist status entry with a pointer to the HW dashboard.
+  ambiguity: null
+  quote:
+    text: Coordination   | [DIF_HW_FEATURE_COMPLETE][] | Done        | [HW Dashboard](../../../../hw/README.md)
+    lines:
+    - 24
+    - 24
+    chars:
+    - 1120
+    - 1194
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Checklist status entry, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Implementation | [DIF_FEATURES][]            | Done        |
+    lines:
+    - 25
+    - 25
+    chars:
+    - 1222
+    - 1273
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: reference
+  reason: Link definition pointing to the checklist document.
+  ambiguity: null
+  quote:
+    text: '[DIF_HW_FEATURE_COMPLETE]: ../../../../doc/project_governance/checklist/README.md#dif_hw_feature_complete'
+    lines:
+    - 27
+    - 27
+    chars:
+    - 1284
+    - 1389
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: reference
+  reason: Link definition pointing to the checklist document.
+  ambiguity: null
+  quote:
+    text: '[DIF_FEATURES]:            ../../../../doc/project_governance/checklist/README.md#dif_features'
+    lines:
+    - 28
+    - 28
+    chars:
+    - 1390
+    - 1484
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Sub-heading naming a development stage.
+  ambiguity: null
+  quote:
+    text: S3
+    lines:
+    - 30
+    - 30
+    chars:
+    - 1490
+    - 1492
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Table header row.
+  ambiguity: null
+  quote:
+    text: Type           | Item                             | Resolution  | Note/Collaterals
+    lines:
+    - 10
+    - 10
+    chars:
+    - 355
+    - 427
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Checklist status entry, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Coordination   | [DIF_HW_DESIGN_COMPLETE][]       | Not Started |
+    lines:
+    - 34
+    - 34
+    chars:
+    - 1666
+    - 1729
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Checklist status entry, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Coordination   | [DIF_HW_VERIFICATION_COMPLETE][] | Not Started |
+    lines:
+    - 35
+    - 35
+    chars:
+    - 1732
+    - 1795
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Checklist status entry, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Documentation  | [DIF_DOC_HW][]                   | Not Started |
+    lines:
+    - 36
+    - 36
+    chars:
+    - 1798
+    - 1861
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Checklist status entry, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Code Quality   | [DIF_CODE_STYLE][]               | Not Started |
+    lines:
+    - 37
+    - 37
+    chars:
+    - 1864
+    - 1927
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Checklist status entry, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Tests          | [DIF_TEST_UNIT][]                | Done        |
+    lines:
+    - 38
+    - 38
+    chars:
+    - 1930
+    - 1986
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Checklist status entry, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Review         | [DIF_TODO_COMPLETE][]            | Not Started |
+    lines:
+    - 39
+    - 39
+    chars:
+    - 1996
+    - 2059
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Checklist status entry, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Review         | Reviewer(s)                      | Not Started |
+    lines:
+    - 40
+    - 40
+    chars:
+    - 2062
+    - 2125
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: informative
+  reason: Checklist status entry, not a testable behavior.
+  ambiguity: null
+  quote:
+    text: Review         | Signoff date                     | Not Started |
+    lines:
+    - 41
+    - 41
+    chars:
+    - 2128
+    - 2191
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: reference
+  reason: Link definition pointing to the checklist document.
+  ambiguity: null
+  quote:
+    text: '[DIF_HW_DESIGN_COMPLETE]:       ../../../../doc/project_governance/checklist/README.md#dif_hw_design_complete'
+    lines:
+    - 43
+    - 43
+    chars:
+    - 2195
+    - 2304
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: reference
+  reason: Link definition pointing to the checklist document.
+  ambiguity: null
+  quote:
+    text: '[DIF_HW_VERIFICATION_COMPLETE]: ../../../../doc/project_governance/checklist/README.md#dif_hw_verification_complete'
+    lines:
+    - 44
+    - 44
+    chars:
+    - 2305
+    - 2420
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: reference
+  reason: Link definition pointing to the checklist document.
+  ambiguity: null
+  quote:
+    text: '[DIF_DOC_HW]:                   ../../../../doc/project_governance/checklist/README.md#dif_doc_hw'
+    lines:
+    - 45
+    - 45
+    chars:
+    - 2421
+    - 2518
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: reference
+  reason: Link definition pointing to the checklist document.
+  ambiguity: null
+  quote:
+    text: '[DIF_CODE_STYLE]:               ../../../../doc/project_governance/checklist/README.md#dif_code_style'
+    lines:
+    - 46
+    - 46
+    chars:
+    - 2519
+    - 2620
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: reference
+  reason: Link definition pointing to the checklist document.
+  ambiguity: null
+  quote:
+    text: '[DIF_TEST_UNIT]:                ../../../../doc/project_governance/checklist/README.md#dif_test_unit'
+    lines:
+    - 47
+    - 47
+    chars:
+    - 2621
+    - 2721
+- path: sw/device/lib/dif/dif_rv_timer.md
+  heading_path: RV Timer DIF Checklist
+  section_id: sec_61fd0e8ea06b
+  label: reference
+  reason: Link definition pointing to the checklist document.
+  ambiguity: null
+  quote:
+    text: '[DIF_TODO_COMPLETE]:            ../../../../doc/project_governance/checklist/README.md#dif_todo_complete'
+    lines:
+    - 48
+    - 48
+    chars:
+    - 2722
+    - 2826
+unclassified: []
+dropped: []

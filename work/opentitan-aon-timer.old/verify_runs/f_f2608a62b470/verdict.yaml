@@ -1,0 +1,54 @@
+finding_hash: 530a23f8b46f7026
+started_at: '2026-11-10T22:06:38Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No spec text states whether the watchdog bite condition is >= or ==, or the cycle at which
+    the bite asserts. The only supporting text is the programmer's guide, which covers the wakeup timer
+    only. The RTL uses >= gated by an increment pulse.
+  evidence:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    line_start: 303
+    line_end: 303
+    quote: The count at which a watchdog bite reset should be generated.
+    role: supports
+    note: The register description is the only text for the bite threshold and gives no comparison rule.
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    line_start: 93
+    line_end: 93
+    quote: remains above the threshold after clearing the interrupt or wakeup event and the timer remains
+      enabled, the interrupt and wakeup event will trigger again at the next clock tick.
+    role: context
+    note: This implies >= behaviour, but only for the wakeup timer. It says nothing about the watchdog
+      bite.
+  - path: hw/ip/aon_timer/rtl/aon_timer_core.sv
+    line_start: 85
+    line_end: 85
+    quote: assign wdog_reset_req_o = wdog_incr & (reg2hw_i.wdog_count.q >= reg2hw_i.wdog_bite_thold.q);
+    role: context
+    note: The RTL uses >=, gated by the watchdog increment pulse (wdog_incr). This is design behaviour,
+      not spec.
+  searches:
+  - what: bite, threshold, >= wording in the aon_timer docs
+    where: hw/ip/aon_timer/doc
+    found: Only generic 'reaches the programmed threshold' text. The wakeup 'remains above' sentence is
+      the only >= hint, and it does not cover the watchdog.
+  - what: comparison operators in the RTL
+    where: hw/ip/aon_timer/rtl
+    found: The RTL uses >= for the bite request, gated by wdog_incr.
+  near_misses:
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    line_start: 93
+    line_end: 93
+    why_not: It covers only the wakeup timer, not the watchdog bite, and does not give the cycle timing.
+  items: []
+  new_sources: []
+  resolution: The RTL asserts the bite when wdog_count >= bite_thold, qualified by the watchdog increment
+    pulse. Add that statement to the WDOG_BITE_THOLD description, with the cycle timing relative to the
+    count update.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.04055
+error: null

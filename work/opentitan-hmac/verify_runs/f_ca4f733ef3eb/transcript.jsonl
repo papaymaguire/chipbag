@@ -1,0 +1,15 @@
+{"t": "2026-11-10T21:11:02Z", "event": "  \u2192 Grep: SwPushMsgWhenShaDisabled|SwPushMsgWhenDisallowed|SwHashStartWhenShaDisabled"}
+{"t": "2026-11-10T21:11:02Z", "event": "  \u2192 Grep: fifo_empty"}
+{"t": "2026-11-10T21:11:04Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T21:11:05Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv"}
+{"t": "2026-11-10T21:11:08Z", "event": "  \u2192 Grep: hmac_start\\s*=|hmac_continue\\s*=|wr_msg_after|after.*process|key.*(read|rd).*(0|zero)|ral\\.key"}
+{"t": "2026-11-10T21:11:10Z", "event": "  \u2192 Grep: hmac_start|hash_process"}
+{"t": "2026-11-10T21:11:11Z", "event": "  \u2192 Grep: msg_fifo|wr_msg|SwPushMsg|disallow"}
+{"t": "2026-11-10T21:11:13Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib; sed -n 1,200p hmac_error_vseq.sv | grep -n -i -E \"process|wr_msg|push|err_code|key|rd\" | head -50"}
+{"t": "2026-11-10T21:11:15Z", "event": "Checking the error sequence for stimulus that pushes messages after process."}
+{"t": "2026-11-10T21:11:16Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib; ls; grep -n -i -E \"process|wr_msg|disallow|err\" hmac_smoke_vseq.sv hmac_stress_all_vseq.sv 2>/dev/null | head -40; grep "}
+{"t": "2026-11-10T21:11:18Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib; cat hmac_error_vseq.sv | head -120; sed -n 175,200p hmac_smoke_vseq.sv"}
+{"t": "2026-11-10T21:11:26Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:11:34Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T21:11:38Z", "event": "I submitted an **inconclusive** verdict. My search was short, and only one of the five items came out clearly untested.\n\n- **`SwPushMsgWhenShaDisabled` (0x1):** verified as untested. The programmer's guide says the code isn't used, and its coverage bin is commented out in `hmac_env_cov.sv`.\n- **`SwPushMsgWhenDisallowed` after CMD.process:** inconclusive. The scoreboard predicts this error when SHA is disabled or neither start nor continue is set (`hmac_scoreboard.sv:147-148`). I found no sequence that pushes message words after CMD.process, but I didn't search exhaustively.\n- **Finalize once via CMD.hash_process, key registers unreadable, and `fifo_empty` lowered for a cycle:** inconclusive. I found no dedicated check for any of them in the files I read. For `fifo_empty`, `hmac_smoke_vseq.sv` skips interrupt-state checking around the empty transition because the scoreboard can't line up with the design cycle for cycle.\n\nI didn't change anything in the repository."}
+{"t": "2026-11-10T21:11:38Z", "event": "[13 turns, $0.0977]"}

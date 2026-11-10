@@ -1,0 +1,100 @@
+finding_hash: d9a4f743eed5ba6a
+started_at: '2026-11-10T20:37:36Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks the five items. The ownership-flow test and the target_user smoke tests write
+    terminal statuses and check ownership, SRAM contents and notifications. None of them checks a BUSY
+    reset, hw/sw write precedence, or what CMD_BUSY or DATA_READY mean. The only BUSY references outside
+    the USB suites are enum definitions in caliptra_ss_lib.h.
+  evidence:
+  - path: src/integration/testbench/sv_tests/mci/mci_mbox_ownership_flow.svh
+    line_start: 131
+    line_end: 133
+    quote: mcu_mbox_write(mci_comm_flow_target_status_addr, mci_comm_flow_target, status);
+    role: context
+    note: The test writes a terminal TARGET_STATUS (DATA_READY, CMD_COMPLETE or CMD_FAILURE). It then
+      checks only the TARGET_DONE notification and SRAM ownership, never a read-back of the status or
+      a BUSY value.
+  - path: src/mci/rtl/mcu_mbox_csr.rdl
+    line_start: 122
+    line_end: 122
+    quote: sw=rw; hw=r; swwe=valid_target_req; encode = mbox_status_e; hwclr; precedence=hw; swmod=true;}
+      status[4]=0;
+    role: supports
+    note: The hwclr and precedence=hw fields are in the spec. No test creates a simultaneous hardware
+      clear and software write.
+  - path: src/integration/test_suites/libs/caliptra_ss_lib/caliptra_ss_lib.h
+    line_start: 245
+    line_end: 245
+    quote: MCU_MBOX_TARGET_STATUS_CMD_BUSY = 0x0,
+    role: context
+    note: This enum definition is the only BUSY reference outside the USB suites. No test checks that
+      the status reads as BUSY.
+  searches:
+  - what: 'Item cr_c466f1401b85: a test that reads TARGET_STATUS as BUSY after a target handoff (grep
+      for TARGET_STATUS, target_status, STATUS_BUSY)'
+    where: src/integration (testbench, test_suites)
+    found: Tests only write a terminal TARGET_STATUS and wait for it. None reads BUSY after a handoff.
+  - what: 'Item cr_d48ef4f510ee: a check of target_status DATA_READY semantics (grep for DATA_READY)'
+    where: src/integration
+    found: DATA_READY is written as a terminal status in the ownership-flow loop. The smoke tests compare
+      CMD_STATUS to DATA_READY, which is cmd_status rather than target_status. No check of what the value
+      means for target_status.
+  - what: 'Item cr_ea1bed14203c: a test of hw/sw precedence on target_status (grep for hwclr, handoff,
+      simultaneous, precedence, case-insensitive)'
+    where: mbox-named files under src/integration
+    found: No matches.
+  - what: 'Item cr_f9cc76302a6a: a test that checks CMD_BUSY on target_status (grep for CMD_BUSY, TARGET_STATUS_BUSY)'
+    where: src/integration, excluding the USB suites
+    found: Only the enum definitions in caliptra_ss_lib.h, lines 239 and 245.
+  - what: 'Item cr_01230983dc89: a test that writes or checks CMD_BUSY on mbox_cmd_status (grep for cmd_status,
+      CMD_BUSY)'
+    where: src/integration/test_suites and testbench/sv_tests/mci
+    found: The flows write only non-BUSY values to CMD_STATUS. Nothing checks that a BUSY state keeps
+      SRAM ownership or leaves the command incomplete.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/cptra_smoke_test_mcu_mbox_pass_data.c
+    line_start: 423
+    line_end: 423
+    why_not: This waits for CMD_STATUS DATA_READY on the command-status register. It does not test the
+      target_status DATA_READY semantics or CMD_BUSY.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_target_user/smoke_test_mcu_mbox_target_user.c
+    line_start: 212
+    line_end: 212
+    why_not: This waits for TARGET_STATUS COMPLETE only. It does not check BUSY after the handoff.
+  items:
+  - id: cr_c466f1401b85
+    outcome: verified
+    reason: No test reads TARGET_STATUS as BUSY after a handoff.
+    evidence:
+    - 0
+    - 2
+  - id: cr_d48ef4f510ee
+    outcome: verified
+    reason: DATA_READY is only written as a terminal status for ownership checks. The data-ready meaning
+      is not checked for target_status.
+    evidence:
+    - 0
+  - id: cr_ea1bed14203c
+    outcome: verified
+    reason: No stimulus makes a hardware clear and a software write land together.
+    evidence:
+    - 1
+  - id: cr_f9cc76302a6a
+    outcome: verified
+    reason: No test observes or checks the CMD_BUSY value for target_status.
+    evidence:
+    - 2
+  - id: cr_01230983dc89
+    outcome: verified
+    reason: No test checks CMD_BUSY on cmd_status. The flows only write non-BUSY values.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 12
+cost_usd: 0.14312080000000002
+error: null

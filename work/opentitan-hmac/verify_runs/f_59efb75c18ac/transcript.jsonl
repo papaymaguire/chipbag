@@ -1,0 +1,5 @@
+{"t": "2026-11-10T20:52:44Z", "event": "  \u2192 Grep: digest_size|SHA2_NONE|SwInvalidConfig"}
+{"t": "2026-11-10T20:52:46Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/data/hmac.hjson"}
+{"t": "2026-11-10T20:52:52Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:52:54Z", "event": "I withdrew the finding. The digest_size description in `hw/ip/hmac/data/hmac.hjson` (lines 269\u2013270 and 294\u2013295) answers the question. Only the one-hot codes for SHA2_256 (1), SHA2_384 (2) and SHA2_512 (4) are valid. Every other value, including all-zero and reserved or non-one-hot codes, is mapped to SHA2_None. Starting with SHA2_None is blocked and an error is signalled to software.\n\nI did not check how that error maps to SwInvalidConfig in the RTL, or whether SHA-2-only mode and HMAC mode differ. The verdict was accepted."}
+{"t": "2026-11-10T20:52:54Z", "event": "[4 turns, $0.0313]"}

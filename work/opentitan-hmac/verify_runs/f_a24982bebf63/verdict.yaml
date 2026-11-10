@@ -1,0 +1,91 @@
+finding_hash: c9638d4f1c6e5449
+started_at: '2026-11-10T21:05:14Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Four of the five items stay untested. The scoreboard models message FIFO fullness and the FIFO-empty
+    interrupt, which does check the "FIFO stays full until the block is processed" behaviour (item 4).
+    No test checks the 80-cycle block, 96-cycle SHA-512 block, 240-cycle HMAC overhead, or the next-block
+    fetch timing as such.
+  evidence:
+  - path: hw/ip/hmac/doc/theory_of_operation.md
+    line_start: 178
+    line_end: 180
+    quote: But, once the FIFO gets full, the software cannot push more data until the current block is
+      processed.
+    role: context
+    note: Spec statement for items 1, 2 and 4.
+  - path: hw/ip/hmac/dv/env/hmac_env_pkg.sv
+    line_start: 37
+    line_end: 39
+    quote: // 48 cycles of hashing, 16 cycles to rd next 16 words, 1 cycle to update digest
+    role: supports
+    note: The DV model uses 65 and 81 cycles per block, not the 80 and 96 the spec states. No exact-latency
+      check exists.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 821
+    line_end: 825
+    quote: if (hmac_rd_cnt % fifo_rd_depth == 0) begin
+    role: refutes
+    note: The scoreboard waits block_process_cycles to model the FIFO drain, so the FIFO stays full until
+      the block is processed. This is the basis for item 4.
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 672
+    line_end: 672
+    quote: hmac_fifo_full  = hmac_fifo_depth == HMAC_MSG_FIFO_DEPTH_WR;
+    role: refutes
+    note: The modelled FIFO-full status is compared with the DUT's status register, which covers item
+      4.
+  searches:
+  - what: cycle-count checks (80, 96, 240, block cycles) in hmac dv and non-doc files
+    where: hw/ip/hmac
+    found: Only the env_pkg parameters (65, 81, 80 and 112 for key padding) and the scoreboard wait models.
+      No assertion or check of the 80, 96 or 240 cycle figures.
+  - what: FIFO full / empty modelling
+    where: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    found: The model predicts status.fifo_full and the fifo_empty interrupt with a block-drain delay.
+      This indirectly checks item 4.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 770
+    line_end: 780
+    why_not: Models 80-cycle key padding for HMAC, but this is neither the 240-cycle total overhead nor
+      a check of the DUT's latency.
+  items:
+  - id: cr_2a29e638293c
+    outcome: verified
+    reason: No test checks the fetch-after-block-completion timing. It is only implied by the 65-cycle
+      model.
+    evidence:
+    - 1
+  - id: cr_aeb18e72aa7a
+    outcome: verified
+    reason: The DV model uses 65 cycles per block and never checks 80. No direct latency check exists.
+    evidence:
+    - 1
+  - id: cr_ba453872049c
+    outcome: verified
+    reason: The DV model uses 81 cycles for SHA-2 384/512, not 96. No check of 96 exists.
+    evidence:
+    - 1
+  - id: cr_c8b49e8b7b1f
+    outcome: withdrawn
+    reason: The scoreboard predicts FIFO fullness, with drain after block processing, and compares it
+      with the DUT's status and the FIFO-empty interrupt. A wrong fill/drain behaviour would fail the
+      test.
+    evidence:
+    - 2
+    - 3
+  - id: cr_ed89d1bd86c3
+    outcome: verified
+    reason: Only the key-padding wait is modelled. The 240-cycle total HMAC overhead is never measured
+      or checked.
+    evidence:
+    - 1
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.09571539999999999
+error: null

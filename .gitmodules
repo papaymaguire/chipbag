@@ -1,0 +1,8 @@
+[submodule "targets/opentitan"]
+	path = targets/opentitan
+	url = https://github.com/lowRISC/opentitan.git
+	shallow = true
+[submodule "targets/caliptra-ss"]
+	path = targets/caliptra-ss
+	url = https://github.com/chipsalliance/caliptra-ss.git
+	shallow = true

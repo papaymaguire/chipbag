@@ -1,0 +1,72 @@
+finding_hash: e9dd4a9feb1f0155
+started_at: '2026-11-10T19:45:25Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test or checker exercises the interrupt count/incr registers or their saturation. The only
+    references to the real registers are the generated coverage interface, which samples values but checks
+    nothing. Other "intr_count" hits are unrelated local C variables.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1544
+    line_end: 1546
+    quote: The same input signal that causes an interrupt event to be set (sticky) also causes this signal
+      to pulse for 1 clock cycle
+    role: supports
+    note: Spec requirement with no checking test found.
+  searches:
+  - what: 'incr pulse for 1 clock cycle (cr_73c6e4152180, cr_81ffd1fa635f): count_incr / intr_count_incr'
+    where: whole repo excluding rdl
+    found: Only generated RTL, uvm model, coverage if, Makefile/doc mentions; no test checks pulse.
+  - what: 'rising edge triggers counter (cr_77c7ae0b431e): intr_count / INTR_COUNT in tests'
+    where: src/integration/test_suites, tools
+    found: Only unrelated local variable intr_count in C tests; coverpoints in mci_top_cov_if.sv sample
+      without checks.
+  - what: 'increment by 1 per event (cr_7a8284f75705): mbox0_ecc counter registers'
+    where: whole repo
+    found: Only rdl, reg RTL, uvm, coverage.
+  - what: 'saturation (cr_84e8df210e83): incrsaturate / notif_mbox1_target_done_intr_count'
+    where: whole repo
+    found: Only rdl, generated RTL, uvm, coverage; no saturation test.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 3960
+    line_end: 3970
+    why_not: Coverpoints only sample counter values; no checks.
+  - path: src/integration/test_suites/smoke_test_wdt/smoke_test_wdt.c
+    line_start: 28
+    line_end: 28
+    why_not: Unrelated local variable named intr_count.
+  items:
+  - id: cr_73c6e4152180
+    outcome: verified
+    reason: No test checks incr pulse behavior.
+    evidence:
+    - 0
+  - id: cr_77c7ae0b431e
+    outcome: verified
+    reason: No test checks rising-edge counter trigger.
+    evidence:
+    - 0
+  - id: cr_7a8284f75705
+    outcome: verified
+    reason: No test checks counter increments by 1 per event.
+    evidence:
+    - 0
+  - id: cr_81ffd1fa635f
+    outcome: verified
+    reason: No test checks pulse timing.
+    evidence:
+    - 0
+  - id: cr_84e8df210e83
+    outcome: verified
+    reason: No saturation test found.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 13
+cost_usd: 0.090828
+error: null

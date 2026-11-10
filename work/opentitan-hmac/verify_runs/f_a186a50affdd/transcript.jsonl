@@ -1,0 +1,9 @@
+{"t": "2026-11-10T19:42:49Z", "event": "  \u2192 Grep: endian_swap|key_swap|digest_size|key_length|hmac_en"}
+{"t": "2026-11-10T19:42:52Z", "event": "  \u2192 Grep: key_swap|endian_swap|cfg_wr|cfg\\.digest_size|cfg\\.hmac_en"}
+{"t": "2026-11-10T19:42:56Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:43:00Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-10T19:43:00Z", "event": "  \u2192 Grep: ral.cfg.digest_size"}
+{"t": "2026-11-10T19:43:01Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T19:43:09Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T19:43:12Z", "event": "I submitted the verdict: **withdrawn** for all five items, and it was accepted. There's nothing left to do.\n\nAll five items are register-implementation attributes (`hwext`, `hwqe`) on CFG. The HMAC scoreboard checks the behaviour that depends on them. It applies `endian_swap` when it builds the expected message, and it uses `digest_size`, `key_length` and `hmac_en` in its configuration check. The randomized sequences write all of these through `hmac_init`.\n\nThe `key_swap` item has the weakest support. I only saw the sequence setting `key_swap` and the coverage sampling it, not a scoreboard check on it. I also never read the smoke sequence body or the regression list."}
+{"t": "2026-11-10T19:43:12Z", "event": "[8 turns, $0.0657]"}

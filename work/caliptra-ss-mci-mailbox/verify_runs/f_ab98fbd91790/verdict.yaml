@@ -1,0 +1,74 @@
+finding_hash: af3c462fea4fad1f
+started_at: '2026-11-10T19:46:26Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks the incrementor pulse behavior or counter saturation. Only a coverage interface
+    and generated register files reference these registers.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 1548
+    line_end: 1549
+    quote: This is implemented as a down-counter (1-bit) that will
+    role: supports
+    note: Spec statement for the incrementor; nothing in the repo checks it.
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4810
+    line_end: 4810
+    quote: 'INTR_BLOCK_RF_ERROR_MBOX0_ECC_UNC_INTR_COUNT_INCR_R_cp : coverpoint'
+    role: context
+    note: Coverage only, no check.
+  searches:
+  - what: saturation/incrsaturate of intr counter (item cr_e5160437bc33)
+    where: src/integration
+    found: No relevant matches (only an unrelated LC transition counter saturation message)
+  - what: swwel / software write on incr pulse (item cr_e56ce5f8f0a1)
+    where: src/integration, intr_count_incr
+    found: No tests reference the incr registers
+  - what: decrvalue / decrement of incr pulse (item cr_e5847e39e3ea)
+    where: src/integration
+    found: Nothing
+  - what: counter nature of notif_mbox0_soc_req_lock incr (item cr_e7151b4d15af)
+    where: repo excluding mci_reg*
+    found: Only the coverage interface and covergroup generator script
+  - what: 1-bit down-counter pulse behavior (item cr_e729c05476cf)
+    where: repo
+    found: No check; only coverpoints
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4800
+    line_end: 4840
+    why_not: Coverpoints only sample the field; nothing fails if the behavior is wrong.
+  items:
+  - id: cr_e5160437bc33
+    outcome: verified
+    reason: No test checks that the counter saturates.
+    evidence:
+    - 1
+  - id: cr_e56ce5f8f0a1
+    outcome: verified
+    reason: No test checks the swwel behavior.
+    evidence:
+    - 1
+  - id: cr_e5847e39e3ea
+    outcome: verified
+    reason: No test checks decrvalue.
+    evidence:
+    - 0
+  - id: cr_e7151b4d15af
+    outcome: verified
+    reason: No test checks the counter behavior.
+    evidence:
+    - 1
+  - id: cr_e729c05476cf
+    outcome: verified
+    reason: No test checks the pulse behavior.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.05952400000000001
+error: null

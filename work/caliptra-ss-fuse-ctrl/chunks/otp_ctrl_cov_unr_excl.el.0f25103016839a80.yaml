@@ -1,0 +1,797 @@
+path: src/fuse_ctrl/dv/cov/otp_ctrl_cov_unr_excl.el
+scope:
+  kind: whole_file
+model: claude-sonnet-5-5
+cost_usd: 0.21859269999999997
+chunks:
+- title_path: otp_ctrl_cov_unr_excl > gen_alert_tx[4].u_prim_alert_sender
+  kind: entry
+  line_start: 13
+  line_end: 22
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[0].gen_unbuffered.u_part_unbuf
+    ecc_dec[0]
+  kind: entry
+  line_start: 23
+  line_end: 48
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[1].gen_unbuffered.u_part_unbuf
+    ecc_dec[0]
+  kind: entry
+  line_start: 49
+  line_end: 74
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[2].gen_unbuffered.u_part_unbuf
+    ecc_dec[0]
+  kind: entry
+  line_start: 75
+  line_end: 100
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[3].gen_unbuffered.u_part_unbuf
+    ecc_dec[0]
+  kind: entry
+  line_start: 101
+  line_end: 126
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[4].gen_unbuffered.u_part_unbuf
+    ecc_dec[0]
+  kind: entry
+  line_start: 127
+  line_end: 152
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[5].u_part_buf ecc_dec[4]
+  kind: entry
+  line_start: 153
+  line_end: 194
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[5].u_part_buf ecc_dec[0]
+  kind: entry
+  line_start: 195
+  line_end: 236
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[5].u_part_buf ecc_dec[1]
+  kind: entry
+  line_start: 237
+  line_end: 278
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[5].u_part_buf ecc_dec[2]
+  kind: entry
+  line_start: 279
+  line_end: 320
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[5].u_part_buf ecc_dec[3]
+  kind: entry
+  line_start: 321
+  line_end: 362
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[5].u_part_buf ecc_dec[5]
+  kind: entry
+  line_start: 363
+  line_end: 404
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[5].u_part_buf ecc_dec[6]
+  kind: entry
+  line_start: 405
+  line_end: 446
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[5].u_part_buf ecc_dec[7]
+  kind: entry
+  line_start: 447
+  line_end: 488
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[5].u_part_buf ecc_dec[8]
+  kind: entry
+  line_start: 489
+  line_end: 530
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[6].u_part_buf ecc_dec[0]
+  kind: entry
+  line_start: 531
+  line_end: 572
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[6].u_part_buf ecc_dec[1]
+  kind: entry
+  line_start: 573
+  line_end: 614
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[7].u_part_buf ecc_dec[0]
+  kind: entry
+  line_start: 615
+  line_end: 656
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[7].u_part_buf ecc_dec[1]
+  kind: entry
+  line_start: 657
+  line_end: 698
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[7].u_part_buf ecc_dec[2]
+  kind: entry
+  line_start: 699
+  line_end: 740
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[7].u_part_buf ecc_dec[3]
+  kind: entry
+  line_start: 741
+  line_end: 782
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[7].u_part_buf ecc_dec[4]
+  kind: entry
+  line_start: 783
+  line_end: 824
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf ecc_dec[0]
+  kind: entry
+  line_start: 825
+  line_end: 866
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf ecc_dec[1]
+  kind: entry
+  line_start: 867
+  line_end: 908
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf ecc_dec[2]
+  kind: entry
+  line_start: 909
+  line_end: 950
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf ecc_dec[3]
+  kind: entry
+  line_start: 951
+  line_end: 992
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf ecc_dec[4]
+  kind: entry
+  line_start: 993
+  line_end: 1034
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf ecc_dec[5]
+  kind: entry
+  line_start: 1035
+  line_end: 1076
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf ecc_dec[6]
+  kind: entry
+  line_start: 1077
+  line_end: 1118
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf ecc_dec[7]
+  kind: entry
+  line_start: 1119
+  line_end: 1160
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf ecc_dec[8]
+  kind: entry
+  line_start: 1161
+  line_end: 1202
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf ecc_dec[9]
+  kind: entry
+  line_start: 1203
+  line_end: 1244
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf ecc_dec[10]
+  kind: entry
+  line_start: 1245
+  line_end: 1286
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf ecc_dec[0]
+  kind: entry
+  line_start: 1287
+  line_end: 1328
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf ecc_dec[1]
+  kind: entry
+  line_start: 1329
+  line_end: 1370
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf ecc_dec[2]
+  kind: entry
+  line_start: 1371
+  line_end: 1412
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf ecc_dec[3]
+  kind: entry
+  line_start: 1413
+  line_end: 1454
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf ecc_dec[4]
+  kind: entry
+  line_start: 1455
+  line_end: 1496
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf ecc_dec[5]
+  kind: entry
+  line_start: 1497
+  line_end: 1538
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf ecc_dec[6]
+  kind: entry
+  line_start: 1539
+  line_end: 1580
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf ecc_dec[7]
+  kind: entry
+  line_start: 1581
+  line_end: 1622
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf ecc_dec[8]
+  kind: entry
+  line_start: 1623
+  line_end: 1664
+- title_path: otp_ctrl_cov_unr_excl > u_otp.gen_generic.u_impl_generic (1)
+  kind: entry
+  line_start: 1665
+  line_end: 1670
+- title_path: otp_ctrl_cov_unr_excl > tb.dut (1)
+  kind: entry
+  line_start: 1671
+  line_end: 1674
+- title_path: otp_ctrl_cov_unr_excl > u_reg_core.u_socket (1)
+  kind: entry
+  line_start: 1675
+  line_end: 1678
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram.u_reqfifo.u_fifo_cnt (1)
+  kind: entry
+  line_start: 1679
+  line_end: 1684
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram.u_sramreqfifo.u_fifo_cnt
+    (1)
+  kind: entry
+  line_start: 1685
+  line_end: 1690
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram.u_rspfifo.u_fifo_cnt (1)
+  kind: entry
+  line_start: 1691
+  line_end: 1696
+- title_path: otp_ctrl_cov_unr_excl > u_otp.gen_generic.u_impl_generic (2)
+  kind: entry
+  line_start: 1697
+  line_end: 1700
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[5].u_part_buf (1)
+  kind: entry
+  line_start: 1701
+  line_end: 1728
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[6].u_part_buf (1)
+  kind: entry
+  line_start: 1729
+  line_end: 1752
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[7].u_part_buf (1)
+  kind: entry
+  line_start: 1753
+  line_end: 1764
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf (1)
+  kind: entry
+  line_start: 1765
+  line_end: 1776
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf (1)
+  kind: entry
+  line_start: 1777
+  line_end: 1788
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf (1)
+  kind: entry
+  line_start: 1789
+  line_end: 1810
+- title_path: otp_ctrl_cov_unr_excl > u_otp_ctrl_scrmbl (1)
+  kind: entry
+  line_start: 1811
+  line_end: 1814
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field3 (1)
+  kind: entry
+  line_start: 1815
+  line_end: 1818
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field4 (1)
+  kind: entry
+  line_start: 1819
+  line_end: 1822
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field5 (1)
+  kind: entry
+  line_start: 1823
+  line_end: 1826
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field6 (1)
+  kind: entry
+  line_start: 1827
+  line_end: 1830
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field7 (1)
+  kind: entry
+  line_start: 1831
+  line_end: 1834
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field8 (1)
+  kind: entry
+  line_start: 1835
+  line_end: 1838
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field2 (1)
+  kind: entry
+  line_start: 1839
+  line_end: 1842
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field3 (1)
+  kind: entry
+  line_start: 1843
+  line_end: 1846
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field4 (1)
+  kind: entry
+  line_start: 1847
+  line_end: 1850
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field5 (1)
+  kind: entry
+  line_start: 1851
+  line_end: 1854
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr7_field0 (1)
+  kind: entry
+  line_start: 1855
+  line_end: 1858
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr7_field1 (1)
+  kind: entry
+  line_start: 1859
+  line_end: 1862
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr7_field2 (1)
+  kind: entry
+  line_start: 1863
+  line_end: 1866
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr7_field3 (1)
+  kind: entry
+  line_start: 1867
+  line_end: 1870
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[0].u_part_unbuf (1)
+  kind: entry
+  line_start: 1871
+  line_end: 1880
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram (1)
+  kind: entry
+  line_start: 1881
+  line_end: 1884
+- title_path: otp_ctrl_cov_unr_excl > tb.dut (2)
+  kind: entry
+  line_start: 1885
+  line_end: 1890
+- title_path: otp_ctrl_cov_unr_excl > u_otp_ctrl_dai (1)
+  kind: entry
+  line_start: 1891
+  line_end: 1896
+- title_path: otp_ctrl_cov_unr_excl > u_otp_ctrl_kdi (1)
+  kind: entry
+  line_start: 1897
+  line_end: 1900
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[5].u_part_buf (2)
+  kind: entry
+  line_start: 1901
+  line_end: 1935
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[6].u_part_buf (2)
+  kind: entry
+  line_start: 1936
+  line_end: 1970
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf ecc_dec[9]
+  kind: entry
+  line_start: 1971
+  line_end: 2012
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf ecc_dec[10]
+  kind: entry
+  line_start: 2013
+  line_end: 2054
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf ecc_dec[0]
+  kind: entry
+  line_start: 2055
+  line_end: 2096
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf ecc_dec[1]
+  kind: entry
+  line_start: 2097
+  line_end: 2138
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf ecc_dec[2]
+  kind: entry
+  line_start: 2139
+  line_end: 2180
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf ecc_dec[3]
+  kind: entry
+  line_start: 2181
+  line_end: 2222
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf ecc_dec[4]
+  kind: entry
+  line_start: 2223
+  line_end: 2264
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf ecc_dec[5]
+  kind: entry
+  line_start: 2265
+  line_end: 2306
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf ecc_dec[6]
+  kind: entry
+  line_start: 2307
+  line_end: 2348
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf ecc_dec[7]
+  kind: entry
+  line_start: 2349
+  line_end: 2390
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf ecc_dec[8]
+  kind: entry
+  line_start: 2391
+  line_end: 2432
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf ecc_dec[9]
+  kind: entry
+  line_start: 2433
+  line_end: 2474
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf ecc_dec[10]
+  kind: entry
+  line_start: 2475
+  line_end: 2516
+- title_path: otp_ctrl_cov_unr_excl > tb.dut (3) part 1
+  kind: entry
+  line_start: 2517
+  line_end: 2816
+- title_path: otp_ctrl_cov_unr_excl > tb.dut (3) part 2
+  kind: entry
+  line_start: 2817
+  line_end: 3116
+- title_path: otp_ctrl_cov_unr_excl > tb.dut (3) part 3
+  kind: entry
+  line_start: 3117
+  line_end: 3416
+- title_path: otp_ctrl_cov_unr_excl > tb.dut (3) part 4
+  kind: entry
+  line_start: 3417
+  line_end: 3716
+- title_path: otp_ctrl_cov_unr_excl > tb.dut (3) part 5
+  kind: entry
+  line_start: 3717
+  line_end: 4016
+- title_path: otp_ctrl_cov_unr_excl > tb.dut (3) part 6
+  kind: entry
+  line_start: 4017
+  line_end: 4316
+- title_path: otp_ctrl_cov_unr_excl > tb.dut (3) part 7
+  kind: entry
+  line_start: 4317
+  line_end: 4616
+- title_path: otp_ctrl_cov_unr_excl > tb.dut (3) part 8
+  kind: entry
+  line_start: 4617
+  line_end: 4742
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top (1)
+  kind: entry
+  line_start: 4743
+  line_end: 4748
+- title_path: otp_ctrl_cov_unr_excl > u_otp.gen_generic.u_impl_generic (3)
+  kind: entry
+  line_start: 4749
+  line_end: 4752
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf (3)
+  kind: entry
+  line_start: 4753
+  line_end: 4793
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[0].u_part_unbuf (2)
+  kind: entry
+  line_start: 4794
+  line_end: 4813
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[1].u_part_unbuf (2)
+  kind: entry
+  line_start: 4814
+  line_end: 4845
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[2].u_part_unbuf (2)
+  kind: entry
+  line_start: 4846
+  line_end: 4877
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[3].u_part_unbuf (2)
+  kind: entry
+  line_start: 4878
+  line_end: 4909
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[4].u_part_unbuf (2)
+  kind: entry
+  line_start: 4910
+  line_end: 4941
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[7].u_part_buf (2)
+  kind: entry
+  line_start: 4942
+  line_end: 4970
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf (2)
+  kind: entry
+  line_start: 4971
+  line_end: 4999
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf (2)
+  kind: entry
+  line_start: 5000
+  line_end: 5028
+- title_path: otp_ctrl_cov_unr_excl > u_otp_ctrl_dai (2)
+  kind: entry
+  line_start: 5029
+  line_end: 5039
+- title_path: otp_ctrl_cov_unr_excl > u_otp_ctrl_kdi (2)
+  kind: entry
+  line_start: 5040
+  line_end: 5044
+- title_path: otp_ctrl_cov_unr_excl > u_otp_ctrl_lfsr_timer
+  kind: entry
+  line_start: 5045
+  line_end: 5048
+- title_path: otp_ctrl_cov_unr_excl > tb.dut (4)
+  kind: entry
+  line_start: 5049
+  line_end: 5072
+- title_path: otp_ctrl_cov_unr_excl > u_reg_core.u_socket (2)
+  kind: entry
+  line_start: 5073
+  line_end: 5076
+- title_path: otp_ctrl_cov_unr_excl > u_reg_core.u_reg_if
+  kind: entry
+  line_start: 5077
+  line_end: 5080
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_reg_if
+  kind: entry
+  line_start: 5081
+  line_end: 5084
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field3 (2)
+  kind: entry
+  line_start: 5085
+  line_end: 5088
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field4 (2)
+  kind: entry
+  line_start: 5089
+  line_end: 5092
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field5 (2)
+  kind: entry
+  line_start: 5093
+  line_end: 5096
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field6 (2)
+  kind: entry
+  line_start: 5097
+  line_end: 5100
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field7 (2)
+  kind: entry
+  line_start: 5101
+  line_end: 5104
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field8 (2)
+  kind: entry
+  line_start: 5105
+  line_end: 5108
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field2 (2)
+  kind: entry
+  line_start: 5109
+  line_end: 5112
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field4 (2)
+  kind: entry
+  line_start: 5113
+  line_end: 5116
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field5 (2)
+  kind: entry
+  line_start: 5117
+  line_end: 5120
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr7_field2 (2)
+  kind: entry
+  line_start: 5121
+  line_end: 5124
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr7_field3 (2)
+  kind: entry
+  line_start: 5125
+  line_end: 5128
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field3 (2)
+  kind: entry
+  line_start: 5129
+  line_end: 5132
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr7_field1 (2)
+  kind: entry
+  line_start: 5133
+  line_end: 5136
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr7_field0 (2)
+  kind: entry
+  line_start: 5137
+  line_end: 5140
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field0.wr_en_data_arb
+  kind: entry
+  line_start: 5141
+  line_end: 5144
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field1.wr_en_data_arb
+  kind: entry
+  line_start: 5145
+  line_end: 5148
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field2.wr_en_data_arb
+  kind: entry
+  line_start: 5149
+  line_end: 5158
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field6.wr_en_data_arb
+  kind: entry
+  line_start: 5159
+  line_end: 5162
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field0.wr_en_data_arb
+  kind: entry
+  line_start: 5163
+  line_end: 5166
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field1.wr_en_data_arb
+  kind: entry
+  line_start: 5167
+  line_end: 5170
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram (2)
+  kind: entry
+  line_start: 5171
+  line_end: 5202
+- title_path: otp_ctrl_cov_unr_excl > u_part_sel_idx
+  kind: entry
+  line_start: 5203
+  line_end: 5206
+- title_path: otp_ctrl_cov_unr_excl > u_otp_ctrl_dai.u_part_sel_idx
+  kind: entry
+  line_start: 5207
+  line_end: 5210
+- title_path: otp_ctrl_cov_unr_excl > u_edn_arb
+  kind: entry
+  line_start: 5211
+  line_end: 5216
+- title_path: otp_ctrl_cov_unr_excl > u_otp_arb
+  kind: entry
+  line_start: 5217
+  line_end: 5278
+- title_path: otp_ctrl_cov_unr_excl > u_scrmbl_mtx (1)
+  kind: entry
+  line_start: 5279
+  line_end: 5562
+- title_path: otp_ctrl_cov_unr_excl > u_otp_ctrl_kdi.u_req_arb
+  kind: entry
+  line_start: 5563
+  line_end: 5578
+- title_path: otp_ctrl_cov_unr_excl > u_prim_edn_req.u_prim_packer_fifo
+  kind: entry
+  line_start: 5579
+  line_end: 5582
+- title_path: otp_ctrl_cov_unr_excl > u_otp_ctrl_dai (3)
+  kind: entry
+  line_start: 5583
+  line_end: 5592
+- title_path: otp_ctrl_cov_unr_excl > u_otp_ctrl_kdi (3)
+  kind: entry
+  line_start: 5593
+  line_end: 5596
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[3].u_part_unbuf (3)
+  kind: entry
+  line_start: 5597
+  line_end: 5600
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[0].u_part_unbuf (3)
+  kind: entry
+  line_start: 5601
+  line_end: 5606
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[1].u_part_unbuf (3)
+  kind: entry
+  line_start: 5607
+  line_end: 5610
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[2].u_part_unbuf (3)
+  kind: entry
+  line_start: 5611
+  line_end: 5614
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[4].u_part_unbuf (3)
+  kind: entry
+  line_start: 5615
+  line_end: 5618
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[5].u_part_buf (3)
+  kind: entry
+  line_start: 5619
+  line_end: 5632
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf (3)
+  kind: entry
+  line_start: 5633
+  line_end: 5642
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[6].u_part_buf (3)
+  kind: entry
+  line_start: 5643
+  line_end: 5656
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[7].u_part_buf (3)
+  kind: entry
+  line_start: 5657
+  line_end: 5666
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf (4)
+  kind: entry
+  line_start: 5667
+  line_end: 5680
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf (3)
+  kind: entry
+  line_start: 5681
+  line_end: 5690
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram.u_sramreqfifo (1)
+  kind: entry
+  line_start: 5691
+  line_end: 5706
+- title_path: otp_ctrl_cov_unr_excl > u_otp_rsp_fifo (1)
+  kind: entry
+  line_start: 5707
+  line_end: 5724
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram.u_rspfifo (1)
+  kind: entry
+  line_start: 5725
+  line_end: 5742
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram.u_reqfifo (1)
+  kind: entry
+  line_start: 5743
+  line_end: 5758
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field3 (3)
+  kind: entry
+  line_start: 5759
+  line_end: 5764
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field4 (3)
+  kind: entry
+  line_start: 5765
+  line_end: 5770
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field5 (3)
+  kind: entry
+  line_start: 5771
+  line_end: 5776
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field6 (3)
+  kind: entry
+  line_start: 5777
+  line_end: 5782
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field7 (3)
+  kind: entry
+  line_start: 5783
+  line_end: 5788
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr3_field8 (3)
+  kind: entry
+  line_start: 5789
+  line_end: 5794
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field2 (3)
+  kind: entry
+  line_start: 5795
+  line_end: 5800
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field3 (3)
+  kind: entry
+  line_start: 5801
+  line_end: 5806
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field4 (3)
+  kind: entry
+  line_start: 5807
+  line_end: 5812
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr5_field5 (3)
+  kind: entry
+  line_start: 5813
+  line_end: 5818
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr7_field0 (3)
+  kind: entry
+  line_start: 5819
+  line_end: 5824
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr7_field1 (3)
+  kind: entry
+  line_start: 5825
+  line_end: 5830
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr7_field2 (3)
+  kind: entry
+  line_start: 5831
+  line_end: 5836
+- title_path: otp_ctrl_cov_unr_excl > u_reg_top.u_csr7_field3 (3)
+  kind: entry
+  line_start: 5837
+  line_end: 5842
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram (3)
+  kind: entry
+  line_start: 5843
+  line_end: 5848
+- title_path: otp_ctrl_cov_unr_excl > u_scrmbl_mtx (2)
+  kind: entry
+  line_start: 5849
+  line_end: 5878
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_lc_gate
+  kind: entry
+  line_start: 5879
+  line_end: 5882
+- title_path: otp_ctrl_cov_unr_excl > u_otp_ctrl_scrmbl (2)
+  kind: entry
+  line_start: 5883
+  line_end: 5886
+- title_path: otp_ctrl_cov_unr_excl > u_otp_ctrl_dai (4)
+  kind: entry
+  line_start: 5887
+  line_end: 5894
+- title_path: otp_ctrl_cov_unr_excl > u_otp_ctrl_kdi (4)
+  kind: entry
+  line_start: 5895
+  line_end: 5898
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[0].u_part_unbuf (4)
+  kind: entry
+  line_start: 5899
+  line_end: 5910
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[7].u_part_buf (4)
+  kind: entry
+  line_start: 5911
+  line_end: 5928
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[8].u_part_buf (4)
+  kind: entry
+  line_start: 5929
+  line_end: 5946
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[9].u_part_buf (4)
+  kind: entry
+  line_start: 5947
+  line_end: 5964
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[5].u_part_buf (4)
+  kind: entry
+  line_start: 5965
+  line_end: 5996
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[6].u_part_buf (4)
+  kind: entry
+  line_start: 5997
+  line_end: 6028
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[10].u_part_buf (5)
+  kind: entry
+  line_start: 6029
+  line_end: 6064
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram.u_reqfifo (2)
+  kind: entry
+  line_start: 6065
+  line_end: 6068
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram.u_sramreqfifo (2)
+  kind: entry
+  line_start: 6069
+  line_end: 6072
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram.u_rspfifo (2)
+  kind: entry
+  line_start: 6073
+  line_end: 6076
+- title_path: otp_ctrl_cov_unr_excl > u_otp_rsp_fifo (2)
+  kind: entry
+  line_start: 6077
+  line_end: 6080
+- title_path: otp_ctrl_cov_unr_excl > gen_partitions[6].u_part_buf.u_otp_ctrl_ecc_reg
+  kind: entry
+  line_start: 6081
+  line_end: 6084
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram.u_reqfifo.u_fifo_cnt (2)
+  kind: entry
+  line_start: 6085
+  line_end: 6090
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram.u_sramreqfifo.u_fifo_cnt
+    (2)
+  kind: entry
+  line_start: 6091
+  line_end: 6096
+- title_path: otp_ctrl_cov_unr_excl > u_tlul_adapter_sram.u_rspfifo.u_fifo_cnt (2)
+  kind: entry
+  line_start: 6097
+  line_end: 6102

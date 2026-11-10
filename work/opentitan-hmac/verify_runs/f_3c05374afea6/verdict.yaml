@@ -1,0 +1,67 @@
+finding_hash: 0a5f22c402be963a
+started_at: '2026-11-10T19:40:29Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'I found no test with a check for any of the 5 items. HMAC DV forces CFG.sideload to 0 (TODO
+    #31634), and there is no cycle-count check in the HMAC dv or rtl files. I only listed the one firmware
+    test that touches sideloading and did not read it, so the sideload items rest on that gap.'
+  evidence:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 211
+    line_end: 212
+    quote: "// TODO(#31634): Disable sideloading for now.\n  rand_config_value[ral.cfg.sideload.get_lsb_pos()]\
+      \ = 1'b0;"
+    role: supports
+    note: DV never enables sideload, so neither the SHA-only ignore case nor key-change-during-operation
+      is exercised.
+  searches:
+  - what: sideload/keymgr usage in HMAC dv
+    where: hw/ip/hmac/dv
+    found: Only the agent wiring in the tb and env, plus the sideload bit forced to 0 in hmac_base_vseq.sv.
+  - what: cycle-count checks (80/96 cycles, latency)
+    where: hw/ip/hmac, excluding doc
+    found: No matches.
+  - what: sideload in HMAC firmware tests
+    where: sw/device/tests
+    found: One file, keymgr_dpe_sideload_hmac_test.c. I did not read it; it is likely a basic keyed sideload
+      flow rather than a check of these items.
+  near_misses:
+  - path: sw/device/tests/keymgr_dpe_sideload_hmac_test.c
+    line_start: 1
+    line_end: 1
+    why_not: I did not read this file. It exercises basic sideloaded HMAC, but the finding's items (SHA-only
+      ignore, key change undetected, block cycle counts) are probably not checked there.
+  items:
+  - id: cr_c4e4f4d945ab
+    outcome: verified
+    reason: DV forces sideload to 0, and I found no test that sets it with SHA-only operation.
+    evidence:
+    - 0
+  - id: cr_d882830deff5
+    outcome: verified
+    reason: No sideload stimulus in DV, and no test changes the key mid-operation.
+    evidence:
+    - 0
+  - id: cr_2a29e638293c
+    outcome: verified
+    reason: I found no test or assertion for message fetch timing.
+    evidence:
+    - 0
+  - id: cr_aeb18e72aa7a
+    outcome: verified
+    reason: I found no cycle-count check for SHA-2 256 blocks.
+    evidence:
+    - 0
+  - id: cr_ba453872049c
+    outcome: verified
+    reason: I found no cycle-count check for SHA-2 384/512 blocks.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.055770700000000006
+error: null

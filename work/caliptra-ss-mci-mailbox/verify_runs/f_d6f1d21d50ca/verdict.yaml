@@ -1,0 +1,77 @@
+finding_hash: 8426954b53bf804e
+started_at: '2026-11-10T20:42:44Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: '4 of 5 items stand: the decrement via the incr_r pulse and the saturation behaviour are never
+    exercised. The cr_49c8b388dda9 increment-by-1 item is covered, although only through a summed check,
+    so it is withdrawn. The mcu_intr_handler test fires each NOTIF trigger once and checks that the sum
+    of the NOTIF *_INTR_COUNT_R registers equals the number of events.'
+  evidence:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 256
+    line_end: 259
+    quote: if (mci_notif_intr_count != mci_notif_intr_count_hw) {
+    role: refutes
+    note: Checks that the summed NOTIF counters match the number of triggered events (one increment per
+      event). It is an aggregate check across all counters, and it covers cr_49c8b388dda9 only.
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    line_start: 113
+    line_end: 113
+    quote: MCI_REG_INTR_BLOCK_RF_NOTIF0_INTR_TRIG_R_NOTIF_MBOX1_ECC_COR_TRIG_MASK       ); mci_notif_intr_count++;
+    role: context
+    note: Stimulus for the mbox1_ecc_cor event, fired once.
+  searches:
+  - what: tests referencing *_INTR_COUNT_INCR_R, decrement, or saturation of interrupt counters
+    where: src/integration/test_suites and the rest of the repo, excluding mci_reg*
+    found: Nothing. The only INCR_R hits are in generated register code and mci_top_cov_if.sv coverpoints,
+      which are not checks.
+  - what: INTR_COUNT usage in tests
+    where: src/integration/test_suites
+    found: mcu_intr_handler sums the counters and compares them to the trigger count. mcu_isr clears two
+      counters. mci.c lists the counters in a register reset/sticky table.
+  - what: mcu_intr_handler in regression lists
+    where: src/integration/stimulus/*.yml
+    found: Included in both the Nightly Directed and Nightly Directed Strict regressions.
+  near_misses:
+  - path: src/mci/coverage/mci_top_cov_if.sv
+    line_start: 4800
+    line_end: 4800
+    why_not: Coverpoint only, with no check.
+  - path: src/integration/test_suites/libs/mci/mci.c
+    line_start: 579
+    line_end: 579
+    why_not: A register reset/sticky table, not a check of increment, decrement or saturation behaviour.
+  items:
+  - id: cr_4706175d6d92
+    outcome: verified
+    reason: No test writes any incr_r pulse register to decrement a counter.
+    evidence: []
+  - id: cr_4868f6c38d1f
+    outcome: verified
+    reason: No test drives a counter to its maximum value to check saturation.
+    evidence: []
+  - id: cr_48e9dbdcfdb2
+    outcome: verified
+    reason: No saturation test found.
+    evidence: []
+  - id: cr_49c8b388dda9
+    outcome: withdrawn
+    reason: mcu_intr_handler triggers the mbox1_ecc_cor notification once and checks that the summed counters
+      match the number of events. The test is in the nightly regressions.
+    evidence:
+    - 0
+    - 1
+  - id: cr_4b697972bda7
+    outcome: verified
+    reason: No saturation test found.
+    evidence: []
+  new_sources:
+  - path: src/integration/test_suites/mcu_intr_handler/mcu_intr_handler.c
+    reason: Directed test that triggers the NOTIF/ERROR interrupts and checks the summed interrupt counters.
+submissions: 1
+rejections: []
+turns: 14
+cost_usd: 0.1091713
+error: null

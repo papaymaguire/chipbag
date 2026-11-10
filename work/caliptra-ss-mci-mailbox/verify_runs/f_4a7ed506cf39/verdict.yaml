@@ -1,0 +1,66 @@
+finding_hash: 8175df918f9f2a5c
+started_at: '2026-11-10T20:34:52Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No spec text says directly that an unlocked MBOX0_VALID_AXI_USER entry is ignored by the filter.
+    The hardware spec defines trusted users and the AXI error for untrusted ones. It never ties "valid"
+    to "locked" in observable terms. It also never says when a newly locked entry takes effect. A reader
+    can infer the intended behavior, but the spec does not state it.
+  evidence:
+  - path: src/mci/rtl/mci_reg.rdl
+    line_start: 831
+    line_end: 831
+    quote: '[br]Associated MBOX0_VALID_AXI_USER register is only valid once locked by this bit.'
+    role: supports
+    note: The cited sentence. It does not say what 'valid' means observably for an unlocked entry.
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1297
+    line_end: 1299
+    quote: There are 5 trusted AXI Users determined at build time via parameters or via MCI lockable registers.
+    role: context
+    note: Defines the trusted set and says untrusted users get an AXI error. It does not say that an unlocked
+      entry is excluded, or when a locked entry starts to match.
+  - path: docs/CaliptraSSIntegrationSpecification.md
+    line_start: 2293
+    line_end: 2293
+    quote: 'If build-time integration straps are not used for configuring the trusted MBOX AXI users,
+      then trusted users will need to configured with the following lockable MCI registers before MBOX
+      can be used by SOC agents:'
+    role: context
+    note: Implies that programming and locking is needed before use. It is not an explicit statement that
+      an unlocked entry is rejected.
+  - path: src/mci/rtl/mci_reg_top.sv
+    line_start: 650
+    line_end: 650
+    quote: mci_reg_hwif_in.MBOX0_VALID_AXI_USER[i].AXI_USER.swwel = mci_reg_hwif_out.MBOX0_AXI_USER_LOCK[i].LOCK.value;
+    role: context
+    note: The RTL uses LOCK to make the entry read-only. The match gating on lock is at line 653. I did
+      not inspect it in full.
+  searches:
+  - what: VALID_AXI_USER and AXI_USER_LOCK in docs and rdl
+    where: docs/, src/mci/rtl
+    found: Only the vague rdl text, integration strap tables and requirement CSS_Axi_9. None of them define
+      the behavior of an unlocked entry.
+  - what: MCU Mailbox Limited Trusted AXI users sections
+    where: HardwareSpecification.md:1295, IntegrationSpecification.md:2291
+    found: They describe the trusted set and the AXI error for untrusted users. They do not say what happens
+      to a matching but unlocked entry, or when a locked entry takes effect.
+  near_misses:
+  - path: docs/CaliptraSSHardwareSpecification.md
+    line_start: 1295
+    line_end: 1299
+    why_not: It gives the AXI error for untrusted users. Reading an unlocked entry as untrusted is an
+      inference, not stated text. The next-transaction timing is also unspecified.
+  items: []
+  new_sources: []
+  resolution: The intended behavior is probably that an unlocked entry is not used for matching, so a
+    matching user is untrusted and gets an AXI error unless it matches a locked entry, the default user
+    0xFFFF_FFFF, or MCU. The spec should say this explicitly, and should also state when a newly locked
+    entry takes effect.
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0682722
+error: null

@@ -1,0 +1,64 @@
+path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+scope:
+  kind: whole_file
+model: claude-sonnet-5-5
+cost_usd: 0.04271320000000001
+file_kind: authored
+chunks:
+- title_path: aon_timer_scoreboard > class declaration
+  kind: class
+  line_start: 1
+  line_end: 203
+- title_path: aon_timer_scoreboard > new, build_phase, check_phase, run_phase, track_aon_clk_cycle
+  kind: function
+  line_start: 204
+  line_end: 246
+- title_path: aon_timer_scoreboard > timed regs capture/init/update
+  kind: function
+  line_start: 247
+  line_end: 348
+- title_path: aon_timer_scoreboard > fcov interrupts and predict_wkup_cause
+  kind: function
+  line_start: 349
+  line_end: 390
+- title_path: aon_timer_scoreboard > update_*_timely tasks
+  kind: function
+  line_start: 391
+  line_end: 479
+- title_path: aon_timer_scoreboard > predict_intr_state and intr predicted values
+  kind: function
+  line_start: 480
+  line_end: 604
+- title_path: aon_timer_scoreboard > check_intr_value_propagated
+  kind: function
+  line_start: 605
+  line_end: 653
+- title_path: aon_timer_scoreboard > process_tl_access
+  kind: function
+  line_start: 654
+  line_end: 876
+- title_path: aon_timer_scoreboard > check_interrupt, recalculate_num_cycles, compute_num_clks,
+    wait_for_sleep
+  kind: function
+  line_start: 877
+  line_end: 990
+- title_path: aon_timer_scoreboard > wkup timer coverage, model_and_check_wkup, run_wkup_timer
+  kind: function
+  line_start: 991
+  line_end: 1107
+- title_path: aon_timer_scoreboard > interrupt check helpers
+  kind: function
+  line_start: 1108
+  line_end: 1169
+- title_path: aon_timer_scoreboard > wdog bark timer
+  kind: function
+  line_start: 1170
+  line_end: 1324
+- title_path: aon_timer_scoreboard > wait_for_enable_matching and wdog bite timer
+  kind: function
+  line_start: 1325
+  line_end: 1422
+- title_path: aon_timer_scoreboard > reset
+  kind: function
+  line_start: 1423
+  line_end: 1436

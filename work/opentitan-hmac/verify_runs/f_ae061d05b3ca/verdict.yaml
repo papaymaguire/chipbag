@@ -1,0 +1,93 @@
+finding_hash: 16c754459dbcf587
+started_at: '2026-11-10T19:43:08Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: All five items are checked by existing tests, so the "planned only" claim is wrong. The scoreboard
+    models all three fifo_empty conditions and checks intr_state on CSR reads. The cfg-discard-while-hashing
+    behaviour is modelled by the scoreboard and exercised by the sequences. The fatal_fault alert is checked
+    by the common tl_intg_err test.
+  evidence:
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 683
+    line_end: 697
+    role: refutes
+    quote: "      if (fifo_full_detected && hmac_fifo_empty) begin\n        pre_fifo_empty_intr = 1;\n\
+      \      end else begin\n        pre_fifo_empty_intr = 0;\n      end"
+    note: 'Scoreboard models fifo_empty interrupt: requires previous full (item 1). Clears the full flag
+      on process, start, stop and continue (item 2). Covers the HMAC second-round non-writable condition
+      (item 3). The result is compared via intr_state predict and read.'
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 296
+    line_end: 300
+    role: refutes
+    quote: "          if (hmac_start) begin\n            if (cfg.en_cov) cov.wr_config_during_hash_cg.sample(1);\n\
+      \            return; // won't update configs if hash start"
+    note: Scoreboard predicts that a CFG write during hash is discarded. CSR reads then compare against
+      it.
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 399
+    line_end: 399
+    role: refutes
+    quote: '          write_discard_config_and_key(wr_config_during_hash, wr_key_during_hash);'
+    note: 'Stimulus: writes CFG during an ongoing hash.'
+  - path: hw/dv/sv/cip_lib/seq_lib/cip_base_vseq__tl_errors.svh
+    line_start: 484
+    line_end: 484
+    role: refutes
+    quote: '        wait_alert_trigger(cfg.tl_intg_alert_name, .wait_complete(1));'
+    note: The common tl_intg_err vseq waits for the fatal alert and checks it. HMAC imports tl_access_tests.hjson,
+      which defines {name}_tl_intg_err.
+  searches:
+  - what: fifo_empty and cfg discard modelling in the HMAC DV env
+    where: hw/ip/hmac/dv
+    found: Scoreboard predicts intr_state fifo_empty with full-history and process/stop clearing. It discards
+      CFG writes when hash has started.
+  - what: tl_intg_err test inclusion
+    where: hmac_sim_cfg.hjson, tl_access_tests.hjson, cip_base_vseq__tl_errors.svh
+    found: Imported common test hmac_tl_intg_err runs run_tl_intg_err_vseq, which waits for the fatal
+      alert.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv
+    line_start: 209
+    line_end: 217
+    why_not: Comment says some fifo_empty corner cases are hard to align with the scoreboard. This is
+      a limitation but does not remove the general check.
+  items:
+  - id: cr_67e76dbb8ac1
+    outcome: withdrawn
+    reason: The scoreboard requires fifo_full_detected before predicting the fifo_empty interrupt, and
+      the prediction is checked on intr_state reads.
+    evidence:
+    - 0
+  - id: cr_999bc3c78db5
+    outcome: withdrawn
+    reason: The scoreboard clears fifo_full_detected on process, stop, start and continue, so no interrupt
+      is predicted afterwards. The intr_state compare checks this.
+    evidence:
+    - 0
+  - id: cr_a1a298bba0a5
+    outcome: withdrawn
+    reason: The scoreboard models the writable-FIFO conditions as a whole, and the intr_state compare
+      checks the result.
+    evidence:
+    - 0
+  - id: cr_7351afa1afa3
+    outcome: withdrawn
+    reason: The common hmac_tl_intg_err test injects integrity faults and waits for the fatal alert.
+    evidence:
+    - 3
+  - id: cr_0731a47e9bb2
+    outcome: withdrawn
+    reason: The scoreboard discards CFG writes during a hash, the sequence creates that stimulus, and
+      CSR reads compare the result.
+    evidence:
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 16
+cost_usd: 0.10592410000000001
+error: null

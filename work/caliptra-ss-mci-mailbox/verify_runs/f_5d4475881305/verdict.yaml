@@ -1,0 +1,74 @@
+finding_hash: f5cb6b0f14ca3878
+started_at: '2026-11-10T19:42:47Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that both creates the condition and checks any of the five behaviours. Many
+    MCU mailbox smoke tests exist, but they only come close. The zeroize test uses a non-zero DLEN. The
+    usr_lock_out test reads DLEN as 0 but never checks the SRAM contents. No test checks a BUSY read of
+    CMD_STATUS, absence of an interrupt or data-avail wire on handoff to the Target, or a sideband notification.
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_zeroize/smoke_test_mcu_mbox_zeroize.c
+    line_start: 120
+    line_end: 124
+    quote: '// MBOX: check that data has been zeroed'
+    role: context
+    note: Zeroize check only covers the range up to the max DLEN, with a non-zero DLEN. It does not cover
+      the DLEN=0 'erase entire SRAM' case.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_write_user_lock/smoke_test_mcu_mbox_write_user_lock.c
+    line_start: 65
+    line_end: 65
+    quote: // Root owns the response SRAM and DLEN while the command is BUSY.
+    role: context
+    note: Only a comment. The test never reads CMD_STATUS and compares it to BUSY.
+  searches:
+  - what: BUSY CMD_STATUS checks in MCU mailbox tests
+    where: src/integration/test_suites/*mcu_mbox*/*.c
+    found: Only one comment mentioning BUSY. No check of CMD_STATUS == BUSY.
+  - what: DLEN = 0 combined with clearing EXECUTE and checking the SRAM
+    where: src/integration/test_suites
+    found: usr_lock_out test uses DLEN 0 on the Caliptra side. It checks lock-out during zeroization,
+      not that the entire SRAM was erased.
+  - what: interrupt, data_avail and sideband checks in the target_user test
+    where: smoke_test_mcu_mbox_target_user
+    found: Checks the lock-request and target-done interrupts. Nothing checks that no interrupt or data-avail
+      asserts on handoff, and nothing checks a sideband notification.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_zeroize/smoke_test_mcu_mbox_zeroize.c
+    line_start: 79
+    line_end: 124
+    why_not: Checks zeroization only up to max DLEN with a non-zero DLEN, not the DLEN=0 erase-all case.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_usr_lock_out_zero/cptra_smoke_test_mcu_mbox_usr_lock_out.c
+    line_start: 99
+    line_end: 99
+    why_not: Sets DLEN 0, but the test checks lock-out during zeroization, not SRAM contents.
+  items:
+  - id: cr_3f38fb82f957
+    outcome: verified
+    reason: No test clears EXECUTE with DLEN=0 and then checks the whole SRAM is zero.
+    evidence:
+    - 0
+  - id: cr_bb57badd8526
+    outcome: verified
+    reason: The sideband notification is system-level flow. No test checks it.
+    evidence: []
+  - id: cr_dc1a3093f007
+    outcome: verified
+    reason: No test reads CMD_STATUS and checks it returns BUSY while a command is being processed.
+    evidence:
+    - 1
+  - id: cr_1d6b75b3d49f
+    outcome: verified
+    reason: No test checks that no interrupt or data-avail asserts when ownership passes to the Target.
+    evidence: []
+  - id: cr_1e471e967ac0
+    outcome: verified
+    reason: No test checks the MCU-to-Target sideband notification.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 10
+cost_usd: 0.09103170000000001
+error: null

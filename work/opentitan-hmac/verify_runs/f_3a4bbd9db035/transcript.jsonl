@@ -1,0 +1,10 @@
+{"t": "2026-11-10T20:55:16Z", "event": "  \u2192 Grep: fifo_empty"}
+{"t": "2026-11-10T20:55:16Z", "event": "  \u2192 Grep: fifo_empty|FIFO empty|FifoEmpty"}
+{"t": "2026-11-10T20:55:18Z", "event": "Check DV for fifo_empty."}
+{"t": "2026-11-10T20:55:18Z", "event": "  \u2192 Grep: fifo_empty|FifoEmpty|fifo_empty_status"}
+{"t": "2026-11-10T20:55:19Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/sw/device/tests/hmac_enc_test.c"}
+{"t": "2026-11-10T20:55:21Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/hmac_scoreboard.sv"}
+{"t": "2026-11-10T20:55:22Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/hmac/dv/env/seq_lib/hmac_smoke_vseq.sv"}
+{"t": "2026-11-10T20:55:31Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:55:34Z", "event": "I withdrew the finding. The HMAC DV environment does check the `fifo_empty` interrupt, so the requirement is not planned-only.\n\nThe scoreboard (`hw/ip/hmac/dv/env/hmac_scoreboard.sv:693`) predicts the interrupt as raised when the FIFO runs empty after having been full. That prediction feeds `intr_state` (line 391), which is compared on CSR reads, so a wrong interrupt fails the test. The smoke sequence (`hmac_smoke_vseq.sv`) supplies the stimulus and reads the state. Only a short timing-corner-case window is excluded from the check.\n\nThe software tests don't settle it either way. `hmac_enc_test.c` enables the interrupt but never asserts that it fires.\n\nI did not run the DV regression, so this rests on reading the scoreboard and sequence code."}
+{"t": "2026-11-10T20:55:34Z", "event": "[8 turns, $0.0717]"}

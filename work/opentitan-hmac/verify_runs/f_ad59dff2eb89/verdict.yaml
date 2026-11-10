@@ -1,0 +1,74 @@
+finding_hash: e4580202ca40cf99
+started_at: '2026-11-10T20:57:20Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Item 1 (lower 3 bits ignored) stands: no test writes a length with nonzero bits [2:0]. Items
+    2 and 3 (hwqe/hwext on MSG_LENGTH_UPPER) and item 4 (zero-padded upper 64 bits for SHA-384/512) are
+    exercised and checked, so they are withdrawn. The outcome is marked verified because that is the only
+    value the field allows when at least one item stands.'
+  evidence:
+  - path: hw/ip/hmac/data/hmac.hjson
+    line_start: 529
+    line_end: 529
+    quote: Lower 3 bits [2:0] are ignored.
+    role: supports
+    note: Item 1 requirement. No test drives a length with nonzero bits [2:0].
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 726
+    line_end: 726
+    quote: '`DV_CHECK_EQ(msg_length_rd, msg_length_rand+msg_b.size()*8)'
+    role: refutes
+    note: 'Items 2 and 3: software writes MSG_LENGTH_UPPER with a huge value and reads back a value that
+      must match, so the hwext/hwqe write path is checked. Only multiples of 8 are used, so this does
+      not cover item 1.'
+  - path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+    line_start: 889
+    line_end: 889
+    quote: end else if (digest_size == SHA2_384) begin
+    role: refutes
+    note: 'Item 4: the scoreboard checks SHA-384/512 digests against the DPI reference, so any wrong length
+      padding would fail the check.'
+  searches:
+  - what: msg_length uses in DV
+    where: hw/ip/hmac/dv
+    found: Writes use multiples of 8 or 512/1024 only. There is no check of the lower 3 bits being ignored.
+      The SAR sequence writes UPPER and checks the read-back.
+  - what: SHA-384/512 digest check
+    where: hmac_scoreboard.sv
+    found: Digest compared against the DPI SHA-384/512 reference.
+  near_misses:
+  - path: hw/ip/hmac/dv/env/seq_lib/hmac_base_vseq.sv
+    line_start: 704
+    line_end: 705
+    why_not: The values used are multiples of 8, so the low-3-bits-ignored behavior is never exercised.
+  items:
+  - id: cr_959451b086ac
+    outcome: verified
+    reason: No stimulus with nonzero bits [2:0], and no check that they are ignored.
+    evidence:
+    - 0
+    - 2
+  - id: cr_57ac89f2cad4
+    outcome: withdrawn
+    reason: The SAR test writes UPPER and checks the read-back value after hashing.
+    evidence:
+    - 1
+  - id: cr_581ad0c1fa81
+    outcome: withdrawn
+    reason: The same SAR write/read-back check exercises the externally implemented register.
+    evidence:
+    - 1
+  - id: cr_b3a93fda27e3
+    outcome: withdrawn
+    reason: SHA-384/512 digests are compared against the DPI reference, which covers the 128-bit length
+      padding.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.1092476
+error: null

@@ -1,0 +1,79 @@
+finding_hash: ef72fe99be1e5235
+started_at: '2026-11-10T19:44:48Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: 'Item 1 is covered by smoke_test_mcu_mbox, so it is withdrawn. Item 2 stands: smoke_test_mcu_mbox_axi_param
+    exercises the parameter-versus-CSR setup but never checks that the parameter user is accepted, so
+    it cannot fail on a precedence bug. The finding is mixed, so the overall outcome is inconclusive.'
+  evidence:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/cptra_ss_mcu_mbox_test.c
+    line_start: 233
+    line_end: 240
+    quote: "        reg = caliptra_ss_mcu_mbox_wait_status_complete(mbox_num, 200);\n        if (reg ==\
+      \ 2) {\n            caliptra_ss_mcu_mbox_clear_execution(mbox_num);    \n        } else {\n    \
+      \        VPRINTF(FATAL, \"CALIPTRA: Timed out waiting for MBOX complete\\n\");"
+    role: refutes
+    note: The Caliptra SOC agent sends data to the MCU mailbox, then waits for the MCU's complete status
+      (0x2). It fails with FATAL and SEND_STDOUT_CTRL(0x1) if complete never arrives.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/smoke_test_mcu_mbox.c
+    line_start: 79
+    line_end: 80
+    quote: "    VPRINTF(LOW, \"MCU: Writing to MBOX%x status 0x2\\n\", mbox_num); \n    lsu_write_32(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_CMD_STATUS\
+      \ + MCU_MBOX_NUM_STRIDE * mbox_num, 0x2 );"
+    role: refutes
+    note: The MCU receives the data and writes the complete status back to the SOC agent.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/cptra_smoke_test_mcu_mbox_axi_param.c
+    line_start: 60
+    line_end: 65
+    quote: "    status = cptra_axi_dword_read_with_status(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_EXECUTE + MCU_MBOX_NUM_STRIDE\
+      \ * mbox_num, payload);\n    if(!status && !is_caliptra_axi_param()) {"
+    role: supports
+    note: Every check is guarded by !is_caliptra_axi_param(). In param mode, an AXI error on the parameter
+      user is never flagged, so precedence over the CSR is not verified.
+  searches:
+  - what: Tests where the SOC agent sends data and the MCU returns complete
+    where: src/integration/test_suites/smoke_test_mcu_mbox*
+    found: smoke_test_mcu_mbox has the MCU writing status 0x2 and Caliptra failing on a timeout waiting
+      for it. smoke_test_mcu_mbox_pass_data uses DATA_READY, not complete.
+  - what: Tests of valid-user parameter precedence over the CSR
+    where: src/integration/test_suites/smoke_test_mcu_mbox_axi_param and smoke_test_mcu_mbox_valid_user
+    found: The axi_param test sets CSR valid users to different values than the parameter user 0x33333333.
+      In param mode there is no check that accesses succeed. valid_user has no param or precedence handling.
+  near_misses:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/smoke_test_mcu_mbox_axi_param.c
+    line_start: 45
+    line_end: 65
+    why_not: It sets up the parameter-user versus CSR-user scenario, but the Caliptra side only checks
+      for expected AXI errors in the non-param (CSR) case. A precedence failure would not fail the test.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_pass_data/cptra_smoke_test_mcu_mbox_pass_data.c
+    line_start: 55
+    line_end: 70
+    why_not: It defines a wait-for-complete helper, but the sequence waits for DATA_READY and never calls
+      it. It is not the source of the complete-status coverage for item 1.
+  items:
+  - id: cp_c2665e64d0d8
+    outcome: withdrawn
+    reason: smoke_test_mcu_mbox sends data from the Caliptra SOC agent to the MCU mailbox. The MCU writes
+      complete status 0x2, and the SOC agent waits for it and fails the test on timeout.
+    evidence:
+    - 0
+    - 1
+  - id: cp_d0a8b8e6a2e2
+    outcome: verified
+    reason: The only related test, smoke_test_mcu_mbox_axi_param, does not check that the parameter user
+      is accepted when CSR users differ. Its checks apply only in the non-param case, so the precedence
+      behavior is not checked.
+    evidence:
+    - 2
+  new_sources:
+  - path: src/integration/test_suites/smoke_test_mcu_mbox/smoke_test_mcu_mbox.c
+    reason: Implements the SOC-to-MCU data transfer with MCU complete status.
+  - path: src/integration/test_suites/smoke_test_mcu_mbox_axi_param/cptra_smoke_test_mcu_mbox_axi_param.c
+    reason: Closest test to the parameter-versus-CSR precedence item, though its check is incomplete.
+submissions: 1
+rejections: []
+turns: 11
+cost_usd: 0.1295872
+error: null

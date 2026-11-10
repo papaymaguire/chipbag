@@ -1,0 +1,54 @@
+path: hw/ip/hmac/dv/env/hmac_scoreboard.sv
+scope:
+  kind: whole_file
+model: claude-sonnet-5-5
+cost_usd: 0.0205732
+chunks:
+- title_path: hmac_scoreboard > class declaration
+  kind: class
+  line_start: 5
+  line_end: 75
+- title_path: hmac_scoreboard > new/build_phase/run_phase
+  kind: function
+  line_start: 78
+  line_end: 116
+- title_path: hmac_scoreboard > process_tl_access (part 1)
+  kind: function
+  line_start: 118
+  line_end: 340
+- title_path: hmac_scoreboard > process_tl_access (part 2)
+  kind: function
+  line_start: 341
+  line_end: 561
+- title_path: hmac_scoreboard > reset/flush
+  kind: function
+  line_start: 563
+  line_end: 606
+- title_path: hmac_scoreboard > hmac_process_fifo_wr
+  kind: function
+  line_start: 611
+  line_end: 643
+- title_path: hmac_scoreboard > hmac_process_fifo_status
+  kind: function
+  line_start: 645
+  line_end: 722
+- title_path: hmac_scoreboard > hmac_intr_test
+  kind: function
+  line_start: 725
+  line_end: 756
+- title_path: hmac_scoreboard > hmac_process_fifo_rd/check_phase
+  kind: function
+  line_start: 763
+  line_end: 836
+- title_path: hmac_scoreboard > predict_digest
+  kind: function
+  line_start: 840
+  line_end: 930
+- title_path: hmac_scoreboard > compare_nist_digest
+  kind: function
+  line_start: 937
+  line_end: 1033
+- title_path: hmac_scoreboard > update_wr_msg_length/update_err_intr_code/check_idle/monitor_cov
+  kind: function
+  line_start: 1035
+  line_end: 1103

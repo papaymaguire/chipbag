@@ -1,0 +1,11 @@
+{"t": "2026-11-10T20:58:49Z", "event": "  \u2192 Grep: csr_bit_bash"}
+{"t": "2026-11-10T20:58:49Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan; ls hw/ip/aes/data hw/ip/hmac/data hw/ip/kmac/data 2>/dev/null | head -40; grep -rl \"csr_rw\\|csr_bit_bash\" hw/ip/*/data 2>/dev/null | head -30"}
+{"t": "2026-11-10T20:58:52Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan; grep -n \"csr\\|import_testplans\" hw/ip/aes/data/aes_testplan.hjson hw/ip/hmac/data/hmac_testplan.hjson hw/ip/kmac/data/kmac_testplan.hjson | head -"}
+{"t": "2026-11-10T20:58:56Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan; sed -n 15,45p hw/dv/tools/dvsim/tests/csr_tests.hjson; grep -n \"csr_tests\\|csr_rw\" hw/ip/{aes,hmac,kmac}/dv/*sim_cfg.hjson; grep -n \"csr_rw\\|csr_b"}
+{"t": "2026-11-10T20:58:57Z", "event": "  \u2192 Grep: csr_tests_mode"}
+{"t": "2026-11-10T20:58:58Z", "event": "  \u2192 Grep: csr_tests_mode"}
+{"t": "2026-11-10T20:59:01Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan; grep -n \"name:\\|tests:\" hw/dv/tools/dvsim/testplans/csr_testplan.hjson | head -20; sed -n 10,14p hw/dv/tools/dvsim/tests/csr_tests.hjson; grep -n "}
+{"t": "2026-11-10T20:59:02Z", "event": "Checking is nearly done. The generic CSR tests are imported into the AES, HMAC and KMAC sim configs, so I'm submitting the verdict now."}
+{"t": "2026-11-10T20:59:09Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-10T20:59:11Z", "event": "I withdrew the finding. The repository has a shared generic CSR test that runs over every register of these blocks, so the \"planned only\" status doesn't hold.\n\nThe finding doesn't name its block. I checked AES, HMAC and KMAC, the likely candidates. The sim configs for all three import `hw/dv/tools/dvsim/tests/csr_tests.hjson`. That file defines `{name}_csr_rw` and `{name}_csr_bit_bash` for each block. The shared `csr_testplan.hjson` maps the `csr_rw` and `csr_bit_bash` plan items to those tests.\n\nI did not open the sequence code that does the read-back checks. That half of the verdict rests on the shared library's standard behaviour."}
+{"t": "2026-11-10T20:59:11Z", "event": "[9 turns, $0.0569]"}
