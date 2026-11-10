@@ -1,7 +1,7 @@
 [project]
 name = "chipbag"
 version = "0.1.0"
-description = "LLM skills and associated scripts for managing spec and test planning for silicon"
+description = "Traces silicon spec requirements to the tests that verify them, and reports verified, evidence-cited gaps for human review"
 readme = "README.md"
 authors = [
     { name = "Maguire Papay", email = "papaymaguire@gmail.com" }
