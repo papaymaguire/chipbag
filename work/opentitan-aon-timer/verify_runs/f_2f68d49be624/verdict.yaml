@@ -1,0 +1,76 @@
+finding_hash: 63ab09e33ce0d268
+started_at: '2026-11-11T01:06:34Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Two of four items are implemented, so the finding is only partly right. The TL-UL assertions
+    are bound in aon_timer_bind.sv and the pending-request coverage is sampled by the shared tl_agent
+    monitor. X_PROP_ANALYSIS_COMPLETED is Not Started with no test. SEC_CM_TESTPLAN_COMPLETED is a documentation
+    checklist item that no test could implement, so it stays inconclusive.
+  evidence:
+  - path: hw/ip/aon_timer/dv/sva/aon_timer_bind.sv
+    line_start: 7
+    line_end: 9
+    quote: 'bind aon_timer tlul_assert #('
+    role: refutes
+    note: TL-UL protocol checker is bound into the design and listed in sim_tops, so it runs in every
+      simulation.
+  - path: hw/dv/sv/tl_agent/tl_monitor.sv
+    line_start: 103
+    line_end: 103
+    quote: if (cfg.en_cov) cov.m_pending_req_on_rst_cg.sample(pending_a_req.size() != 0);
+    role: refutes
+    note: The shared TL agent monitor samples pending_req_on_rst_cg after reset.
+  - path: hw/ip/aon_timer/doc/checklist.md
+    line_start: 239
+    line_end: 239
+    quote: Tests         | [X_PROP_ANALYSIS_COMPLETED][]     | Not Started |
+    role: supports
+    note: X-prop analysis has not been started.
+  - path: hw/ip/aon_timer/doc/checklist.md
+    line_start: 222
+    line_end: 222
+    quote: Documentation | [SEC_CM_TESTPLAN_COMPLETED][]           | Done        |
+    role: context
+    note: Documentation checklist item, not a test.
+  searches:
+  - what: X_PROP, pending_req_on_rst, SEC_CM_TESTPLAN, tlul_assert in aon_timer
+    where: hw/ip/aon_timer
+    found: checklist rows, README mentions, and the tlul_assert bind
+  - what: pending_req_on_rst
+    where: hw/dv
+    found: covergroup in tl_agent_cov.sv, sampled in tl_monitor.sv
+  near_misses: []
+  items:
+  - id: cp_eaf3654df806
+    outcome: verified
+    reason: Resolution is Not Started and no X-prop test or analysis was found.
+    evidence:
+    - 2
+  - id: cp_ef68605d12b4
+    outcome: withdrawn
+    reason: The shared tl_agent covergroup is sampled by the monitor.
+    evidence:
+    - 1
+  - id: cp_f6592c80b9f9
+    outcome: withdrawn
+    reason: tlul_assert is bound in aon_timer_bind.sv, which is in sim_tops.
+    evidence:
+    - 0
+  - id: cp_fb550ac73f2d
+    outcome: inconclusive
+    reason: This is a documentation checklist item marked Done, so it is not testable and has no implementing
+      test to find.
+    evidence:
+    - 3
+  new_sources:
+  - path: hw/ip/aon_timer/dv/sva/aon_timer_bind.sv
+    reason: binds tlul_assert
+  - path: hw/dv/sv/tl_agent/tl_agent_cov.sv
+    reason: defines pending_req_on_rst_cg
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0435056
+error: null

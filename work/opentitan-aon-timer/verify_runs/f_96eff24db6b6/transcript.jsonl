@@ -1,0 +1,8 @@
+{"t": "2026-11-11T01:07:27Z", "event": "  \u2192 Grep: racl|prescaler|thold_hi|THOLD_HI"}
+{"t": "2026-11-11T01:07:30Z", "event": "  \u2192 Grep: racl"}
+{"t": "2026-11-11T01:07:30Z", "event": "  \u2192 Grep: prescaler|thold_hi"}
+{"t": "2026-11-11T01:07:34Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv"}
+{"t": "2026-11-11T01:07:36Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv"}
+{"t": "2026-11-11T01:07:46Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:07:50Z", "event": "I've submitted the verdict, and it was accepted, so I'm done. The finding stands.\n\n- **Verified (4 items):** All three RACL items and the prescaler `hwqe` item are untested.\n  - The testbench ties the RACL policies to 0, so there is no stimulus.\n  - It leaves `racl_error_o` unconnected, so nothing checks it.\n  - The scoreboard has no check on the prescaler write-qualifier pulse.\n- **Inconclusive (1 item):** For `WKUP_THOLD_HI`, the scoreboard models THOLD_HI writes and the wakeup timing. I didn't confirm an explicit check on the [63:32] split, so I couldn't settle it."}
+{"t": "2026-11-11T01:07:50Z", "event": "[7 turns, $0.0495]"}

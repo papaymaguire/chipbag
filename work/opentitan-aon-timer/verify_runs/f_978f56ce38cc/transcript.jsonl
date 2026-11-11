@@ -1,0 +1,5 @@
+{"t": "2026-11-11T01:04:30Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/sw/device/lib/dif/dif_aon_timer_unittest.cc"}
+{"t": "2026-11-11T01:04:32Z", "event": "The finding's premise is wrong: SuccessCommon includes all of those writes."}
+{"t": "2026-11-11T01:04:35Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:04:37Z", "event": "I withdrew the finding. It was wrong because the `SuccessCommon` helper in `sw/device/lib/dif/dif_aon_timer_unittest.cc` already contains every write it said was missing.\n\nThe helper expects the CTRL write that clears the enable bit, then the count write of 0. It also expects both threshold writes: `0xA5A5A5A4` for BARK and `0x5A5A5A59` for BITE. Those are the values the `Success` test passes in (`0xA5A5A5A5` and `0x5A5A5A5A`) minus 1, so the comment about minus-1 values matches the code. The finding only looked at part of the helper."}
+{"t": "2026-11-11T01:04:37Z", "event": "[3 turns, $0.0228]"}

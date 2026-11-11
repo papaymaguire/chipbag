@@ -1,0 +1,73 @@
+finding_hash: 6826cb1706dcce38
+started_at: '2026-11-11T01:06:56Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The aon_timer testbench ties off RACL and has no test for it, so the two RACL items stand.
+    I found a testbench assertion for the nmi copy item, which is therefore withdrawn. I found no check
+    for the ~200KHz clock, and I did not search the SYS-domain item thoroughly, so both are inconclusive.
+  evidence:
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 72
+    line_end: 72
+    quote: '`ASSERT(wdog_bark_intr_is_nmi, wdog_bark === wdog_bark_nmi, clk, rst_n)'
+    role: refutes
+    note: Assertion in the testbench checks that nmi equals the bark interrupt, and it runs with every
+      test.
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 25
+    line_end: 26
+    quote: "racl_policy_vec_t racl_policies;\n  assign racl_policies = 0;"
+    role: supports
+    note: RACL policies are tied to 0, so no RACL stimulus is applied.
+  - path: hw/ip/aon_timer/dv/cov/aon_timer_unr_non_racl_manually_excluded_excl.el
+    line_start: 14
+    line_end: 14
+    quote: 'ANNOTATION: "This is a non-racl instance - hence signals won''t toggle."'
+    role: supports
+    note: The DV flow treats the instance as non-RACL and excludes the RACL coverage.
+  searches:
+  - what: racl / EnableRacl / nmi in aon_timer dv
+    where: hw/ip/aon_timer/dv
+    found: RACL is tied off and its coverage excluded; nmi has a testbench assertion
+  - what: 200kHz / aon clock frequency
+    where: hw/ip/aon_timer/dv
+    found: no frequency check found
+  near_misses:
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 61
+    line_end: 62
+    why_not: The RACL ports are connected but tied off, so nothing exercises them.
+  items:
+  - id: cr_517c566609ad
+    outcome: verified
+    reason: RACL is not enabled in the DV testbench, and the coverage for it is excluded.
+    evidence:
+    - 1
+    - 2
+  - id: cr_c98fa20138a9
+    outcome: verified
+    reason: The RACL ports are only tied off; no test checks them.
+    evidence:
+    - 1
+    - 2
+  - id: cr_625c1cd8c604
+    outcome: withdrawn
+    reason: The assertion wdog_bark_intr_is_nmi checks that the nmi output equals the bark output.
+    evidence:
+    - 0
+  - id: cr_6c14ebc81991
+    outcome: inconclusive
+    reason: I did not search thoroughly for a check that these outputs are driven on the SYS domain.
+    evidence: []
+  - id: cr_20034a8664a3
+    outcome: inconclusive
+    reason: I found no check on the ~200KHz clock frequency, but my search was limited.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.0688995
+error: null

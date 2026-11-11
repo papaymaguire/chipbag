@@ -1,0 +1,77 @@
+finding_hash: 64cc692e034b1a47
+started_at: '2026-11-11T01:07:23Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'The three RACL items are untested: the testbench ties the policies to 0 and leaves racl_error
+    unconnected. The prescaler hwqe item has no direct check. The scoreboard does model THOLD_HI, but
+    I treated that item as only partly covered rather than refuted. The finding stands overall.'
+  evidence:
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 25
+    line_end: 26
+    quote: "racl_policy_vec_t racl_policies;\n  assign racl_policies = 0;"
+    role: supports
+    note: RACL policies tied to zero, so no policy stimulus.
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 62
+    line_end: 62
+    quote: .racl_error_o              (),
+    role: supports
+    note: racl_error output is unconnected, so it is never checked.
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 471
+    line_end: 474
+    quote: task aon_timer_scoreboard::update_wkup_thold_hi_timely();
+    role: context
+    note: The scoreboard models THOLD_HI writes (via the _we probe) but nothing checks the bit-[63:32]
+      split explicitly.
+  searches:
+  - what: racl in aon_timer dv
+    where: hw/ip/aon_timer/dv
+    found: Only tb tie-off and a coverage exclusion file; no tests or checks.
+  - what: prescaler and thold_hi in the scoreboard
+    where: aon_timer_scoreboard.sv
+    found: The scoreboard models both registers, but it does not check the prescaler hwqe pulse. It does
+      probe the thold_hi _we signal.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 471
+    line_end: 478
+    why_not: This models THOLD_HI timing, so the THOLD_HI item is arguably covered by the scoreboard and
+      the timer tests. I did not search further for a check on the [63:32] split.
+  items:
+  - id: cr_068211cfcae2
+    outcome: verified
+    reason: racl_error_o is left unconnected in tb.sv, so nothing checks it.
+    evidence:
+    - 1
+  - id: cr_1525c2bff7eb
+    outcome: verified
+    reason: The policies are tied to 0, so there is no stimulus.
+    evidence:
+    - 0
+  - id: cr_d3bb7e9459e0
+    outcome: verified
+    reason: No RACL policy variation or checking exists in the DV environment.
+    evidence:
+    - 0
+  - id: cr_7352e4c71220
+    outcome: verified
+    reason: The scoreboard has no check on the prescaler write-qualifier pulse. It only models the prescaler
+      value.
+    evidence:
+    - 2
+  - id: cr_4f0e8a135187
+    outcome: inconclusive
+    reason: The scoreboard models THOLD_HI writes and the timer interrupt timing, which likely exercises
+      the high bits. I did not confirm an explicit check on the split.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 7
+cost_usd: 0.049539599999999996
+error: null

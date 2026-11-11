@@ -1,0 +1,53 @@
+finding_hash: b8369e04a35ba552
+started_at: '2026-11-11T01:05:04Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'No spec text defines when aon_timer drives racl_error (valid timing or duration) or what values
+    the fields carry. The racl_ctrl docs describe the consumer side: arbitration, overflow, clearing and
+    the address register. They don''t say how a subscribing IP drives its racl_error output.'
+  evidence:
+  - path: hw/ip/aon_timer/doc/interfaces.md
+    line_start: 21
+    line_end: 21
+    quote: RACL error log information of this module.
+    role: supports
+    note: The aon_timer interface doc repeats the same one-line description and adds nothing.
+  - path: hw/top_darjeeling/ip_autogen/racl_ctrl/doc/theory_of_operation.md
+    line_start: 15
+    line_end: 15
+    quote: A subscribing IP can log an error with `racl_ctrl` using the IP's item in the `racl_error_i`
+      port.
+    role: context
+    note: Consumer-side description only. It does not say when the IP asserts valid, for how many cycles,
+      or what role, ctn_uid and write values it drives.
+  - path: hw/top_darjeeling/ip_autogen/racl_ctrl/doc/registers.md
+    line_start: 161
+    line_end: 161
+    quote: Contains the bits [top_pkg::TL_AW-1:2] of the address on which a RACL violation occurred.
+    role: context
+    note: Describes the address register in racl_ctrl. It is partial and does not define the IP-side racl_error_log
+      struct.
+  searches:
+  - what: racl_error in aon_timer docs and hjson
+    where: hw/ip/aon_timer
+    found: Only the one-line interface descriptions and a mention in theory_of_operation.md that the ports
+      exist.
+  - what: RACL error log docs
+    where: hw/**/*.md, including racl_ctrl theory_of_operation and registers
+    found: Consumer-side arbitration, overflow and clearing behaviour. Nothing on the IP-side output timing
+      or field values.
+  near_misses:
+  - path: hw/top_darjeeling/ip_autogen/racl_ctrl/doc/theory_of_operation.md
+    line_start: 13
+    line_end: 26
+    why_not: Describes how racl_ctrl logs and clears errors, not when the aon_timer asserts racl_error
+      or what its fields contain.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0482848
+error: null

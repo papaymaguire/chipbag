@@ -1,0 +1,8 @@
+{"t": "2026-11-11T01:04:52Z", "event": "  \u2192 Grep: RaclPolicySelVec"}
+{"t": "2026-11-11T01:04:53Z", "event": "  \u2192 Grep: policy selection vector"}
+{"t": "2026-11-11T01:04:56Z", "event": "  \u2192 Grep: RaclPolicySelVec|policy selection vector"}
+{"t": "2026-11-11T01:04:57Z", "event": "Check racl_ctrl docs quickly."}
+{"t": "2026-11-11T01:04:58Z", "event": "  \u2192 Grep: policy_sel|PolicySel|racl_policy_sel"}
+{"t": "2026-11-11T01:05:05Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:05:08Z", "event": "I verified the finding: no specification text names the policy selection vector parameter or gives its width, encoding or default.\n\n- **Spec side:** The only wording is the single sentence in `aon_timer.hjson:116` and `interfaces.md:20`. The same sentence is repeated in the `interfaces.md` files of many other IPs. My search of the `hw` markdown docs and the `racl_ctrl` docs found no definition.\n- **RTL side:** The parameter is `RaclPolicySelVec[NumRegs]` in `aon_timer.sv:17`, with one entry per register and a default of all zeros. That is design behaviour, not specification.\n\nThe fix is for the spec to name the parameter and state its width, its per-register encoding in register-map order, and its default. The verdict was accepted."}
+{"t": "2026-11-11T01:05:08Z", "event": "[6 turns, $0.0394]"}

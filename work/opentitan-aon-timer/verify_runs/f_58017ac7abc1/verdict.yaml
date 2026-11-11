@@ -1,0 +1,39 @@
+finding_hash: e9247c25d62cc820
+started_at: '2026-11-11T01:04:09Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'The theory_of_operation text lists WKUP_THOLD_HI twice. It names it for bits[63:32] and again
+    for bits[31:0]. The second link''s target is #wkup_thold_lo, so the link text is a typo. The hjson
+    and RTL put bits 31:0 in WKUP_THOLD_LO, so the answer to the question is yes.'
+  evidence:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 32
+    line_end: 32
+    quote: Bits[31:0] in registers [`WKUP_COUNT_LO`](registers.md#wkup_count_lo) and [`WKUP_THOLD_HI`](registers.md#wkup_thold_lo).
+    role: supports
+    note: The link text says HI but the anchor is wkup_thold_lo, and the same document already assigns
+      HI to bits[63:32].
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    line_start: 212
+    line_end: 213
+    quote: "{ name: \"WKUP_THOLD_LO\",\n      desc: \"Wakeup Timer Threshold Register (bits 31 - 0)\","
+    role: context
+    note: The register definition puts bits 31:0 in WKUP_THOLD_LO, so the doc text is the side that is
+      wrong.
+  searches:
+  - what: WKUP_THOLD definitions in the hjson and the doc text
+    where: hw/ip/aon_timer
+    found: WKUP_THOLD_HI holds bits 63:32 and WKUP_THOLD_LO holds bits 31:0. Only the doc link text is
+      wrong.
+  near_misses: []
+  items: []
+  new_sources: []
+  resolution: 'The hjson matches the finding: WKUP_THOLD_LO holds bits 31:0. I did not read the RTL. Fix
+    the typo at theory_of_operation.md:32 by changing the link text from `WKUP_THOLD_HI` to `WKUP_THOLD_LO`.'
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0472311
+error: null

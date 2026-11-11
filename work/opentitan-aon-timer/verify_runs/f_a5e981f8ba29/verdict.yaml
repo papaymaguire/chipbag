@@ -1,0 +1,47 @@
+finding_hash: fea2e35329b8343a
+started_at: '2026-11-11T01:04:22Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The plan item lists both pwrmgr_smoketest and aon_timer_smoketest as its bazel tests, with
+    chip_sw_pwrmgr_smoketest as the DV test. pwrmgr_smoketest does the POR check, the sleep and the post-wakeup
+    reset-info check. The smoketest is only one of several tests that together cover the item, so the
+    finding's expectation that it cover every step on its own is wrong.
+  evidence:
+  - path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+    line_start: 43
+    line_end: 44
+    quote: "tests: [\"chip_sw_pwrmgr_smoketest\"]\n      bazel: [\"//sw/device/tests:pwrmgr_smoketest\"\
+      , \"//sw/device/tests:aon_timer_smoketest\"]"
+    role: refutes
+    note: The plan names pwrmgr_smoketest as the DV test and bazel test for deep-sleep wakeup, so it realizes
+      the item alongside aon_timer_smoketest.
+  - path: sw/device/tests/pwrmgr_smoketest.c
+    line_start: 62
+    line_end: 62
+    quote: rstmgr_testutils_reset_info_any(&rstmgr, kDifRstmgrResetInfoPor)));
+    role: refutes
+    note: pwrmgr_smoketest checks the POR reset cause, which covers the plan's first step.
+  searches:
+  - what: plan link for the aon_timer_smoketest and sleep_wakeup
+    where: repo hjson
+    found: The plan lists both pwrmgr_smoketest and aon_timer_smoketest under bazel.
+  - what: deep sleep and reset-info checks in pwrmgr_smoketest
+    where: sw/device/tests/pwrmgr_smoketest.c
+    found: It checks POR reset info, configures the AON wakeup and checks reset info after the wakeup.
+  near_misses:
+  - path: sw/device/tests/aon_timer_smoketest.c
+    line_start: 34
+    line_end: 42
+    why_not: This test really only checks IRQ-pending and does not sleep. The plan item is split across
+      tests, so this is not a plan-versus-test mismatch.
+  items: []
+  new_sources:
+  - path: sw/device/tests/pwrmgr_smoketest.c
+    reason: It realizes the deep-sleep wakeup steps of plan item p1.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0568831
+error: null

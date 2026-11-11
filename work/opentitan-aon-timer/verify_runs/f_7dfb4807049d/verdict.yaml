@@ -1,0 +1,33 @@
+finding_hash: 55255e60c4bd29e8
+started_at: '2026-11-11T01:04:27Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: wait_n_clks waits on the clocking block cbn, which is defined as @(negedge clk). So wait_n_clks(1)
+    does synchronise to the next negative edge, as the comment says. The finding's premise is wrong.
+  evidence:
+  - path: hw/dv/sv/common_ifs/clk_rst_if.sv
+    line_start: 116
+    line_end: 118
+    quote: "  task automatic wait_n_clks(int num_clks);\n    repeat (num_clks) @cbn;"
+    role: refutes
+    note: wait_n_clks waits on cbn
+  - path: hw/dv/sv/common_ifs/clk_rst_if.sv
+    line_start: 107
+    line_end: 107
+    quote: clocking cbn @(negedge clk);
+    role: refutes
+    note: cbn is the negedge clocking block
+  searches:
+  - what: wait_n_clks definition and cbn
+    where: hw/dv/sv/common_ifs/clk_rst_if.sv
+    found: cbn is clocking on negedge clk; wait_n_clks uses @cbn
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0296142
+error: null

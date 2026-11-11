@@ -1,0 +1,9 @@
+{"t": "2026-11-11T01:07:54Z", "event": "  \u2192 Grep: intr_test|INTR_TEST"}
+{"t": "2026-11-11T01:07:55Z", "event": "  \u2192 Grep: aon_timer.*intr_test|intr_test.*aon_timer"}
+{"t": "2026-11-11T01:07:58Z", "event": "  \u2192 Grep: intr_test"}
+{"t": "2026-11-11T01:07:58Z", "event": "  \u2192 Grep: intr_test"}
+{"t": "2026-11-11T01:08:00Z", "event": "  \u2192 Grep: task run_intr_test_vseq|run_intr_test|intr_test_reg"}
+{"t": "2026-11-11T01:08:02Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/dv/sv/cip_lib/seq_lib/cip_base_vseq.sv"}
+{"t": "2026-11-11T01:08:11Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:08:12Z", "event": "I submitted the verdict: all four items are withdrawn, and the submission was accepted.\n\nThe aon_timer sim config pulls in the generic `intr_test` test. That test writes `INTR_TEST` and checks `INTR_STATE` and the interrupt pins. If `hwext` or `hwqe` behaved wrongly, the check would fail.\n\nI did not run the test, so this rests on reading the sim config and the sequence code."}
+{"t": "2026-11-11T01:08:12Z", "event": "[8 turns, $0.0535]"}

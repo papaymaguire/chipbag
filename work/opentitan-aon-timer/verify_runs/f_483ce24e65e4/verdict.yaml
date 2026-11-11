@@ -1,0 +1,43 @@
+finding_hash: 021b9fca337248dd
+started_at: '2026-11-11T01:04:49Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'No specification text names the parameter or gives its width, encoding or default. Only the
+    RTL does: RaclPolicySelVec, one entry per register, default all 0. The spec only repeats the vague
+    sentence, in the hjson and in interfaces.md for many IPs.'
+  evidence:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    line_start: 116
+    line_end: 116
+    quote: The policy selection vector (parameter) selects the policy for each register.
+    role: supports
+    note: Parameter is unnamed and its encoding is not given.
+  - path: hw/ip/aon_timer/rtl/aon_timer.sv
+    line_start: 17
+    line_end: 17
+    quote: parameter top_racl_pkg::racl_policy_sel_t RaclPolicySelVec[NumRegs] = '{NumRegs{0}}
+    role: context
+    note: 'RTL only: the parameter is an array with one entry per register, default 0. This is not specification.'
+  searches:
+  - what: RaclPolicySelVec in aon_timer
+    where: hw/ip/aon_timer
+    found: Only RTL files; no doc mentions it.
+  - what: '''policy selection vector'' or RaclPolicySelVec in markdown docs'
+    where: hw/**/*.md
+    found: Only the same boilerplate sentence in interfaces.md files; no definition.
+  - what: policy_sel terms in racl_ctrl docs
+    where: hw/ip/racl_ctrl *.md
+    found: No matches.
+  near_misses: []
+  items: []
+  new_sources: []
+  resolution: The RTL shows an array parameter RaclPolicySelVec[NumRegs] with one policy index per register,
+    defaulting to 0. The spec should name the parameter and state its width, its per-register encoding
+    in register-map order, and its default.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0393524
+error: null

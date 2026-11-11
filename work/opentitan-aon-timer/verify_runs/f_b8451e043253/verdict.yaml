@@ -1,0 +1,58 @@
+finding_hash: 80521f8391c89486
+started_at: '2026-11-11T01:07:30Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The DV env drives the sleep_mode input (random initial value at reset, dropped to 0 on interrupt).
+    The smoke vseq randomizes pause_in_sleep. The scoreboard models the pause (it blocks predictions while
+    pause_in_sleep and sleep are both set) and checks interrupt timing against the RTL. The check is somewhat
+    weak because the scoreboard reads the internal synchronised aon_sleep_mode signal rather than the
+    port. Even so, the behaviour is stimulated and checked.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 213
+    line_end: 213
+    quote: cfg.sleep_vif.drive(initial_sleep_mode);
+    role: refutes
+    note: 'Stimulus: the sleep_mode input is driven with a random initial value.'
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 980
+    line_end: 989
+    quote: synchronised_sleep_mode_i = cfg.hdl_read_bit(.path(".aon_sleep_mode"));
+    role: refutes
+    note: 'Check: the scoreboard models the pause using the sleep signal, and the interrupt predictions
+      are checked against the RTL.'
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_smoke_vseq.sv
+    line_start: 34
+    line_end: 36
+    quote: wdog_ctrl_pause_in_sleep = $urandom_range(0, 1);
+    role: refutes
+    note: pause_in_sleep is randomized, so the sleep gating path is enabled in some runs.
+  searches:
+  - what: sleep_mode usage in aon_timer DV
+    where: hw/ip/aon_timer
+    found: A sleep_vif is driven in the base vseq; the scoreboard models the pause and reads aon_sleep_mode
+      from the RTL.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 983
+    line_end: 986
+    why_not: The scoreboard reads the internal synchronised signal, not the port. A broken port connection
+      that left the signal stuck low might therefore go unnoticed. This is a weakness in the check but
+      not an absence of one.
+  items:
+  - id: cr_d85fd5dd63a4
+    outcome: withdrawn
+    reason: The input is driven by the testbench and the pause behaviour is checked through scoreboard
+      interrupt-timing prediction.
+    evidence:
+    - 0
+    - 1
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.0752153
+error: null

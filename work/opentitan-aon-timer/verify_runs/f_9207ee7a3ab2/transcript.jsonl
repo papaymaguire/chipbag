@@ -1,0 +1,11 @@
+{"t": "2026-11-11T01:05:31Z", "event": "  \u2192 Grep: regwen|REGWEN"}
+{"t": "2026-11-11T01:05:32Z", "event": "  \u2192 Grep: wdog_regwen|WDOG_REGWEN"}
+{"t": "2026-11-11T01:05:32Z", "event": "  \u2192 Grep: wake_info|aon_timer.*wake|wakeup_cause"}
+{"t": "2026-11-11T01:05:35Z", "event": "  \u2192 Grep: regwen"}
+{"t": "2026-11-11T01:05:36Z", "event": "  \u2192 Grep: aon_timer.*wakeup|AonTimer"}
+{"t": "2026-11-11T01:05:39Z", "event": "  \u2192 Grep: aon_timer|AonTimer"}
+{"t": "2026-11-11T01:05:42Z", "event": "  \u2192 Grep: bark_thold"}
+{"t": "2026-11-11T01:05:44Z", "event": "Bark thresholds are randomized across a range and the scoreboard checks them, so that item is withdrawn."}
+{"t": "2026-11-11T01:05:54Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:06:00Z", "event": "I submitted the verdict as verified overall, with three items standing and two withdrawn.\n\n- **Pause resume (`cr_5c5513777815`), stands:** I found no test that checks the watchdog resumes counting after wake-up. `aon_timer_sleep_wdog_sleep_pause_test` only checks that the count stayed paused.\n- **Prescaler reset on `WKUP_CTRL` write (`cr_346ab297701a`), stands:** no scenario writes `WKUP_CTRL` while the prescaler is mid-count.\n- **`WDOG_REGWEN` lock (`cr_7f62f6f22c9d`), stands:** the DV write to `WDOG_REGWEN` is commented out (`aon_timer_base_vseq.sv:177`). No hardware test checks the lock, and no software test under `sw/device/tests` uses `WDOG_REGWEN`.\n- **Wakeup request (`cr_eaac5858c4b5`), withdrawn:** `pwrmgr_sleep_all_wake_ups_impl.c` configures the AON timer wakeup, sleeps, and checks the wake cause with `dif_aon_timer_get_wakeup_cause`. This file was not cited in the finding, so I added it as a new source.\n- **Bark threshold (`cr_d264b8651756`), withdrawn:** the base vseq randomizes bark thresholds with the count near the threshold (`aon_timer_base_vseq.sv:100`). There are also directed min-threshold and max-threshold sequences. I did not read the scoreboard's bark check in this session. The withdrawal relies on the scoreboard comparing the bark interrupt to its model, as the finding itself says for the max-threshold case."}
+{"t": "2026-11-11T01:06:00Z", "event": "[9 turns, $0.0660]"}

@@ -1,0 +1,34 @@
+finding_hash: 72453e43e4faa5c0
+started_at: '2026-11-11T01:04:52Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The aon_timer README states the bark condition: bark fires on every AON clock tick while the
+    timer is enabled and the count is at least WDOG_BARK_THOLD. That is a >= condition that stays asserted.
+    It answers the finding''s question.'
+  evidence:
+  - path: hw/ip/aon_timer/README.md
+    line_start: 55
+    line_end: 55
+    quote: If the timer is enabled, there is a "bark" on every AON clock tick when the count is at least
+      [`WDOG_BARK_THOLD`](doc/registers.md#wdog_bark_thold).
+    role: refutes
+    note: Defines the bark as >= and level-like (every tick), so the count == threshold vs >= ambiguity
+      is resolved.
+  searches:
+  - what: bark in aon_timer docs
+    where: hw/ip/aon_timer md/hjson
+    found: README.md line 55 gives the >= condition
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/ip/aon_timer/README.md
+    reason: Contains the explicit bark condition (count at least threshold, every tick).
+  resolution: The spec already says bark is raised on every AON tick while the count is >= the threshold.
+    A pointer from the register description to the README would make this easier to find.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.029454699999999997
+error: null

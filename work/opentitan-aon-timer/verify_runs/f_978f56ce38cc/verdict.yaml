@@ -1,0 +1,29 @@
+finding_hash: 006e9cbd926978f5
+started_at: '2026-11-11T01:04:27Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The finding read only a fragment of the test. The SuccessCommon helper does expect the disable
+    write, the count zero write, and the BARK/BITE writes with values minus 1. The comment matches the
+    code.
+  evidence:
+  - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+    line_start: 168
+    line_end: 172
+    quote: EXPECT_WRITE32(AON_TIMER_WDOG_COUNT_REG_OFFSET, 0);
+    role: refutes
+    note: The helper includes the count zero write and the threshold writes 0xA5A5A5A4 and 0x5A5A5A59,
+      which are the call values 0xA5A5A5A5 and 0x5A5A5A5A minus 1.
+  searches:
+  - what: Read WatchdogStartTest helper and Success test
+    where: sw/device/lib/dif/dif_aon_timer_unittest.cc:159-200
+    found: SuccessCommon has all the expected writes; Success calls it with 0xA5A5A5A5/0x5A5A5A5A.
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.022816400000000004
+error: null

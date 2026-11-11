@@ -1,0 +1,74 @@
+finding_hash: aa22c5abddce6029
+started_at: '2026-11-11T01:07:13Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Items 2 and 3 are untested. Item 1 is covered: wkup_init writes WKUP_THOLD_HI with thold[63:32],
+    and the scoreboard checks the resulting interrupt timing. No sequence disables the wakeup interrupt
+    before threshold writes. No test checks that the interrupt re-triggers after being cleared while the
+    count stays above the threshold.'
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 194
+    line_end: 196
+    quote: "  write_wkup_reg(ral.wkup_thold_lo, wkup_thold[31:0]);\n  if (cfg.under_reset) return;\n \
+      \ write_wkup_reg(ral.wkup_thold_hi, wkup_thold[63:32]);"
+    role: refutes
+    note: 'Item 1: the upper word is written in wkup_init, which every test runs. It is written after
+      the lower word with no interrupt disable beforehand (item 2).'
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 790
+    line_end: 794
+    quote: "    \"wkup_thold_hi\": begin\n      wkup_thold[63:32] =  csr.get_mirrored_value();"
+    role: refutes
+    note: 'Item 1: the scoreboard uses the HI write to model the threshold and check the interrupt timing.'
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 706
+    line_end: 709
+    quote: "        if (intr_state_val[WKUP]) begin\n          intr_status_exp[WKUP] = 1'b0;\n       \
+      \   update_prediction = 1;"
+    role: context
+    note: On an intr_state clear the scoreboard just drops the expected interrupt. No explicit re-trigger-after-clear
+      check for count above the threshold.
+  searches:
+  - what: THOLD_HI writes in DV
+    where: hw/ip/aon_timer/dv
+    found: wkup_init writes thold_hi; scoreboard predicts and checks
+  - what: intr_enable usage in sequences
+    where: aon_timer/dv/env/seq_lib
+    found: none, except custom_intr coverage sequence
+  - what: retrigger/again after clear
+    where: aon_timer excluding rtl
+    found: only the doc line; no test
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_jump_vseq.sv
+    line_start: 18
+    line_end: 28
+    why_not: Starts the count near the threshold but does not clear the interrupt and check that it fires
+      again.
+  items:
+  - id: cr_c5f298c5baf8
+    outcome: withdrawn
+    reason: The THOLD_HI write is exercised by every smoke-style test through wkup_init, and the scoreboard
+      checks the resulting interrupt behaviour.
+    evidence:
+    - 0
+    - 1
+  - id: cr_cd988f27543a
+    outcome: verified
+    reason: No sequence disables the wakeup interrupt before writing the threshold registers.
+    evidence:
+    - 0
+  - id: cr_bb10680d5ea9
+    outcome: verified
+    reason: The scoreboard has no check that the interrupt re-triggers after a clear while the count remains
+      above the threshold.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 12
+cost_usd: 0.1322707
+error: null

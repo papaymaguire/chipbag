@@ -1,0 +1,85 @@
+finding_hash: ffc9481eac16da1c
+started_at: '2026-11-11T01:07:00Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: 'Four of five items are process checklist or coverage items with no implementing test. SIM_SEC_CM_VERIFIED
+    is the exception: the sec_cm testplan maps it to a real test, aon_timer_tl_intg_err, so I withdrew
+    that item. I did not read the test or locate its checks.'
+  evidence:
+  - path: hw/ip/aon_timer/doc/checklist.md
+    line_start: 241
+    line_end: 242
+    quote: Regression    | [SIM_NIGHTLY_REGRESSION_AT_V3][]  | Not Started |
+    role: supports
+    note: V3 items are Not Started, so no test exists for them.
+  - path: hw/ip/aon_timer/data/aon_timer_sec_cm_testplan.hjson
+    line_start: 27
+    line_end: 30
+    quote: 'name: sec_cm_bus_integrity'
+    role: refutes
+    note: The sec_cm testplan maps bus integrity to the test aon_timer_tl_intg_err, so the sec_cm verification
+      has a test.
+  - path: hw/ip/aon_timer/dv/README.md
+    line_start: 142
+    line_end: 142
+    quote: 'Covergroup `tl_a_chan_cov_cg`:'
+    role: context
+    note: A reused covergroup from the common TL agent, not a test.
+  searches:
+  - what: SIM_CODE_COVERAGE_AT_100 status and any test
+    where: hw/ip/aon_timer/doc/checklist.md
+    found: Not Started; process item, no test
+  - what: SIM_NIGHTLY_REGRESSION_AT_V3 status and any test
+    where: hw/ip/aon_timer/doc/checklist.md
+    found: Not Started; process item, no test
+  - what: SIM_COVERAGE_REVIEWED
+    where: hw/ip/aon_timer/doc/checklist.md
+    found: Done; a review activity, no test
+  - what: SIM_SEC_CM_VERIFIED and sec_cm tests
+    where: hw/ip/aon_timer/data/aon_timer_sec_cm_testplan.hjson and dv/aon_timer_sim_cfg.hjson
+    found: sec_cm_bus_integrity maps to the test aon_timer_tl_intg_err; sec_cm_tests.hjson is imported
+      in the sim cfg
+  - what: tl_a_chan_cov_cg
+    where: hw/ip/aon_timer/dv
+    found: Only mentioned in the README as a reused covergroup; no dedicated test
+  near_misses:
+  - path: hw/ip/aon_timer/data/aon_timer_sec_cm_testplan.hjson
+    line_start: 27
+    line_end: 31
+    why_not: This is the test that backs SIM_SEC_CM_VERIFIED, so that item is not unimplemented.
+  items:
+  - id: cp_02b82fc41e1d
+    outcome: verified
+    reason: The checklist item is Not Started and is a process item with no test.
+    evidence:
+    - 0
+  - id: cp_058ec4d1f87f
+    outcome: verified
+    reason: The checklist item is Not Started and is a process item with no test.
+    evidence:
+    - 0
+  - id: cp_1978eabf0e8f
+    outcome: verified
+    reason: This is a coverage review activity, not a test.
+    evidence:
+    - 0
+  - id: cp_19d5d868dc56
+    outcome: withdrawn
+    reason: The sec_cm testplan maps it to the aon_timer_tl_intg_err test. I did not read that test or
+      its checks.
+    evidence:
+    - 1
+  - id: cp_2623de2c01c3
+    outcome: verified
+    reason: This is a reused covergroup from the common TL agent with no dedicated test. Any test that
+      drives TL traffic samples it.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 6
+cost_usd: 0.0639495
+error: null

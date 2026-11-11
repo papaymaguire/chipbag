@@ -1,0 +1,40 @@
+finding_hash: c19c7ce0dda1ab08
+started_at: '2026-11-11T01:08:13Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The generic dvsim csr_tests.hjson defines {name}_csr_hw_reset, which runs the common vseq with
+    +csr_hw_reset over all registers. AES, HMAC and KMAC sim configs import it. The standard CSR hw-reset
+    sequence reads every register and compares it to the reset value from the register model. I did not
+    open the sequence source, so that last point is from my knowledge of the DV library.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 21
+    line_end: 24
+    quote: 'name: "{name}_csr_hw_reset"'
+    role: refutes
+    note: Generic test that checks reset values of every register, enabled per block.
+  - path: hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    line_start: 30
+    line_end: 30
+    quote: '"{proj_root}/hw/dv/tools/dvsim/tests/csr_tests.hjson",'
+    role: refutes
+    note: HMAC imports the generic CSR tests; AES and KMAC import them too.
+  searches:
+  - what: csr_hw_reset in block DV cfgs
+    where: hw/ip/{aes,hmac,kmac}
+    found: No direct hits, because the tests come from the shared csr_tests.hjson.
+  - what: csr_tests.hjson import
+    where: aes, hmac, kmac sim cfgs
+    found: All three import it.
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    reason: Generic CSR test definitions, including csr_hw_reset and csr_mem_rw_with_rand_reset.
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0442024
+error: null

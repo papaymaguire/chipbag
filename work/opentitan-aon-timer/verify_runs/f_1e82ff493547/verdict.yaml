@@ -1,0 +1,75 @@
+finding_hash: a66e7de026a5ac75
+started_at: '2026-11-11T01:06:21Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'Two items have a real check and are withdrawn. The X-value assertions in the RTL run in every
+    simulation. The generic aon_timer_tl_intg_err test is in the sim cfg. The mem_walk item is only nominally
+    covered: the generic test is imported, but aon_timer has no memory to walk. The two checklist items
+    are status entries, not testable behavior, so there is no test to find.'
+  evidence:
+  - path: hw/ip/aon_timer/rtl/aon_timer.sv
+    line_start: 290
+    line_end: 290
+    quote: '`ASSERT_KNOWN(AlertsKnown_A, alert_tx_o)'
+    role: refutes
+    note: RTL X-check assertions on outputs, active in all simulations
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 20
+    line_end: 23
+    quote: 'name: "{name}_tl_intg_err"'
+    role: refutes
+    note: Generic tl_intg_err test, imported by the aon_timer sim cfg via tl_access_tests.hjson
+  - path: hw/dv/tools/dvsim/tests/mem_tests.hjson
+    line_start: 22
+    line_end: 25
+    quote: 'name: "{name}_mem_walk"'
+    role: context
+    note: Generic mem_walk test is imported, but aon_timer has no memories, so the walk checks nothing
+  - path: hw/ip/aon_timer/doc/checklist.md
+    line_start: 243
+    line_end: 243
+    quote: Coverage      | [SIM_FUNCTIONAL_COVERAGE_AT_100][]| Not Started |
+    role: supports
+    note: Status entry only, not a test
+  searches:
+  - what: X assertions
+    where: hw/ip/aon_timer/rtl
+    found: ASSERT_KNOWN on outputs
+  - what: tl_intg_err and mem_walk tests
+    where: aon_timer_sim_cfg.hjson and the common tests/*.hjson files
+    found: both are imported; aon_timer has no memories for mem_walk
+  near_misses: []
+  items:
+  - id: cp_8ded836cfabd
+    outcome: withdrawn
+    reason: ASSERT_KNOWN assertions in the RTL check outputs for X in every test.
+    evidence:
+    - 0
+  - id: cp_9e018b6da1b7
+    outcome: verified
+    reason: The generic mem_walk test is imported, but aon_timer has no memories, so it checks nothing.
+    evidence:
+    - 2
+  - id: cp_aea4ca644638
+    outcome: verified
+    reason: This is a checklist status entry (Not Started), not something a test can implement.
+    evidence:
+    - 3
+  - id: cp_b45f61de3f01
+    outcome: withdrawn
+    reason: The aon_timer_tl_intg_err test is in the sim cfg through the imported tl_access_tests.hjson.
+    evidence:
+    - 1
+  - id: cp_b964b93a1459
+    outcome: verified
+    reason: This is a review checklist item, not testable behavior.
+    evidence:
+    - 3
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.057804799999999996
+error: null

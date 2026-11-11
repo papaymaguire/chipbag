@@ -1,0 +1,9 @@
+{"t": "2026-11-11T01:08:20Z", "event": "  \u2192 Grep: regwen_csr_and_corresponding_lockable_csr"}
+{"t": "2026-11-11T01:08:23Z", "event": "  \u2192 Grep: regwen_csr_and_corresponding_lockable_csr"}
+{"t": "2026-11-11T01:08:23Z", "event": "  \u2192 Grep: regwen|write_enable|lockable"}
+{"t": "2026-11-11T01:08:26Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/dv/tools/dvsim/testplans/csr_testplan.hjson"}
+{"t": "2026-11-11T01:08:27Z", "event": "  \u2192 Grep: regwen|lockable|locked"}
+{"t": "2026-11-11T01:08:36Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-11T01:08:42Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:08:44Z", "event": "I withdrew the finding, and the verdict was accepted.\n\nThe suite comes from the shared testplan `hw/dv/tools/dvsim/testplans/csr_testplan.hjson`. That plan maps the regwen and lockable-CSR item to the generic `csr_rw` and `csr_aliasing` tests, which run on every block. The register model also tracks which fields a regwen locks. I didn't trace the `csr_rw` check itself, and I didn't confirm those tests are enabled for a particular block."}
+{"t": "2026-11-11T01:08:44Z", "event": "[8 turns, $0.0544]"}

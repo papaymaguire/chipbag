@@ -1,0 +1,42 @@
+finding_hash: b1a6dd0bb13c441e
+started_at: '2026-11-11T01:06:49Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The scoreboard checks the reset_req pin only after its model says the bite threshold has been
+    reached. I found no check that the pin stays low before the count reaches the threshold. I also found
+    no test that puts a mid-range threshold on a deterministic path to the bite. The gap stands. I did
+    not read the smoke or jump sequences or the test lists in this pass.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 1380
+    line_end: 1393
+    quote: wdog_rst_req_exp = 1'b1;
+    role: context
+    note: The reset_req pin is compared with the expected value once, after the modelled count reaches
+      wdog_bite_num. No check of the pin before that point turned up in this function.
+  searches:
+  - what: bite handling in the aon_timer DV directory
+    where: hw/ip/aon_timer/dv
+    found: The scoreboard model_and_check_wdog_bite is the only reset_req check that turned up. Sequences
+      for jump, min_thold and max_thold only configure stimulus.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_jump_vseq.sv
+    line_start: 1
+    line_end: 1
+    why_not: I did not read this file. Per the finding it only puts the count near the thresholds, so
+      it does not deterministically hit a mid-range bite.
+  items:
+  - id: cr_dce064574acf
+    outcome: verified
+    reason: The scoreboard checks the pin only at the modelled expiry. The deterministic mid-range threshold
+      and the check that the pin is not asserted early are both missing.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.04869820000000001
+error: null

@@ -1,0 +1,5 @@
+{"t": "2026-11-11T01:04:55Z", "event": "  \u2192 Grep: bark"}
+{"t": "2026-11-11T01:04:57Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/README.md"}
+{"t": "2026-11-11T01:05:01Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:05:04Z", "event": "I withdrew the finding. The aon_timer README defines the bark condition at `hw/ip/aon_timer/README.md:55`. It says that when the timer is enabled, there is a bark on every AON clock tick when the count is at least `WDOG_BARK_THOLD`.\n\nThat is a `>=` condition, and bark stays asserted on every tick while the count is at or above the threshold. This answers both of the finding's questions. A threshold programmed below the current count therefore gives a bark on the next tick, and it keeps asserting.\n\nThe `WDOG_BARK_THOLD` register description in `aon_timer.hjson` is still vague. A pointer from it to the README would make the rule easier to find."}
+{"t": "2026-11-11T01:05:04Z", "event": "[4 turns, $0.0295]"}

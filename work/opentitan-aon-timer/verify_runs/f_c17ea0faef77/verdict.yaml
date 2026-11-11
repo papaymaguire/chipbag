@@ -1,0 +1,33 @@
+finding_hash: b0df05d7dc461014
+started_at: '2026-11-11T01:04:42Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The aon_timer README states that the number of cycles per tick is one more than the prescaler
+    field. That answers the question: N+1 cycles per increment, and N=0 means one tick per cycle.'
+  evidence:
+  - path: hw/ip/aon_timer/README.md
+    line_start: 31
+    line_end: 32
+    quote: The number of cycles per tick is one more than the 12-bit [`WKUP_CTRL.prescaler`](doc/registers.md#wkup_ctrl)
+      field.
+    role: refutes
+    note: Defines the count rate as prescaler+1 clk_aon cycles per tick, so prescaler=0 gives one tick
+      per cycle.
+  searches:
+  - what: prescaler / pre-scaler text in aon_timer docs and hjson
+    where: hw/ip/aon_timer
+    found: README.md lines 31-32 specify the N+1 cycles per tick relationship
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/ip/aon_timer/README.md
+    reason: Specifies the prescaler to tick relationship (N+1 cycles per tick).
+  resolution: 'Add the README sentence to the WKUP_CTRL.prescaler field description in aon_timer.hjson:
+    the counter increments every prescaler+1 clk_aon cycles, and prescaler=0 gives one tick per cycle.'
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.0227287
+error: null

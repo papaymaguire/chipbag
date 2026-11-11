@@ -1,0 +1,7 @@
+{"t": "2026-11-11T01:08:04Z", "event": "  \u2192 Bash: cd hw/ip/aon_timer; cat dv/aon_timer_sim_cfg.hjson | head -80; grep -n \"FPV\" doc/checklist.md; grep -rn \"alert_test\\|tl_errors_cg\\|tl_intg_err\" dv/README.md dv/*.hjson | head -20; ls dv/env | head -30"}
+{"t": "2026-11-11T01:08:08Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan; cat hw/dv/tools/dvsim/tests/alert_test.hjson | tail -15; grep -n \"alert\" hw/ip/aon_timer/data/aon_timer_testplan.hjson hw/ip/aon_timer/data/aon_ti"}
+{"t": "2026-11-11T01:08:19Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-11T01:08:26Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:08:34Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:08:36Z", "event": "I submitted the verdict on f_e8981726353a as inconclusive. Two items are withdrawn, one is verified and two are unresolved.\n\n- **`alert_test`:** withdrawn. The common `{name}_alert_test` test is imported into the aon_timer sim cfg.\n- **`FPV_SEC_CM_VERIFIED`:** withdrawn. The checklist marks it N/A, so no test is expected.\n- **`FPV_COI_COVERAGE_AT_100`:** verified. The checklist marks it Not Started.\n- **`tl_errors_cg_wrap` and `tl_intg_err_cg`:** inconclusive. Both covergroups exist in the shared cip_lib, but I didn't trace where they are sampled or which tests drive them.\n\nNothing further to do on this finding."}
+{"t": "2026-11-11T01:08:36Z", "event": "[6 turns, $0.0902]"}

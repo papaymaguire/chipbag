@@ -1,0 +1,6 @@
+{"t": "2026-11-11T01:04:48Z", "event": "  \u2192 Grep: thold|threshold|greater|>=|equal"}
+{"t": "2026-11-11T01:04:49Z", "event": "  \u2192 Grep: wkup_count.*thold|>= *.*thold"}
+{"t": "2026-11-11T01:04:55Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-11T01:05:00Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:05:03Z", "event": "I withdrew the finding. Other spec text answers the question the register description leaves open.\n\n- **Comparison:** `hw/ip/aon_timer/README.md:35` says \"Each time the pre-scaler completes when the count is at or above the threshold, two outputs become high\". So the test is greater than or equal, not equality.\n- **Re-triggering:** `hw/ip/aon_timer/doc/programmers_guide.md:93` says the interrupt and wakeup event \"will trigger again at the next clock tick\" if the count is still above the threshold after a clear.\n- **RTL:** `hw/ip/aon_timer/rtl/aon_timer_core.sv:68` implements it as `wkup_incr & (wkup_count >= wkup_thold)`, which matches the docs. I cite this as context only.\n\nThe `WKUP_THOLD_LO` description itself is still vague. A short addition to it would close the gap: \"when the count is greater than or equal to this value\"."}
+{"t": "2026-11-11T01:05:03Z", "event": "[5 turns, $0.0515]"}

@@ -1,0 +1,6 @@
+{"t": "2026-11-11T01:05:06Z", "event": "  \u2192 Grep: threshold|>=|greater"}
+{"t": "2026-11-11T01:05:07Z", "event": "  \u2192 Grep: thold|>="}
+{"t": "2026-11-11T01:05:09Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/README.md"}
+{"t": "2026-11-11T01:05:14Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:05:17Z", "event": "I withdrew the finding. Other spec text in the repository answers its question, and the verdict was accepted.\n\n- **Condition:** `hw/ip/aon_timer/README.md:35` says \"Each time the pre-scaler completes when the count is at or above the threshold\", so the comparison is greater-or-equal, checked on each prescaler tick.\n- **Re-assertion:** `hw/ip/aon_timer/doc/programmers_guide.md:93` says that if the count remains above the threshold after the interrupt is cleared and the timer is still enabled, the interrupt triggers again at the next clock tick.\n- **RTL:** `aon_timer_core.sv:68` implements `wkup_count >= wkup_thold`, which matches both statements.\n\nThe `WKUP_THOLD_HI` register description itself is still loosely worded. Adding \"at or above\" there would match the README."}
+{"t": "2026-11-11T01:05:17Z", "event": "[5 turns, $0.0382]"}

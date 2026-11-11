@@ -1,0 +1,76 @@
+finding_hash: efaaa7562e60461f
+started_at: '2026-11-11T01:07:50Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: Two of the five items are implemented by shared tests. One is genuinely unimplemented, and
+    two are covergroups rather than tests. So the finding as stated is partly wrong.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 37
+    line_end: 39
+    quote: 'name: "{name}_csr_bit_bash"'
+    role: refutes
+    note: Shared csr_bit_bash test, imported by aon_timer_sim_cfg.hjson.
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 20
+    line_end: 23
+    quote: 'name: "{name}_tl_intg_err"'
+    role: refutes
+    note: Shared tl_intg_err test, imported by aon_timer_sim_cfg.hjson; this is the test the sec_cm plan
+      item maps to.
+  - path: hw/ip/aon_timer/doc/checklist.md
+    line_start: 240
+    line_end: 240
+    quote: '[FPV_ASSERTIONS_PROVEN_AT_V3][]   | Not Started |'
+    role: supports
+    note: The checklist item is marked Not Started.
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 355
+    line_end: 355
+    quote: cov.intr_pins_cg.sample(i, cfg.aon_intr_vif.sample_pin(.idx(i)));
+    role: context
+    note: intr_pins_cg is sampled in the scoreboard. It is a coverage item, not a test.
+  searches:
+  - what: csr_bit_bash and tl_intg_err in the dvsim test lists and in the aon_timer sim cfg
+    where: hw/dv/tools/dvsim, hw/ip/aon_timer/dv
+    found: aon_timer_sim_cfg.hjson imports csr_tests.hjson and tl_access_tests.hjson, which define both
+      tests.
+  - what: intr_pins_cg and max_outstanding_cg
+    where: hw/
+    found: intr_pins_cg is sampled in the aon_timer scoreboard. I did not find where either covergroup
+      is defined, and I did not check max_outstanding_cg further.
+  near_misses: []
+  items:
+  - id: cp_c1701d4a58ea
+    outcome: verified
+    reason: The checklist item is Not Started and I found no FPV tests or assertions for it.
+    evidence:
+    - 2
+  - id: cp_d17099555445
+    outcome: withdrawn
+    reason: The shared csr_bit_bash test is imported by the aon_timer sim cfg.
+    evidence:
+    - 0
+  - id: cp_d27abeb92887
+    outcome: withdrawn
+    reason: The shared aon_timer_tl_intg_err test exists and is imported by the aon_timer sim cfg.
+    evidence:
+    - 1
+  - id: cp_d9c004f794d2
+    outcome: inconclusive
+    reason: This is a coverage item, not a test. It is sampled in the scoreboard, so it is exercised by
+      every test that runs it.
+    evidence:
+    - 3
+  - id: cp_e568915a8fd3
+    outcome: inconclusive
+    reason: This is a coverage item, not a test. I did not find where it is defined or sampled.
+    evidence: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.059648400000000004
+error: null

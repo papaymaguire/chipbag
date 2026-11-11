@@ -1,0 +1,78 @@
+finding_hash: ac92f41583fafd07
+started_at: '2026-11-11T01:06:20Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No test checks any of the five interface declarations. The DV testbench ties racl_policies
+    to 0 and leaves racl_error unconnected. The coverage exclusion file confirms that RACL signals do
+    not toggle in this non-RACL instance. The other three items are structural declarations with no behavioral
+    check.
+  evidence:
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 25
+    line_end: 26
+    quote: "racl_policy_vec_t racl_policies;\n  assign racl_policies = 0;"
+    role: context
+    note: RACL policies tied off to 0, so no stimulus reaches the RACL path
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 62
+    line_end: 62
+    quote: .racl_error_o              (),
+    role: supports
+    note: racl_error output is left unconnected and never checked
+  - path: hw/ip/aon_timer/dv/cov/aon_timer_unr_non_racl_manually_excluded_excl.el
+    line_start: 14
+    line_end: 14
+    quote: 'ANNOTATION: "This is a non-racl instance - hence signals won''t toggle."'
+    role: supports
+    note: RACL signals are excluded from coverage because they do not toggle
+  searches:
+  - what: racl in aon_timer dv (racl_policies and racl_error, item 4 and 5)
+    where: hw/ip/aon_timer/dv
+    found: Only the tb tie-off, an unconnected racl_error_o and coverage exclusions; no test or checker
+  - what: TL-UL host interface and chip IO pins (item 1 and 2)
+    where: hw/ip/aon_timer/dv and the hjson-derived doc
+    found: Structural 'none' declarations; no test or assertion checks them
+  - what: primary clock clk_i (item 3)
+    where: hw/ip/aon_timer/dv/tb.sv
+    found: The clock is driven in the testbench, but no check verifies the declaration itself
+  near_misses:
+  - path: hw/ip/aon_timer/dv/tb.sv
+    line_start: 61
+    line_end: 62
+    why_not: The ports are connected but nothing stimulates or checks them.
+  items:
+  - id: cr_627c824e7226
+    outcome: verified
+    reason: A structural declaration; no test checks it.
+    evidence:
+    - 0
+  - id: cr_8d65e39a5db1
+    outcome: verified
+    reason: A structural declaration; no test checks it.
+    evidence:
+    - 0
+  - id: cr_e4e318bad395
+    outcome: verified
+    reason: The clock is used by the testbench, but no test checks the declaration itself.
+    evidence:
+    - 0
+  - id: cr_5867b0a56d13
+    outcome: verified
+    reason: racl_policies is tied to 0 in the testbench, so it is never exercised.
+    evidence:
+    - 0
+    - 2
+  - id: cr_c6cf966d6f9f
+    outcome: verified
+    reason: racl_error is left unconnected and never checked.
+    evidence:
+    - 1
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 6
+cost_usd: 0.0597195
+error: null

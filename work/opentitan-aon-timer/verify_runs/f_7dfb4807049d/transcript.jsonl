@@ -1,0 +1,7 @@
+{"t": "2026-11-11T01:04:31Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv"}
+{"t": "2026-11-11T01:04:31Z", "event": "  \u2192 Grep: task wait_n_clks"}
+{"t": "2026-11-11T01:04:33Z", "event": "  \u2192 Grep: wait_n_clks"}
+{"t": "2026-11-11T01:04:35Z", "event": "  \u2192 Bash: grep -n \"cbn\" /home/maguire/Documents/chipbag/targets/opentitan/hw/dv/sv/common_ifs/clk_rst_if.sv | head -5"}
+{"t": "2026-11-11T01:04:39Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:04:41Z", "event": "I withdrew the finding, and the verdict was accepted. The comment and the code agree.\n\n`wait_n_clks` in `hw/dv/sv/common_ifs/clk_rst_if.sv:116-118` waits on the clocking block `cbn`. `cbn` is declared at line 107 as `clocking cbn @(negedge clk);`. So `wait_n_clks(1)` in `check_intr_value_propagated` does synchronise to the next negative clock edge, as the comment says."}
+{"t": "2026-11-11T01:04:41Z", "event": "[6 turns, $0.0296]"}

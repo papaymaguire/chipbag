@@ -1,0 +1,52 @@
+finding_hash: 54197700af0c0039
+started_at: '2026-11-11T01:08:17Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The testplan entry maps this item to the generic csr_rw and csr_aliasing tests, which run on
+    every block through the shared CIP library. The register model tracks which fields a regwen locks,
+    so the generic tests do check lockable CSRs. The finding looks like a planned-only reading of a shared
+    testplan. I did not trace the csr_rw check itself or confirm the tests are enabled for a specific
+    block.
+  evidence:
+  - path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+    line_start: 99
+    line_end: 99
+    quote: 'tests: ["{name}{intf}_csr_rw", "{name}{intf}_csr_aliasing"]'
+    role: refutes
+    note: The testplan item is implemented by the generic csr_rw and csr_aliasing tests, which run on
+      every block.
+  - path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+    line_start: 92
+    line_end: 93
+    quote: '- If regwen CSR is HW read-only, this feature can be fully tested by common'
+    role: context
+    note: The plan itself says common CSR tests fully cover the HW read-only regwen case.
+  - path: hw/dv/sv/dv_base_reg/dv_base_reg.sv
+    line_start: 174
+    line_end: 176
+    quote: // Wen reg/fld can lock specific groups of fields' write access. The lockable fields are called
+    role: context
+    note: The register model tracks the regwen-to-lockable relationship, so generic csr_rw predictions
+      respect locked fields.
+  searches:
+  - what: the suite name
+    where: whole repo
+    found: Only hw/dv/tools/dvsim/testplans/csr_testplan.hjson, a shared testplan imported by blocks.
+  - what: regwen/lockable handling in the register model and cip_lib
+    where: hw/dv/sv/dv_base_reg, hw/dv/sv/cip_lib
+    found: Lockable-field handling and coverage exist in dv_base_reg and dv_base_lockable_field_cov.
+  near_misses:
+  - path: hw/dv/sv/dv_base_reg/dv_base_lockable_field_cov.sv
+    line_start: 6
+    line_end: 24
+    why_not: This is coverage only, not a check. It shows the stimulus is sampled, not that a failure
+      is detected.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.0543569
+error: null

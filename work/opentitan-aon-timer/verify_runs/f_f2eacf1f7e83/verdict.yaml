@@ -1,0 +1,48 @@
+finding_hash: 7343d202fdd9bba7
+started_at: '2026-11-11T01:05:09Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The register definitions say which registers WDOG_REGWEN locks. WDOG_CTRL, WDOG_BARK_THOLD
+    and WDOG_BITE_THOLD each carry `regwen: "WDOG_REGWEN"`. The generated register documentation shows
+    "Register enable: WDOG_REGWEN" for those three only. WDOG_COUNT has no such tag, so it stays writable.
+    The finding itself concedes that the per-register tags would settle the question.'
+  evidence:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    line_start: 265
+    line_end: 269
+    quote: '      regwen: "WDOG_REGWEN",'
+    role: refutes
+    note: WDOG_CTRL is tagged as locked by WDOG_REGWEN. BARK_THOLD and BITE_THOLD have the same tag at
+      lines 286 and 299.
+  - path: hw/ip/aon_timer/doc/registers.md
+    line_start: 146
+    line_end: 146
+    quote: '- Register enable: [`WDOG_REGWEN`](#wdog_regwen)'
+    role: refutes
+    note: The documented register list shows WDOG_CTRL, WDOG_BARK_THOLD and WDOG_BITE_THOLD as locked.
+      The WDOG_COUNT section has no such line.
+  searches:
+  - what: regwen tags and WDOG_REGWEN mentions
+    where: hw/ip/aon_timer (hjson, md)
+    found: Only WDOG_CTRL, WDOG_BARK_THOLD and WDOG_BITE_THOLD reference WDOG_REGWEN. WDOG_COUNT and the
+      wakeup registers have no regwen.
+  near_misses:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    line_start: 259
+    line_end: 259
+    why_not: The field description alone is vague, but the per-register regwen attributes elsewhere in
+      the same file define the set.
+  items: []
+  new_sources:
+  - path: hw/ip/aon_timer/doc/registers.md
+    reason: Generated register documentation listing the 'Register enable' relationship per register.
+  resolution: Locked registers are WDOG_CTRL, WDOG_BARK_THOLD and WDOG_BITE_THOLD. WDOG_COUNT, the wakeup
+    timer registers and the interrupt registers are not locked. The field description could name these
+    three registers explicitly.
+submissions: 1
+rejections: []
+turns: 4
+cost_usd: 0.0357014
+error: null

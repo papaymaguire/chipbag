@@ -1,0 +1,65 @@
+finding_hash: 82108218760879b4
+started_at: '2026-11-11T01:06:00Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Items 1 and 2 have no test. Item 3 is covered indirectly by the scoreboard and the CSR tests,
+    so the finding is weak there. I did not check whether bits 31:0 are directly compared, and nothing
+    refutes the finding strongly enough to withdraw it.
+  evidence:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 27
+    line_end: 28
+    quote: If software needs to guarantee completion of a register write then it can read back the register
+      value.
+    role: supports
+    note: Readback-guarantee claim; no DV test targets it.
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 36
+    line_end: 36
+    quote: you must start the always-on clock (`clk_aon_i`) before you start the main clock (`clk_i`).
+    role: supports
+    note: Integration requirement; not checkable in block-level DV.
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 784
+    line_end: 786
+    quote: "\"wkup_thold_lo\": begin\n      wkup_thold[31:0] =  csr.get_mirrored_value();"
+    role: context
+    note: Scoreboard models the bits 31:0 threshold mapping, but no explicit check of the field range.
+  searches:
+  - what: readback / clk_aon ordering in aon_timer dv
+    where: hw/ip/aon_timer
+    found: Only the doc lines. No test or assertion covers them.
+  - what: wkup_thold_lo in dv
+    where: hw/ip/aon_timer/dv
+    found: Scoreboard modelling, a base vseq write, and generic CSR tests.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 462
+    line_end: 469
+    why_not: Timing of the thold_lo write is modelled, but it does not explicitly verify bits 31:0 of
+      the threshold.
+  items:
+  - id: cr_9958ce5b3109
+    outcome: verified
+    reason: No test uses readback to confirm that earlier writes have completed.
+    evidence:
+    - 0
+  - id: cr_bfbda21a02ad
+    outcome: verified
+    reason: Clock start order is an integration requirement and no DV test checks it.
+    evidence:
+    - 1
+  - id: cr_d9531c6323ce
+    outcome: inconclusive
+    reason: The scoreboard and CSR tests exercise thold_lo indirectly. I did not confirm an explicit check
+      of the bits 31:0 mapping.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.060706699999999995
+error: null

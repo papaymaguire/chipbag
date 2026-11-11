@@ -1,0 +1,3126 @@
+generated_at: '2026-11-11T00:57:24Z'
+models:
+  bulk: claude-sonnet-5-5
+  review: claude-opus-5-5
+stats:
+  findings: 45
+  by_category:
+    spec_ambiguity:
+      missing_detail: 4
+      weak_modal: 3
+      unclear_referent: 3
+    spec_contradiction:
+      description_vs_definition: 2
+    test_inconsistency:
+      plan_vs_test: 3
+      check_cannot_fail: 1
+      comment_vs_code: 3
+    untested:
+      partially_tested: 5
+      planned_only: 2
+      untested: 8
+      plan_item_not_implemented: 7
+      weak_only: 1
+      register_suite: 3
+  dropped:
+    ambiguity_not_test_relevant: 9
+    partial_negligible: 8
+  errors: 0
+  cost_usd: 0.4203
+errors: []
+findings:
+- id: f_c17ea0faef77
+  category: spec_ambiguity
+  category_no: 1
+  type: missing_detail
+  title: The prescaler field holds the pre-scaler value for the wakeup timer count.
+  subject:
+    requirements:
+    - cr_29f17b8f82d2
+  section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WKUP_CTRL
+  spec:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    lines:
+    - 195
+    - 195
+    text: Pre-scaler value for wakeup timer count
+  detail:
+    text: The prescaler field holds the pre-scaler value for the wakeup timer count.
+    note: The relationship between the prescaler value and the count rate is not specified.
+    impact: The scoreboard's expected wakeup interrupt time depends on whether the counter increments
+      every prescaler cycles or every prescaler+1 clk_aon cycles. With prescaler=0 it is either one tick
+      per cycle or a divide-by-zero or hold. Two engineers would predict different interrupt cycles and
+      different wkup_count values over time.
+    question: With prescaler=N, how many clk_aon_i cycles pass between WKUP_COUNT increments (N+1 or N)?
+      What happens when N=0?
+  origin: normalize+review
+  severity: high
+  status: candidate
+- id: f_c7ed49ba3834
+  category: spec_ambiguity
+  category_no: 1
+  type: missing_detail
+  title: The cause bit indicates that the AON timer requested a wakeup.
+  subject:
+    requirements:
+    - cr_4f0006fef572
+  section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WKUP_CAUSE
+  spec:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    lines:
+    - 363
+    - 363
+    text: AON timer requested wakeup
+  detail:
+    text: The cause bit indicates that the AON timer requested a wakeup.
+    note: The text does not say which AON timer event (wakeup threshold or watchdog) sets the bit, or
+      when it is set.
+    impact: From this register alone, one engineer would check only that cause sets when the wakeup counter
+      reaches its threshold. Another would also expect it to set on watchdog bark, which is what the existing
+      scoreboard predicts. The two would diverge on bark-only scenarios. The register is async to clk_aon_i,
+      so the cycle latency before the bit reads as 1 on the bus is also unstated. That changes when a
+      read-back check should expect the value. It is equally unclear whether HW keeps re-setting the bit
+      while the wakeup condition persists after a write-0, which changes the expected result of clear-then-read
+      checks.
+    question: 'Which events set WKUP_CAUSE.cause: the wakeup timer threshold match, watchdog bark, watchdog
+      bite, or some combination, and is each gated by the corresponding enable? What is the latency in
+      clk_aon_i and bus clock cycles before the set is visible to a register read? If SW writes 0 while
+      the triggering condition is still true, does HW immediately set the bit again?'
+  origin: normalize+review
+  severity: high
+  status: candidate
+- id: f_1bc5edd4d321
+  category: spec_ambiguity
+  category_no: 1
+  type: weak_modal
+  title: The count at which a wakeup interrupt should be generated, bottom 32 bits.
+  subject:
+    section: sec_05476ea7e547
+    quote: c0ef738df28b
+  section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WKUP_THOLD_LO
+  spec:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    lines:
+    - 220
+    - 220
+    text: The count at which a wakeup interrupt should be generated, bottom 32 bits.
+  detail:
+    text: The count at which a wakeup interrupt should be generated, bottom 32 bits.
+    note: '''should be generated'' is a weak modal, and the exact comparison (equal, or greater than or
+      equal) that triggers the wakeup interrupt is not stated.'
+    impact: The checks diverge when software programs a threshold at or below the current WKUP_COUNT,
+      or when the count passes the threshold. An equality-based model expects no interrupt until the counter
+      wraps the full 64-bit range. A greater-than-or-equal model expects the interrupt immediately and
+      expects it to persist or re-assert while count >= threshold. This changes the expected intr_wkup_timer_expired
+      and wakeup request timing in the scoreboard, and the pass criteria for threshold-update tests.
+    question: Is the wakeup interrupt/wakeup request asserted when the 64-bit WKUP_COUNT is greater than
+      or equal to {WKUP_THOLD_HI, WKUP_THOLD_LO}, or only when it is exactly equal? Does it remain asserted
+      (re-triggering after a clear) on every cycle while the condition holds?
+  origin: normalize+review
+  severity: medium
+  status: candidate
+- id: f_483ce24e65e4
+  category: spec_ambiguity
+  category_no: 1
+  type: unclear_referent
+  title: The policy selection vector parameter selects the RACL policy applied to each register.
+  subject:
+    requirements:
+    - cr_d3bb7e9459e0
+  section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > inter_signal_list
+  spec:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    lines: &id047
+    - 116
+    - 116
+    text: The policy selection vector (parameter) selects the policy for each register.
+  - path: hw/ip/aon_timer/doc/interfaces.md
+    lines: &id048
+    - 20
+    - 20
+    text: The policy selection vector (parameter) selects the policy for each register.
+  detail:
+    text: The policy selection vector parameter selects the RACL policy applied to each register.
+    note: The parameter is not named, and the selection encoding is not given.
+    impact: RACL access-control tests must know which policy index governs each aon_timer register to
+      predict whether an access is allowed or blocked. Without the parameter name and its encoding, one
+      engineer might apply policy 0 to all registers while another uses a per-register index, so the expected
+      allow/deny results would differ.
+    question: What is the name of the policy selection vector parameter (e.g. RaclPolicySelVec)? What
+      is its width and encoding, i.e. one policy index per register in register-map order? What is its
+      default value?
+  origin: normalize+review
+  severity: medium
+  status: candidate
+- id: f_4f700106f7fc
+  category: spec_ambiguity
+  category_no: 1
+  type: missing_detail
+  title: A watchdog bark interrupt is generated when the watchdog count reaches the threshold value.
+  subject:
+    requirements:
+    - cr_d264b8651756
+  section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WDOG_BARK_THOLD
+  spec:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    lines: &id035
+    - 290
+    - 290
+    text: The count at which a watchdog bark interrupt should be generated.
+  detail:
+    text: A watchdog bark interrupt is generated when the watchdog count reaches the threshold value.
+    note: The text does not say whether the bark fires on equality or on greater-or-equal, and it uses
+      the weak wording 'should'.
+    impact: In the normal case, where the count increments up to the threshold, both readings give the
+      same result. They differ when software writes a threshold below the current count, or when the count
+      is written above the threshold. Under a '>=' model the scoreboard predicts the bark immediately.
+      Under an '==' model it predicts no bark until the count wraps. The two readings also disagree on
+      whether bark stays asserted while the count remains above the threshold. Reference models and checks
+      built on each reading would conflict, and the existing max-threshold test does not exercise this
+      case.
+    question: Is the watchdog bark condition defined as count == threshold or count >= threshold? If the
+      threshold is programmed below the current count, or the count is written above the threshold, does
+      bark assert immediately, on which cycle, and does it remain asserted?
+  origin: normalize+review
+  severity: medium
+  status: candidate
+- id: f_604ea5c51516
+  category: spec_ambiguity
+  category_no: 1
+  type: unclear_referent
+  title: 'If the count remains above the threshold after clearing and the timer stays enabled, the wakeup
+    event triggers again at '
+  subject:
+    requirements:
+    - cr_bb10680d5ea9
+  section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Interrupt Handling
+  spec:
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    lines: &id045
+    - 93
+    - 93
+    text: If {[`WKUP_COUNT_HI`](registers.md#wkup_count_hi), [`WKUP_COUNT_LO`](registers.md#wkup_count_lo)}
+      remains above the threshold after clearing the interrupt or wakeup event and the timer remains enabled,
+      the interrupt and wakeup event will trigger again at the next clock tick.
+  detail:
+    text: If the count remains above the threshold after clearing and the timer stays enabled, the wakeup
+      event triggers again at the next clock tick.
+    note: It is unclear which clock the 'next clock tick' refers to (AON clock or bus clock) and whether
+      it is the prescaled tick.
+    impact: A test that clears INTR_STATE or WKUP_CAUSE while the count is still at or above the threshold
+      must decide when re-assertion is expected. One reading expects re-assertion within one AON clock
+      cycle, plus CDC sync latency into the bus domain. The other waits for the next prescaler tick, which
+      can be up to prescaler+1 AON cycles later. These lead to different timing windows and pass criteria
+      in the scoreboard. A test that clears just before a prescaler tick and checks the interrupt stays
+      low until then would pass under one reading and fail under the other.
+    question: After software clears INTR_STATE or WKUP_CAUSE, with the wakeup timer still enabled and
+      the count at or above the threshold, when are the interrupt and wakeup request re-asserted? Is it
+      the next AON clock cycle (comparison evaluated every AON cycle regardless of prescaler), or the
+      next prescaler-derived count tick? What fixed synchronization latency should be expected before
+      the bus-side INTR_STATE reflects it? Also, is the condition count >= threshold or count > threshold?
+  origin: normalize+review
+  severity: medium
+  status: candidate
+- id: f_9254192820a9
+  category: spec_ambiguity
+  category_no: 1
+  type: weak_modal
+  title: A wakeup interrupt is generated when the count reaches the threshold value.
+  subject:
+    requirements:
+    - cr_70a3f9a42a86
+  section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WKUP_THOLD_HI
+  spec:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    lines:
+    - 208
+    - 208
+    text: The count at which a wakeup interrupt should be generated, top 32 bits.
+  detail:
+    text: A wakeup interrupt is generated when the count reaches the threshold value.
+    note: '''should be generated'' is weak wording, and it does not say whether the match is equality
+      or greater-or-equal, or which counter is compared.'
+    impact: 'An equality comparison and a greater-or-equal comparison give the same result when the count
+      counts up through the threshold. They give different results when SW writes a threshold at or below
+      the current WKUP_COUNT, or changes the threshold or count while the timer runs. One engineer''s
+      scoreboard would predict no interrupt (equality, one-shot at the match). The other would predict
+      the interrupt asserting immediately and staying asserted every cycle the count stays at or above
+      the threshold (>=). The tests that program the threshold below the current count would therefore
+      expect different intr_state/pin values and different re-assertion behaviour after intr_state is
+      cleared. The ''which counter'' part is clear in context: it is the 64-bit WKUP_COUNT, so that part
+      does not need a question.'
+    question: Is the wakeup interrupt condition WKUP_COUNT == {WKUP_THOLD_HI, WKUP_THOLD_LO} or WKUP_COUNT
+      >= threshold? In particular, if the threshold is written at or below the current count (or the count
+      is written above the threshold), must the interrupt fire, and does it re-assert after intr_state
+      is cleared while the condition still holds?
+  origin: normalize+review
+  severity: medium
+  status: candidate
+- id: f_adb4f43d923a
+  category: spec_ambiguity
+  category_no: 1
+  type: missing_detail
+  title: racl_error outputs the RACL error log information of this module.
+  subject:
+    requirements:
+    - cr_068211cfcae2
+  section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > inter_signal_list
+  spec:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    lines: &id046
+    - 126
+    - 126
+    text: RACL error log information of this module.
+  detail:
+    text: racl_error outputs the RACL error log information of this module.
+    note: The text does not say when racl_error is asserted or what its content is.
+    impact: 'Scoreboards checking racl_error need to know three things: when it is asserted (only on a
+      denied access, and for how many cycles), and which fields it carries (address, read/write, role,
+      ctn_uid, overflow). Different assumptions lead to different expected values and different timing
+      checks.'
+    question: When is racl_error.valid asserted (on each RACL-denied read or write, for exactly one cycle)?
+      Which racl_error_log fields are populated, and with what values (request address, write flag, role,
+      ctn_uid, overflow)?
+  origin: normalize+review
+  severity: medium
+  status: candidate
+- id: f_f2eacf1f7e83
+  category: spec_ambiguity
+  category_no: 1
+  type: unclear_referent
+  title: Once WDOG_REGWEN.regwen is cleared, the watchdog configuration is locked until the next reset.
+  subject:
+    requirements:
+    - cr_7f62f6f22c9d
+  section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WDOG_REGWEN
+  spec:
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    lines: &id034
+    - 259
+    - 259
+    text: Once cleared, the watchdog configuration will be locked until the next reset.
+  detail:
+    text: Once WDOG_REGWEN.regwen is cleared, the watchdog configuration is locked until the next reset.
+    note: It does not say which registers or fields make up the 'watchdog configuration' that gets locked.
+    impact: 'A lock-check test writes new values to each candidate register after clearing regwen and
+      expects the old value on readback. Without a defined register set, one engineer will expect WDOG_COUNT
+      writes to be blocked. Another will expect them to succeed, since petting must keep working. Some
+      may also include or exclude the wakeup timer registers. The existing DIF tests only check that software
+      refuses start/stop when REGWEN reads 0, not hardware write-blocking. In the full register file the
+      per-register `regwen: "WDOG_REGWEN"` tags would settle this, but this field description alone does
+      not.'
+    question: Exactly which registers/fields ignore writes once WDOG_REGWEN.regwen is 0? Is it only WDOG_CTRL
+      (enable, pause_in_sleep), WDOG_BARK_THOLD and WDOG_BITE_THOLD? Do WDOG_COUNT and the wakeup-timer
+      and interrupt/cause registers remain writable? Is the per-register regwen attribute the authoritative
+      definition?
+  origin: normalize+review
+  severity: medium
+  status: candidate
+- id: f_d5ddad4f6de4
+  category: spec_ambiguity
+  category_no: 1
+  type: weak_modal
+  title: The RACL ports are enabled by setting parameter EnableRacl to 1.
+  subject:
+    requirements:
+    - cr_517c566609ad
+  section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation
+  spec:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    lines: &id044
+    - 12
+    - 12
+    text: In order to enable the RACL ports, the parameter `EnableRacl` should be set to 1.
+  detail:
+    text: The RACL ports are enabled by setting parameter EnableRacl to 1.
+    note: '''should'' leaves unclear whether setting EnableRacl to 1 is mandatory for RACL operation and
+      what happens otherwise.'
+    impact: 'The word ''should'' is clearly meant as ''must'': RACL is active only when EnableRacl=1,
+      so that part is not ambiguous. What is missing is the behavior when EnableRacl=0. One engineer would
+      check that racl_error_o stays 0 and that every register access is allowed regardless of racl_policies_i.
+      Another would leave the ports unchecked in that configuration, or expect policy enforcement anyway.
+      This changes the pass criteria for parameterization and configuration tests.'
+    question: When EnableRacl=0, is racl_policies_i completely ignored, with all register accesses permitted,
+      and is racl_error_o tied to 0? When EnableRacl=1, what policy and role inputs are expected on racl_policies_i,
+      and when exactly does racl_error_o assert?
+  origin: normalize+review
+  severity: low
+  status: candidate
+- id: f_58017ac7abc1
+  category: spec_contradiction
+  category_no: 2
+  type: description_vs_definition
+  title: The text names WKUP_THOLD_HI for bits[31:0], but the link target is wkup_thold_lo and HI already
+    holds bits[63:32].
+  subject:
+    requirements:
+    - cr_d9531c6323ce
+  spec:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    lines: &id039
+    - 32
+    - 32
+    text: Bits[31:0] in registers
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    lines: &id040
+    - 32
+    - 32
+    text: WKUP_THOLD_HI
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    lines: &id041
+    - 218
+    - 218
+    text: 'bits: "31:0"'
+  detail:
+    statement: WKUP_THOLD_LO.threshold_lo occupies bits 31:0 and holds wakeup threshold bits [31:0].
+    note: The text names WKUP_THOLD_HI for bits[31:0], but the link target is wkup_thold_lo and HI already
+      holds bits[63:32].
+    question: Is the register holding wakeup threshold bits[31:0] WKUP_THOLD_LO?
+  origin: normalize
+  severity: high
+  status: candidate
+- id: f_6bf289f534a0
+  category: spec_contradiction
+  category_no: 2
+  type: description_vs_definition
+  title: The sentence says reads are synchronized, but the following text describes the effect on writes.
+  subject:
+    requirements:
+    - cr_eadb3b6bb9a2
+  spec:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    lines:
+    - 25
+    - 25
+    text: Register reads via the TL-UL interface (SYS domain) are synchronized to the slow clock (AON
+      domain) using the "async" register generation feature.
+  detail:
+    statement: TL-UL register accesses from the SYS domain are synchronized to the AON slow clock using
+      the async register generation feature.
+    note: The sentence says reads are synchronized, but the following text describes the effect on writes.
+    question: Does the async synchronization apply to register writes, reads, or both?
+  origin: normalize
+  severity: high
+  status: candidate
+- id: f_34248cf8b57c
+  category: test_inconsistency
+  category_no: 3
+  type: plan_vs_test
+  title: 'aon_timer_prescaler: Plan item p2.k1 says the test checks that WKUP_COUNT tracks real time despite
+    the prescaler value. T'
+  subject:
+    units:
+    - ct_59d7ee028bc6
+    kind: plan_vs_test
+    d: 269de59cd688
+  tests:
+  - kind: check
+    statement: Spin-wait until the backdoor value of the prescaler field equals the written prescaler
+      (CDC propagation); a timeout would be handled by the csr_spinwait utility, not visible here.
+    fails_test: unknown
+    path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+    lines:
+    - 58
+    - 58
+    text: csr_utils_pkg::csr_spinwait(.ptr(ral.wkup_ctrl.prescaler), .exp_data(prescaler), .backdoor(1));
+  - kind: stimulus
+    statement: Wait for the interrupt.
+    path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+    lines:
+    - 46
+    - 46
+    text: wait_for_interrupt();
+  prose:
+  - kind: plan
+    plan_id: cp_b5632b7a05a0
+    statement: WKUP_COUNT reflects the expected, changed passing of real time regardless of the changing
+      prescaler value.
+    path: hw/ip/aon_timer/data/aon_timer_testplan.hjson
+    lines: &id001
+    - 44
+    - 45
+    text: WKUP_COUNT should reflect expected -and changed- passing of real time regardless of its changing
+      prescaler value.
+  detail:
+    test: aon_timer_prescaler
+    files: &id008
+    - hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+    description: Plan item p2.k1 says the test checks that WKUP_COUNT tracks real time despite the prescaler
+      value. The test never reads or compares WKUP_COUNT. Its only check is the backdoor spinwait on the
+      prescaler field, and the wait for an interrupt is not a count-versus-time comparison.
+  origin: analyze
+  severity: high
+  status: candidate
+  labels:
+    p2.k1:
+    - path: hw/ip/aon_timer/data/aon_timer_testplan.hjson
+      lines: *id001
+- id: f_4377229b2488
+  category: test_inconsistency
+  category_no: 3
+  type: check_cannot_fail
+  title: 'aon_timer_wdog_lc_escalate_test: The plan (p1.k1) says the test fails in the interrupt handler
+    if the bark interrupt fires. The comme'
+  subject:
+    units:
+    - ct_b491039e9029
+    kind: check_cannot_fail
+    d: 194bdfb4414f
+  tests:
+  - kind: check
+    statement: An AON timer interrupt is logged as an error but the handler does not fail the test itself.
+    fails_test: 'no'
+    path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    lines:
+    - 89
+    - 89
+    text: LOG_ERROR("Unexpected aon timer interrupt %d", irq);
+  prose:
+  - kind: plan
+    plan_id: cp_354f19d3d2ff
+    statement: The test fails in the interrupt handler if the bark interrupt fires.
+    path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+    lines: &id002
+    - 122
+    - 123
+    text: fail the test in the interrupt handler in case the bark interrupt is fired
+  - kind: intent
+    path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    lines: &id003
+    - 86
+    - 86
+    text: We should not get aon timer interrupts since escalation suppresses them.
+  detail:
+    test: aon_timer_wdog_lc_escalate_test
+    files:
+    - sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    description: The plan (p1.k1) says the test fails in the interrupt handler if the bark interrupt fires.
+      The comment i2 also says AON timer interrupts should not occur. The handler only calls LOG_ERROR
+      on an unexpected AON timer interrupt and does not fail the test. A firing bark interrupt therefore
+      cannot fail the test through this check, and the 'wdog disabled by escalation' claim goes unenforced
+      there.
+  origin: analyze
+  severity: medium
+  status: candidate
+  labels:
+    p1.k1:
+    - path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+      lines: *id002
+    i2:
+    - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+      lines: *id003
+- id: f_a5e981f8ba29
+  category: test_inconsistency
+  category_no: 3
+  type: plan_vs_test
+  title: 'aon_timer_smoketest: Plan item p1 (chip_sw_aon_timer_sleep_wakeup) says the AON timer wakes
+    the chip from deep sleep. It '
+  subject:
+    units:
+    - ct_8ed96cdcf939
+    kind: plan_vs_test
+    d: a73ebc7ad2a4
+  tests:
+  - kind: stimulus
+    statement: Run the wake-up timer sub-test.
+    path: sw/device/tests/aon_timer_smoketest.c
+    lines:
+    - 111
+    - 111
+    text: aon_timer_test_wakeup_timer(&aon);
+  - kind: stimulus
+    statement: Configure the wake-up timer with a single-cycle count.
+    path: sw/device/tests/aon_timer_smoketest.c
+    lines:
+    - 34
+    - 34
+    text: CHECK_STATUS_OK(aon_timer_testutils_wakeup_config(aon, 1));
+  - kind: stimulus
+    statement: Busy-wait 100 microseconds for the timer to expire.
+    path: sw/device/tests/aon_timer_smoketest.c
+    lines:
+    - 36
+    - 36
+    text: busy_spin_micros(100);
+  - kind: stimulus
+    statement: Read the wake-up timer expired IRQ pending state.
+    path: sw/device/tests/aon_timer_smoketest.c
+    lines:
+    - 40
+    - 41
+    text: "dif_aon_timer_irq_is_pending(\n      aon, kDifAonTimerIrqWkupTimerExpired, &is_pending)"
+  - kind: check
+    statement: The wake-up timer expired IRQ is pending after the single-cycle count and delay.
+    fails_test: 'yes'
+    path: sw/device/tests/aon_timer_smoketest.c
+    lines:
+    - 42
+    - 42
+    text: CHECK(is_pending);
+  prose:
+  - kind: plan
+    plan_id: cp_db5aac0e9c04
+    text: Checks that the AON timer wakes the chip from deep sleep after the timeout, with reset causes
+      confirmed before and after and the wakeup threshold register retained.
+    path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+  - kind: plan
+    plan_id: cp_db5aac0e9c04
+    statement: Reset cause in rstmgr shows the POR reset phase.
+    path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+    lines: &id004
+    - 28
+    - 29
+    text: Read the reset cause register in rstmgr to confirm that the SW is in the POR reset phase.
+  - kind: plan
+    plan_id: cp_db5aac0e9c04
+    statement: The wake up request occurs after the timeout has elapsed, checked via assertions.
+    path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+    lines: &id007
+    - 33
+    - 33
+    text: Verify via assertion checks, the wake up request occurs after the timeout has elapsed.
+  - kind: plan
+    plan_id: cp_db5aac0e9c04
+    statement: After reset and AON timer wake up, the reset cause confirms the AON timer wake up phase.
+    path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+    lines: &id005
+    - 34
+    - 35
+    text: After reset followed by AON timer wake up, read the reset cause register to confirm the AON
+      timer wake up phase.
+  - kind: plan
+    plan_id: cp_db5aac0e9c04
+    statement: The wake up threshold register is not reset after the sequence.
+    path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+    lines: &id006
+    - 36
+    - 37
+    text: After the test sequence is complete, read the wake up threshold register - it should not be
+      reset.
+  detail:
+    test: aon_timer_smoketest
+    files:
+    - sw/device/tests/aon_timer_smoketest.c
+    description: Plan item p1 (chip_sw_aon_timer_sleep_wakeup) says the AON timer wakes the chip from
+      deep sleep. It also says rstmgr reset causes are checked for POR before and for the AON wake-up
+      after, and that the wakeup threshold register is retained. The test never enters deep sleep and
+      never resets. It reads no rstmgr reset cause and does not check the threshold register after a sequence.
+      It only spins 100us and checks that the wakeup IRQ is pending, then runs a watchdog bark check.
+      So p1.k1, p1.k3 and p1.k4 are not exercised, and p1.k2 is only loosely approximated by the IRQ-pending
+      check.
+  origin: analyze
+  severity: medium
+  status: candidate
+  labels:
+    p1:
+    - path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+    p1.k1:
+    - path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+      lines: *id004
+    p1.k3:
+    - path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+      lines: *id005
+    p1.k4:
+    - path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+      lines: *id006
+    p1.k2:
+    - path: hw/top_earlgrey/data/ip/chip_aon_timer_testplan.hjson
+      lines: *id007
+- id: f_aefbd3a594cd
+  category: test_inconsistency
+  category_no: 3
+  type: plan_vs_test
+  title: 'aon_timer_prescaler: Plan item p2 says the prescaler is changed while the timer is running.
+    The test writes one random pr'
+  subject:
+    units:
+    - ct_59d7ee028bc6
+    kind: plan_vs_test
+    d: 247a14a62310
+  tests:
+  - kind: stimulus
+    statement: Write random prescaler value to WKUP_CTRL.
+    path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+    lines: &id009
+    - 57
+    - 57
+    text: csr_utils_pkg::csr_wr(ral.wkup_ctrl.prescaler, prescaler);
+  - kind: stimulus
+    statement: Enable the wakeup timer.
+    path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+    lines: &id010
+    - 61
+    - 61
+    text: csr_utils_pkg::csr_wr(ral.wkup_ctrl.enable, 1'b1);
+  prose:
+  - kind: plan
+    plan_id: cp_b5632b7a05a0
+    statement: WKUP_COUNT reflects the expected, changed passing of real time regardless of the changing
+      prescaler value.
+    path: hw/ip/aon_timer/data/aon_timer_testplan.hjson
+    lines: *id001
+    text: WKUP_COUNT should reflect expected -and changed- passing of real time regardless of its changing
+      prescaler value.
+  detail:
+    test: aon_timer_prescaler
+    files: *id008
+    description: Plan item p2 says the prescaler is changed while the timer is running. The test writes
+      one random prescaler (s2) before the wakeup timer is enabled (s3) and never changes it again, so
+      it never exercises a mid-run prescaler change.
+  origin: analyze
+  severity: medium
+  status: candidate
+  labels:
+    p2:
+    - path: hw/ip/aon_timer/data/aon_timer_testplan.hjson
+    s2:
+    - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+      lines: *id009
+    s3:
+    - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+      lines: *id010
+- id: f_7dfb4807049d
+  category: test_inconsistency
+  category_no: 3
+  type: comment_vs_code
+  title: 'check_intr_value_propagated: The comment says to synchronise with the next neg-edge, but the
+    code waits a number of clocks via wa'
+  subject:
+    units:
+    - ct_04fe82533e6d
+    kind: comment_vs_code
+    d: 78cc0e5e1f43
+  tests:
+  - kind: stimulus
+    statement: Take the index of the latest WKUP prediction and wait one clock to synchronise
+    path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    lines:
+    - 615
+    - 615
+    text: idx = predicted_wkup_intr_q.size -1;
+  - kind: stimulus
+    statement: Take the index of the latest WKUP prediction and wait one clock to synchronise
+    path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    lines:
+    - 617
+    - 617
+    text: cfg.clk_rst_vif.wait_n_clks(1);
+  - kind: stimulus
+    statement: On mismatch, wait one more clock and retry until matched
+    path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    lines:
+    - 627
+    - 627
+    text: cfg.clk_rst_vif.wait_n_clks(1);
+  - kind: stimulus
+    statement: On mismatch, wait one more clock and retry until matched
+    path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    lines:
+    - 629
+    - 629
+    text: while (value_matched == 0);
+  prose:
+  - kind: intent
+    path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    lines:
+    - 616
+    - 616
+    text: // Synchronise with the next neg-edge
+  detail:
+    test: check_intr_value_propagated
+    files:
+    - hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    description: The comment says to synchronise with the next neg-edge, but the code waits a number of
+      clocks via wait_n_clks(1), which synchronises to a clock edge rather than specifically the negative
+      edge. This is weak evidence of a real mismatch, so it is low severity.
+  origin: analyze
+  severity: low
+  status: candidate
+  labels: {}
+- id: f_978f56ce38cc
+  category: test_inconsistency
+  category_no: 3
+  type: comment_vs_code
+  title: 'WatchdogStartTest.Success: k1 is described as covering the whole common sequence (disable, zero
+    count, write BARK/BITE threshol'
+  subject:
+    units:
+    - ct_498f4dbfbafb
+    kind: comment_vs_code
+    d: 06a758451328
+  tests:
+  - kind: check
+    statement: 'Common sequence: disable, zero count, write BARK/BITE thresholds minus 1'
+    fails_test: 'yes'
+    path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+    lines: &id011
+    - 164
+    - 167
+    text: EXPECT_WRITE32(AON_TIMER_WDOG_CTRL_REG_OFFSET, { {AON_TIMER_WDOG_CTRL_ENABLE_BIT, false}, });
+  - kind: check
+    statement: 'Common sequence: disable, zero count, write BARK/BITE thresholds minus 1'
+    fails_test: 'yes'
+    path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+    lines: &id012
+    - 168
+    - 168
+    text: EXPECT_WRITE32(AON_TIMER_WDOG_COUNT_REG_OFFSET, 0);
+  - kind: check
+    statement: 'Common sequence: disable, zero count, write BARK/BITE thresholds minus 1'
+    fails_test: 'yes'
+    path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+    lines: &id013
+    - 171
+    - 171
+    text: EXPECT_WRITE32(AON_TIMER_WDOG_BARK_THOLD_REG_OFFSET, 0xA5A5A5A4);
+  - kind: check
+    statement: 'Common sequence: disable, zero count, write BARK/BITE thresholds minus 1'
+    fails_test: 'yes'
+    path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+    lines: &id014
+    - 172
+    - 172
+    text: EXPECT_WRITE32(AON_TIMER_WDOG_BITE_THOLD_REG_OFFSET, 0x5A5A5A59);
+  prose:
+  - kind: intent
+    path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+    lines: &id015
+    - 169
+    - 169
+    text: below BARK/BITE are the call value - 1 to accomodate the AON_TIMER IP
+  detail:
+    test: WatchdogStartTest.Success
+    files:
+    - sw/device/lib/dif/dif_aon_timer_unittest.cc
+    description: k1 is described as covering the whole common sequence (disable, zero count, write BARK/BITE
+      thresholds minus 1), but the excerpt only expects a single CTRL write that clears the enable bit.
+      The count-zeroing and BARK/BITE threshold writes are not part of this check. The i1 comment about
+      the minus-1 values also does not match the shown code, which has no threshold-value expectations.
+  origin: analyze
+  severity: low
+  status: candidate
+  labels:
+    k1:
+    - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+      lines: *id011
+    - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+      lines: *id012
+    - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+      lines: *id013
+    - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+      lines: *id014
+    i1:
+    - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+      lines: *id015
+- id: f_fc10e42487be
+  category: test_inconsistency
+  category_no: 3
+  type: comment_vs_code
+  title: 'model_and_check_wdog_bark: The comment i2 says "Check reset_req pins", but the code that follows
+    (k2/k3) checks the aon wakeup '
+  subject:
+    units:
+    - ct_b1a85a561fe9
+    kind: comment_vs_code
+    d: 805a3fc939eb
+  tests:
+  - kind: check
+    statement: When enabled and wkup_cause was not written in the same AON cycle, the predicted wkup_cause
+      value must equal the aon wakeup request pin.
+    fails_test: 'yes'
+    path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    lines: &id017
+    - 1282
+    - 1282
+    text: '`DV_CHECK_CASE_EQ(predicted_wkup_req, cfg.aon_intr_vif.sample_pin(.idx(1)))'
+  - kind: check
+    statement: When enabled and wkup_cause was written in the same cycle, the aon wakeup request pin must
+      be either 0 or the predicted value; otherwise a fatal is raised.
+    fails_test: 'yes'
+    path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    lines: &id018
+    - 1284
+    - 1284
+    text: else if (!(cfg.aon_intr_vif.sample_pin(.idx(1)) inside {0, predicted_wkup_req}))
+  - kind: check
+    statement: When enabled and wkup_cause was written in the same cycle, the aon wakeup request pin must
+      be either 0 or the predicted value; otherwise a fatal is raised.
+    fails_test: 'yes'
+    path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    lines: &id019
+    - 1287
+    - 1288
+    text: "`uvm_fatal(`gfn, $sformatf(\"aon_wkup_req_o comparison failed (not matching 0/%0d)\",\n   \
+      \                              predicted_wkup_req))"
+  prose:
+  - kind: intent
+    path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    lines: &id016
+    - 1276
+    - 1276
+    text: '// Check reset_req pins:'
+  detail:
+    test: model_and_check_wdog_bark
+    files:
+    - hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    description: The comment i2 says "Check reset_req pins", but the code that follows (k2/k3) checks
+      the aon wakeup request pin (sample_pin idx 1) against predicted_wkup_req, not any reset request
+      pin.
+  origin: analyze
+  severity: low
+  status: candidate
+  labels:
+    i2:
+    - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+      lines: *id016
+    k2:
+    - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+      lines: *id017
+    k3:
+    - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+      lines: *id018
+    - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+      lines: *id019
+- id: f_760d5c3b21cf
+  category: untested
+  category_no: 5
+  type: partially_tested
+  title: 'Partially tested: 5 requirement(s) in hw/ip/aon_timer/doc/programmers_guide.md > Programmer''s
+    Guide > Initialization … (4 sections)'
+  subject:
+    requirements:
+    - cr_05e1d4dc8418
+    - cr_5edf51df737c
+    - cr_50d072868fc1
+    - cr_f9ad84e34815
+    - cr_0838c215b7f8
+  section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Initialization … (4 sections)
+  items:
+  - req_id: cr_05e1d4dc8418
+    statement: Set WKUP_COUNT_LO, WKUP_COUNT_HI and WDOG_COUNT to zero as the first initialization step.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Initialization
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 5
+      - 5
+      text: Set the timer values WKUP_COUNT_LO, WKUP_COUNT_HI and WDOG_COUNT to zero.
+    gap: Add a test that, after running the timers so counts are nonzero, performs the init sequence and
+      checks that WKUP_COUNT_LO, WKUP_COUNT_HI and WDOG_COUNT all read 0 (or explicitly check the HI/LO
+      and WDOG_COUNT writes of zero in the start sequences) before thresholds are written.
+    severity: medium
+    tested_by:
+    - unit: WatchdogStartTest.Success
+      rationale: watchdog_start's register sequence zeroes the count (disable, zero count, write thresholds,
+        then enable), which matches the zero-the-count step for the watchdog.
+      missing: WKUP_COUNT_LO and WKUP_COUNT_HI are not covered. The zero-count write to WDOG_COUNT is
+        only described in the check summary, not shown explicitly.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: &id020
+        - 198
+        - 199
+        text: dif_aon_timer_watchdog_start(&aon_, 0xA5A5A5A5, 0x5A5A5A5A, false, false)
+        kind: stimulus
+        statement: Call watchdog_start
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: &id021
+        - 164
+        - 167
+        text: EXPECT_WRITE32(AON_TIMER_WDOG_CTRL_REG_OFFSET, { {AON_TIMER_WDOG_CTRL_ENABLE_BIT, false},
+          });
+        kind: check
+        statement: 'Common sequence: disable, zero count, write BARK/BITE thresholds minus 1'
+        fails_test: 'yes'
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: &id022
+        - 168
+        - 168
+        text: EXPECT_WRITE32(AON_TIMER_WDOG_COUNT_REG_OFFSET, 0);
+        kind: check
+        statement: 'Common sequence: disable, zero count, write BARK/BITE thresholds minus 1'
+        fails_test: 'yes'
+    - unit: WakeupStartTest.Success
+      rationale: wakeup_start disables the timer and writes 0 to the WKUP count registers before setting
+        the prescaler and enabling, which matches the zero-the-count step for the wakeup timer.
+      missing: WDOG_COUNT is not zeroed or checked, and the k2 check shown only cites WKUP_COUNT_LO, with
+        no explicit check of WKUP_COUNT_HI.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: &id023
+        - 84
+        - 84
+        text: dif_aon_timer_wakeup_start(&aon_, 1, AON_TIMER_WKUP_CTRL_PRESCALER_MASK)
+        kind: stimulus
+        statement: Call wakeup_start with max prescaler
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: &id024
+        - 70
+        - 70
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_COUNT_LO_REG_OFFSET, 0);
+        kind: check
+        statement: COUNT and THOLD registers written with 0
+        fails_test: 'yes'
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: &id025
+        - 71
+        - 71
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_COUNT_HI_REG_OFFSET, 0);
+        kind: check
+        statement: COUNT and THOLD registers written with 0
+        fails_test: 'yes'
+  - req_id: cr_5edf51df737c
+    statement: Program the thresholds in WKUP_THOLD_LO, WKUP_THOLD_HI, WDOG_BARK_THOLD and WDOG_BITE_THOLD.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Initialization
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 7
+      - 7
+      text: Program the desired thresholds in WKUP_THOLD_LO, WKUP_THOLD_HI, WDOG_BARK_THOLD and WDOG_BITE_THOLD.
+    gap: Program WKUP_THOLD_LO and WKUP_THOLD_HI (nonzero, distinct values) and check that the wakeup
+      interrupt/pin fires at the programmed threshold. Also test with different threshold values for the
+      watchdog bark and bite.
+    severity: medium
+    tested_by:
+    - unit: WatchdogStartTest.Success
+      rationale: watchdog_start writes the bark and bite thresholds before enabling the watchdog.
+      missing: The wakeup thresholds WKUP_THOLD_LO and WKUP_THOLD_HI are not programmed. Only one value
+        pair is used.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id020
+        text: dif_aon_timer_watchdog_start(&aon_, 0xA5A5A5A5, 0x5A5A5A5A, false, false)
+        kind: stimulus
+        statement: Call watchdog_start
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id021
+        text: EXPECT_WRITE32(AON_TIMER_WDOG_CTRL_REG_OFFSET, { {AON_TIMER_WDOG_CTRL_ENABLE_BIT, false},
+          });
+        kind: check
+        statement: 'Common sequence: disable, zero count, write BARK/BITE thresholds minus 1'
+        fails_test: 'yes'
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id022
+        text: EXPECT_WRITE32(AON_TIMER_WDOG_COUNT_REG_OFFSET, 0);
+        kind: check
+        statement: 'Common sequence: disable, zero count, write BARK/BITE thresholds minus 1'
+        fails_test: 'yes'
+  - req_id: cr_50d072868fc1
+    statement: Writing zero to the WDOG_COUNT register pets the watchdog.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Watchdog pet
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 13
+      - 13
+      text: Pet the watchdog by writing zero to the [`WDOG_COUNT`](registers.md#wdog_count) register.
+    gap: In an RTL/DV test, run the watchdog with a nonzero count approaching the bark/bite thresholds,
+      write 0 to WDOG_COUNT, and check that the count resets to 0 and the bark/bite is delayed accordingly.
+    severity: high
+    tested_by:
+    - unit: WatchdogPetTest.Success
+      rationale: The DIF unit test calls watchdog_pet and checks that a zero is written to the WDOG_COUNT
+        register offset, so it verifies the software-side write of zero.
+      missing: It uses a mocked register interface, so it does not check that the hardware treats the
+        zero write as a pet, i.e. that the watchdog count is actually reset or the bark/bite is delayed.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 329
+        - 329
+        text: dif_aon_timer_watchdog_pet(&aon_)
+        kind: stimulus
+        statement: Call watchdog_pet
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 168
+        - 168
+        text: EXPECT_WRITE32(AON_TIMER_WDOG_COUNT_REG_OFFSET, 0);
+        kind: check
+        statement: WDOG_COUNT written with 0
+        fails_test: 'yes'
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 329
+        - 329
+        text: EXPECT_DIF_OK(dif_aon_timer_watchdog_pet(&aon_));
+        kind: check
+        statement: Call returns OK
+        fails_test: 'yes'
+  - req_id: cr_f9ad84e34815
+    statement: The wakeup threshold is a 64-bit value accessed through two 32-bit hi and lo registers.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Wakeup count and threshold
+      access
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 17
+      - 17
+      text: The wakeup counter and threshold are both 64-bit values accessed via two 32-bit hi and lo
+        registers.
+    gap: Program a non-trivial 64-bit threshold (e.g. 0x123456789ABCDEF0) through the DIF and check that
+      the LO register receives 0x9ABCDEF0 and the HI register receives 0x12345678. Also read the threshold
+      back and check that the 64-bit value is reassembled correctly from the hi and lo registers.
+    severity: medium
+    tested_by:
+    - unit: WakeupStartTest.Success
+      rationale: The test checks that the DIF writes the wakeup count and threshold registers, with the
+        LO register as the cited example. The threshold is therefore accessed as separate 32-bit registers.
+      missing: It only writes zeros through mocked register accesses. It does not check that a 64-bit
+        threshold value is split correctly into the hi and lo registers, and it does not read the value
+        back.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id023
+        text: dif_aon_timer_wakeup_start(&aon_, 1, AON_TIMER_WKUP_CTRL_PRESCALER_MASK)
+        kind: stimulus
+        statement: Call wakeup_start with max prescaler
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id024
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_COUNT_LO_REG_OFFSET, 0);
+        kind: check
+        statement: COUNT and THOLD registers written with 0
+        fails_test: 'yes'
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id025
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_COUNT_HI_REG_OFFSET, 0);
+        kind: check
+        statement: COUNT and THOLD registers written with 0
+        fails_test: 'yes'
+  - req_id: cr_0838c215b7f8
+    statement: Writing 0 to WKUP_CAUSE clears the wakeup request when the timer has caused a wakeup event.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Interrupt Handling
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 91
+      - 91
+      text: If the timer has caused a wakeup event ([`WKUP_CAUSE`](registers.md#wkup_cause) is set) then
+        clear the wakeup request by writing 0 to [`WKUP_CAUSE`](registers.md#wkup_cause).
+    gap: Run a test in which the wakeup timer reaches its threshold so WKUP_CAUSE is set and the wakeup
+      request is asserted, then write 0 to WKUP_CAUSE and check that the wakeup request (wkup_req_o) deasserts
+      and the cause reads 0.
+    severity: high
+    tested_by:
+    - unit: WakeupStatusTest.ClearSuccess
+      rationale: The DIF unit test checks that clear_wakeup_cause writes 0 to WKUP_CAUSE, which is the
+        register access the requirement describes.
+      missing: Does not set up a wakeup event or check that the wakeup request is actually cleared; it
+        only checks the mocked register write.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 50
+        - 50
+        text: dif_aon_timer_clear_wakeup_cause(&aon_)
+        kind: stimulus
+        statement: Call clear_wakeup_cause
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 49
+        - 49
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_CAUSE_REG_OFFSET, 0);
+        kind: check
+        statement: WKUP_CAUSE is written with 0
+        fails_test: 'yes'
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 50
+        - 50
+        text: EXPECT_DIF_OK(dif_aon_timer_clear_wakeup_cause(&aon_));
+        kind: check
+        statement: Call returns OK
+        fails_test: 'yes'
+  origin: correlate+triage
+  severity: high
+  status: candidate
+- id: f_786c4113c34d
+  category: untested
+  category_no: 5
+  type: partially_tested
+  title: 'Partially tested: 3 requirement(s) in hw/ip/aon_timer/doc/theory_of_operation.md > Theory of
+    Operation … (2 sections)'
+  subject:
+    requirements:
+    - cr_20f39fd89cf5
+    - cr_7aa0f0735984
+    - cr_ce4179c1d090
+  section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation … (2 sections)
+  items:
+  - req_id: cr_20f39fd89cf5
+    statement: Both timers halt counting when lc_escalate_en_i is set.
+    section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation
+    spec:
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 5
+      - 5
+      text: Both timers halt the counting if the signal `lc_escalate_en_i` is set
+    gap: Assert lc_escalate_en_i while both WKUP and WDOG timers are running and check that both WKUP_COUNT
+      and WDOG_COUNT stop incrementing (no wakeup, bark or bite interrupts fire) for the duration of the
+      escalation. Make the bark-not-firing check a failing assertion, and check the counts resume or stay
+      frozen as specified after deassertion.
+    severity: high
+    tested_by:
+    - unit: aon_timer_wdog_lc_escalate_test
+      rationale: The test programs the watchdog bark and bite inside escalation phase 1 and forces escalation.
+        It expects the reset reason to be escalation, which implies the watchdog halted.
+      missing: Only the WDOG timer is exercised. The bark interrupt not firing is only logged (k7, only
+        reports) and does not fail the test. The WKUP timer halting is not checked.
+      cites:
+      - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+        lines: &id043
+        - 231
+        - 231
+        text: aon_timer_testutils_watchdog_config(aon_timer, bark_cycles, bite_cycles,
+        kind: stimulus
+        statement: Program the watchdog bark and bite timeouts without pausing in sleep.
+      - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+        lines:
+        - 236
+        - 236
+        text: CHECK_DIF_OK(dif_pwrmgr_alert_force(&pwrmgr, alert));
+        kind: stimulus
+        statement: Force the pwrmgr fatal fault alert and busy-spin slightly longer than escalation phase
+          0.
+      - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+        lines:
+        - 237
+        - 237
+        text: busy_spin_micros(kEscalationPhase0MicrosCpu);
+        kind: stimulus
+        statement: Force the pwrmgr fatal fault alert and busy-spin slightly longer than escalation phase
+          0.
+  - req_id: cr_7aa0f0735984
+    statement: wkup_req_o and aon_timer_rst_req_o are driven on the AON domain.
+    section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation
+    spec:
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 9
+      - 9
+      text: The output signals `wkup_req_o` and `aon_timer_rst_req_o` are driven on the AON domain.
+    gap: Add a check that wkup_req_o and aon_timer_rst_req_o change only on AON clock edges. Run with
+      both timers enabled and make sure the bite path is reached. Sample the pins against the AON clock
+      and verify they are synchronous to it.
+    severity: medium
+    tested_by:
+    - unit: aon_timer_prescaler
+      rationale: The test enables only the wakeup timer and waits for its interrupt. The scoreboard checks
+        the wkup_req pin sampled through the AON interrupt interface when the wakeup timer expires.
+      missing: aon_timer_rst_req_o is never exercised because the watchdog is disabled. Nothing checks
+        that the outputs are driven in the AON clock domain.
+      cites:
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+        lines: &id032
+        - 61
+        - 61
+        text: csr_utils_pkg::csr_wr(ral.wkup_ctrl.enable, 1'b1);
+        kind: stimulus
+        statement: Enable the wakeup timer.
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+        lines:
+        - 63
+        - 63
+        text: csr_utils_pkg::csr_wr(ral.wdog_ctrl.enable, 1'b0);
+        kind: stimulus
+        statement: Disable the watchdog timer.
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+        lines: &id033
+        - 46
+        - 46
+        text: wait_for_interrupt();
+        kind: stimulus
+        statement: Wait for the interrupt.
+    - unit: aon_timer_jump
+      rationale: The test enables both timers with counts near their thresholds. The scoreboard checkers
+        then compare the wakeup request pin and the watchdog reset request pin, both sampled through the
+        AON interrupt interface, against the model's predictions.
+      missing: Nothing checks that the outputs are driven in the AON clock domain, such as timing against
+        the AON clock. The checkers only compare pin values with predictions. It is also not clear that
+        the bite path is reached every run.
+      cites:
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_jump_vseq.sv
+        lines: &id026
+        - 60
+        - 60
+        text: csr_utils_pkg::csr_wr(ral.wdog_ctrl.enable, 1'b1);
+        kind: stimulus
+        statement: Enable WDOG and WKUP timers.
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_jump_vseq.sv
+        lines: &id027
+        - 62
+        - 62
+        text: csr_utils_pkg::csr_wr(ral.wkup_ctrl.enable, 1'b1);
+        kind: stimulus
+        statement: Enable WDOG and WKUP timers.
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_jump_vseq.sv
+        lines: &id028
+        - 37
+        - 37
+        text: wait_for_interrupt();
+        kind: stimulus
+        statement: Wait for the interrupt.
+  - req_id: cr_ce4179c1d090
+    statement: The wakeup count and threshold are each 64-bit values accessed through two 32-bit registers.
+    section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation > Design Details
+    spec:
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 30
+      - 30
+      text: The wakeup count and threshold are both 64-bit values accessed through two 32-bit registers.
+    gap: Write nonzero 64-bit values to the wakeup threshold, and to the count through the LO and HI registers,
+      with the upper 32 bits nonzero. Read them back and check that the halves land in the right registers.
+      Check that the timer expires at the full 64-bit threshold.
+    severity: medium
+    tested_by:
+    - unit: WakeupGetCountTest.Success
+      rationale: Mocks HI/LO/HI reads and checks the combined 64-bit wakeup count from two 32-bit registers,
+        which verifies the count's HI/LO split in the DIF software.
+      missing: Only the count read path is checked, not the threshold, and not any write path or the hardware
+        register layout.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 139
+        - 139
+        text: EXPECT_READ32(AON_TIMER_WKUP_COUNT_HI_REG_OFFSET, 0xA5A5A5A5);
+        kind: stimulus
+        statement: Mock HI/LO/HI reads all 0xA5A5A5A5
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 140
+        - 140
+        text: EXPECT_READ32(AON_TIMER_WKUP_COUNT_LO_REG_OFFSET, 0xA5A5A5A5);
+        kind: stimulus
+        statement: Mock HI/LO/HI reads all 0xA5A5A5A5
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 144
+        - 144
+        text: dif_aon_timer_wakeup_get_count(&aon_, &count)
+        kind: stimulus
+        statement: Call wakeup_get_count
+    - unit: WakeupRestartTest.Success
+      rationale: Writes zero to WKUP_COUNT_LO and the count registers as part of restart, touching the
+        two-register 64-bit count.
+      missing: Does not check the threshold registers, nor that the value is split as 32-bit HI and LO
+        halves in hardware; only DIF register writes are mocked.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: &id036
+        - 118
+        - 118
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_COUNT_LO_REG_OFFSET, 0);
+        kind: check
+        statement: COUNT registers written with 0
+        fails_test: 'yes'
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 119
+        - 119
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_COUNT_HI_REG_OFFSET, 0);
+        kind: check
+        statement: COUNT registers written with 0
+        fails_test: 'yes'
+    - unit: WakeupStartTest.Success
+      rationale: Checks that DIF wakeup_start writes zero to the COUNT and THOLD registers, touching both
+        64-bit values through 32-bit registers.
+      missing: Does not verify nonzero 64-bit values split across HI and LO; only a mocked software register
+        sequence.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id023
+        text: dif_aon_timer_wakeup_start(&aon_, 1, AON_TIMER_WKUP_CTRL_PRESCALER_MASK)
+        kind: stimulus
+        statement: Call wakeup_start with max prescaler
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id024
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_COUNT_LO_REG_OFFSET, 0);
+        kind: check
+        statement: COUNT and THOLD registers written with 0
+        fails_test: 'yes'
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id025
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_COUNT_HI_REG_OFFSET, 0);
+        kind: check
+        statement: COUNT and THOLD registers written with 0
+        fails_test: 'yes'
+  origin: correlate+triage
+  severity: high
+  status: candidate
+- id: f_9207ee7a3ab2
+  category: untested
+  category_no: 5
+  type: partially_tested
+  title: 'Partially tested: 5 requirement(s) in hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > features
+    … (4 sections)'
+  subject:
+    requirements:
+    - cr_5c5513777815
+    - cr_eaac5858c4b5
+    - cr_346ab297701a
+    - cr_7f62f6f22c9d
+    - cr_d264b8651756
+  section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > features … (4 sections)
+  items:
+  - req_id: cr_5c5513777815
+    statement: 'AON_TIMER.WATCHDOG.PAUSE: a paused watchdog resumes after wake-up.'
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > features
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 158
+      - 158
+      text: resuming after wake-up
+    gap: After wake-up from deep sleep with the watchdog configured to pause in sleep, check that WDOG_COUNT
+      resumes incrementing and that the bark and bite events occur at the expected times after the resume.
+    severity: medium
+    tested_by:
+    - unit: aon_timer_sleep_wdog_sleep_pause_test
+      rationale: Configures the watchdog to pause in sleep, enters deep sleep, and after wake-up checks
+        that the watchdog count stayed paused (smaller than the wakeup count).
+      missing: Does not check that the watchdog actually resumes counting after wake-up; it only checks
+        that the count was held during sleep.
+      cites:
+      - path: sw/device/tests/aon_timer_sleep_wdog_sleep_pause_test.c
+        lines: &id029
+        - 66
+        - 66
+        text: if (rst_info == kDifRstmgrResetInfoPor) {
+        kind: stimulus
+        statement: On first boot (POR), compute wakeup cycles and configure watchdog (with pause enabled)
+          and wakeup timer.
+      - path: sw/device/tests/aon_timer_sleep_wdog_sleep_pause_test.c
+        lines: &id030
+        - 71
+        - 72
+        text: "CHECK_STATUS_OK(aon_timer_testutils_get_aon_cycles_64_from_us(\n        WKUP_TIME_US, &wkup_cycles));"
+        kind: stimulus
+        statement: On first boot (POR), compute wakeup cycles and configure watchdog (with pause enabled)
+          and wakeup timer.
+      - path: sw/device/tests/aon_timer_sleep_wdog_sleep_pause_test.c
+        lines: &id031
+        - 76
+        - 77
+        text: "CHECK_STATUS_OK(aon_timer_testutils_watchdog_config(&aon_timer, UINT32_MAX,\n         \
+          \                                               UINT32_MAX, true));"
+        kind: stimulus
+        statement: On first boot (POR), compute wakeup cycles and configure watchdog (with pause enabled)
+          and wakeup timer.
+  - req_id: cr_eaac5858c4b5
+    statement: 'AON_TIMER.WAKEUP.WAKEUP_REQUEST: the AON_TIMER can wake up the core from sleep mode.'
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > features
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 138
+      - 138
+      text: The AON_TIMER can wake-up the core from sleep mode.
+    gap: Configure the wakeup timer, enter sleep, and let the timer expire. Check that the wakeup request
+      wakes the core and that the wake cause reports the AON timer.
+    severity: high
+    tested_by:
+    - unit: aon_timer_jump
+      rationale: The wakeup timer runs to its threshold and the scoreboard checks the wakeup request pin.
+        The test never enters sleep.
+      missing: No sleep entry and no check that the core actually wakes from sleep; only the wakeup output
+        pin is compared.
+      cites:
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_jump_vseq.sv
+        lines: *id026
+        text: csr_utils_pkg::csr_wr(ral.wdog_ctrl.enable, 1'b1);
+        kind: stimulus
+        statement: Enable WDOG and WKUP timers.
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_jump_vseq.sv
+        lines: *id027
+        text: csr_utils_pkg::csr_wr(ral.wkup_ctrl.enable, 1'b1);
+        kind: stimulus
+        statement: Enable WDOG and WKUP timers.
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_jump_vseq.sv
+        lines: *id028
+        text: wait_for_interrupt();
+        kind: stimulus
+        statement: Wait for the interrupt.
+    - unit: aon_timer_sleep_wdog_sleep_pause_test
+      rationale: Configures the wakeup timer, enters deep sleep and reaches the post-low-power-exit boot,
+        which implies a wake-up. The checks examine the watchdog and wakeup counts, not the wake cause.
+      missing: No check that the AON timer wakeup request was the cause of the wake-up.
+      cites:
+      - path: sw/device/tests/aon_timer_sleep_wdog_sleep_pause_test.c
+        lines: *id029
+        text: if (rst_info == kDifRstmgrResetInfoPor) {
+        kind: stimulus
+        statement: On first boot (POR), compute wakeup cycles and configure watchdog (with pause enabled)
+          and wakeup timer.
+      - path: sw/device/tests/aon_timer_sleep_wdog_sleep_pause_test.c
+        lines: *id030
+        text: "CHECK_STATUS_OK(aon_timer_testutils_get_aon_cycles_64_from_us(\n        WKUP_TIME_US, &wkup_cycles));"
+        kind: stimulus
+        statement: On first boot (POR), compute wakeup cycles and configure watchdog (with pause enabled)
+          and wakeup timer.
+      - path: sw/device/tests/aon_timer_sleep_wdog_sleep_pause_test.c
+        lines: *id031
+        text: "CHECK_STATUS_OK(aon_timer_testutils_watchdog_config(&aon_timer, UINT32_MAX,\n         \
+          \                                               UINT32_MAX, true));"
+        kind: stimulus
+        statement: On first boot (POR), compute wakeup cycles and configure watchdog (with pause enabled)
+          and wakeup timer.
+  - req_id: cr_346ab297701a
+    statement: Each write to WKUP_CTRL resets the internal prescaler count.
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WKUP_CTRL
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 183
+      - 183
+      text: Each write to the register resets the internal prescaler count.
+    gap: Enable the wakeup timer with a nonzero prescaler, let the prescaler count mid-way, write WKUP_CTRL
+      again, and check that the prescaler restarts from 0 by observing that the next WKUP_COUNT increment
+      occurs a full prescaler period after the write.
+    severity: medium
+    tested_by:
+    - unit: aon_timer_prescaler
+      rationale: Writes WKUP_CTRL and then enables the wakeup timer, and the scoreboard checks the interrupt
+        timing against a model that includes the prescaler delay. This only indirectly depends on the
+        prescaler count being reset by a write.
+      missing: No scenario writes WKUP_CTRL while the prescaler is mid-count, and nothing checks the prescaler
+        count reset on that write.
+      cites:
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+        lines:
+        - 57
+        - 57
+        text: csr_utils_pkg::csr_wr(ral.wkup_ctrl.prescaler, prescaler);
+        kind: stimulus
+        statement: Write random prescaler value to WKUP_CTRL.
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+        lines: *id032
+        text: csr_utils_pkg::csr_wr(ral.wkup_ctrl.enable, 1'b1);
+        kind: stimulus
+        statement: Enable the wakeup timer.
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+        lines: *id033
+        text: wait_for_interrupt();
+        kind: stimulus
+        statement: Wait for the interrupt.
+  - req_id: cr_7f62f6f22c9d
+    statement: Once WDOG_REGWEN.regwen is cleared, the watchdog configuration is locked until the next
+      reset.
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WDOG_REGWEN
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines: *id034
+      text: Once cleared, the watchdog configuration will be locked until the next reset.
+    gap: In hardware or DV, clear WDOG_REGWEN.regwen. Then try to write the watchdog config registers
+      (WDOG_CTRL, BARK_THOLD, BITE_THOLD, COUNT) and check that the writes are ignored and the values
+      are unchanged. Check that the lock holds until a reset and that a reset releases it.
+    severity: high
+    tested_by:
+    - unit: WatchdogLockTest.Success
+      rationale: The DIF lock function is checked to write 0 to WDOG_REGWEN, which is the action that
+        clears regwen.
+      missing: No check that the watchdog configuration registers are actually locked afterwards, or that
+        they stay locked until reset. This is a mocked DIF unit test, not hardware.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 341
+        - 341
+        text: dif_aon_timer_watchdog_lock(&aon_)
+        kind: stimulus
+        statement: Call watchdog_lock
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 339
+        - 339
+        text: EXPECT_WRITE32(AON_TIMER_WDOG_REGWEN_REG_OFFSET, 0);
+        kind: check
+        statement: REGWEN written with 0
+        fails_test: 'yes'
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 341
+        - 341
+        text: EXPECT_DIF_OK(dif_aon_timer_watchdog_lock(&aon_));
+        kind: check
+        statement: Call returns OK
+        fails_test: 'yes'
+    - unit: WatchdogStartTest.Locked
+      rationale: With REGWEN mocked to read 0, the DIF start call is checked to return kDifLocked, so
+        software refuses to reconfigure a locked watchdog.
+      missing: The hardware write blocking of the watchdog registers is not verified. Only the software-side
+        lock check against a mocked REGWEN is exercised.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 181
+        - 181
+        text: EXPECT_READ32(AON_TIMER_WDOG_REGWEN_REG_OFFSET, 0);
+        kind: stimulus
+        statement: Mock REGWEN read returning 0
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 182
+        - 182
+        text: dif_aon_timer_watchdog_start(&aon_, 1, 1, false, false)
+        kind: stimulus
+        statement: Call watchdog_start
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 182
+        - 183
+        text: EXPECT_EQ(dif_aon_timer_watchdog_start(&aon_, 1, 1, false, false), kDifLocked);
+        kind: check
+        statement: Result equals kDifLocked
+        fails_test: 'yes'
+    - unit: WatchdogStopTest.Locked
+      rationale: With REGWEN mocked to read 0, the DIF stop call is checked to return kDifLocked.
+      missing: The hardware locking of the watchdog registers is not verified. Only the software-side
+        lock check against a mocked REGWEN is exercised.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 261
+        - 261
+        text: EXPECT_READ32(AON_TIMER_WDOG_REGWEN_REG_OFFSET, 0);
+        kind: stimulus
+        statement: Mock REGWEN read returning 0
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 263
+        - 263
+        text: dif_aon_timer_watchdog_stop(&aon_)
+        kind: stimulus
+        statement: Call watchdog_stop
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 263
+        - 263
+        text: EXPECT_EQ(dif_aon_timer_watchdog_stop(&aon_), kDifLocked);
+        kind: check
+        statement: Result equals kDifLocked
+        fails_test: 'yes'
+    - unit: WatchdogRestartTest.Locked
+      rationale: With REGWEN mocked to read 0, the DIF restart call is checked to return kDifLocked.
+      missing: The hardware locking of the watchdog registers is not verified. Only the software-side
+        lock check against a mocked REGWEN is exercised.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 287
+        - 287
+        text: EXPECT_READ32(AON_TIMER_WDOG_REGWEN_REG_OFFSET, 0);
+        kind: stimulus
+        statement: Mock REGWEN read returning 0
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 288
+        - 288
+        text: dif_aon_timer_watchdog_restart(&aon_)
+        kind: stimulus
+        statement: Call watchdog_restart
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 288
+        - 288
+        text: EXPECT_EQ(dif_aon_timer_watchdog_restart(&aon_), kDifLocked);
+        kind: check
+        statement: Result equals kDifLocked
+        fails_test: 'yes'
+    - unit: WatchdogStartTest.SuccessLock
+      rationale: watchdog_start with lock set is checked to write 0 to REGWEN after enabling the watchdog.
+      missing: No check that the configuration is locked after REGWEN is cleared, or that the lock persists
+        until reset.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 233
+        - 233
+        text: dif_aon_timer_watchdog_start(&aon_, 0xA5A5A5A5, 0x5A5A5A5A, false, true)
+        kind: stimulus
+        statement: Call watchdog_start with lock true
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 230
+        - 230
+        text: EXPECT_WRITE32(AON_TIMER_WDOG_REGWEN_REG_OFFSET, 0);
+        kind: check
+        statement: REGWEN written with 0 to lock
+        fails_test: 'yes'
+    - unit: WatchdogIsLockedTest.SuccessLocked
+      rationale: A REGWEN read of 0 is checked to make watchdog_is_locked report true.
+      missing: No check that writes to the watchdog configuration are blocked in hardware, or that the
+        lock lasts until reset.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 362
+        - 362
+        text: EXPECT_READ32(AON_TIMER_WDOG_REGWEN_REG_OFFSET, 0);
+        kind: stimulus
+        statement: Mock REGWEN read returning 0
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 365
+        - 365
+        text: dif_aon_timer_watchdog_is_locked(&aon_, &is_locked)
+        kind: stimulus
+        statement: Call watchdog_is_locked
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 366
+        - 366
+        text: EXPECT_EQ(is_locked, true);
+        kind: check
+        statement: is_locked equals true
+        fails_test: 'yes'
+  - req_id: cr_d264b8651756
+    statement: A watchdog bark interrupt is generated when the watchdog count reaches the threshold value.
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WDOG_BARK_THOLD
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines: *id035
+      text: The count at which a watchdog bark interrupt should be generated.
+    gap: Run the watchdog with several bark thresholds (mid-range and small, not only the maximum). Check
+      that the bark interrupt is not asserted while the count is below the threshold and is asserted when
+      the count reaches it.
+    severity: medium
+    tested_by:
+    - unit: aon_timer_smoke_max_thold
+      rationale: Runs the smoke sequence with the bark threshold at its maximum, with the scoreboard models
+        and checkers (bark model, interrupt checks) active. The bark prediction at the threshold is compared
+        against the DUT interrupt output, but only for the max threshold value.
+      missing: Only the maximum threshold value is exercised; other threshold values and the equality
+        versus greater-or-equal behavior are not distinguished by this test's own stimulus.
+      cites:
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_smoke_max_thold_vseq.sv
+        lines:
+        - 20
+        - 20
+        text: wdog_bark_thold == (2**WDOG_WIDTH-1);
+        kind: stimulus
+        statement: Constrain watchdog bark threshold to maximum value.
+      - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+        lines:
+        - 1262
+        - 1262
+        text: check_aon_domain_interrupt(.timer_type(WDOG));
+        kind: checker_check
+        statement: Check the watchdog bark interrupt output against the prediction (details in check_aon_domain_interrupt,
+          not shown).
+        fails_test: unknown
+        checker_id: ct_b1a85a561fe9
+      - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+        lines:
+        - 1282
+        - 1282
+        text: '`DV_CHECK_CASE_EQ(predicted_wkup_req, cfg.aon_intr_vif.sample_pin(.idx(1)))'
+        kind: checker_check
+        statement: When enabled and wkup_cause was not written in the same AON cycle, the predicted wkup_cause
+          value must equal the aon wakeup request pin.
+        fails_test: 'yes'
+        checker_id: ct_b1a85a561fe9
+  origin: correlate+triage
+  severity: high
+  status: candidate
+- id: f_e4407a7a1bc0
+  category: untested
+  category_no: 5
+  type: partially_tested
+  title: 'Partially tested: 3 requirement(s) in hw/ip/aon_timer/doc/programmers_guide.md > Programmer''s
+    Guide > Interrupt Handling'
+  subject:
+    requirements:
+    - cr_4eefb20fac1a
+    - cr_7e2f9abb5704
+    - cr_b47fcc96aafd
+  section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Interrupt Handling
+  items:
+  - req_id: cr_4eefb20fac1a
+    statement: Clearing WKUP_COUNT_HI and WKUP_COUNT_LO resets the wakeup timer count.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Interrupt Handling
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 88
+      - 88
+      text: Reset the timer if desired by clearing [`WKUP_COUNT_HI`](registers.md#wkup_count_hi) and [`WKUP_COUNT_LO`](registers.md#wkup_count_lo)
+    gap: With the wakeup timer running and nonzero count, write 0 to WKUP_COUNT_LO and WKUP_COUNT_HI and
+      read them back to check that the count actually resets to 0 (including the HI write) and that counting
+      resumes from zero.
+    severity: medium
+    tested_by:
+    - unit: WakeupRestartTest.Success
+      rationale: wakeup_restart is checked to disable the timer, write 0 to the count registers, then
+        re-enable.
+      missing: Only the mocked register writes are checked; the effect on the actual count (reset to 0)
+        is not observed. Only COUNT_LO is shown being written, so the HI write is not visible.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: &id037
+        - 126
+        - 126
+        text: dif_aon_timer_wakeup_restart(&aon_)
+        kind: stimulus
+        statement: Call wakeup_restart
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: &id038
+        - 114
+        - 117
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_CTRL_REG_OFFSET, { {AON_TIMER_WKUP_CTRL_ENABLE_BIT, false},
+          });
+        kind: check
+        statement: CTRL written with enable cleared
+        fails_test: 'yes'
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id036
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_COUNT_LO_REG_OFFSET, 0);
+        kind: check
+        statement: COUNT registers written with 0
+        fails_test: 'yes'
+    - unit: WakeupStartTest.Success
+      rationale: wakeup_start is checked to disable the timer and write 0 to the count and threshold registers
+        before enabling.
+      missing: Only checks the mocked register writes, not that the timer count actually resets; HI write
+        is not visible, and it is a start sequence rather than a reset.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id023
+        text: dif_aon_timer_wakeup_start(&aon_, 1, AON_TIMER_WKUP_CTRL_PRESCALER_MASK)
+        kind: stimulus
+        statement: Call wakeup_start with max prescaler
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id024
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_COUNT_LO_REG_OFFSET, 0);
+        kind: check
+        statement: COUNT and THOLD registers written with 0
+        fails_test: 'yes'
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id025
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_COUNT_HI_REG_OFFSET, 0);
+        kind: check
+        statement: COUNT and THOLD registers written with 0
+        fails_test: 'yes'
+  - req_id: cr_7e2f9abb5704
+    statement: Clearing the enable bit in WKUP_CTRL disables the wakeup timer.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Interrupt Handling
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 87
+      - 87
+      text: Disable the wakeup timer by clearing the enable bit in [`WKUP_CTRL`](registers.md#wkup_ctrl).
+    gap: In hardware or DV, enable the wakeup timer and let it count. Then clear the WKUP_CTRL enable
+      bit and check that the count stops advancing and no wakeup interrupt or wkup_req is raised, even
+      when the count passes the threshold.
+    severity: high
+    tested_by:
+    - unit: WakeupRestartTest.Success
+      rationale: wakeup_restart first writes WKUP_CTRL with the enable bit cleared, which the test checks.
+      missing: Only the mocked register write is checked; the timer's actual disabled behavior in hardware
+        is not verified.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id037
+        text: dif_aon_timer_wakeup_restart(&aon_)
+        kind: stimulus
+        statement: Call wakeup_restart
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id038
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_CTRL_REG_OFFSET, { {AON_TIMER_WKUP_CTRL_ENABLE_BIT, false},
+          });
+        kind: check
+        statement: CTRL written with enable cleared
+        fails_test: 'yes'
+    - unit: WakeupStopTest.Success
+      rationale: wakeup_stop is called and the test checks that WKUP_CTRL is written with the enable bit
+        cleared.
+      missing: Only the register write is checked in a mocked unit test; no check that the hardware wakeup
+        timer actually stops counting or raising events.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 103
+        - 103
+        text: dif_aon_timer_wakeup_stop(&aon_)
+        kind: stimulus
+        statement: Call wakeup_stop
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 98
+        - 101
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_CTRL_REG_OFFSET, { {AON_TIMER_WKUP_CTRL_ENABLE_BIT, false},
+          });
+        kind: check
+        statement: CTRL written with enable cleared
+        fails_test: 'yes'
+  - req_id: cr_b47fcc96aafd
+    statement: Setting the enable bit in WKUP_CTRL re-enables the wakeup timer.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Interrupt Handling
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 88
+      - 88
+      text: renable by setting the enable bit in [`WKUP_CTRL`](registers.md#wkup_ctrl).
+    gap: In hardware or DV, disable the wakeup timer and then set the WKUP_CTRL enable bit. Check that
+      the counter resumes counting and that a wakeup interrupt or wkup_req fires when the threshold is
+      reached.
+    severity: medium
+    tested_by:
+    - unit: WakeupRestartTest.Success
+      rationale: After disabling and zeroing the count, wakeup_restart writes WKUP_CTRL with the enable
+        bit set, and the test checks this write.
+      missing: Only the register write is checked; no check that the hardware timer resumes counting after
+        re-enable.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id037
+        text: dif_aon_timer_wakeup_restart(&aon_)
+        kind: stimulus
+        statement: Call wakeup_restart
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 121
+        - 124
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_CTRL_REG_OFFSET, { {AON_TIMER_WKUP_CTRL_ENABLE_BIT, true},
+          });
+        kind: check
+        statement: CTRL written with enable set
+        fails_test: 'yes'
+    - unit: WakeupStartTest.Success
+      rationale: wakeup_start ends with a WKUP_CTRL write that sets the enable bit, which the test checks.
+      missing: Only the mocked register write is checked; the timer's behavior after enabling is not verified.
+      cites:
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines: *id023
+        text: dif_aon_timer_wakeup_start(&aon_, 1, AON_TIMER_WKUP_CTRL_PRESCALER_MASK)
+        kind: stimulus
+        statement: Call wakeup_start with max prescaler
+      - path: sw/device/lib/dif/dif_aon_timer_unittest.cc
+        lines:
+        - 74
+        - 81
+        text: EXPECT_WRITE32(AON_TIMER_WKUP_CTRL_REG_OFFSET, { { AON_TIMER_WKUP_CTRL_PRESCALER_OFFSET,
+          AON_TIMER_WKUP_CTRL_PRESCALER_MASK, }, {AON_TIMER_WKUP_CTRL_ENABLE_BIT, true}, });
+        kind: check
+        statement: CTRL written with prescaler mask and enable set
+        fails_test: 'yes'
+  origin: correlate+triage
+  severity: high
+  status: candidate
+- id: f_0e434d9ee1a4
+  category: untested
+  category_no: 5
+  type: planned_only
+  title: 'Planned but not implemented: 5 requirement(s) in hw/ip/aon_timer/doc/interfaces.md > Interfaces
+    … (4 sections)'
+  subject:
+    requirements:
+    - cr_6ef5f506c53e
+    - cr_3f2c35f00bd6
+    - cr_540c55ffcb97
+    - cr_ddaa03f4793c
+    - cr_b417ff36fcef
+  section: hw/ip/aon_timer/doc/interfaces.md > Interfaces … (4 sections)
+  items:
+  - req_id: cr_6ef5f506c53e
+    statement: The aon_timer module has a TL-UL bus device interface named tl.
+    section: hw/ip/aon_timer/doc/interfaces.md > Interfaces
+    spec:
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines:
+      - 7
+      - 7
+      text: 'Bus Device Interfaces (TL-UL): **`tl`**'
+    weak_evidence:
+    - unit: csr_rw
+      kind: plan
+      strength: planned
+      relation: partial
+      rationale: Writing random values to every CSR and reading them back over all accessible interfaces
+        exercises the aon_timer TL-UL device interface functionally.
+    - unit: TLUL protocol assertions
+      kind: plan
+      strength: planned
+      relation: partial
+      rationale: Binding the TL-UL protocol checker into the design checks that the device-side TL-UL
+        interface follows protocol rules.
+  - req_id: cr_3f2c35f00bd6
+    statement: lc_escalate_en is a 1-bit lc_ctrl_pkg::lc_tx unidirectional input (receiver).
+    section: hw/ip/aon_timer/doc/interfaces.md > Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+    spec:
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines:
+      - 18
+      - 18
+      text: lc_escalate_en lc_ctrl_pkg::lc_tx uni rcv 1
+    weak_evidence:
+    - unit: chip_sw_aon_timer_wdog_lc_escalate
+      kind: plan
+      strength: planned
+      relation: partial
+      rationale: Starts LC escalation and checks that the watchdog bark does not fire and that the reset
+        cause is escalation. This exercises the lc_escalate_en input end to end.
+  - req_id: cr_540c55ffcb97
+    statement: tl is a 1-bit tlul_pkg::tl req_rsp interface on which this module is the responder.
+    section: hw/ip/aon_timer/doc/interfaces.md > Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+    spec:
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines:
+      - 22
+      - 22
+      text: tl tlul_pkg::tl req_rsp rsp 1
+    weak_evidence:
+    - unit: csr_rw
+      kind: plan
+      strength: planned
+      relation: covers
+      rationale: Writes random values to every CSR over the TL interface and reads them back. This exercises
+        the module as the TL responder on all accessible interfaces.
+    - unit: TLUL protocol assertions
+      kind: plan
+      strength: planned
+      relation: partial
+      rationale: Binds the TL-UL protocol checker so the assertions check the device-side TL protocol.
+  - req_id: cr_ddaa03f4793c
+    statement: The fatal_fault alert is triggered when a fatal TL-UL bus integrity fault is detected.
+    section: hw/ip/aon_timer/doc/interfaces.md > Interfaces > Security Alerts
+    spec:
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines:
+      - 35
+      - 35
+      text: fatal_fault
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines:
+      - 35
+      - 35
+      text: This fatal alert is triggered when a fatal TL-UL bus integrity fault is detected.
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 57
+      - 57
+      text: This fatal alert is triggered when a fatal TL-UL bus integrity fault is detected.
+    weak_evidence:
+    - unit: alert_test
+      kind: plan
+      strength: planned
+      relation: partial
+      rationale: Exercises the alert_test CSR, which mock-injects alerts and checks the alert_tx pins.
+        This verifies the alert output path but not triggering by a TL-UL integrity fault.
+    - unit: tl_intg_err_cg
+      kind: plan
+      strength: planned
+      relation: partial
+      rationale: A coverage group that records the kinds of TL integrity errors injected. It never checks
+        that the fatal alert fires.
+    - unit: tl_intg_err_cg_wrap
+      kind: plan
+      strength: planned
+      relation: partial
+      rationale: Samples ECC errors in the command and data and the integrity error type. It is coverage
+        only.
+    - unit: tl_intg_err
+      kind: plan
+      strength: planned
+      relation: covers
+      rationale: Injects random integrity errors on control, data or ECC bits during CSR accesses and
+        checks that the correct fatal alert is triggered; it also injects a fault at the onehot check
+        in u_reg.u_prim_reg_we_check and checks for the corresponding fatal alert.
+    - unit: sec_cm_bus_integrity
+      kind: plan
+      strength: planned
+      relation: partial
+      rationale: This plan item maps the BUS.INTEGRITY countermeasure to the aon_timer_tl_intg_err test,
+        which would exercise the integrity fault to alert path. The item itself states no specific expectation.
+  - req_id: cr_b417ff36fcef
+    statement: The AON_TIMER.BUS.INTEGRITY countermeasure provides an end-to-end bus integrity scheme.
+    section: hw/ip/aon_timer/doc/interfaces.md > Interfaces > Security Countermeasures
+    spec:
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines:
+      - 41
+      - 41
+      text: AON_TIMER.BUS.INTEGRITY
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines:
+      - 41
+      - 41
+      text: End-to-end bus integrity scheme.
+    weak_evidence:
+    - unit: tl_intg_err_cg
+      kind: plan
+      strength: planned
+      relation: partial
+      rationale: Generic coverage group for kinds of integrity errors and the number of error bits per
+        integrity check.
+    - unit: tl_intg_err_cg_wrap
+      kind: plan
+      strength: planned
+      relation: partial
+      rationale: Covers sampling of TL integrity errors in the command and data, which shows the integrity
+        error scenarios occurred.
+    - unit: tl_intg_err
+      kind: plan
+      strength: planned
+      relation: covers
+      rationale: Randomly injects errors on the control, data or ECC bits during CSR accesses and checks
+        that the correct fatal alert fires. This exercises the end-to-end bus integrity scheme.
+    - unit: sec_cm_bus_integrity
+      kind: plan
+      strength: planned
+      relation: covers
+      rationale: The sec_cm test-plan item targets the BUS.INTEGRITY countermeasure and maps to the aon_timer_tl_intg_err
+        test, which verifies the countermeasure end to end. The item states no specific expectation.
+  origin: mapping
+  severity: medium
+  status: candidate
+- id: f_1a5ce3143a3c
+  category: untested
+  category_no: 5
+  type: untested
+  title: 'Untested: 5 requirement(s) in hw/ip/aon_timer/doc/programmers_guide.md > Programmer''s Guide
+    > Wakeup count and threshold access > Writing the counter … (3 sections)'
+  subject:
+    requirements:
+    - cr_ebc0e38e9d47
+    - cr_13a3d2eb44cf
+    - cr_498c4b121026
+    - cr_64e15132845f
+    - cr_ab0d74b3889d
+  section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Wakeup count and threshold
+    access > Writing the counter … (3 sections)
+  items:
+  - req_id: cr_ebc0e38e9d47
+    statement: For target values close to overflow, disable the timer via WKUP_CTRL while writing the
+      counter.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Wakeup count and threshold
+      access > Writing the counter
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 56
+      - 56
+      text: For such values, disable the timer with WKUP_CTRL while writing the counter.
+    weak_evidence: []
+  - req_id: cr_13a3d2eb44cf
+    statement: Hardware does not modify WKUP_THOLD_LO and WKUP_THOLD_HI.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Wakeup count and threshold
+      access > Reading the threshold
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 60
+      - 60
+      text: The hardware does not alter [`WKUP_THOLD_LO`](registers.md#wkup_thold_lo) and [`WKUP_THOLD_HI`](registers.md#wkup_thold_hi)
+    weak_evidence: []
+  - req_id: cr_498c4b121026
+    statement: Software first writes WKUP_THOLD_LO with its maximum value (UINT32_MAX).
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Wakeup count and threshold
+      access > Writing the threshold
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 70
+      - 70
+      text: // Set the lower word to its maximum value.
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 72
+      - 72
+      text: REG_WRITE(WKUP_THOLD_LO, UINT32_MAX);
+    weak_evidence: []
+  - req_id: cr_64e15132845f
+    statement: Software then writes WKUP_THOLD_LO with the lower 32 bits of the new threshold.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Wakeup count and threshold
+      access > Writing the threshold
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 78
+      - 78
+      text: // Set the lower word to its desired value.
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 79
+      - 79
+      text: REG_WRITE(WKUP_THOLD_LO, new_thold & 0xffff_ffff);
+    weak_evidence: []
+  - req_id: cr_ab0d74b3889d
+    statement: Software re-enables the wakeup interrupt after the threshold update is complete.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Wakeup count and threshold
+      access > Writing the threshold
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 81
+      - 81
+      text: enable_wakeup_interrupt();
+    weak_evidence: []
+  origin: mapping
+  severity: medium
+  status: candidate
+- id: f_1de3c49add8e
+  category: untested
+  category_no: 5
+  type: untested
+  title: 'Untested: 3 requirement(s) in hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation
+    > Design Details'
+  subject:
+    requirements:
+    - cr_9958ce5b3109
+    - cr_bfbda21a02ad
+    - cr_d9531c6323ce
+  section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation > Design Details
+  items:
+  - req_id: cr_9958ce5b3109
+    statement: Reading back a register guarantees completion of all previous writes to the peripheral.
+    section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation > Design Details
+    spec:
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 27
+      - 27
+      text: If software needs to guarantee completion of a register write then it can read back the register
+        value.
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 28
+      - 28
+      text: This will guarantee the completion of all previous writes to the peripheral.
+    weak_evidence: []
+  - req_id: cr_bfbda21a02ad
+    statement: When integrating the AON timer, clk_aon_i must be started before clk_i.
+    section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation > Design Details
+    spec:
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 36
+      - 36
+      text: When integrating the AON timer into a bigger design, you must start the always-on clock (clk_aon_i)
+        before you start the main clock (clk_i).
+    weak_evidence: []
+  - req_id: cr_d9531c6323ce
+    statement: WKUP_THOLD_LO.threshold_lo occupies bits 31:0 and holds wakeup threshold bits [31:0].
+    section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation > Design Details
+    spec:
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines: *id039
+      text: Bits[31:0] in registers
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines: *id040
+      text: WKUP_THOLD_HI
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines: *id041
+      text: 'bits: "31:0"'
+    weak_evidence: []
+  origin: mapping
+  severity: medium
+  status: candidate
+- id: f_1e00f67be20c
+  category: untested
+  category_no: 5
+  type: untested
+  title: 'Untested: 5 requirement(s) in hw/ip/aon_timer/doc/interfaces.md > Interfaces … (2 sections)'
+  subject:
+    requirements:
+    - cr_627c824e7226
+    - cr_8d65e39a5db1
+    - cr_e4e318bad395
+    - cr_5867b0a56d13
+    - cr_c6cf966d6f9f
+  section: hw/ip/aon_timer/doc/interfaces.md > Interfaces … (2 sections)
+  items:
+  - req_id: cr_627c824e7226
+    statement: The aon_timer module has no TL-UL bus host interfaces.
+    section: hw/ip/aon_timer/doc/interfaces.md > Interfaces
+    spec:
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines:
+      - 8
+      - 8
+      text: 'Bus Host Interfaces (TL-UL): *none*'
+    weak_evidence: []
+  - req_id: cr_8d65e39a5db1
+    statement: The aon_timer module has no peripheral pins for chip IO.
+    section: hw/ip/aon_timer/doc/interfaces.md > Interfaces
+    spec:
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines:
+      - 9
+      - 9
+      text: 'Peripheral Pins for Chip IO: *none*'
+    weak_evidence: []
+  - req_id: cr_e4e318bad395
+    statement: The aon_timer module has primary clock clk_i.
+    section: hw/ip/aon_timer/doc/interfaces.md > Interfaces
+    spec:
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines:
+      - 5
+      - 5
+      text: 'Primary Clock: **`clk_i`**'
+    weak_evidence: []
+  - req_id: cr_5867b0a56d13
+    statement: racl_policies is a 1-bit top_racl_pkg::racl_policy_vec unidirectional input (receiver).
+    section: hw/ip/aon_timer/doc/interfaces.md > Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+    spec:
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines:
+      - 20
+      - 20
+      text: racl_policies top_racl_pkg::racl_policy_vec uni rcv 1
+    weak_evidence: []
+  - req_id: cr_c6cf966d6f9f
+    statement: racl_error is a 1-bit top_racl_pkg::racl_error_log unidirectional output (requester).
+    section: hw/ip/aon_timer/doc/interfaces.md > Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+    spec:
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines:
+      - 21
+      - 21
+      text: racl_error top_racl_pkg::racl_error_log uni req 1
+    weak_evidence: []
+  origin: mapping
+  severity: medium
+  status: candidate
+- id: f_1e82ff493547
+  category: untested
+  category_no: 5
+  type: plan_item_not_implemented
+  title: 5 plan item(s) with no implementing test
+  subject:
+    plans:
+    - cp_8ded836cfabd
+    - cp_9e018b6da1b7
+    - cp_aea4ca644638
+    - cp_b45f61de3f01
+    - cp_b964b93a1459
+  items:
+  - plan_id: cp_8ded836cfabd
+    name: X-value output assertions
+    summary: Design outputs are checked for X values by assertions in the RTL.
+    sources:
+    - hw/ip/aon_timer/dv/README.md
+  - plan_id: cp_9e018b6da1b7
+    name: mem_walk
+    summary: Verify accessibility of all memories by running the standard UVM mem walk sequence on all
+      memories in the RAL model, from all available interfaces.
+    sources:
+    - hw/dv/tools/dvsim/testplans/mem_testplan.hjson
+  - plan_id: cp_aea4ca644638
+    name: SIM_FUNCTIONAL_COVERAGE_AT_100
+    summary: 'V3 checklist item: simulation functional coverage at 100%; not started.'
+    sources:
+    - hw/ip/aon_timer/doc/checklist.md
+  - plan_id: cp_b45f61de3f01
+    name: tl_intg_err
+    summary: Verifies that TL data integrity check violations, injected randomly on control, data or ECC
+      bits during CSR accesses, trigger the correct fatal alert, and that a fault at the onehot check
+      in u_reg.u_prim_reg_we_check triggers the corresponding fatal alert.
+    sources:
+    - hw/dv/tools/dvsim/testplans/tl_device_access_types_testplan.hjson
+  - plan_id: cp_b964b93a1459
+    name: SEC_CM_DV_REVIEWED
+    summary: Review checklist item for V2S, recorded as Done; the V2S review meeting was waived because
+      only one standard sec_cm (bus integrity) exists.
+    sources:
+    - hw/ip/aon_timer/doc/checklist.md
+  origin: correlate
+  severity: medium
+  status: candidate
+- id: f_2354af605b15
+  category: untested
+  category_no: 5
+  type: planned_only
+  title: 'Planned but not implemented: 1 requirement(s) in hw/ip/aon_timer/data/aon_timer.hjson > aon_timer
+    > features'
+  subject:
+    requirements:
+    - cr_a4b492d0289b
+  section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > features
+  items:
+  - req_id: cr_a4b492d0289b
+    statement: 'AON_TIMER.WATCHDOG.DISABLE_BY_LC_CTRL: the watchdog is disabled when the life cycle controller
+      escalates.'
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > features
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 163
+      - 163
+      text: The watchdog is disabled when the life cycle controller escalates.
+    weak_evidence:
+    - unit: chip_sw_aon_timer_wdog_lc_escalate
+      kind: plan
+      strength: planned
+      relation: covers
+      rationale: Starts LC escalation before the bark would assert and checks that the bark interrupt
+        never fires and the reset is attributed to escalation, which shows the watchdog was disabled.
+  origin: mapping
+  severity: medium
+  status: candidate
+- id: f_2f68d49be624
+  category: untested
+  category_no: 5
+  type: plan_item_not_implemented
+  title: 4 plan item(s) with no implementing test
+  subject:
+    plans:
+    - cp_eaf3654df806
+    - cp_ef68605d12b4
+    - cp_f6592c80b9f9
+    - cp_fb550ac73f2d
+  items:
+  - plan_id: cp_eaf3654df806
+    name: X_PROP_ANALYSIS_COMPLETED
+    summary: 'V3 checklist item: X-propagation analysis is completed; resolution Not Started.'
+    sources:
+    - hw/ip/aon_timer/doc/checklist.md
+  - plan_id: cp_ef68605d12b4
+    name: pending_req_on_rst_cg
+    summary: Coverage of TL access pending during reset.
+    sources:
+    - hw/ip/aon_timer/dv/README.md
+  - plan_id: cp_f6592c80b9f9
+    name: TLUL protocol assertions
+    summary: TL-UL protocol rules are checked by binding the TL-UL protocol checker into the design.
+    sources:
+    - hw/ip/aon_timer/dv/README.md
+  - plan_id: cp_fb550ac73f2d
+    name: SEC_CM_TESTPLAN_COMPLETED
+    summary: V2S documentation checklist item for completing the security countermeasure testplan, resolution
+      Done.
+    sources:
+    - hw/ip/aon_timer/doc/checklist.md
+  origin: correlate
+  severity: medium
+  status: candidate
+- id: f_53c338cbaca4
+  category: untested
+  category_no: 5
+  type: weak_only
+  title: 'Only weak evidence (non-failing checks, coverage, list entries): 2 requirement(s) in hw/ip/aon_timer/doc/theory_of_operation.md
+    > Theory of Operation > Design Details'
+  subject:
+    requirements:
+    - cr_874f04d5bc14
+    - cr_ae28e3f9f608
+  section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation > Design Details
+  items:
+  - req_id: cr_874f04d5bc14
+    statement: The watchdog timer is 32 bits wide.
+    section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation > Design Details
+    spec:
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 21
+      - 21
+      text: the watchdog timer is 32 bits wide
+    weak_evidence:
+    - unit: aon_timer_smoke_max_thold
+      kind: test
+      strength: stimulus_only
+      relation: partial
+      rationale: Constrains the watchdog bark and bite thresholds to their maximum values, with the scoreboard
+        checkers running.
+  - req_id: cr_ae28e3f9f608
+    statement: The wakeup timer is 64 bits wide.
+    section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation > Design Details
+    spec:
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 21
+      - 21
+      text: The wakeup timer is 64 bits wide
+    weak_evidence:
+    - unit: aon_timer_wkup_count_cdc_hi
+      kind: test
+      strength: stimulus_only
+      relation: partial
+      rationale: Loads and toggles the wakeup count across the low-half overflow into the high half, which
+        exercises the 64-bit counter. It has no explicit check of the carry or width.
+  origin: mapping
+  severity: medium
+  status: candidate
+- id: f_57c50a9573d0
+  category: untested
+  category_no: 5
+  type: partially_tested
+  title: 'Partially tested: 1 requirement(s) in hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WDOG_BITE_THOLD'
+  subject:
+    requirements:
+    - cr_dce064574acf
+  section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WDOG_BITE_THOLD
+  items:
+  - req_id: cr_dce064574acf
+    statement: A watchdog bite triggers a reset; the bite reset is generated when the watchdog count reaches
+      WDOG_BITE_THOLD.
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WDOG_BITE_THOLD
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 303
+      - 303
+      text: The count at which a watchdog bite reset should be generated.
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 153
+      - 153
+      text: A bite triggers a reset.
+    gap: Run the watchdog with mid-range bite thresholds, and make the count reach the threshold deterministically,
+      for example by loading the count just below it. Check that the reset request is not asserted before
+      the count reaches WDOG_BITE_THOLD and is asserted when it does. Do this in a test that uses a watchdog
+      bite, not an escalation reset.
+    severity: medium
+    tested_by:
+    - unit: aon_timer_jump
+      rationale: Writes the watchdog count to within 10 of the bark/bite thresholds and enables the watchdog,
+        so the count reaches the bite threshold; scoreboard c8 checks the reset_req pin against the modelled
+        expectation.
+      missing: The test has no checks of its own and only exercises counts near the threshold; whether
+        the bite is actually hit depends on the randomisation, and only the scoreboard's model verifies
+        the reset.
+      cites:
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_jump_vseq.sv
+        lines:
+        - 54
+        - 54
+        text: csr_utils_pkg::csr_wr(ral.wdog_count, wdog_count);
+        kind: stimulus
+        statement: Write random WDOG count near bark/bite threshold.
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_jump_vseq.sv
+        lines: *id026
+        text: csr_utils_pkg::csr_wr(ral.wdog_ctrl.enable, 1'b1);
+        kind: stimulus
+        statement: Enable WDOG and WKUP timers.
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_jump_vseq.sv
+        lines: *id027
+        text: csr_utils_pkg::csr_wr(ral.wkup_ctrl.enable, 1'b1);
+        kind: stimulus
+        statement: Enable WDOG and WKUP timers.
+    - unit: aon_timer_smoke_min_thold
+      rationale: Runs the smoke sequence with the bite threshold constrained to 0, with the scoreboard
+        model_and_check_wdog_bite (c8) checking the reset request pin against the modelled bite expectation.
+      missing: Only the minimum threshold value (0) is exercised; mid-range thresholds are not covered
+        here, and the reset request is only checked through the scoreboard model.
+      cites:
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_smoke_min_thold_vseq.sv
+        lines:
+        - 21
+        - 21
+        text: wdog_bite_thold == 0;
+        kind: stimulus
+        statement: Constrain the watchdog bite threshold to 0.
+      - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+        lines: &id042
+        - 1392
+        - 1393
+        text: '`DV_CHECK_CASE_EQ(wdog_rst_req_exp, cfg.aon_intr_vif.sample_pin(.idx(0)))'
+        kind: checker_check
+        statement: The reset_req pin (idx 0) must equal the expected watchdog reset request.
+        fails_test: 'yes'
+        checker_id: ct_9c57e63c5bc4
+    - unit: aon_timer_smoke_max_thold
+      rationale: Runs the smoke sequence with the bite threshold at its maximum value, with scoreboard
+        c8 checking the reset request pin against the modelled bite.
+      missing: Only the maximum threshold value is exercised, and the bite may not be reached at that
+        value in simulation.
+      cites:
+      - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_smoke_max_thold_vseq.sv
+        lines:
+        - 21
+        - 21
+        text: wdog_bite_thold == (2**WDOG_WIDTH-1);
+        kind: stimulus
+        statement: Constrain watchdog bite threshold to maximum value.
+      - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+        lines: *id042
+        text: '`DV_CHECK_CASE_EQ(wdog_rst_req_exp, cfg.aon_intr_vif.sample_pin(.idx(0)))'
+        kind: checker_check
+        statement: The reset_req pin (idx 0) must equal the expected watchdog reset request.
+        fails_test: 'yes'
+        checker_id: ct_9c57e63c5bc4
+    - unit: aon_timer_wdog_lc_escalate_test
+      rationale: Programs the watchdog bark and bite timeouts and expects an escalation reset; the reset
+        reason check is for escalation, not a watchdog bite.
+      missing: Does not check that the bite reset is generated when the count reaches the threshold; the
+        test checks escalation resets instead.
+      cites:
+      - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+        lines: *id043
+        text: aon_timer_testutils_watchdog_config(aon_timer, bark_cycles, bite_cycles,
+        kind: stimulus
+        statement: Program the watchdog bark and bite timeouts without pausing in sleep.
+      - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+        lines:
+        - 276
+        - 276
+        text: CHECK(rst_info == kDifRstmgrResetInfoPor ||
+        kind: check
+        statement: The reset reason must be either POR or escalation.
+        fails_test: 'yes'
+      - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+        lines:
+        - 277
+        - 277
+        text: rst_info == kDifRstmgrResetInfoEscalation,
+        kind: check
+        statement: The reset reason must be either POR or escalation.
+        fails_test: 'yes'
+  origin: correlate+triage
+  severity: medium
+  status: candidate
+- id: f_59063c90be4c
+  category: untested
+  category_no: 5
+  type: untested
+  title: 'Untested: 5 requirement(s) in hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation
+    … (2 sections)'
+  subject:
+    requirements:
+    - cr_517c566609ad
+    - cr_625c1cd8c604
+    - cr_6c14ebc81991
+    - cr_c98fa20138a9
+    - cr_20034a8664a3
+  section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation … (2 sections)
+  items:
+  - req_id: cr_517c566609ad
+    statement: The RACL ports are enabled by setting parameter EnableRacl to 1.
+    section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation
+    spec:
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines: *id044
+      text: In order to enable the RACL ports, the parameter `EnableRacl` should be set to 1.
+    weak_evidence: []
+  - req_id: cr_625c1cd8c604
+    statement: nmi_wdog_timer_bark_o is a copy of intr_wdog_timer_bark_o.
+    section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation
+    spec:
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 10
+      - 10
+      text: Note the signal `nmi_wdog_timer_bark_o` is a copy of `intr_wdog_timer_bark_o`.
+    weak_evidence: []
+  - req_id: cr_6c14ebc81991
+    statement: intr_wkup_timer_expired_o, intr_wdog_timer_bark_o and nmi_wdog_timer_bark_o are driven
+      on the SYS domain.
+    section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation
+    spec:
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 8
+      - 8
+      text: The output signals `intr_wkup_timer_expired_o`, `intr_wdog_timer_bark_o` and `nmi_wdog_timer_bark_o`
+        are driven on the SYS domain.
+    weak_evidence: []
+  - req_id: cr_c98fa20138a9
+    statement: The block has RACL ports racl_policies_i and racl_error_o.
+    section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation
+    spec:
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 11
+      - 11
+      text: Furthermore, the block also has RACL ports `racl_policies_i` and `racl_error_o`
+    weak_evidence: []
+  - req_id: cr_20034a8664a3
+    statement: The always-on timer runs on a ~200KHz clock.
+    section: hw/ip/aon_timer/doc/theory_of_operation.md > Theory of Operation > Design Details
+    spec:
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 20
+      - 20
+      text: The always-on timer will run on a ~200KHz clock.
+    weak_evidence: []
+  origin: mapping
+  severity: medium
+  status: candidate
+- id: f_5c298f797c68
+  category: untested
+  category_no: 5
+  type: plan_item_not_implemented
+  title: 5 plan item(s) with no implementing test
+  subject:
+    plans:
+    - cp_02b82fc41e1d
+    - cp_058ec4d1f87f
+    - cp_1978eabf0e8f
+    - cp_19d5d868dc56
+    - cp_2623de2c01c3
+  items:
+  - plan_id: cp_02b82fc41e1d
+    name: SIM_CODE_COVERAGE_AT_100
+    summary: 'V3 checklist item: simulation code coverage at 100%; not started.'
+    sources:
+    - hw/ip/aon_timer/doc/checklist.md
+  - plan_id: cp_058ec4d1f87f
+    name: SIM_NIGHTLY_REGRESSION_AT_V3
+    summary: 'V3 checklist item: nightly simulation regression at V3; resolution Not Started.'
+    sources:
+    - hw/ip/aon_timer/doc/checklist.md
+  - plan_id: cp_1978eabf0e8f
+    name: SIM_COVERAGE_REVIEWED
+    summary: V2S coverage checklist item for reviewing simulation coverage, resolution Done.
+    sources:
+    - hw/ip/aon_timer/doc/checklist.md
+  - plan_id: cp_19d5d868dc56
+    name: SIM_SEC_CM_VERIFIED
+    summary: V2S tests checklist item for simulation security countermeasure verification, resolution
+      Done.
+    sources:
+    - hw/ip/aon_timer/doc/checklist.md
+  - plan_id: cp_2623de2c01c3
+    name: tl_a_chan_cov_cg
+    summary: Reused TL A channel coverage of mask, opcode, size, source and their cross.
+    sources:
+    - hw/ip/aon_timer/dv/README.md
+  origin: correlate
+  severity: medium
+  status: candidate
+- id: f_621472fe1b41
+  category: untested
+  category_no: 5
+  type: plan_item_not_implemented
+  title: 5 plan item(s) with no implementing test
+  subject:
+    plans:
+    - cp_78ba7f313582
+    - cp_793ecac6a2a5
+    - cp_87e74b2a7c0c
+    - cp_8af9344465d9
+    - cp_8b8993d192ff
+  items:
+  - plan_id: cp_78ba7f313582
+    name: mem_partial_access
+    summary: Verifies partial accessibility of all memories via partial reads and writes, and tests outstanding
+      accesses on memories.
+    sources:
+    - hw/dv/tools/dvsim/testplans/mem_testplan.hjson
+  - plan_id: cp_793ecac6a2a5
+    name: FPV_CODE_COVERAGE_AT_100
+    summary: 'V3 checklist item: FPV code coverage at 100%; not started.'
+    sources:
+    - hw/ip/aon_timer/doc/checklist.md
+  - plan_id: cp_87e74b2a7c0c
+    name: csr_mem_rw_with_rand_reset
+    summary: Issues random resets during CSR and memory accesses, then checks that all CSRs return to
+      their default values using the hw_reset sequence.
+    sources:
+    - hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+  - plan_id: cp_8af9344465d9
+    name: csr_aliasing
+    summary: Writes each CSR in turn, reads all CSRs back, and checks that only the written CSR changed,
+      to detect aliasing.
+    sources:
+    - hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+  - plan_id: cp_8b8993d192ff
+    name: dv_base_lockable_field_cov
+    summary: Coverage of lockable field being set.
+    sources:
+    - hw/ip/aon_timer/dv/README.md
+  origin: correlate
+  severity: medium
+  status: candidate
+- id: f_900bad7fdee4
+  category: untested
+  category_no: 5
+  type: untested
+  title: 'Untested: 3 requirement(s) in hw/ip/aon_timer/doc/programmers_guide.md > Programmer''s Guide
+    > Wakeup count and threshold access > Writing the threshold … (2 sections)'
+  subject:
+    requirements:
+    - cr_c5f298c5baf8
+    - cr_cd988f27543a
+    - cr_bb10680d5ea9
+  section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Wakeup count and threshold
+    access > Writing the threshold … (2 sections)
+  items:
+  - req_id: cr_c5f298c5baf8
+    statement: Software then writes WKUP_THOLD_HI with the upper 32 bits of the new threshold.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Wakeup count and threshold
+      access > Writing the threshold
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 74
+      - 74
+      text: // Set the upper word to its desired value.
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 76
+      - 76
+      text: REG_WRITE(WKUP_THOLD_HI, new_thold >> 32);
+    weak_evidence: []
+  - req_id: cr_cd988f27543a
+    statement: Software disables the wakeup interrupt before writing the threshold registers.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Wakeup count and threshold
+      access > Writing the threshold
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines:
+      - 68
+      - 68
+      text: disable_wakeup_interrupt();
+    weak_evidence: []
+  - req_id: cr_bb10680d5ea9
+    statement: If the count remains above the threshold after clearing and the timer stays enabled, the
+      wakeup event triggers again at the next clock tick.
+    section: hw/ip/aon_timer/doc/programmers_guide.md > Programmer's Guide > Interrupt Handling
+    spec:
+    - path: hw/ip/aon_timer/doc/programmers_guide.md
+      lines: *id045
+      text: If {[`WKUP_COUNT_HI`](registers.md#wkup_count_hi), [`WKUP_COUNT_LO`](registers.md#wkup_count_lo)}
+        remains above the threshold after clearing the interrupt or wakeup event and the timer remains
+        enabled, the interrupt and wakeup event will trigger again at the next clock tick.
+    weak_evidence: []
+  origin: mapping
+  severity: medium
+  status: candidate
+- id: f_96eff24db6b6
+  category: untested
+  category_no: 5
+  type: untested
+  title: 'Untested: 5 requirement(s) in hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > inter_signal_list
+    … (3 sections)'
+  subject:
+    requirements:
+    - cr_068211cfcae2
+    - cr_1525c2bff7eb
+    - cr_d3bb7e9459e0
+    - cr_7352e4c71220
+    - cr_4f0e8a135187
+  section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > inter_signal_list … (3 sections)
+  items:
+  - req_id: cr_068211cfcae2
+    statement: racl_error outputs the RACL error log information of this module.
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > inter_signal_list
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines: *id046
+      text: RACL error log information of this module.
+    weak_evidence: []
+  - req_id: cr_1525c2bff7eb
+    statement: racl_policies receives the incoming RACL policy vector from a racl_ctrl instance.
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > inter_signal_list
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 115
+      - 115
+      text: Incoming RACL policy vector from a racl_ctrl instance.
+    weak_evidence: []
+  - req_id: cr_d3bb7e9459e0
+    statement: The policy selection vector parameter selects the RACL policy applied to each register.
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > inter_signal_list
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines: *id047
+      text: The policy selection vector (parameter) selects the policy for each register.
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines: *id048
+      text: The policy selection vector (parameter) selects the policy for each register.
+    weak_evidence: []
+  - req_id: cr_7352e4c71220
+    statement: 'WKUP_CTRL.prescaler: hardware receives a write-qualifier pulse on software writes (true).'
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WKUP_CTRL
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 196
+      - 196
+      text: 'hwqe: "true"'
+    weak_evidence: []
+  - req_id: cr_4f0e8a135187
+    statement: WKUP_THOLD_HI holds bits [63:32] of the 64-bit wakeup threshold.
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > WKUP_THOLD_HI
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 201
+      - 201
+      text: Wakeup Timer Threshold Register (bits 63 - 32)
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 208
+      - 208
+      text: top 32 bits
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 31
+      - 31
+      text: Bits[63:32] in registers
+    - path: hw/ip/aon_timer/doc/theory_of_operation.md
+      lines:
+      - 31
+      - 31
+      text: WKUP_THOLD_HI
+    weak_evidence: []
+  origin: mapping
+  severity: medium
+  status: candidate
+- id: f_b8451e043253
+  category: untested
+  category_no: 5
+  type: untested
+  title: 'Untested: 1 requirement(s) in hw/ip/aon_timer/doc/interfaces.md > Interfaces > [Inter-Module
+    Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)'
+  subject:
+    requirements:
+    - cr_d85fd5dd63a4
+  section: hw/ip/aon_timer/doc/interfaces.md > Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+  items:
+  - req_id: cr_d85fd5dd63a4
+    statement: sleep_mode is a 1-bit logic unidirectional input (receiver).
+    section: hw/ip/aon_timer/doc/interfaces.md > Interfaces > [Inter-Module Signals](https://opentitan.org/book/doc/contributing/hw/comportability/index.html#inter-signal-handling)
+    spec:
+    - path: hw/ip/aon_timer/doc/interfaces.md
+      lines:
+      - 19
+      - 19
+      text: sleep_mode logic uni rcv 1
+    weak_evidence: []
+  origin: mapping
+  severity: medium
+  status: candidate
+- id: f_bf4e0a585a10
+  category: untested
+  category_no: 5
+  type: plan_item_not_implemented
+  title: 5 plan item(s) with no implementing test
+  subject:
+    plans:
+    - cp_5fafd9ef0011
+    - cp_62857800d897
+    - cp_647c2829d038
+    - cp_69066ed60ce7
+    - cp_6cea16223bb9
+  items:
+  - plan_id: cp_5fafd9ef0011
+    name: regwen_csr_and_corresponding_lockable_csr
+    summary: Checks that setting a regwen CSR makes its lockable CSRs read-only, reusing the csr_rw and
+      csr_aliasing tests.
+    sources:
+    - hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+  - plan_id: cp_62857800d897
+    name: csr_hw_reset
+    summary: Checks that CSR reset values match the RAL specification after writing random values and
+      applying reset, on every interface and for every reset affecting the CSRs.
+    sources:
+    - hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+  - plan_id: cp_647c2829d038
+    name: tl_intg_err_cg_wrap
+    summary: Coverage of TL integrity errors.
+    sources:
+    - hw/ip/aon_timer/dv/README.md
+  - plan_id: cp_69066ed60ce7
+    name: regwen_val_when_new_value_written_cg
+    summary: Coverage of each lockable register field with regwen at 1 and at 0 when a different value
+      is written and then read.
+    sources:
+    - hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+  - plan_id: cp_6cea16223bb9
+    name: bit_toggle_cg_wrap
+    summary: Reused toggle coverage sampling transitions and values.
+    sources:
+    - hw/ip/aon_timer/dv/README.md
+  origin: correlate
+  severity: medium
+  status: candidate
+- id: f_dc2b6322be7a
+  category: untested
+  category_no: 5
+  type: plan_item_not_implemented
+  title: 5 plan item(s) with no implementing test
+  subject:
+    plans:
+    - cp_c1701d4a58ea
+    - cp_d17099555445
+    - cp_d27abeb92887
+    - cp_d9c004f794d2
+    - cp_e568915a8fd3
+  items:
+  - plan_id: cp_c1701d4a58ea
+    name: FPV_ASSERTIONS_PROVEN_AT_V3
+    summary: 'V3 checklist item: FPV assertions are proven; resolution Not Started.'
+    sources:
+    - hw/ip/aon_timer/doc/checklist.md
+  - plan_id: cp_d17099555445
+    name: csr_bit_bash
+    summary: Walks a 1 through each CSR bit by bit and checks that no other bits are affected.
+    sources:
+    - hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+  - plan_id: cp_d27abeb92887
+    name: sec_cm_bus_integrity
+    summary: Verifies the BUS.INTEGRITY security countermeasure, mapped to the aon_timer_tl_intg_err test.
+    sources:
+    - hw/ip/aon_timer/data/aon_timer_sec_cm_testplan.hjson
+  - plan_id: cp_d9c004f794d2
+    name: intr_pins_cg
+    summary: Coverage of interrupt pins and values.
+    sources:
+    - hw/ip/aon_timer/dv/README.md
+  - plan_id: cp_e568915a8fd3
+    name: max_outstanding_cg
+    summary: Coverage of outstanding transactions on TL bus.
+    sources:
+    - hw/ip/aon_timer/dv/README.md
+  origin: correlate
+  severity: medium
+  status: candidate
+- id: f_dd95b1b85c7c
+  category: untested
+  category_no: 5
+  type: untested
+  title: 'Untested: 4 requirement(s) in hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > INTR_TEST'
+  subject:
+    requirements:
+    - cr_413a62fd4916
+    - cr_a7c7c80abce3
+    - cr_b2ba11feb55d
+    - cr_c7a8017fc4d7
+  section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > INTR_TEST
+  items:
+  - req_id: cr_413a62fd4916
+    statement: 'INTR_TEST.wkup_timer_expired: the register is implemented outside the register block (true).'
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > INTR_TEST
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 342
+      - 342
+      text: 'hwext: "true"'
+    weak_evidence: []
+  - req_id: cr_a7c7c80abce3
+    statement: 'INTR_TEST.wkup_timer_expired: hardware receives a write-qualifier pulse on software writes
+      (true).'
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > INTR_TEST
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 343
+      - 343
+      text: 'hwqe: "true"'
+    weak_evidence: []
+  - req_id: cr_b2ba11feb55d
+    statement: 'INTR_TEST.wdog_timer_bark: the register is implemented outside the register block (true).'
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > INTR_TEST
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 342
+      - 342
+      text: 'hwext: "true"'
+    weak_evidence: []
+  - req_id: cr_c7a8017fc4d7
+    statement: 'INTR_TEST.wdog_timer_bark: hardware receives a write-qualifier pulse on software writes
+      (true).'
+    section: hw/ip/aon_timer/data/aon_timer.hjson > aon_timer > INTR_TEST
+    spec:
+    - path: hw/ip/aon_timer/data/aon_timer.hjson
+      lines:
+      - 343
+      - 343
+      text: 'hwqe: "true"'
+    weak_evidence: []
+  origin: mapping
+  severity: medium
+  status: candidate
+- id: f_e8981726353a
+  category: untested
+  category_no: 5
+  type: plan_item_not_implemented
+  title: 5 plan item(s) with no implementing test
+  subject:
+    plans:
+    - cp_34828670cac3
+    - cp_3ed6c77060c8
+    - cp_420ab5b39641
+    - cp_55b18f69c987
+    - cp_5cecb30c1587
+  items:
+  - plan_id: cp_34828670cac3
+    name: FPV_COI_COVERAGE_AT_100
+    summary: 'V3 checklist item: FPV cone-of-influence coverage at 100%; not started.'
+    sources:
+    - hw/ip/aon_timer/doc/checklist.md
+  - plan_id: cp_3ed6c77060c8
+    name: tl_errors_cg_wrap
+    summary: Coverage of TL error kinds.
+    sources:
+    - hw/ip/aon_timer/dv/README.md
+  - plan_id: cp_420ab5b39641
+    name: alert_test
+    summary: Verifies the common alert_test CSR that lets software mock-inject alert requests, including
+      behavior when written during ongoing or idle alert handshakes.
+    sources:
+    - hw/dv/tools/dvsim/testplans/alert_test_testplan.hjson
+  - plan_id: cp_55b18f69c987
+    name: FPV_SEC_CM_VERIFIED
+    summary: V2S tests checklist item for FPV security countermeasure verification, resolution N/A.
+    sources:
+    - hw/ip/aon_timer/doc/checklist.md
+  - plan_id: cp_5cecb30c1587
+    name: tl_intg_err_cg
+    summary: Coverage group covering all kinds of integrity errors (command, data or both) and the number
+      of error bits per integrity check, including byte-enabled writes on memories that store integrity
+      values.
+    sources:
+    - hw/dv/tools/dvsim/testplans/tl_device_access_types_testplan.hjson
+  origin: correlate
+  severity: medium
+  status: candidate
+- id: f_2fc38343b1ac
+  category: untested
+  category_no: 5
+  type: register_suite
+  title: 'Register reset_values: planned_only (1 properties)'
+  subject:
+    register_category: reset_values
+  detail:
+    requirements: 1
+    status: planned_only
+    suites:
+    - csr_hw_reset
+    - csr_mem_rw_with_rand_reset
+  origin: correlate
+  severity: low
+  status: candidate
+- id: f_e684b2415bb9
+  category: untested
+  category_no: 5
+  type: register_suite
+  title: 'Register access: planned_only (49 properties)'
+  subject:
+    register_category: access
+  detail:
+    requirements: 49
+    status: planned_only
+    suites:
+    - csr_rw
+    - csr_bit_bash
+  origin: correlate
+  severity: low
+  status: candidate
+- id: f_fe240411fef7
+  category: untested
+  category_no: 5
+  type: register_suite
+  title: 'Register write_enable_locks: planned_only (4 properties)'
+  subject:
+    register_category: write_enable_locks
+  detail:
+    requirements: 4
+    status: planned_only
+    suites:
+    - regwen_csr_and_corresponding_lockable_csr
+  origin: correlate
+  severity: low
+  status: candidate

@@ -1,0 +1,81 @@
+finding_hash: 0f05f516940cb9ce
+started_at: '2026-11-11T01:08:01Z'
+model: claude-sonnet-5-5
+outcome: inconclusive
+verdict:
+  outcome: inconclusive
+  summary: Mixed result. alert_test is implemented by an imported common test. The two covergroups are
+    implemented in the shared cip_lib and sampled by the common tl tests. FPV_SEC_CM_VERIFIED is marked
+    N/A, so it needs no test. FPV_COI_COVERAGE_AT_100 is marked Not Started, so it stands. I did not trace
+    the sampling calls or the tl test lists, so the covergroup items are not fully confirmed.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/alert_test.hjson
+    line_start: 14
+    line_end: 18
+    quote: '      name: "{name}_alert_test"'
+    role: refutes
+    note: Common alert_test test, imported by the aon_timer sim cfg, runs the common vseq with +run_alert_test.
+  - path: hw/ip/aon_timer/doc/checklist.md
+    line_start: 245
+    line_end: 245
+    quote: Coverage      | [FPV_COI_COVERAGE_AT_100][]       | Not Started |
+    role: supports
+    note: This is a checklist item that is not started; no test exists.
+  - path: hw/ip/aon_timer/doc/checklist.md
+    line_start: 223
+    line_end: 223
+    quote: Tests         | [FPV_SEC_CM_VERIFIED][]                 | N/A         |
+    role: refutes
+    note: Marked N/A, so it is not a missing test.
+  - path: hw/dv/sv/cip_lib/cip_base_env_cov.sv
+    line_start: 135
+    line_end: 135
+    quote: class tl_intg_err_cg_wrap;
+    role: context
+    note: The covergroup is implemented in the shared cip_lib and sampled by the common tl tests.
+  searches:
+  - what: alert_test in the aon_timer sim cfg and the common test list
+    where: hw/ip/aon_timer/dv, hw/dv/tools/dvsim/tests
+    found: alert_test.hjson is imported and defines the test {name}_alert_test.
+  - what: covergroup definitions and README mentions
+    where: hw/dv/sv/cip_lib, hw/ip/aon_timer/dv/README.md
+    found: tl_errors_cg_wrap and tl_intg_err_cg_wrap exist in cip_base_env_cov.sv and are documented in
+      the README.
+  - what: FPV items in the checklist
+    where: hw/ip/aon_timer/doc/checklist.md
+    found: FPV_SEC_CM_VERIFIED is N/A. FPV_COI_COVERAGE_AT_100 is Not Started.
+  near_misses: []
+  items:
+  - id: cp_34828670cac3
+    outcome: verified
+    reason: The checklist marks it Not Started and no formal collateral was found.
+    evidence:
+    - 1
+  - id: cp_3ed6c77060c8
+    outcome: inconclusive
+    reason: The covergroup exists in the shared cip_lib, but I did not check where it is sampled or which
+      tests drive it.
+    evidence:
+    - 3
+  - id: cp_420ab5b39641
+    outcome: withdrawn
+    reason: The common aon_timer_alert_test is imported and uses +run_alert_test.
+    evidence:
+    - 0
+  - id: cp_55b18f69c987
+    outcome: withdrawn
+    reason: The checklist marks it N/A, so no test is expected.
+    evidence:
+    - 2
+  - id: cp_5cecb30c1587
+    outcome: inconclusive
+    reason: The covergroup exists in the shared cip_lib, but I did not check where it is sampled or which
+      tests drive it.
+    evidence:
+    - 3
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 6
+cost_usd: 0.0902173
+error: null

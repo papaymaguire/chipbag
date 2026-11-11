@@ -1,0 +1,75 @@
+finding_hash: 84c49dfd8f981dbd
+started_at: '2026-11-11T01:05:59Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that checks any of the five items. DV writes THOLD_LO once, then HI, with no
+    UINT32_MAX-first step. Nothing checks that the hardware leaves the thresholds unchanged. The scoreboard
+    only checks the timing of register writes. The DV sequences I read do not re-enable the wakeup interrupt
+    after a threshold update, nor disable the timer for near-overflow counter writes.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 194
+    line_end: 194
+    quote: write_wkup_reg(ral.wkup_thold_lo, wkup_thold[31:0]);
+    role: context
+    note: A single THOLD_LO write with the final value. There is no UINT32_MAX-first write and no interrupt
+      disable and re-enable around it.
+  searches:
+  - what: 'item 1: counter writes near overflow with the timer disabled via WKUP_CTRL'
+    where: hw/ip/aon_timer/dv (wkup_count, 0xffff_ffff)
+    found: Only the scoreboard's timing tracking of count writes and a backdoor read after a disable and
+      re-enable. No near-overflow disable procedure.
+  - what: 'item 2: check that the hardware never changes THOLD_LO or THOLD_HI'
+    where: hw/ip/aon_timer/dv, sw/device
+    found: No such check. The scoreboard only tracks the timing of the write enables.
+  - what: 'item 3: UINT32_MAX written to THOLD_LO first'
+    where: sw/device (aon_timer tests and DIF), hw/ip/aon_timer/dv
+    found: UINT32_MAX appears only in watchdog config calls. The DIF writes THOLD_LO once.
+  - what: 'item 4: THOLD_LO written with the low 32 bits as the second step'
+    where: hw/ip/aon_timer/dv, DIF
+    found: Only a single write. The two-step sequence is neither driven nor checked.
+  - what: 'item 5: wakeup interrupt re-enabled after the threshold update'
+    where: hw/ip/aon_timer/dv/env/seq_lib (intr_enable, intr_state)
+    found: The sequences only read or clear intr_state or use intr_test. None re-enable the interrupt
+      after a threshold update.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 462
+    line_end: 469
+    why_not: It only tracks the timing of the THOLD_LO write. It does not check the guide's write sequence
+      or that the hardware leaves the register unchanged.
+  items:
+  - id: cr_ebc0e38e9d47
+    outcome: verified
+    reason: No test disables the timer through WKUP_CTRL while writing a near-overflow counter value.
+    evidence:
+    - 0
+  - id: cr_13a3d2eb44cf
+    outcome: verified
+    reason: No check that the hardware never modifies THOLD_LO or THOLD_HI was found.
+    evidence:
+    - 0
+  - id: cr_498c4b121026
+    outcome: verified
+    reason: No test writes THOLD_LO with UINT32_MAX first.
+    evidence:
+    - 0
+  - id: cr_64e15132845f
+    outcome: verified
+    reason: The single THOLD_LO write exists, but it is not the second step of the guide's sequence and
+      nothing checks the sequence.
+    evidence:
+    - 0
+  - id: cr_ab0d74b3889d
+    outcome: verified
+    reason: No test re-enables the wakeup interrupt after a threshold update.
+    evidence:
+    - 0
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 9
+cost_usd: 0.090778
+error: null

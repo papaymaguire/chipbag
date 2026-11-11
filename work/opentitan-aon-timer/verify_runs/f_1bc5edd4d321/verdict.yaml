@@ -1,0 +1,53 @@
+finding_hash: 63bbce8cbbb1e01c
+started_at: '2026-11-11T01:04:45Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The README and programmer's guide say the wakeup interrupt fires when the count is at or above
+    the threshold, on each prescaler tick, and re-triggers after a clear while the count stays above it.
+    This answers the question, so the ambiguity in the register description is resolved elsewhere in the
+    spec.
+  evidence:
+  - path: hw/ip/aon_timer/README.md
+    line_start: 35
+    line_end: 35
+    quote: 'Each time the pre-scaler completes when the count is at or above the threshold, two outputs
+      become high:'
+    role: refutes
+    note: States the comparison is at-or-above (>=), and the trigger is on each prescaler completion.
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    line_start: 93
+    line_end: 93
+    quote: the interrupt and wakeup event will trigger again at the next clock tick.
+    role: refutes
+    note: States the interrupt re-triggers after being cleared while the count remains above the threshold.
+  - path: hw/ip/aon_timer/rtl/aon_timer_core.sv
+    line_start: 68
+    line_end: 68
+    quote: assign wkup_intr_o = wkup_incr & (wkup_count >= wkup_thold);
+    role: context
+    note: The RTL implements >=, matching the documented behaviour.
+  searches:
+  - what: Wording on threshold comparison in aon_timer docs
+    where: hw/ip/aon_timer/*.md and doc/
+    found: README says 'at or above'; programmers_guide says it re-triggers while the count stays above
+      the threshold
+  - what: Threshold comparison in RTL
+    where: hw/ip/aon_timer/rtl
+    found: wkup_count >= wkup_thold
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/ip/aon_timer/README.md
+    reason: States the at-or-above comparison for the wakeup threshold.
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    reason: States the interrupt re-triggers while the count stays above the threshold.
+  resolution: The design uses >= and re-asserts on each tick while the count is at or above the threshold.
+    The register description could add 'when the count is greater than or equal to this value' to say
+    so directly.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0514723
+error: null

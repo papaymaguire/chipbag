@@ -1,0 +1,89 @@
+finding_hash: 5a48b0b06f6dc2e1
+started_at: '2026-11-11T01:07:38Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: All five items are implemented by shared infrastructure that aon_timer imports. The CSR tests
+    come from csr_tests.hjson, and the covergroups live in shared DV libraries and are sampled by the
+    tests aon_timer runs. I did not read the sampling code in detail.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 19
+    line_end: 21
+    quote: "      name: \"{name}_csr_hw_reset\"\n      build_mode: \"cover_reg_top\"\n      run_opts:\
+      \ [\"+csr_hw_reset\"]"
+    role: refutes
+    note: The csr_hw_reset test exists in the common list imported by aon_timer.
+  - path: hw/dv/tools/dvsim/testplans/csr_testplan.hjson
+    line_start: 102
+    line_end: 102
+    quote: '      tests: ["{name}{intf}_csr_rw", "{name}{intf}_csr_aliasing"]'
+    role: refutes
+    note: The regwen item maps to csr_rw and csr_aliasing, which exist in the common list.
+  - path: hw/dv/sv/dv_lib/bit_toggle_cg_wrap.sv
+    line_start: 11
+    line_end: 11
+    quote: class bit_toggle_cg_wrap;
+    role: refutes
+    note: The shared covergroup wrapper is implemented in dv_lib.
+  - path: hw/dv/sv/cip_lib/cip_base_scoreboard.sv
+    line_start: 60
+    line_end: 60
+    quote: '  tl_intg_err_cg_wrap tl_intg_err_cgs_wrap[string];'
+    role: refutes
+    note: The shared cip scoreboard instantiates tl_intg_err_cg_wrap, so aon_timer's scoreboard inherits
+      it.
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 20
+    line_end: 23
+    quote: '      name: "{name}_tl_intg_err"'
+    role: context
+    note: The common tl_intg_err test provides the stimulus for the integrity-error covergroup.
+  searches:
+  - what: csr tests imported
+    where: aon_timer_sim_cfg.hjson, csr_tests.hjson
+    found: csr_hw_reset, csr_rw and csr_aliasing are imported
+  - what: covergroup implementations
+    where: hw/dv
+    found: bit_toggle_cg_wrap.sv, dv_base_lockable_field_cov.sv and tl_intg_err_cg_wrap use in cip_base_scoreboard.sv
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 177
+    line_end: 177
+    why_not: The wdog_regwen write is commented out here, but the common CSR tests exercise regwen instead.
+  items:
+  - id: cp_5fafd9ef0011
+    outcome: withdrawn
+    reason: csr_rw and csr_aliasing are run from the imported common list.
+    evidence:
+    - 1
+  - id: cp_62857800d897
+    outcome: withdrawn
+    reason: The csr_hw_reset test is defined in the imported common list.
+    evidence:
+    - 0
+  - id: cp_647c2829d038
+    outcome: withdrawn
+    reason: This is a covergroup. The shared cip scoreboard instantiates it, and the common tl_intg_err
+      test provides stimulus.
+    evidence:
+    - 3
+    - 4
+  - id: cp_69066ed60ce7
+    outcome: withdrawn
+    reason: This is a covergroup, implemented in dv_base_lockable_field_cov.sv and sampled by the common
+      CSR tests.
+    evidence:
+    - 1
+  - id: cp_6cea16223bb9
+    outcome: withdrawn
+    reason: This is a covergroup, implemented in the shared bit_toggle_cg_wrap.sv.
+    evidence:
+    - 2
+  new_sources: []
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.0912813
+error: null

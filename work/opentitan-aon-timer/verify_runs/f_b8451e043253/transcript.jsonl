@@ -1,0 +1,10 @@
+{"t": "2026-11-11T01:07:32Z", "event": "  \u2192 Grep: sleep_mode"}
+{"t": "2026-11-11T01:07:34Z", "event": "  \u2192 Grep: sleep_vif|pause_in_sleep"}
+{"t": "2026-11-11T01:07:35Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv"}
+{"t": "2026-11-11T01:07:37Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/dv; sed -n 205,265p env/seq_lib/aon_timer_base_vseq.sv; grep -n \"sleep\" env/seq_lib/*.sv | grep -v base_vseq"}
+{"t": "2026-11-11T01:07:40Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/dv/env; grep -n \"wait_for_sleep\" aon_timer_scoreboard.sv; sed -n 975,995p aon_timer_scoreboard.sv"}
+{"t": "2026-11-11T01:07:52Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:07:53Z", "event": "I'm resubmitting the verdict with the evidence roles corrected. The tool rejected it because a withdrawal needs at least one refutes item."}
+{"t": "2026-11-11T01:07:58Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:08:01Z", "event": "I withdrew the finding: `sleep_mode` is both stimulated and checked in the aon_timer DV, so \"untested\" doesn't hold. The first submission was rejected because a withdrawal needs at least one refutes item. I resubmitted with the evidence roles corrected, and that was accepted.\n\n- **Stimulus:** the base vseq drives the `sleep_mode` input to a random initial value at reset, and drops it to 0 once an interrupt appears. The smoke vseq randomizes `pause_in_sleep`, so the sleep gating is enabled in some runs.\n- **Check:** the scoreboard blocks its interrupt predictions while `pause_in_sleep` and sleep are both set, then compares predicted interrupt timing against the RTL.\n- **Weakness:** the scoreboard reads the RTL's internal synchronised `aon_sleep_mode` signal, not the port. A broken connection that left that signal stuck at 0 would probably go unnoticed. I recorded this as a near miss rather than a reason to keep the finding."}
+{"t": "2026-11-11T01:08:01Z", "event": "[8 turns, $0.0752]"}

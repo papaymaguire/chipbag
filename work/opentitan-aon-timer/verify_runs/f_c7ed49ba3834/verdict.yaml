@@ -1,0 +1,55 @@
+finding_hash: 7c4a710ecbb34ebb
+started_at: '2026-11-11T01:04:42Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The README says which events set the cause bit: the wakeup threshold match and the watchdog
+    bark. Bite is not listed. It also says what happens after a write-0 clear. Only the exact cycle latency
+    is not given.'
+  evidence:
+  - path: hw/ip/aon_timer/README.md
+    line_start: 35
+    line_end: 44
+    quote: 'Each time the pre-scaler completes when the count is at or above the threshold, two outputs
+      become high:'
+    role: refutes
+    note: The wakeup threshold match asserts wkup_req_o. The same text says the signal is also asserted
+      by a watchdog bark and stays high until SW writes 0 to WKUP_CAUSE. It also says the signals are
+      re-asserted at the next prescaler completion unless the counter is cleared. That answers the clear-then-read
+      question.
+  - path: hw/ip/aon_timer/README.md
+    line_start: 69
+    line_end: 77
+    quote: 'When there is a "bark" event, two outputs become high:'
+    role: refutes
+    note: A watchdog bark also raises wkup_req_o, which stays high until SW writes 0 to WKUP_CAUSE. A
+      bark therefore sets the cause bit. This settles the bark-only scenario.
+  - path: hw/ip/aon_timer/data/aon_timer.hjson
+    line_start: 363
+    line_end: 363
+    quote: 'desc: "AON timer requested wakeup, write 0 to clear.",'
+    role: context
+    note: The register description is terse, as the finding says.
+  searches:
+  - what: WKUP_CAUSE in the aon_timer docs
+    where: hw/ip/aon_timer/**/*.md
+    found: README.md, doc/programmers_guide.md and dv/README.md describe the event sources and the clearing
+      behaviour.
+  near_misses:
+  - path: hw/ip/aon_timer/README.md
+    line_start: 82
+    line_end: 84
+    why_not: The watchdog bite section describes a separate output. It does not say whether bite sets
+      WKUP_CAUSE. The bark and wakeup sections do say bark and the wakeup threshold set it.
+  items: []
+  new_sources:
+  - path: hw/ip/aon_timer/README.md
+    reason: Describes which events assert wkup_req_o and how software clears it.
+  resolution: The README answers the event sources and the re-assertion behaviour. The remaining gap is
+    the cross-domain latency, which could be added to the register description or the programmer's guide.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0368766
+error: null

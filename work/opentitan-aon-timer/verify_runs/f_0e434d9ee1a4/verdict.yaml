@@ -1,0 +1,89 @@
+finding_hash: a6d4f534dfb11584
+started_at: '2026-11-11T01:05:55Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The "planned only" claim is wrong for all five items. The aon_timer DV sim cfg imports the
+    generic CSR, TL-access (tl_intg_err), alert_test and sec_cm test lists, so those tests are in its
+    regression. The generic tl_intg_err test injects integrity errors and checks the fatal alert. Separately,
+    the chip-level SW test for lc_escalate is registered in the chip regression and contains CHECKs. I
+    did not open the common vseq code behind csr_rw, tl_intg_err and sec_cm, so the checks inside those
+    tests are inferred from the test names and the plan wording.
+  evidence:
+  - path: hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson
+    line_start: 28
+    line_end: 36
+    quote: '"{proj_root}/hw/dv/tools/dvsim/tests/csr_tests.hjson",'
+    role: refutes
+    note: The aon_timer sim cfg imports the csr_rw, alert_test, tl_access (tl_intg_err) and sec_cm test
+      lists. This puts those tests in its regression.
+  - path: hw/dv/tools/dvsim/tests/tl_access_tests.hjson
+    line_start: 20
+    line_end: 23
+    quote: 'name: "{name}_tl_intg_err"'
+    role: refutes
+    note: The generic tl_intg_err test runs with +run_tl_intg_err for aon_timer. It injects TL integrity
+      errors and checks the fatal alert.
+  - path: hw/dv/tools/dvsim/tests/sec_cm_tests.hjson
+    line_start: 7
+    line_end: 9
+    quote: 'name: "{name}_sec_cm"'
+    role: refutes
+    note: The generic sec_cm fault-injection test is also part of the aon_timer regression.
+  - path: hw/top_earlgrey/dv/chip_sim_cfg.hjson
+    line_start: 1250
+    line_end: 1252
+    quote: 'name: chip_sw_aon_timer_wdog_lc_escalate'
+    role: refutes
+    note: The chip-level lc_escalate test is registered in the chip regression with a real SW image.
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    line_start: 86
+    line_end: 86
+    quote: // We should not get aon timer interrupts since escalation suppresses them.
+    role: refutes
+    note: The SW test has CHECKs that no aon timer interrupts fire during escalation.
+  searches:
+  - what: Whether csr_rw, tl_intg_err, sec_cm, alert_test are imported in the aon_timer sim cfg
+    where: hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson and hw/dv/tools/dvsim/tests/*.hjson
+    found: All four test lists are imported.
+  - what: lc_escalate coverage
+    where: aon_timer DV seq_lib, chip_sim_cfg.hjson, sw/device/tests
+    found: Block-level vseqs drive lc_escalate_en_vif; the chip-level SW test exists and is registered
+      in the chip regression.
+  near_misses: []
+  items:
+  - id: cr_6ef5f506c53e
+    outcome: withdrawn
+    reason: The csr_rw test is imported in the aon_timer sim cfg.
+    evidence:
+    - 0
+  - id: cr_3f2c35f00bd6
+    outcome: withdrawn
+    reason: The chip SW test exists and is registered. Block vseqs also drive lc_escalate_en.
+    evidence:
+    - 3
+    - 4
+  - id: cr_540c55ffcb97
+    outcome: withdrawn
+    reason: The csr_rw test is imported in the aon_timer sim cfg.
+    evidence:
+    - 0
+  - id: cr_ddaa03f4793c
+    outcome: withdrawn
+    reason: The tl_intg_err test is imported and run in the aon_timer regression.
+    evidence:
+    - 0
+    - 1
+  - id: cr_b417ff36fcef
+    outcome: withdrawn
+    reason: The tl_intg_err and sec_cm tests are imported and run in the aon_timer regression.
+    evidence:
+    - 1
+    - 2
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.06285460000000001
+error: null

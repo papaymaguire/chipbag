@@ -1,0 +1,51 @@
+finding_hash: 20488ceee2addc8a
+started_at: '2026-11-11T01:05:03Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The README and programmer's guide say the condition is count at or above the threshold, checked
+    on each prescaler tick. They also say the interrupt re-triggers at the next tick after being cleared
+    if the count is still above the threshold. This answers the question, so the finding is withdrawn.
+  evidence:
+  - path: hw/ip/aon_timer/README.md
+    line_start: 35
+    line_end: 35
+    quote: 'Each time the pre-scaler completes when the count is at or above the threshold, two outputs
+      become high:'
+    role: refutes
+    note: States the comparison is >= and is evaluated on every prescaler tick.
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    line_start: 93
+    line_end: 93
+    quote: remains above the threshold after clearing the interrupt or wakeup event and the timer remains
+      enabled, the interrupt and wakeup event will trigger again at the next clock tick.
+    role: refutes
+    note: Specifies re-assertion after the interrupt is cleared.
+  - path: hw/ip/aon_timer/rtl/aon_timer_core.sv
+    line_start: 68
+    line_end: 68
+    quote: assign wkup_intr_o = wkup_incr & (wkup_count >= wkup_thold);
+    role: context
+    note: The RTL implements >=, consistent with the docs.
+  searches:
+  - what: threshold comparison wording
+    where: hw/ip/aon_timer docs
+    found: README and programmers_guide specify at-or-above and re-trigger behaviour
+  - what: comparison in RTL
+    where: aon_timer_core.sv
+    found: uses >=
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/ip/aon_timer/README.md
+    reason: Specifies the >= condition.
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    reason: Specifies re-trigger after clearing.
+  resolution: The design uses >=, evaluated on each prescaler tick. The register description could say
+    "at or above" explicitly to match the README.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.0382199
+error: null

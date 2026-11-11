@@ -1,0 +1,76 @@
+finding_hash: df8213db6c073b50
+started_at: '2026-11-11T01:05:48Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The finding only looked at mocked DIF/software unit tests. The aon_timer DV environment has
+    a scoreboard that models the wakeup timer. It predicts interrupts and wkup_req from enable and count
+    writes and compares them with the DUT, so all three items are exercised and checked in DV. I read
+    the scoreboard's wkup_ctrl and count handling but not the checks that compare predicted and actual
+    interrupts, and I did not open the vseqs that write the count registers. Those two parts rest on the
+    scoreboard's comments and code structure.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 749
+    line_end: 757
+    role: refutes
+    quote: "      // Only trigger recalculation if enable was unset before this write\n      if (wkup_en\
+      \ && (wkup_en != current_enable) && addr_phase_write)\n        recalculate_num_cycles(WKUP);"
+    note: Re-enable of WKUP_CTRL triggers recalculation of when the interrupt is expected, which is then
+      checked against the DUT.
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 774
+    line_end: 783
+    role: refutes
+    quote: "    \"wkup_count_lo\": begin\n      wkup_count[31:0] =  csr.get_mirrored_value();\n      if\
+      \ (data_phase_write)\n        update_wkup_count_lo_timely();"
+    note: Writes to the count registers (LO and HI) update the predicted count, so a reset to 0 changes
+      the expected interrupt timing.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv
+    line_start: 37
+    line_end: 37
+    role: refutes
+    quote: '  write_wkup_reg(wkup ? ral.wkup_ctrl.enable : ral.wdog_ctrl.enable, 1);'
+    note: The vseq repeatedly enables then disables the WKUP counter, and the scoreboard checks the interrupts.
+  searches:
+  - what: wkup count/ctrl in aon_timer DV
+    where: hw/ip/aon_timer/dv
+    found: scoreboard, jump, alternating_enable_on_off, smoke and cdc_hi vseqs
+  - what: aon_timer in sw/device/tests
+    where: sw/device/tests
+    found: no matches
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_alternating_enable_on_off_vseq.sv
+    line_start: 39
+    line_end: 42
+    why_not: The disable is done by backdoor, but the enable is a frontdoor CSR write, and other sequences
+      use frontdoor writes.
+  items:
+  - id: cr_4eefb20fac1a
+    outcome: withdrawn
+    reason: 'Count-register writes are modelled in the scoreboard and the expected interrupt timing is
+      checked in DV. The check is indirect: it works through the predicted interrupt timing, not a count
+      read-back.'
+    evidence:
+    - 1
+  - id: cr_7e2f9abb5704
+    outcome: withdrawn
+    reason: The alternating enable/disable vseq stops the counter, and the scoreboard checks that no unexpected
+      interrupt appears. The disable is done by backdoor, not through a frontdoor CSR write.
+    evidence:
+    - 2
+  - id: cr_b47fcc96aafd
+    outcome: withdrawn
+    reason: The scoreboard recalculates the expected wakeup time when the enable bit goes from 0 to 1,
+      and the interrupt and wkup_req are checked against that.
+    evidence:
+    - 0
+  new_sources:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    reason: Models and checks wakeup timer enable and count behavior
+submissions: 2
+rejections: []
+turns: 8
+cost_usd: 0.08965800000000002
+error: null

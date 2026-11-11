@@ -1,0 +1,95 @@
+finding_hash: 0be2babc61fcb76c
+started_at: '2026-11-11T01:05:22Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The finding only partly stands. The aon_timer DV environment, which the finding did not cite,
+    covers four of the five items. A random smoke sequence programs 64-bit WKUP thresholds through the
+    hi and lo registers. It also writes WKUP_CAUSE with 0 and writes WDOG_COUNT. The scoreboard checks
+    these against a model. The first item, zeroing all three counts at the start of initialization, has
+    no test. The DV sequences write random count values, not zero. I did not search for a pet-specific
+    directed test or a DV test of the HI/LO split beyond these files.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 192
+    line_end: 196
+    quote: '  write_wkup_reg(ral.wkup_thold_lo, wkup_thold[31:0]);'
+    role: refutes
+    note: Random 64-bit threshold is split into the LO and HI registers. This stimulus feeds the scoreboard,
+      which predicts the wakeup behaviour.
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 767
+    line_end: 769
+    quote: '        `DV_CHECK_EQ(`gmv(ral.wkup_cause), item.d_data[0],'
+    role: refutes
+    note: The scoreboard checks WKUP_CAUSE reads against a prediction. Writing 0 to WKUP_CAUSE updates
+      the prediction through predict_wkup_cause.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 131
+    line_end: 131
+    quote: '  csr_utils_pkg::csr_wr(ral.wkup_cause, 1''b0);'
+    role: refutes
+    note: The DV sequence writes 0 to WKUP_CAUSE to clear the wakeup request.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 164
+    line_end: 164
+    quote: '  csr_utils_pkg::csr_wr(ral.wdog_count, wdog_count);'
+    role: context
+    note: WDOG_COUNT is written with a random value, not zero. This is why the first item is not covered.
+  searches:
+  - what: DV coverage of the thresholds, WKUP_CAUSE clear and WDOG_COUNT writes
+    where: hw/ip/aon_timer/dv/env
+    found: The scoreboard and base vseq cover the hi/lo thresholds, the WKUP_CAUSE write of 0 and read
+      check, and WDOG_COUNT writes.
+  - what: Zero-the-counts initialization step
+    where: hw/ip/aon_timer/dv/env/seq_lib
+    found: The sequences write random counts. No explicit zeroing of all three counts was found.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 162
+    line_end: 165
+    why_not: WDOG_COUNT is written with a random value, so it does not show the zeroing step. The zeroing
+      step is not covered by this write.
+  items:
+  - id: cr_05e1d4dc8418
+    outcome: verified
+    reason: No test zeroes WKUP_COUNT_LO, WKUP_COUNT_HI and WDOG_COUNT as the first initialization step.
+      The DV sequences write random counts.
+    evidence:
+    - 3
+  - id: cr_5edf51df737c
+    outcome: withdrawn
+    reason: The DV smoke sequence programs random WKUP_THOLD_LO and WKUP_THOLD_HI. The scoreboard models
+      the resulting interrupt, so the wakeup thresholds are tested.
+    evidence:
+    - 0
+  - id: cr_50d072868fc1
+    outcome: inconclusive
+    reason: DV writes WDOG_COUNT and the scoreboard tracks the count update. I did not confirm a directed
+      test that writes 0 to pet a running watchdog and then checks that bark and bite are delayed.
+    evidence:
+    - 3
+  - id: cr_f9ad84e34815
+    outcome: withdrawn
+    reason: DV writes random 64-bit thresholds split across the LO and HI registers. The scoreboard reassembles
+      them as wkup_thold[63:0] in its model.
+    evidence:
+    - 0
+  - id: cr_0838c215b7f8
+    outcome: withdrawn
+    reason: DV writes 0 to WKUP_CAUSE. The scoreboard predicts the cleared value and checks every WKUP_CAUSE
+      read against it.
+    evidence:
+    - 1
+    - 2
+  new_sources:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    reason: The scoreboard models thresholds, counts and WKUP_CAUSE.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    reason: The base sequence is the DV initialization and stimulus path.
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.08078500000000001
+error: null

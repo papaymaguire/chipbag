@@ -1,0 +1,8 @@
+{"t": "2026-11-11T01:06:58Z", "event": "  \u2192 Grep: racl|nmi_wdog|EnableRacl"}
+{"t": "2026-11-11T01:06:59Z", "event": "  \u2192 Grep: nmi_wdog|EnableRacl|racl"}
+{"t": "2026-11-11T01:07:01Z", "event": "  \u2192 Grep: wdog_bark_nmi|nmi"}
+{"t": "2026-11-11T01:07:05Z", "event": "  \u2192 Grep: 200 ?kHz|aon_clk_freq|clk_aon_freq|clk_freq_mhz|clk_aon"}
+{"t": "2026-11-11T01:07:13Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-11T01:07:19Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:07:23Z", "event": "I've submitted the verdict, and it was accepted. The finding stands as verified overall, but one of its five items is withdrawn and two are inconclusive.\n\n- **RACL enable parameter and RACL ports (`cr_517c566609ad`, `cr_c98fa20138a9`):** verified as untested. The testbench ties `racl_policies` to 0 and leaves `racl_error_o` unconnected. The coverage exclusion file also treats the instance as non-RACL.\n- **`nmi_wdog_timer_bark_o` is a copy of `intr_wdog_timer_bark_o` (`cr_625c1cd8c604`):** withdrawn. `hw/ip/aon_timer/dv/tb.sv:72` has the assertion `wdog_bark_intr_is_nmi`, which checks the two signals are equal in every test.\n- **Outputs driven on the SYS domain (`cr_6c14ebc81991`):** inconclusive. I did not search thoroughly for a check on this.\n- **~200KHz clock (`cr_20034a8664a3`):** inconclusive. I found no check on the clock frequency, but my search was limited.\n\nMy first submit attempt failed with a tool error, so I called it again and that went through."}
+{"t": "2026-11-11T01:07:23Z", "event": "[7 turns, $0.0689]"}

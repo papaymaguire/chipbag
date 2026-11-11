@@ -1,0 +1,42 @@
+finding_hash: 7ac4fa17d75fe5c0
+started_at: '2026-11-11T01:08:14Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The finding does not name its block. A generic, shared csr_rw and csr_bit_bash test list exists
+    and is imported by the HMAC, AES and KMAC sim configs (the recent commit's blocks) and many others.
+    These are the standard UVM csr_rw and bit_bash sequences, which compare every register against the
+    RAL model. I did not read the sequences themselves or check each of the 49 properties individually.
+  evidence:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    line_start: 29
+    line_end: 43
+    quote: "      name: \"{name}_csr_rw\"\n      build_mode: \"cover_reg_top\"\n      run_opts: [\"+csr_rw\"\
+      ]"
+    role: refutes
+    note: Generic csr_rw and csr_bit_bash tests defined once and shared by every block that imports the
+      file.
+  - path: hw/ip/hmac/dv/hmac_sim_cfg.hjson
+    line_start: 30
+    line_end: 30
+    quote: '"{proj_root}/hw/dv/tools/dvsim/tests/csr_tests.hjson",'
+    role: refutes
+    note: HMAC imports the generic CSR tests. AES and KMAC sim configs do the same.
+  searches:
+  - what: which sim configs import the generic CSR tests
+    where: hw/
+    found: The shared csr_tests.hjson is imported by hmac, aes and kmac among about 50 sim configs.
+  - what: csr_bit_bash definition
+    where: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    found: The generic csr_bit_bash test is defined here.
+  near_misses: []
+  items: []
+  new_sources:
+  - path: hw/dv/tools/dvsim/tests/csr_tests.hjson
+    reason: Generic CSR test list.
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.040104
+error: null

@@ -1,0 +1,52 @@
+finding_hash: acb4dd4bbad2add3
+started_at: '2026-11-11T01:05:18Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The general RACL document covers most of what the finding says is missing. It says RACL logic
+    is gated by a per-instance parameter, so nothing is generated when RACL is off. It says the extra
+    inputs are tied off and the outputs are left open. It also says an access is allowed or denied by
+    policy and a denied access is logged as an error. It does not say outright that all accesses are permitted
+    when EnableRacl=0, but a test writer can infer that. The 'should' wording in the aon_timer text is
+    weak, but the question is answered elsewhere in the spec.
+  evidence:
+  - path: doc/contributing/hw/racl/README.md
+    line_start: 333
+    line_end: 335
+    quote: 'The additional inputs are tied off, and the outputs are left open.
+
+      Inside the IP, the RACL comparison logic is gated via a per-instance synthesis parameter, hence
+      the (unused) RACL logic appears neither in synthesis nor in DV.'
+    role: refutes
+    note: 'Describes the behavior when RACL is not enabled: the logic is gated off, inputs are tied off
+      and the error output is unused.'
+  - path: doc/contributing/hw/racl/README.md
+    line_start: 29
+    line_end: 30
+    quote: If the access is denied then the error is logged into an Error-Log register.
+    role: refutes
+    note: 'Says when an error is raised: on a denied access.'
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 12
+    line_end: 12
+    quote: In order to enable the RACL ports, the parameter `EnableRacl` should be set to 1.
+    role: context
+    note: The cited sentence with the weak modal 'should'.
+  searches:
+  - what: RACL docs on disabled behavior and error conditions
+    where: doc/contributing/hw/racl/README.md, aon_timer docs, racl_ctrl docs
+    found: For non-RACL use the logic is gated, inputs are tied off and outputs are left open. A denied
+      access is logged as an error.
+  near_misses: []
+  items: []
+  new_sources:
+  - path: doc/contributing/hw/racl/README.md
+    reason: General RACL spec describing behavior with RACL disabled and enabled.
+  resolution: The RTL gates the RACL logic with EnableRacl in aon_timer_reg_top.sv. The aon_timer doc
+    could say 'must' and link to the general RACL README.
+submissions: 1
+rejections: []
+turns: 14
+cost_usd: 0.0860023
+error: null

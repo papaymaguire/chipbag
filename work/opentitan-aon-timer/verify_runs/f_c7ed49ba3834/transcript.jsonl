@@ -1,0 +1,6 @@
+{"t": "2026-11-11T01:04:46Z", "event": "  \u2192 Grep: WKUP_CAUSE|wkup_cause"}
+{"t": "2026-11-11T01:04:46Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/data/aon_timer.hjson"}
+{"t": "2026-11-11T01:04:47Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/README.md"}
+{"t": "2026-11-11T01:04:55Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:04:58Z", "event": "I withdrew the finding, because the AON timer README answers most of what it says is missing. The verdict was accepted.\n\n- **Which events set the bit:** the wakeup-threshold match and the watchdog bark both assert `wkup_req_o`. That signal stays high until software writes 0 to `WKUP_CAUSE`. The README does not list the watchdog bite as a source.\n- **Writing 0 while the condition persists:** the README says the signals are re-asserted at the next prescaler completion unless the counter is cleared. That answers the clear-then-read question.\n- **Still unstated:** the exact latency from the AON clock to a bus read. The README says nothing on it, so a test writer would still have to settle that point separately.\n\nCitations are `hw/ip/aon_timer/README.md` lines 35\u201344 and 69\u201377."}
+{"t": "2026-11-11T01:04:58Z", "event": "[5 turns, $0.0369]"}

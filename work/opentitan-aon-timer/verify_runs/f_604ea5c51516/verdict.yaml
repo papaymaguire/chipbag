@@ -1,0 +1,53 @@
+finding_hash: f748f8db30a26d54
+started_at: '2026-11-11T01:04:58Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: No other spec text says which clock "next clock tick" means, whether the prescaler applies,
+    what the CDC latency is, or whether the comparison is >= or >. The theory of operation, the register
+    descriptions and the hjson only say the threshold is "hit" or "reached".
+  evidence:
+  - path: hw/ip/aon_timer/doc/programmers_guide.md
+    line_start: 93
+    line_end: 93
+    quote: the interrupt and wakeup event will trigger again at the next clock tick.
+    role: supports
+    note: The 'next clock tick' is not tied to the AON clock, the bus clock or the prescaler.
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 25
+    line_end: 28
+    quote: Register reads via the TL-UL interface (SYS domain) are synchronized to the slow clock (AON
+      domain) using the "async" register generation feature.
+    role: context
+    note: Mentions CDC but gives no fixed latency and says nothing about re-assertion timing.
+  - path: hw/ip/aon_timer/doc/registers.md
+    line_start: 74
+    line_end: 74
+    quote: The count at which a wakeup interrupt should be generated, top 32 bits.
+    role: context
+    note: Says nothing on whether the comparison is >= or >, nor on re-trigger timing.
+  searches:
+  - what: prescaler, threshold, clock tick, >= in the aon_timer docs
+    where: hw/ip/aon_timer/doc
+    found: Only the programmers_guide line 93 describes re-trigger timing. Nothing defines the tick or
+      the comparison operator.
+  - what: prescaler and threshold descriptions
+    where: hw/ip/aon_timer/data/aon_timer.hjson
+    found: Only generic descriptions such as 'hit the specified threshold'.
+  - what: read theory_of_operation.md
+    where: hw/ip/aon_timer/doc
+    found: Describes the CDC only in general terms, with no latency or tick definition.
+  near_misses:
+  - path: hw/ip/aon_timer/doc/registers.md
+    line_start: 43
+    line_end: 43
+    why_not: It says each write resets the internal prescaler count, but it does not say when the comparison
+      is evaluated or when the event re-asserts.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.054564100000000004
+error: null

@@ -1,0 +1,80 @@
+finding_hash: e9a483d9ff11a5bb
+started_at: '2026-11-11T01:05:27Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: Of the 5 items, 3 stand (pause resume, prescaler reset on write, regwen lock). 2 are withdrawn.
+    The wakeup-request item is covered by sw/device/tests/pwrmgr_sleep_all_wake_ups_impl.c. The bark-threshold
+    item is covered by randomized thresholds in the DV base vseq, checked by the scoreboard. I found no
+    hardware or DV test of regwen blocking. The DV write to WDOG_REGWEN is commented out.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 177
+    line_end: 177
+    quote: //  csr_utils_pkg::csr_wr(ral.wdog_regwen, wdog_regwen);
+    role: supports
+    note: DV never clears WDOG_REGWEN, so locking is not exercised.
+  - path: sw/device/tests/pwrmgr_sleep_all_wake_ups_impl.c
+    line_start: 272
+    line_end: 273
+    quote: CHECK_DIF_OK(dif_aon_timer_get_wakeup_cause(&aon_timer, &cause));
+    role: refutes
+    note: Sleep wake-up by the AON timer, with a check of the wake cause.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 100
+    line_end: 100
+    quote: wdog_bark_thold != 0 -> wdog_count inside {[wdog_bark_thold-wdog_count_gap:wdog_bark_thold]};
+    role: refutes
+    note: Randomized bark thresholds with the count near the threshold; the scoreboard checks the bark
+      interrupt.
+  searches:
+  - what: regwen use in DV and sw tests
+    where: hw/ip/aon_timer/dv, sw/device/tests
+    found: The regwen write is commented out in DV. No sw test uses WDOG_REGWEN.
+  - what: wake cause check in sleep tests
+    where: sw/device/tests
+    found: pwrmgr_sleep_all_wake_ups_impl.c checks the AON timer wakeup cause.
+  - what: bark threshold stimulus
+    where: aon_timer dv seq_lib
+    found: Randomized thresholds, plus min and max directed sequences.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 170
+    line_end: 170
+    why_not: Writes the bark threshold only; it does not test the regwen lock.
+  items:
+  - id: cr_5c5513777815
+    outcome: verified
+    reason: The search found no test that checks the watchdog resumes counting after wake-up. Only aon_timer_sleep_wdog_sleep_pause_test
+      touches the item, and it checks that the count stayed paused.
+    evidence: []
+  - id: cr_eaac5858c4b5
+    outcome: withdrawn
+    reason: pwrmgr_sleep_all_wake_ups_impl.c configures the AON timer wakeup, sleeps, and checks the wakeup
+      cause.
+    evidence:
+    - 1
+  - id: cr_346ab297701a
+    outcome: verified
+    reason: I found no scenario that writes WKUP_CTRL while the prescaler is mid-count.
+    evidence: []
+  - id: cr_7f62f6f22c9d
+    outcome: verified
+    reason: DV does not write WDOG_REGWEN, and no hardware test checks the lock.
+    evidence:
+    - 0
+  - id: cr_d264b8651756
+    outcome: withdrawn
+    reason: Bark thresholds are randomized, with the count near the threshold, and the scoreboard checks
+      the bark interrupt. There are also min and max directed sequences.
+    evidence:
+    - 2
+  new_sources:
+  - path: sw/device/tests/pwrmgr_sleep_all_wake_ups_impl.c
+    reason: Checks the AON timer wakeup cause after sleep.
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.0660234
+error: null

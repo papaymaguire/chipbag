@@ -1,0 +1,50 @@
+finding_hash: ccfa1cad9ba94ccb
+started_at: '2026-11-11T01:04:09Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The vseq never reads WKUP_COUNT, as the finding says. But the checking is in the scoreboard,
+    not the sequence. The scoreboard computes the expected wakeup time from the count, threshold and prescaler,
+    and checks the interrupt against it. So real-time tracking under a random prescaler is checked indirectly,
+    and the finding's claim that nothing compares count against time is not supported. The plan's stimulus
+    ("switch prescaler at random times") is only loosely met, since the prescaler is written once before
+    enable. That is a weaker, different issue.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 933
+    line_end: 934
+    quote: "if (wkup_count <= wkup_thold) begin\n            wkup_num = ((wkup_thold - wkup_count) * (prescaler\
+      \ + 1));"
+    role: refutes
+    note: The scoreboard derives the expected wakeup time from the count and prescaler, so interrupt timing
+      is checked against real time with the prescaler applied.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+    line_start: 57
+    line_end: 58
+    quote: csr_utils_pkg::csr_wr(ral.wkup_ctrl.prescaler, prescaler);
+    role: context
+    note: The sequence only writes the prescaler once, before enabling the timer. The scoreboard does
+      the checking.
+  searches:
+  - what: prescaler and wkup_count handling in the scoreboard
+    where: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    found: The scoreboard models the expected wkup interrupt time as (thold - count) * (prescaler + 1)
+      and checks the interrupt against it.
+  - what: prescaler plan item and test link
+    where: hw/ip/aon_timer/data/aon_timer_testplan.hjson
+    found: The plan item maps to aon_timer_prescaler explicitly, so the link is stated in the repository.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+    line_start: 41
+    line_end: 49
+    why_not: The sequence does not itself read WKUP_COUNT, but the scoreboard covers the timing check.
+  items: []
+  new_sources:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    reason: Holds the expected-time check for the wakeup interrupt using the prescaler.
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.061161200000000006
+error: null

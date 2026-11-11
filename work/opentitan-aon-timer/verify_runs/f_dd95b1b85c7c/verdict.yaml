@@ -1,0 +1,70 @@
+finding_hash: f80f55c1dda91f99
+started_at: '2026-11-11T01:07:52Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The aon_timer sim config includes the generic intr_test test. It runs cip_base_vseq::run_intr_test_vseq,
+    which writes INTR_TEST and checks INTR_STATE and the interrupt pins. The RTL feeds the interrupt from
+    reg2hw.intr_test.q gated by qe, so the test fails if the hwext/hwqe behaviour of either field is wrong.
+  evidence:
+  - path: hw/ip/aon_timer/dv/aon_timer_sim_cfg.hjson
+    line_start: 33
+    line_end: 33
+    quote: '"{proj_root}/hw/dv/tools/dvsim/tests/intr_test.hjson",'
+    role: refutes
+    note: aon_timer regression includes the generic intr_test test
+  - path: hw/dv/sv/cip_lib/seq_lib/cip_base_vseq.sv
+    line_start: 782
+    line_end: 792
+    quote: if (!uvm_re_match("intr_test*", csr_name) ||
+    role: refutes
+    note: The vseq collects the intr_test, intr_enable and intr_state CSRs, writes them randomly, then
+      reads and checks them and the interrupt pins.
+  - path: hw/ip/aon_timer/rtl/aon_timer_reg_top.sv
+    line_start: 1096
+    line_end: 1096
+    quote: assign reg2hw.intr_test.wkup_timer_expired.qe = intr_test_qe;
+    role: context
+    note: The qe pulse is generated in the RTL and exercised by the intr_test writes.
+  searches:
+  - what: intr_test tests for aon_timer
+    where: hw/ip/aon_timer, hw/dv/tools/dvsim/tests/intr_test.hjson, cip_base_vseq
+    found: Generic intr_test is included in aon_timer_sim_cfg and the testplan; the vseq writes INTR_TEST
+      and checks INTR_STATE and the pins.
+  near_misses: []
+  items:
+  - id: cr_413a62fd4916
+    outcome: withdrawn
+    reason: Covered by the generic intr_test, which checks the INTR_STATE and pin results of INTR_TEST
+      writes.
+    evidence:
+    - 0
+    - 1
+  - id: cr_a7c7c80abce3
+    outcome: withdrawn
+    reason: If hwqe did not pulse, writing INTR_TEST would not set INTR_STATE and the intr_test check
+      would fail.
+    evidence:
+    - 1
+    - 2
+  - id: cr_b2ba11feb55d
+    outcome: withdrawn
+    reason: Same generic intr_test coverage applies to the wdog_timer_bark field.
+    evidence:
+    - 0
+    - 1
+  - id: cr_c7a8017fc4d7
+    outcome: withdrawn
+    reason: Same generic intr_test coverage applies to the wdog_timer_bark field.
+    evidence:
+    - 1
+    - 2
+  new_sources:
+  - path: hw/dv/sv/cip_lib/seq_lib/cip_base_vseq.sv
+    reason: Contains the generic intr_test sequence that checks INTR_TEST behaviour.
+submissions: 1
+rejections: []
+turns: 8
+cost_usd: 0.053470100000000007
+error: null

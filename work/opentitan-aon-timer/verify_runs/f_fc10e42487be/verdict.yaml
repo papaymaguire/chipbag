@@ -1,0 +1,28 @@
+finding_hash: 1b90a92206e276a2
+started_at: '2026-11-11T01:04:38Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The comment says "Check reset_req pins:", but the code under it compares the aon wakeup request
+    pin (sample_pin idx 1) with the predicted wkup_cause. It does not check any reset request pin. The
+    mismatch is a stale comment and has no functional effect.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 1276
+    line_end: 1282
+    quote: '// Check reset_req pins:'
+    role: supports
+    note: The comment names reset_req pins, but the code below checks the wakeup request pin (aon_wkup_req_o).
+  searches:
+  - what: Context around the comment in model_and_check_wdog_bark
+    where: aon_timer_scoreboard.sv lines 1235-1298
+    found: The block checks only wkup_cause against sample_pin idx 1. No reset request pin is checked.
+  near_misses: []
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.0224067
+error: null

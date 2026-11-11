@@ -1,0 +1,13 @@
+{"t": "2026-11-11T01:07:16Z", "event": "  \u2192 Grep: thold_hi|THOLD_HI|wkup_thold"}
+{"t": "2026-11-11T01:07:17Z", "event": "  \u2192 Grep: wkup_count|wkup_cause|clear.*intr|wkup_intr"}
+{"t": "2026-11-11T01:07:20Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv"}
+{"t": "2026-11-11T01:07:20Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/dv/env/seq_lib/aon_timer_jump_vseq.sv"}
+{"t": "2026-11-11T01:07:23Z", "event": "  \u2192 Grep: intr_enable|intr_state"}
+{"t": "2026-11-11T01:07:24Z", "event": "  \u2192 Grep: again|re-?trigger|next clock tick"}
+{"t": "2026-11-11T01:07:26Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv"}
+{"t": "2026-11-11T01:07:29Z", "event": "  \u2192 Grep: intr_status_exp\\[WKUP\\]|wkup_cause"}
+{"t": "2026-11-11T01:07:30Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv"}
+{"t": "2026-11-11T01:07:40Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:07:48Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:07:51Z", "event": "I submitted the verdict as verified overall. Item 1 (the THOLD_HI write) was withdrawn because it is tested. Items 2 and 3 stand as untested.\n\n- **cr_c5f298c5baf8, upper-word write:** withdrawn. `wkup_init` in `aon_timer_base_vseq.sv` writes `WKUP_THOLD_HI` with `wkup_thold[63:32]`, and every test runs it. The scoreboard (`aon_timer_scoreboard.sv`) mirrors that write and checks the resulting wakeup interrupt timing.\n- **cr_cd988f27543a, disable interrupt first:** untested. No sequence disables the wakeup interrupt before writing the threshold registers. `wkup_init` only clears `intr_state`, and `intr_enable` is not used in the sequences apart from the custom-interrupt coverage one.\n- **cr_bb10680d5ea9, re-trigger after clear:** untested. On an `intr_state` clear the scoreboard just drops the expected interrupt. No test checks that it fires again at the next clock tick while the count stays above the threshold. The jump sequence starts the count near the threshold but never clears and re-checks."}
+{"t": "2026-11-11T01:07:51Z", "event": "[12 turns, $0.1323]"}

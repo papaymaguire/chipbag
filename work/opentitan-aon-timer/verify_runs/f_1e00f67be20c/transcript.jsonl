@@ -1,0 +1,9 @@
+{"t": "2026-11-11T01:06:23Z", "event": "  \u2192 Grep: racl_error|racl_policies"}
+{"t": "2026-11-11T01:06:23Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer/doc/interfaces.md"}
+{"t": "2026-11-11T01:06:24Z", "event": "Check DV for racl tests."}
+{"t": "2026-11-11T01:06:25Z", "event": "  \u2192 Grep: racl"}
+{"t": "2026-11-11T01:06:26Z", "event": "RACL is tied off and not tested; the other items are structural declarations with no behavioral test."}
+{"t": "2026-11-11T01:06:32Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:06:39Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:06:42Z", "event": "I submitted the verdict as verified: none of the five items is checked by any test, so the finding stands.\n\n- **`racl_policies` and `racl_error`:** the DV testbench (`hw/ip/aon_timer/dv/tb.sv`) ties `racl_policies` to 0 and leaves `racl_error_o` unconnected, so nothing stimulates or checks either one. The coverage exclusion file for this non-RACL instance says the RACL signals won't toggle.\n- **No TL-UL host interface, no chip IO pins, primary clock `clk_i`:** these are structural declarations in the generated interfaces doc. I found no test or assertion that checks them. The testbench does drive the clock, but that doesn't verify the declaration.\n\nMy search of `hw/ip/aon_timer/dv` for RACL turned up only the tie-off and the coverage exclusions. I did not search beyond that directory for tests of the three structural items, so those rest on the absence of any check I could find in the aon_timer DV code.\n\nThe first submission was rejected for having too few search records. The second was accepted."}
+{"t": "2026-11-11T01:06:42Z", "event": "[6 turns, $0.0597]"}

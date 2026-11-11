@@ -1,0 +1,39 @@
+finding_hash: 18339c9f6442452b
+started_at: '2026-11-11T01:04:09Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: 'The cited spec line says "Register reads ... are synchronized", not all accesses. The following
+    sentences say writes can complete early, and a read-back guarantees completion of earlier writes.
+    These fit together: the async interface crosses domains, and a read-back waits for it. The only issue
+    is loose wording, which is not two incompatible statements. I did not inspect the RTL.'
+  evidence:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 25
+    line_end: 28
+    quote: This means that writes can complete before the data has reached its underlying register in
+      the slow clock domain.
+    role: refutes
+    note: 'The text consistently describes async register behaviour: writes complete early, and a read-back
+      guarantees completion. This is not a contradiction.'
+  searches:
+  - what: Read the cited paragraph in context
+    where: hw/ip/aon_timer/doc/theory_of_operation.md
+    found: Line 25 says reads are synchronized; lines 26-28 describe the write-completion consequence
+      and read-back.
+  near_misses:
+  - path: hw/ip/aon_timer/doc/theory_of_operation.md
+    line_start: 25
+    line_end: 25
+    why_not: The wording 'Register reads' is imprecise, since async generation covers all accesses, but
+      it does not contradict the next sentences.
+  items: []
+  new_sources: []
+  resolution: No contradiction. Optionally reword line 25 to "Register accesses ... are synchronized".
+    I did not check the RTL, so I cannot say which side it matches.
+submissions: 1
+rejections: []
+turns: 3
+cost_usd: 0.0446308
+error: null

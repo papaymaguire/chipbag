@@ -1,0 +1,9 @@
+{"t": "2026-11-11T01:08:16Z", "event": "  \u2192 Grep: csr_hw_reset"}
+{"t": "2026-11-11T01:08:17Z", "event": "  \u2192 Grep: csr_hw_reset"}
+{"t": "2026-11-11T01:08:18Z", "event": "  \u2192 Grep: csr_tests.hjson"}
+{"t": "2026-11-11T01:08:19Z", "event": "  \u2192 Read: /home/maguire/Documents/chipbag/targets/opentitan/hw/dv/tools/dvsim/tests/csr_tests.hjson"}
+{"t": "2026-11-11T01:08:20Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/ip; grep -n \"csr\" aes/dv/aes_base_sim_cfg.hjson hmac/dv/hmac_sim_cfg.hjson kmac/dv/kmac_base_sim_cfg.hjson | head -30"}
+{"t": "2026-11-11T01:08:27Z", "event": "  \u2192 submit_verdict: "}
+{"t": "2026-11-11T01:08:31Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:08:34Z", "event": "I withdrew the finding, and the verdict was accepted. A generic register test does cover reset values on these blocks.\n\nThe shared `hw/dv/tools/dvsim/tests/csr_tests.hjson` defines `{name}_csr_hw_reset`, which runs the common vseq with `+csr_hw_reset`. The AES, HMAC and KMAC sim configs all import that file. I didn't open the sequence source itself. That it reads every register and compares it to the reset value in the register model comes from my knowledge of the DV library, not from this repo.\n\nThe finding didn't name a block, so I checked these three, which come from the recent commit."}
+{"t": "2026-11-11T01:08:34Z", "event": "[8 turns, $0.0442]"}

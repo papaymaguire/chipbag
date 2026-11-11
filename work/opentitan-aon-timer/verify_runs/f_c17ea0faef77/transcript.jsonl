@@ -1,0 +1,4 @@
+{"t": "2026-11-11T01:04:45Z", "event": "  \u2192 Grep: prescaler|pre-scaler"}
+{"t": "2026-11-11T01:04:50Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:04:52Z", "event": "I withdrew the finding. The aon_timer README answers the question the finding raises. It says \"The number of cycles per tick is one more than the 12-bit `WKUP_CTRL.prescaler` field\" (`hw/ip/aon_timer/README.md:31-32`). So the counter increments every prescaler+1 `clk_aon` cycles, and prescaler=0 gives one tick per cycle.\n\nThe `aon_timer.hjson` description for the field is still terse, so I suggested copying the README sentence into it. The verdict was accepted."}
+{"t": "2026-11-11T01:04:52Z", "event": "[3 turns, $0.0227]"}

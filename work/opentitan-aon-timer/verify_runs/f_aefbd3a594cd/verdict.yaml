@@ -1,0 +1,48 @@
+finding_hash: da7aa28ea2919d83
+started_at: '2026-11-11T01:04:25Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: The plan item "prescaler" is explicitly linked to aon_timer_prescaler. It calls for switching
+    the prescaler at random times while the timer runs. The vseq writes one random prescaler before enabling
+    WKUP and never changes it again, so no mid-run change is exercised.
+  evidence:
+  - path: hw/ip/aon_timer/data/aon_timer_testplan.hjson
+    line_start: 37
+    line_end: 41
+    quote: Switch prescaler value at random times without locking configuration registers
+    role: supports
+    note: Plan stimulus is a prescaler change while running.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_prescaler_vseq.sv
+    line_start: 57
+    line_end: 61
+    quote: csr_utils_pkg::csr_wr(ral.wkup_ctrl.prescaler, prescaler);
+    role: supports
+    note: Single prescaler write happens before the enable write at line 61; no later prescaler write.
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 202
+    line_end: 209
+    quote: task aon_timer_base_vseq::aon_timer_init();
+    role: context
+    note: Init does not change the prescaler while running.
+  searches:
+  - what: prescaler writes in the vseq and the base vseq
+    where: aon_timer_prescaler_vseq.sv, aon_timer_base_vseq.sv
+    found: Only one prescaler write, at line 57, before enable.
+  - what: plan item linkage
+    where: aon_timer_testplan.hjson
+    found: 'tests: ["aon_timer_prescaler"] explicitly'
+  near_misses:
+  - path: hw/ip/aon_timer/data/aon_timer_testplan.hjson
+    line_start: 51
+    line_end: 71
+    why_not: The jump plan item covers prescaler changes at random times, but it is a separate test and
+      does not tie the prescaler plan item to a realizing test.
+  items: []
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 6
+cost_usd: 0.0404774
+error: null

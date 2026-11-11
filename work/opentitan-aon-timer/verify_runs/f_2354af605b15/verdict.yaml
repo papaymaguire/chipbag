@@ -1,0 +1,75 @@
+finding_hash: d73f85c347da445f
+started_at: '2026-11-11T01:06:24Z'
+model: claude-sonnet-5-5
+outcome: withdrawn
+verdict:
+  outcome: withdrawn
+  summary: The test is implemented and listed in the chip regressions, so it is not planned-only. The
+    firmware arms the watchdog bark and bite inside escalation phase 1, then forces an alert and escalates.
+    It fails if the wrong reset reason appears after the escalation reset. A bite that got through would
+    give a watchdog reset reason and fail that check. The check is indirect, because the bark ISR only
+    logs an error.
+  evidence:
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    line_start: 230
+    line_end: 232
+    quote: "  CHECK_STATUS_OK(\n      aon_timer_testutils_watchdog_config(aon_timer, bark_cycles, bite_cycles,\n\
+      \                                          /*pause_in_sleep=*/false));"
+    role: refutes
+    note: 'Stimulus: the watchdog is armed, then an alert is forced so the alert handler escalates before
+      bark and bite. The bark and bite times fall inside phase 1, as the file''s static_assert requires.'
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    line_start: 276
+    line_end: 278
+    quote: "  CHECK(rst_info == kDifRstmgrResetInfoPor ||\n            rst_info == kDifRstmgrResetInfoEscalation,\n\
+      \        \"Wrong reset reason %02X\", rst_info);"
+    role: refutes
+    note: 'Check: the reset reason must be exactly escalation. A watchdog bite reset would fail the test.'
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    line_start: 88
+    line_end: 89
+    quote: "        dt_aon_timer_irq_from_plic_id(kDtAonTimer, plic_irq_id);\n    LOG_ERROR(\"Unexpected\
+      \ aon timer interrupt %d\", irq);"
+    role: context
+    note: The bark ISR only logs an error rather than calling CHECK. The check on bark is therefore weak.
+  - path: hw/top_earlgrey/dv/chip_sim_cfg.hjson
+    line_start: 1250
+    line_end: 1252
+    quote: "      name: chip_sw_aon_timer_wdog_lc_escalate\n      uvm_test_seq: chip_sw_base_vseq\n  \
+      \    sw_images: [\"//sw/device/tests:aon_timer_wdog_lc_escalate_test:1:new_rules\"]"
+    role: refutes
+    note: The test is in the earlgrey chip regression. The darjeeling chip_sim_cfg.hjson has the same
+      entry.
+  searches:
+  - what: aon_timer_wdog_lc_escalate across the repo
+    where: whole repo
+    found: The test source, a BUILD target, sival BUILD, and chip_sim_cfg.hjson entries for earlgrey and
+      darjeeling
+  - what: lc_escalate in the aon_timer block DV
+    where: hw/ip/aon_timer/dv
+    found: Block DV only drives lc_escalate_en to 0 or a random initial value. It has no dedicated check
+      of the watchdog being disabled.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_base_vseq.sv
+    line_start: 201
+    line_end: 212
+    why_not: The block-level sequence only drives lc_escalate_en. It does not check the watchdog being
+      disabled.
+  items:
+  - id: cr_a4b492d0289b
+    outcome: withdrawn
+    reason: The chip-level test chip_sw_aon_timer_wdog_lc_escalate is implemented and in the regressions.
+      It reaches the condition and checks the escalation reset reason. A watchdog bite would give a different
+      reset reason and fail the test.
+    evidence:
+    - 0
+    - 1
+    - 3
+  new_sources:
+  - path: sw/device/tests/aon_timer_wdog_lc_escalate_test.c
+    reason: Implements the planned chip-level test for watchdog disable on LC escalation
+submissions: 1
+rejections: []
+turns: 9
+cost_usd: 0.09666439999999998
+error: null

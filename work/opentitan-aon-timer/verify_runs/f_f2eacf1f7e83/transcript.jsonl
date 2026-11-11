@@ -1,0 +1,5 @@
+{"t": "2026-11-11T01:05:12Z", "event": "  \u2192 Grep: regwen|WDOG_REGWEN"}
+{"t": "2026-11-11T01:05:14Z", "event": "  \u2192 Bash: cd /home/maguire/Documents/chipbag/targets/opentitan/hw/ip/aon_timer; sed -n 140,200p doc/registers.md; sed -n 262,300p data/aon_timer.hjson"}
+{"t": "2026-11-11T01:05:23Z", "event": "  \u2192 mcp__verify__submit_verdict: "}
+{"t": "2026-11-11T01:05:27Z", "event": "I withdrew the finding. The register definitions do say which registers `WDOG_REGWEN` locks.\n\n- **Locked:** `WDOG_CTRL`, `WDOG_BARK_THOLD` and `WDOG_BITE_THOLD` each carry `regwen: \"WDOG_REGWEN\"` in `hw/ip/aon_timer/data/aon_timer.hjson`. The generated `hw/ip/aon_timer/doc/registers.md` shows \"Register enable: WDOG_REGWEN\" for those three only.\n- **Not locked:** `WDOG_COUNT` has no such tag, so it stays writable. The same goes for the wakeup timer and interrupt registers.\n\nThe finding itself conceded that these per-register tags would settle the question. The vague field description at `aon_timer.hjson:259` is still worth tightening by naming the three registers, and I put that in the resolution."}
+{"t": "2026-11-11T01:05:27Z", "event": "[4 turns, $0.0357]"}

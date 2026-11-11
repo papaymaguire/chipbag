@@ -1,0 +1,58 @@
+finding_hash: fae153fc4253ca23
+started_at: '2026-11-11T01:06:43Z'
+model: claude-sonnet-5-5
+outcome: verified
+verdict:
+  outcome: verified
+  summary: I found no test that explicitly checks the 32-bit watchdog width or the 64-bit wakeup width.
+    The scoreboard does model wkup_count as 64 bits and wdog_count as 32 bits, and it predicts interrupt
+    timing from them. That is an indirect check, not a width or carry check. The cdc_hi vseq exists to
+    close CDC coverage, and its own header says so. I did not open the smoke_max_thold vseq or the interrupt-timing
+    checkers.
+  evidence:
+  - path: hw/ip/aon_timer/dv/env/seq_lib/aon_timer_wkup_count_cdc_hi_vseq.sv
+    line_start: 5
+    line_end: 6
+    quote: // aon_timer_wkup_count_cdc_hi_vseq aims to get the wkup_count[31:0] to overflow
+    role: context
+    note: The stimulus crosses the low-half overflow, but the stated purpose is CDC coverage closure,
+      not a check of the carry or the width.
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 933
+    line_end: 933
+    quote: if (wkup_count <= wkup_thold) begin
+    role: context
+    note: The scoreboard uses the 64-bit count only to predict when the interrupt fires. This is an indirect
+      check at most, with no explicit width or carry assertion.
+  searches:
+  - what: explicit width or carry checks in the scoreboard, and the cdc_hi vseq
+    where: hw/ip/aon_timer/dv/env
+    found: No explicit width or carry check. Only the 64-bit wkup_count and 32-bit wdog_count mirror variables
+      used for interrupt-time prediction.
+  near_misses:
+  - path: hw/ip/aon_timer/dv/env/aon_timer_scoreboard.sv
+    line_start: 774
+    line_end: 782
+    why_not: It mirrors the lo and hi halves into a 64-bit variable, but it does not assert that the counter
+      carries from lo into hi or that the width is 64.
+  items:
+  - id: cr_874f04d5bc14
+    outcome: verified
+    reason: No explicit 32-bit watchdog width check was found. The max-threshold test only sets the thresholds
+      to their maximum values, and the scoreboard predicts interrupts from a 32-bit count.
+    evidence:
+    - 1
+  - id: cr_ae28e3f9f608
+    outcome: verified
+    reason: The cdc_hi test drives the low-half overflow, but no check was found that the carry reaches
+      the high half or that the counter is 64 bits wide. The scoreboard's interrupt prediction is only
+      an indirect check.
+    evidence:
+    - 0
+    - 1
+  new_sources: []
+submissions: 1
+rejections: []
+turns: 5
+cost_usd: 0.059735500000000004
+error: null
